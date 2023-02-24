@@ -1,86 +1,150 @@
-import type { NextPage } from 'next'
-import Head from 'next/head'
-import Image from 'next/image'
+import { NextPage } from 'next';
+import Head from 'next/head';
+import Image from 'next/image';
+import logo from '/public/images/logo.png';
+import food from '/public/images/food.jpg';
+import star from '/public/images/Star 1.svg';
+import photo from '/public/images/myphoto.jpg';
 
-const Home: NextPage = () => {
+const Index: NextPage = () => {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center py-2">
+    <div className="">
       <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
+        <title>Cook-e</title>
       </Head>
 
-      <main className="flex w-full flex-1 flex-col items-center justify-center px-20 text-center">
-        <h1 className="text-6xl font-bold">
-          Welcome to{' '}
-          <a className="text-blue-600" href="https://nextjs.org">
-            Next.js!
-          </a>
-        </h1>
+      <section className="bg-myBlue-200 font-exo font-normal grid grid-flow-row gap-4">
+        <nav className="grid grid-flow-col items-center ">
+          <Image src={logo} alt={'logo'} className="" />
+          <ul className="-ml-[3em] uppercase text-white text-9 font-bold flex flex-row gap-6 ">
+            <li>
+              <a href="#">Αρχικη</a>
+            </li>
+            <li>
+              <a href="#">Χρηστης</a>
+            </li>
+            <li>
+              <a href="#">Chef</a>
+            </li>
+            <li>
+              <a href="#">Διατροφολογος</a>
+            </li>
+          </ul>
+        </nav>
 
-        <p className="mt-3 text-2xl">
-          Get started by editing{' '}
-          <code className="rounded-md bg-gray-100 p-3 font-mono text-lg">
-            pages/index.tsx
-          </code>
-        </p>
+        <div className="mt-[3.5em] grid grid-flow-col gap-7 justify-evenly">
+          <div className="bg-myGrey-100 min-w-[9em] pb-[1.5em] rounded-[.9em] grid grid-flow-row justify-items-center gap-2">
+            <Image
+              src={food}
+              alt={'Food Image'}
+              className="rounded-full max-w-[6em] max-h-[6em] -mt-[3em]"
+            ></Image>
+            <h1 className="text-12 font-bold">Μακαρόνια με Κιμά</h1>
+            <p className="text-9">Βαθμός Δυσκολίας: Εύκολο</p>
+            <div className="flex flex-row items-center gap-2 m-[0.65em]">
+              <Image
+                src={photo}
+                alt={'Profile Photo'}
+                className="max-w-[2em] max-h-[2em] object-cover object-top  rounded-[.5em]"
+              ></Image>
+              <p className="text-black text-9 leading-[.8rem]">
+                Κωνσταντίνος <br /> Κασκαντιρης
+              </p>
+            </div>
+            <div className="flex flex-row items-center gap-1">
+              <Image src={star} alt={'star'} className=""></Image>
+              <p className="text-9">4.5/5(30)</p>
+            </div>
+          </div>
 
-        <div className="mt-6 flex max-w-4xl flex-wrap items-center justify-around sm:w-full">
-          <a
-            href="https://nextjs.org/docs"
-            className="mt-6 w-96 rounded-xl border p-6 text-left hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Documentation &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Find in-depth information about Next.js features and its API.
-            </p>
-          </a>
+          <div className="bg-myGrey-100 min-w-[9em] pb-[1.5em] rounded-[.9em] grid grid-flow-row justify-items-center">
+            <Image
+              src={food}
+              alt={'Food Image'}
+              className="rounded-full max-w-[6em] max-h-[6em] -mt-[3em]"
+            ></Image>
+            <h1 className="text-12 font-bold">Μακαρόνια με Κιμά</h1>
+            <p className="text-9">Βαθμός Δυσκολίας: Εύκολο</p>
+            <div className="flex flex-row items-center gap-2 m-[0.65em]">
+              <Image
+                src={photo}
+                alt={'Profile Photo'}
+                className="max-w-[2em] max-h-[2em] object-cover object-top  rounded-[.5em]"
+              ></Image>
+              <p className="text-black text-9 leading-[.8rem]">
+                Κωνσταντίνος <br /> Κασκαντιρης
+              </p>
+            </div>
+            <div className="flex flex-row items-center gap-1">
+              <Image src={star} alt={'star'} className=""></Image>
+              <p className="text-9">4.5/5(30)</p>
+            </div>
+          </div>
+        </div>
 
-          <a
-            href="https://nextjs.org/learn"
-            className="mt-6 w-96 rounded-xl border p-6 text-left hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Learn &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Learn about Next.js in an interactive course with quizzes!
-            </p>
-          </a>
+        <div className="font-bold justify-self-center my-6 flex flex-row gap-10">
+          <button>
+            <a
+              href="/login"
+              className="text-white   rounded-full  px-[1.5em] py-[0.25em] border-white border-[1px]"
+            >
+              Login
+            </a>
+          </button>
+          <button>
+            <a
+              href="/register"
+              className="text-myBlue-200 bg-myGrey-100 rounded-full  px-[.9em] py-[0.25em]"
+            >
+              Register
+            </a>
+          </button>
+        </div>
+      </section>
 
-          <a
-            href="https://github.com/vercel/next.js/tree/canary/examples"
-            className="mt-6 w-96 rounded-xl border p-6 text-left hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Examples &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Discover and deploy boilerplate example Next.js projects.
-            </p>
-          </a>
+      <main>
+        <div className="grid grid-flow-row  justify-items-center gap-6">
+          <h1 className="font-bold max-w-[17.8em] leading-10 text-[2rem]">
+            Η μαγειρική σου <br /> εμπειρία αλλάζει
+          </h1>
+          <p className="max-w-[17.8em] leading-4 text-[0.8rem]">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            Condimentum id venenatis a vitae.
+          </p>
+          <button>
+            <a
+              href="/login"
+              className="bg-myBlue-200 rounded-full py-[.25em] px-[3.5em] text-white"
+            >
+              Ξεκίνησε τώρα
+            </a>
+          </button>
+          <div className="grid grid-cols-2  text-9 leading-3 gap-4 ">
+            <div className=" ">
+              <h1 className="font-bold text-3xl">85%</h1>
+              <p className="max-w-[12.1em]">
+                Των ανθρώπων δεν ξέρει πως να αξιοποιεί τα υλικά και σκεύη τους
+              </p>
+            </div>
 
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className="mt-6 w-96 rounded-xl border p-6 text-left hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Deploy &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
+            <div className="ml-[2em]">
+              <h1 className="font-bold text-3xl">100+</h1>
+              <p className="max-w-[7.1em]">Συνεργάτες Chef</p>
+            </div>
+            <div className=" ">
+              <h1 className="font-bold text-3xl">50+</h1>
+              <p className="max-w-[7.1em]">Εγκεκριμένοι Διατροφολόγοι</p>
+            </div>
+            <div className="ml-[2em]">
+              <h1 className="font-bold text-3xl">1000+</h1>
+              <p className="max-w-[7.1em]">Συνταγές βάσει των επιλογών σου</p>
+            </div>
+          </div>
         </div>
       </main>
-
-      <footer className="flex h-24 w-full items-center justify-center border-t">
-        <a
-          className="flex items-center justify-center gap-2"
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-        </a>
-      </footer>
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Index;

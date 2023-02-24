@@ -4,9 +4,60 @@ module.exports = {
     './pages/**/*.{js,ts,jsx,tsx}',
     './components/**/*.{js,ts,jsx,tsx}',
     './app/**/*.{js,ts,jsx,tsx}',
+
+    // Or if using `src` directory:
+    './src/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        myBlue: {
+          100: '#B3D5F8',
+          200: '#377CC3',
+        },
+        myRed: '#ED5B5B',
+        myBeige: {
+          100: '#E9DEC5',
+        },
+        myGrey: {
+          100: '#EAEAEA',
+          200: '#3F4756',
+        },
+      },
+      fontFamily: {
+        exo: ['"Exo 2"', 'sans-serif'],
+        source: ['"Source Sans Pro"', 'sans-serif'],
+      },
+      fontSize: {
+        9: '0.5625rem',
+        12: '0.75rem',
+        15: '0.9375rem',
+        19: '1.1875rem',
+
+        20: '1.25rem',
+        25: '1.5625rem',
+        40: '2.5rem',
+      },
+      borderRadius: {
+        registerLogin: '7.5rem',
+        registerImage: '3.75rem',
+      },
+      lineHeight: {
+        registerLine: '1.5rem',
+      },
+      container: {
+        center: true,
+      },
+      screens: {
+        desktop: '93.75em',
+        // => @media (min-width: 1500px) { ... }
+
+        laptop: '68.75em',
+        // => @media (min-width: 1100px) { ... }
+
+        bigScreen: '156em',
+      },
+    },
   },
-  plugins: [],
-}
+  plugins: [require('@tailwindcss/forms')],
+};
