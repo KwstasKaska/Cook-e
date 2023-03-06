@@ -1,18 +1,17 @@
 import { NextPage } from 'next';
 import React from 'react';
-import Image from 'next/image';
 
 interface FooterProps {}
 
 const Footer: NextPage<FooterProps> = ({}) => {
   return (
-    <footer className="hidden md:block md:bg-myGrey-200  py-[4em]  w-full   ">
-      <div className="max-w-[1268px] mx-auto  grid grid-cols-2">
-        <div className="grid grid-cols-2 grid-rows-2 justify-items-center">
+    <footer className=" bg-myGrey-200  py-[4em]  w-full">
+      <div className="max-w-[1268px] w-full  grid grid-flow-row gap-8 md:grid-cols-2 md:mx-auto">
+        <div className="cursor-pointer grid grid-flow-row justify-center gap-4 md:grid-cols-2 md:grid-rows-2 md:justify-items-center">
           <h3 className="text-white font-normal col-span-2 text-19">
             Find Us on Social Media
           </h3>
-          <span>
+          {/* <span>
             <Image src={''} alt={'Instagram'}></Image>
           </span>
           <span>
@@ -23,11 +22,11 @@ const Footer: NextPage<FooterProps> = ({}) => {
           </span>
           <span>
             <Image src={''} alt={'TikTok'}></Image>
-          </span>
+          </span> */}
         </div>
         <div className="text-white font-normal text-19">
-          <ul className="grid grid-rows-3 grid-cols-2 justify-items-center">
-            <h1 className="col-span-2 ">Χρήσιμες Πληροφορίες</h1>
+          <ul className="grid grid-flow-row justify-items-center gap-2 md:gap-0 md:grid-rows-3 md:grid-cols-2 cursor-pointer">
+            <h1 className="col-span-2 mb-[1.5em]">Χρήσιμες Πληροφορίες</h1>
             <li>
               <a href="">Ρυθμίσεις</a>
             </li>

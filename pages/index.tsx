@@ -1,5 +1,4 @@
 import { NextPage } from 'next';
-import Head from 'next/head';
 import Image from 'next/image';
 import logo from '/public/images/logo.png';
 import food from '/public/images/food.jpg';
@@ -8,11 +7,7 @@ import photo from '/public/images/myphoto.jpg';
 
 const Index: NextPage = () => {
   return (
-    <div className="md:grid md:grid-cols-2  ">
-      <Head>
-        <title>Cook-e</title>
-      </Head>
-
+    <div className="md:grid md:grid-cols-2 h-screen ">
       <main className="mt-[1em] container">
         <nav className=" text-black ">
           <ul className=" uppercase  text-9 font-bold grid grid-flow-col justify-evenly  md:text-15  xl:text-20 ">

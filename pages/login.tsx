@@ -7,10 +7,10 @@ const Login: NextPage = ({}) => {
   return (
     // Εδώ βρίσκεται το section με τις δύο εικόνες, δηλαδή το αριστερό section.
 
-    <main className="min-h-screen  bg-myBeige-100 text-white ">
-      <div className=" md:grid md:grid-cols-2  md:content-center  md:min-h-screen ">
-        <section className="hidden md:block md:container md:bg-myBeige-100 md:pl-[20%]   ">
-          <div className="md:grid md:grid-flow-row justify-center   rounded-l-[3.125rem] border-[5px] border-myBlue-200 bg-myBeige-100  md:min-h-screen md:mt-[10em] md:mb-[6em]">
+    <main className="h-screen flex items-center  justify-center bg-myBeige-100 text-white md:block">
+      <div className="md:grid md:grid-cols-2  md:h-screen">
+        <section className="hidden md:block  md:bg-myBeige-100   md:min-h-full   md:relative">
+          <div className="md:grid md:grid-flow-row justify-center  rounded-l-[3.125rem] border-[5px] border-myBlue-200 bg-myBeige-100 md:absolute md:right-0   md:max-w-[600px] md:w-full md:top-[10%] ">
             <Image
               src={logo}
               alt={'logo image'}
@@ -30,8 +30,8 @@ const Login: NextPage = ({}) => {
 
         {/* Εδώ βρίσκεται το section με την φόρμα εισαγωγής στοιχείων και τα κέιμενα, δηλαδή το δεξιά section. */}
 
-        <section className="pt-[20%] md:pt-0 md:container md:bg-myBlue-100  md:pr-[20%] ">
-          <div className="relative grid grid-flow-row  max-w-[350px] mx-auto justify-items-center justify-center  content-center gap-[1.5em] rounded-[1.5625em] bg-myBlue-200 md:rounded-r-[3.125rem] md:rounded-l-[0px] md:max-w-full  md:min-h-screen md:mt-[10em] md:mb-[6em] ">
+        <section className=" md:bg-myBlue-100   md:relative">
+          <div className="relative grid grid-flow-row  max-w-[350px]  justify-items-center gap-[1.5em] rounded-[1.5625em] bg-myBlue-200 md:rounded-r-[3.125rem] md:rounded-l-[0px]  md:absolute md:left-0   md:max-w-[600px] md:w-full md:py-[2.2em]  lg:py-[.8em] md:top-[10%]">
             <Image
               src={logo}
               alt={'logo image'}
@@ -39,7 +39,7 @@ const Login: NextPage = ({}) => {
               width="143"
               className="md:hidden justify-self-start absolute"
             ></Image>
-            <h1 className="font-vol font-bold text-25 mt-[3em] md:text-[2rem] lg:text-40">
+            <h1 className="font-vol font-bold text-25 mt-[2.5em] md:mt-[1.5em] md:text-[2rem] lg:text-40">
               Καλωσήρθες πίσω!
             </h1>
 
@@ -52,7 +52,7 @@ const Login: NextPage = ({}) => {
               </span>
               <input
                 type="email"
-                className="rounded-[0.5rem] placeholder:italic  placeholder:text-myBlue-200 placeholder:text-15 lg:placeholder:text-20 text-black w-[17em]"
+                className="rounded-[0.5rem] placeholder:italic  placeholder:text-myBlue-200 placeholder:text-15 lg:placeholder:text-20 text-black w-[17em] mx-[1em] "
                 placeholder="Διεύθυνση Email"
               />
 
@@ -76,7 +76,7 @@ const Login: NextPage = ({}) => {
               </a>
             </form>
 
-            <p className="font-source  text-15 md:text-20 lg:text-20 mt-[4em] ">
+            <p className="font-source  text-15 md:text-20 lg:text-20 mt-[2em] ">
               Δεν έχεις ακόμα λογαριασμό;
               <a
                 className="block font-source font-bold text-center text-xl lg:text-25 md:text-[1.8rem] underline"

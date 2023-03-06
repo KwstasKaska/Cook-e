@@ -6,11 +6,11 @@ import photo from '/public/images/myphoto.jpg';
 
 const Settings: NextPage = () => {
   return (
-    <div className="md:min-h-[100vh] md:flex md:flex-col">
+    <div className="md:min-h-screen md:flex md:flex-col">
       <Navbar />
 
-      <main className="md:max-w-[1268px] md:mx-auto md:grid md:grid-cols-2  md:mt-auto  ">
-        <section className="bg-myBlue-100 rounded-[3em]  shadow-2xl drop-shadow-2xl  pt-[4em] pb-[10em] max-w-[18em]  mx-auto md:mx-0 mt-[2em] ">
+      <main className="md:max-w-[1268px] md:w-full md:mx-auto md:px-[6em] md:grid md:grid-cols-2 md:gap-8">
+        <section className="bg-myBlue-100 rounded-[3em]  shadow-2xl drop-shadow-2xl  pt-[4em] pb-[10em] max-w-[18em]  mx-auto md:mx-0 mt-[2em]  md:my-[4em]">
           <div className="grid justify-items-center gap-5">
             <h1 className="font-exo font-bold text-25">Ρυθμίσεις</h1>
             <ul className="font-source font-normal text-19 flex flex-col cursor-pointer gap-4 ">
@@ -36,8 +36,8 @@ const Settings: NextPage = () => {
           </div>
         </section>
 
-        <section className="hidden md:block  md:bg-myGrey-100  md:rounded-[3em]  md:max-w-[35em]  md:shadow-2xl md:drop-shadow-2xl md:justify-self-end">
-          <div className=" grid grid-cols-2 grid-rows-2 justify-items-center my-[1em]">
+        <section className="hidden md:block  md:bg-myGrey-100  md:rounded-[3em]  md:max-w-[35em]  md:shadow-2xl md:drop-shadow-2xl md:justify-self-end  md:my-[4em]">
+          <div className="grid grid-cols-2 grid-rows-2 justify-items-center items-center py-5">
             <Image
               src={photo}
               alt={'profile picture'}

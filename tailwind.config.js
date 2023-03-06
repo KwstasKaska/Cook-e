@@ -36,6 +36,7 @@ module.exports = {
 
         20: '1.25rem',
         25: '1.5625rem',
+        30: '1.875rem',
         40: '2.5rem',
       },
       borderRadius: {
@@ -59,5 +60,5 @@ module.exports = {
       },
     },
   },
-  plugins: [require('@tailwindcss/forms')],
+  plugins: [require('@tailwindcss/forms'), require('autoprefixer')],
 };

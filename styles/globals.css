@@ -18,3 +18,24 @@
     background-image: url('../public/images/mainImageOriginal.png');
   }
 }
+
+@layer utilities {
+  .scrollbar::-webkit-scrollbar {
+    height: 15px;
+  }
+
+  .scrollbar::-webkit-scrollbar-track {
+    border-radius: 100vh;
+    background: transparent;
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb {
+    background: #b3d5f8;
+    border-radius: 100vh;
+    border: 3px solid #f6f7ed;
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #377cc3;
+  }
+}
