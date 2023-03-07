@@ -1,5 +1,6 @@
 import { NextPage } from 'next';
 import Image from 'next/image';
+import Link from 'next/link';
 import logo from '/public/images/6.png';
 
 const Register: NextPage = ({}) => {
@@ -18,7 +19,7 @@ const Register: NextPage = ({}) => {
             type="submit"
             className=" font-exo font-bold text-15 text-white  rounded-registerLogin bg-myBlue-200 px-[2.3em] cursor-pointer  md:py-[.75em] md:h-fit "
           >
-            Login
+            <Link href="/login">Login</Link>
           </button>
         </section>
 

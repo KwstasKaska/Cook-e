@@ -3,13 +3,14 @@ import React from 'react';
 import Image from 'next/image';
 import settings from '/public/images/settings.svg';
 import logo from '/public/images/logo.png';
+import Link from 'next/link';
 
 const NutrNavbar: NextPage = () => {
   return (
     <header className="w-full bg-myBlue-100 flex justify-between px-[.4em] py-[1em] ">
-      <a href="#" className="cursor-pointer">
+      <Link href="#" className="cursor-pointer">
         <Image src={logo} alt={'Cook-e logo'}></Image>
-      </a>
+      </Link>
       <button className="cursor-pointer md:hidden">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -43,21 +44,21 @@ const NutrNavbar: NextPage = () => {
       <nav className="hidden md:flex ">
         <ul className="uppercase flex gap-4 items-center">
           <li className="">
-            <a href="#">Αρθρα</a>
+            <Link href="#">Αρθρα</Link>
           </li>
           <li>
-            <a href="#">Ημερολογιο</a>
+            <Link href="#">Ημερολογιο</Link>
           </li>
           <li>
-            <a href="#">Διαχειριση Ραντεβου</a>
+            <Link href="#">Διαχειριση Ραντεβου</Link>
           </li>
           <li>
-            <a href="#">Προγραμματισμος Διατροφων</a>
+            <Link href="#">Προγραμματισμος Διατροφων</Link>
           </li>
           <li>
-            <a href="#">
+            <Link href="#">
               <Image src={settings} alt={'Ρυθμίσεις'}></Image>
-            </a>
+            </Link>
           </li>
         </ul>
       </nav>

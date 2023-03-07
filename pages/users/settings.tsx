@@ -1,5 +1,6 @@
 import { NextPage } from 'next';
 import Image from 'next/image';
+import Link from 'next/link';
 import Footer from '../../components/Footer';
 import Navbar from '../../components/Navbar';
 import photo from '/public/images/myphoto.jpg';
@@ -15,22 +16,22 @@ const Settings: NextPage = () => {
             <h1 className="font-exo font-bold text-25">Ρυθμίσεις</h1>
             <ul className="font-source font-normal text-19 flex flex-col cursor-pointer gap-4 ">
               <li>
-                <a href="">Προσωπικά Στοιχεία</a>
+                <Link href="">Προσωπικά Στοιχεία</Link>
               </li>
               <li>
-                <a href="">Ιατρικά Στοιχεία</a>
+                <Link href="">Ιατρικά Στοιχεία</Link>
               </li>
               <li>
-                <a href="">Διατροφικές Συνήθειες</a>
+                <Link href="">Διατροφικές Συνήθειες</Link>
               </li>
               <li>
-                <a href="">Ειδοποιήσεις</a>
+                <Link href="">Ειδοποιήσεις</Link>
               </li>
               <li>
-                <a href="">Πληροφορίες Πληρωμής</a>
+                <Link href="">Πληροφορίες Πληρωμής</Link>
               </li>
               <li>
-                <a href="">Πληροφορίες Εφαρμογής</a>
+                <Link href="">Πληροφορίες Εφαρμογής</Link>
               </li>
             </ul>
           </div>

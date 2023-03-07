@@ -4,27 +4,14 @@ import logo from '/public/images/logo.png';
 import food from '/public/images/food.jpg';
 import star from '/public/images/Star 1.svg';
 import photo from '/public/images/myphoto.jpg';
+import GeneralNav from '../components/GeneralNav';
+import Link from 'next/link';
 
 const Index: NextPage = () => {
   return (
     <div className="md:grid md:grid-cols-2 h-screen ">
       <main className="mt-[1em] container">
-        <nav className=" text-black ">
-          <ul className=" uppercase  text-9 font-bold grid grid-flow-col justify-evenly  md:text-15  xl:text-20 ">
-            <li>
-              <a href="#">Αρχικη</a>
-            </li>
-            <li>
-              <a href="#">Χρηστης</a>
-            </li>
-            <li>
-              <a href="#">Chef</a>
-            </li>
-            <li>
-              <a href="#">Διατροφολογος</a>
-            </li>
-          </ul>
-        </nav>
+        <GeneralNav />
 
         <div className="grid grid-flow-row  justify-items-center gap-4 mt-12 ">
           <h1 className="font-bold text-center px-[1.5em] leading-10 text-[2rem] md:px-[1em]  md:mt-[3em] md:text-40 xl:text-[4.375rem] xl:leading-[4.5rem] xl:mt-[1.5em]">
@@ -36,12 +23,12 @@ const Index: NextPage = () => {
             Condimentum id venenatis a vitae.
           </p>
           <button className="md:mt-8">
-            <a
+            <Link
               href="/login"
               className="bg-myBlue-200 rounded-full py-[.25em] px-[3.5em] text-white md:text-20 xl:text-[2rem]"
             >
               Ξεκίνησε τώρα
-            </a>
+            </Link>
           </button>
         </div>
       </main>
@@ -55,20 +42,20 @@ const Index: NextPage = () => {
           />
           <div className="font-bold  my-3 flex flex-row gap-2">
             <button>
-              <a
+              <Link
                 href="/login"
                 className="text-white   rounded-full  px-[1.5em] py-[0.25em] border-white border-[1px] md:text-15 xl:text-25  "
               >
                 Login
-              </a>
+              </Link>
             </button>
             <button>
-              <a
+              <Link
                 href="/register"
                 className="text-myBlue-200 bg-myGrey-100 rounded-full  px-[.9em] py-[0.25em] md:text-15 xl:text-25"
               >
                 Register
-              </a>
+              </Link>
             </button>
           </div>
         </div>

@@ -6,15 +6,16 @@ import menu from '/public/images/more.png';
 import close from '/public/images/close.png';
 import shop from '/public/images/aspro 1.png';
 import set from '/public/images/settings.svg';
+import Link from 'next/link';
 
 const Navbar: NextPage = ({}) => {
   return (
     <header className="md:relative bg-myGrey-200 w-full">
       <div className="md:absolute  md:w-full md:py-[17em] bg-myGrey-200 md:skew-y-[10deg] md:origin-[80%]  "></div>
       <div className="md:relative py-[2em] flex items-center justify-between md:justify-start ">
-        <a href="#" className="">
+        <Link href="#" className="">
           <Image src={logo} alt={'Cook-e logo'}></Image>
-        </a>
+        </Link>
         <button className="cursor-pointer md:hidden">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -49,19 +50,19 @@ const Navbar: NextPage = ({}) => {
             className="md:grid md:gap-[2em] lg:gap-[4em] 2xl:gap-[6.5em] md:grid-flow-col md:items-center md:text-white"
           >
             <li>
-              <a href="">ΑΡΧΙΚΗ</a>
+              <Link href="">ΑΡΧΙΚΗ</Link>
             </li>
             <li>
-              <a href="">ΕΥΡΕΣΗ ΣΥΝΤΑΓΗΣ</a>
+              <Link href="">ΕΥΡΕΣΗ ΣΥΝΤΑΓΗΣ</Link>
             </li>
             <li>
-              <a href="">ΔΙΑΤΡΟΦΟΛΟΓΟΙ</a>
+              <Link href="">ΔΙΑΤΡΟΦΟΛΟΓΟΙ</Link>
             </li>
             <li>
-              <a href="">PREMIUM</a>
+              <Link href="">PREMIUM</Link>
             </li>
             <li>
-              <a href="">
+              <Link href="">
                 <Image
                   src={shop}
                   alt={'Καλάθι Αγορών'}
@@ -69,10 +70,10 @@ const Navbar: NextPage = ({}) => {
                   height={30}
                   className="lg:w-[40px] lg:h-[40px]"
                 ></Image>
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="">
+              <Link href="">
                 <Image
                   src={set}
                   alt={'Ρυθμίσεις'}
@@ -80,7 +81,7 @@ const Navbar: NextPage = ({}) => {
                   height={30}
                   className="lg:w-[40px] lg:h-[40px]"
                 ></Image>
-              </a>
+              </Link>
             </li>
           </ul>
         </nav>

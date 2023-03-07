@@ -2,8 +2,6 @@ import { NextPage } from 'next';
 import React, { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 
-import 'react-calendar/dist/Calendar.css';
-
 const DynamicCalendar = dynamic(() => import('react-calendar'), {
   ssr: false,
 });

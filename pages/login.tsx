@@ -2,6 +2,7 @@ import Image from 'next/image';
 import { NextPage } from 'next';
 import chef from '/public/images/chef.png';
 import logo from '/public/images/5.png';
+import Link from 'next/link';
 
 const Login: NextPage = ({}) => {
   return (
@@ -68,22 +69,22 @@ const Login: NextPage = ({}) => {
               >
                 Είσοδος
               </button>
-              <a
+              <Link
                 className="font-source font-normal text-15 justify-self-center underline md:text-20 lg:text-20"
                 href="#"
               >
                 Ξεχάσατε τον κωδικό;
-              </a>
+              </Link>
             </form>
 
             <p className="font-source  text-15 md:text-20 lg:text-20 mt-[2em] ">
               Δεν έχεις ακόμα λογαριασμό;
-              <a
+              <Link
                 className="block font-source font-bold text-center text-xl lg:text-25 md:text-[1.8rem] underline"
                 href="#"
               >
                 Δημιούργησε έναν
-              </a>
+              </Link>
             </p>
           </div>
         </section>
