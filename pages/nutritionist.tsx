@@ -8,6 +8,7 @@ import profile from '/public/images/myphoto.jpg';
 import backbtn from '/public/images/backbtn.png';
 import articleImg from '/public/images/articleImg.jpg';
 import CalendarC from '../components/CalendarC';
+import info from '/public/images/info.png';
 
 const Nutritionist: NextPage = () => {
   return (
@@ -88,11 +89,45 @@ const Nutritionist: NextPage = () => {
           </div>
         </section>
 
-        <section className="h-screen">
-          <CalendarC></CalendarC>
+        <section className="h-screen grid grid-cols-fluid ">
+          <div>
+            <CalendarC />
+            <button></button>
+            <button>Εφαρμογή</button>
+          </div>
+          <div>
+            <div className="bg-myBlue-200 text-white">
+              <h1>Αίτηση για Ραντεβού</h1>
+              <p>8 Αυγούστου 2023, 15:00-16:00</p>
+            </div>
+            <div>
+              <Image
+                src={profile}
+                alt={'Εικόνα Προφίλ'}
+                className="max-w-[3em] max-h-[3em] object-cover object-top rounded-lg"
+              ></Image>
+              <p>
+                Κωνσταντίνος <br /> Κασκαντίρης
+              </p>
+              <Image
+                src={info}
+                alt={''}
+                className="max-w-[3em] max-h-[3em]"
+              ></Image>
+            </div>
+            <div>
+              <button className="bg-myBlue-200 text-white">Αποδοχή</button>
+              <button>Απόρριψη</button>
+            </div>
+          </div>
+          <div className="bg-myGrey-100 border-2 border-black rounded-lg">
+            <button className="font-bold">
+              Ρύθμιση Διαθεσιμότητας ημερομηνιών και ωρών
+            </button>
+          </div>
         </section>
 
-        <section className="h-screen">fgafg</section>
+        <section className="h-screen bg-myGrey-200">fgafg</section>
 
         <section className="h-screen">asdfwffsdg</section>
       </main>

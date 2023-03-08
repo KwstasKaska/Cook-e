@@ -7,11 +7,12 @@ const Footer: NextPage<FooterProps> = ({}) => {
   return (
     <footer className=" bg-myGrey-200  py-[4em]  w-full">
       <div className="max-w-[1268px] w-full  grid grid-flow-row gap-8 md:grid-cols-2 md:mx-auto">
-        <div className="cursor-pointer grid grid-flow-row justify-center gap-4 md:grid-cols-2 md:grid-rows-2 md:justify-items-center">
+        <div className="grid grid-flow-row justify-center gap-4 md:grid-cols-2 md:grid-rows-2 md:justify-items-center">
           <h3 className="text-white font-normal col-span-2 text-19">
             Find Us on Social Media
           </h3>
-          {/* <span>
+          <div className="cursor-pointer">
+            {/* <span>
             <Image src={''} alt={'Instagram'}></Image>
           </span>
           <span>
@@ -23,6 +24,7 @@ const Footer: NextPage<FooterProps> = ({}) => {
           <span>
             <Image src={''} alt={'TikTok'}></Image>
           </span> */}
+          </div>
         </div>
         <div className="text-white font-normal text-19">
           <ul className="grid grid-flow-row justify-items-center gap-2 md:gap-0 md:grid-rows-3 md:grid-cols-2 cursor-pointer">

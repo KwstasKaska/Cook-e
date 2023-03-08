@@ -28,6 +28,9 @@ module.exports = {
         exo: ['"Exo 2"', 'sans-serif'],
         source: ['"Source Sans Pro"', 'sans-serif'],
       },
+      gridTemplateColumns: {
+        fluid: 'repeat(auto-fit,minmax(15rem,1fr))',
+      },
       fontSize: {
         9: '0.5625rem',
         12: '0.75rem',
