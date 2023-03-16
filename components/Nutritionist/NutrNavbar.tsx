@@ -1,13 +1,12 @@
-import { NextPage } from 'next';
 import React from 'react';
 import Image from 'next/image';
 import settings from '/public/images/settings.svg';
 import logo from '/public/images/logo.png';
 import Link from 'next/link';
 
-const NutrNavbar: NextPage = () => {
+const NutrNavbar: React.FC = () => {
   return (
-    <header className="w-full bg-myBlue-100 flex justify-between px-[.4em] py-[1em] ">
+    <header className="flex w-full justify-between bg-myBlue-100 px-[.4em] py-[1em] ">
       <Link href="#" className="cursor-pointer">
         <Image src={logo} alt={'Cook-e logo'}></Image>
       </Link>
@@ -16,7 +15,7 @@ const NutrNavbar: NextPage = () => {
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
           fill="white"
-          className="w-8 h-8 mr-3"
+          className="mr-3 h-8 w-8"
         >
           <path
             fillRule="evenodd"
@@ -29,7 +28,7 @@ const NutrNavbar: NextPage = () => {
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
           fill="currentColor"
-          className="w-6 h-6 hidden"
+          className="hidden h-6 w-6"
         >
           <path
             fillRule="evenodd"
@@ -42,7 +41,7 @@ const NutrNavbar: NextPage = () => {
       </button>
 
       <nav className="hidden md:flex ">
-        <ul className="uppercase flex gap-4 items-center">
+        <ul className="flex items-center gap-4 uppercase">
           <li className="">
             <Link href="#">Αρθρα</Link>
           </li>
@@ -62,7 +61,7 @@ const NutrNavbar: NextPage = () => {
           </li>
         </ul>
       </nav>
-      <button className="uppercase hidden">Εξοδος</button>
+      <button className="hidden uppercase">Εξοδος</button>
     </header>
   );
 };

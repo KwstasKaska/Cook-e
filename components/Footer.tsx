@@ -1,14 +1,11 @@
-import { NextPage } from 'next';
 import React from 'react';
 
-interface FooterProps {}
-
-const Footer: NextPage<FooterProps> = ({}) => {
+const Footer: React.FC = ({}) => {
   return (
-    <footer className=" bg-myGrey-200  py-[4em]  w-full">
-      <div className="max-w-[1268px] w-full  grid grid-flow-row gap-8 md:grid-cols-2 md:mx-auto">
+    <footer className=" w-full  bg-myGrey-200  py-[4em]">
+      <div className="grid w-full  max-w-[1268px] grid-flow-row gap-8 md:mx-auto md:grid-cols-2">
         <div className="grid grid-flow-row justify-center gap-4 md:grid-cols-2 md:grid-rows-2 md:justify-items-center">
-          <h3 className="text-white font-normal col-span-2 text-19">
+          <h3 className="col-span-2 text-19 font-normal text-white">
             Find Us on Social Media
           </h3>
           <div className="cursor-pointer">
@@ -26,8 +23,8 @@ const Footer: NextPage<FooterProps> = ({}) => {
           </span> */}
           </div>
         </div>
-        <div className="text-white font-normal text-19">
-          <ul className="grid grid-flow-row justify-items-center gap-2 md:gap-0 md:grid-rows-3 md:grid-cols-2 cursor-pointer">
+        <div className="text-19 font-normal text-white">
+          <ul className="grid cursor-pointer grid-flow-row justify-items-center gap-2 md:grid-cols-2 md:grid-rows-3 md:gap-0">
             <h1 className="col-span-2 mb-[1.5em]">Χρήσιμες Πληροφορίες</h1>
             <li>
               <a href="">Ρυθμίσεις</a>

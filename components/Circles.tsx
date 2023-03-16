@@ -1,6 +1,4 @@
-import { NextPage } from 'next';
-
-const Circles: NextPage = ({}) => {
+const Circles: React.FC = ({}) => {
   return (
     <section>
       <div>K;ykloi</div>
