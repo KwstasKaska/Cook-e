@@ -3,22 +3,7 @@ import Image from 'next/image';
 import profile from '/public/images/myphoto.jpg';
 import articleImg from '/public/images/articleImg.jpg';
 import Slider from 'react-slick';
-
-export type Settings = {
-  dots: boolean;
-  infinite: boolean;
-  slidesToShow: number;
-  slidesToScroll: number;
-  initialSlide: number;
-  autoplay: boolean;
-  speed: number;
-  autoplaySpeed: number;
-  adaptiveHeight: boolean;
-  pauseOnHover: boolean;
-  swipeToSlide: boolean;
-  className: string;
-  responsive?: any[];
-};
+import { Settings } from '../Helper/SliderSettings';
 
 // My articles slider settings
 var settings: Settings = {
