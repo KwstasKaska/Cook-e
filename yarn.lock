@@ -1297,10 +1297,17 @@
   resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.7.5.tgz#5f19d2b85a98e9558036f6a3cacc8819420f05cf"
   integrity sha512-JCB8C6SnDoQf0cNycqd/35A7MjcnK+ZTqE7judS6o7utxUCg6imJg3QK2qzHKszlTjcj2cn+NwMB2i96ubpj7w==
 
-"@types/react-calendar@^3.9.0":
+"@types/react-calendar@^3.0.0", "@types/react-calendar@^3.9.0":
   version "3.9.0"
   resolved "https://registry.yarnpkg.com/@types/react-calendar/-/react-calendar-3.9.0.tgz#b345707c9b593331a48963514f3e30ce0b3ca195"
   integrity sha512-KpAu1MKAGFw5hNwlDnWsHWqI9i/igAB+8jH97YV7QpC2v7rlwNEU5i6VMFb73lGRacuejM/Zd2LklnEzkFV3XA==
+  dependencies:
+    "@types/react" "*"
+
+"@types/react-dom@*":
+  version "18.0.11"
+  resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-18.0.11.tgz#321351c1459bc9ca3d216aefc8a167beec334e33"
+  integrity sha512-O38bPbI2CWtgw/OoQoY+BRelw7uysmXbWvw3nLWO21H1HSh+GOlqPuXshJfjmpNlKiiSDG9cc1JZAaMmVdcTlw==
   dependencies:
     "@types/react" "*"
 
@@ -1407,7 +1414,7 @@
     urlpattern-polyfill "^6.0.2"
     web-streams-polyfill "^3.2.0"
 
-"@wojtekmaj/date-utils@^1.0.2":
+"@wojtekmaj/date-utils@^1.0.2", "@wojtekmaj/date-utils@^1.0.3":
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/@wojtekmaj/date-utils/-/date-utils-1.1.3.tgz#7be7fb33a2b987d886ff868877ee8c7908176e85"
   integrity sha512-rHrDuTl1cx5LYo8F4K4HVauVjwzx4LwrKfEk4br4fj4nK8JjJZ8IG6a6pBHkYmPLBQHCOEDwstb0WNXMGsmdOw==
@@ -2156,6 +2163,11 @@ dependency-graph@^0.11.0:
   version "0.11.0"
   resolved "https://registry.yarnpkg.com/dependency-graph/-/dependency-graph-0.11.0.tgz#ac0ce7ed68a54da22165a85e97a01d53f5eb2e27"
   integrity sha512-JeMq7fEshyepOWDfcfHK06N3MhyPhz++vtqWhMT5O9A3K42rdsEDpfdVqjaqaAhsw6a+ZqeDvQVtD0hFHQWrzg==
+
+detect-element-overflow@^1.3.1:
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/detect-element-overflow/-/detect-element-overflow-1.3.1.tgz#1a83f11abfd70c4dec750f214c7d7808c5c19638"
+  integrity sha512-E29Axx3pyotgg3j5HUbusTTarjPUHsC02p7fZ3/cnUufyK0kx5RzRA9waBvrKFWGc/LWiRj3pD9Y3y+mymMYiQ==
 
 detect-indent@^6.0.0:
   version "6.1.0"
@@ -3433,6 +3445,11 @@ make-error@^1.1.1:
   resolved "https://registry.yarnpkg.com/make-error/-/make-error-1.3.6.tgz#2eb2e37ea9b67c4891f684a1394799af484cf7a2"
   integrity sha512-s8UhlNe7vPKomQhC1qFelMokr/Sc3AgNbso3n74mVPA5LTZwkB9NlXf4XPamLxJE8h0gh73rM94xvwRT2CVInw==
 
+make-event-props@^1.1.0:
+  version "1.4.2"
+  resolved "https://registry.yarnpkg.com/make-event-props/-/make-event-props-1.4.2.tgz#b140e8a63b7aaf1bff9ac5a2fa453a6d2dd1ecfe"
+  integrity sha512-ZOHqRpLn2htnMd9zqhE+wticVr31PdwrJXHcvEEdKgrfjCOuSDn8urG9SDzEIqzP1ayp1uTdDJcOiTlJhqWpEQ==
+
 map-cache@^0.2.0:
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/map-cache/-/map-cache-0.2.2.tgz#c32abd0bd6525d9b051645bb4f26ac5dc98a0dbf"
@@ -3977,6 +3994,21 @@ react-calendar@^4.0.0:
     get-user-locale "^1.2.0"
     prop-types "^15.6.0"
 
+react-date-picker@^9.2.0:
+  version "9.2.0"
+  resolved "https://registry.yarnpkg.com/react-date-picker/-/react-date-picker-9.2.0.tgz#ee194a694fa9891d93e4d40e76fbcdae7eafbe86"
+  integrity sha512-kAE7HFLq1ic4pS0Pk9SyPTjejIfjTyPov04a2eZzLxfZh8ss8EPaaaX7bBUP4RUCkbxHpR0P4UHloD0/fFDCZw==
+  dependencies:
+    "@types/react-calendar" "^3.0.0"
+    "@wojtekmaj/date-utils" "^1.0.3"
+    clsx "^1.2.1"
+    get-user-locale "^1.2.0"
+    make-event-props "^1.1.0"
+    prop-types "^15.6.0"
+    react-calendar "^4.0.0"
+    react-fit "^1.4.0"
+    update-input-width "^1.2.2"
+
 react-dom@^18.2.0:
   version "18.2.0"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-18.2.0.tgz#22aaf38708db2674ed9ada224ca4aa708d821e3d"
@@ -3984,6 +4016,17 @@ react-dom@^18.2.0:
   dependencies:
     loose-envify "^1.1.0"
     scheduler "^0.23.0"
+
+react-fit@^1.4.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/react-fit/-/react-fit-1.5.0.tgz#ef0ed7d9b414d147cf9afc4464adfdc42305aa74"
+  integrity sha512-U9RxtM55RrNlGZp76r3QPWwSZ74r8NUOvwxwNOk+0vLlu/oJwP+6vjCkaOTw1hf8SzY0tmI07HwDdW/2CXYeLQ==
+  dependencies:
+    "@types/react" "*"
+    "@types/react-dom" "*"
+    detect-element-overflow "^1.3.1"
+    prop-types "^15.6.0"
+    tiny-warning "^1.0.0"
 
 react-is@^16.13.1:
   version "16.13.1"
@@ -4470,6 +4513,11 @@ tiny-glob@^0.2.9:
     globalyzer "0.1.0"
     globrex "^0.1.2"
 
+tiny-warning@^1.0.0:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/tiny-warning/-/tiny-warning-1.0.3.tgz#94a30db453df4c643d0fd566060d60a875d84754"
+  integrity sha512-lBN9zLN/oAf68o3zNXYrdCt1kP8WsiGW8Oo2ka41b2IM5JL/S1CTyX1rW0mb/zSuJun0ZUrDxx4sqvYS2FWzPA==
+
 title-case@^3.0.3:
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/title-case/-/title-case-3.0.3.tgz#bc689b46f02e411f1d1e1d081f7c3deca0489982"
@@ -4617,6 +4665,11 @@ update-browserslist-db@^1.0.9:
   dependencies:
     escalade "^3.1.1"
     picocolors "^1.0.0"
+
+update-input-width@^1.2.2:
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/update-input-width/-/update-input-width-1.3.1.tgz#35d9e56da9e89b57ca84d806a0383b3ff41ca0c0"
+  integrity sha512-hV2DGiSn7FKerjIXaI3s0EG/AnmAeoRTV5cvpsFcygzUzKreYj5qSu7rVihzUOEXF/MP2mjJpUzwi14sZdp0nw==
 
 upper-case-first@^2.0.2:
   version "2.0.2"

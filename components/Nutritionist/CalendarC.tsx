@@ -45,12 +45,20 @@ export const fakeAppointments: Appointment[] = [
     telephone: '432442626232',
   },
   {
-    date: '11-Μαρτίου-2023',
+    date: '24-Μαρτίου-2023',
     profile: require('/public/images/myphoto.jpg'),
     fullname: 'Bob Johnson',
     time: '15:00-17:00',
     comments: 'asdgqwergasfgasgas',
-    telephone: '432442626232',
+    telephone: '432442626233',
+  },
+  {
+    date: '12-Μαρτίου-2023',
+    profile: require('/public/images/myphoto.jpg'),
+    fullname: 'Bob Johnson',
+    time: '15:00-17:00',
+    comments: 'asdgqwergasfgasgas',
+    telephone: '432442626236',
   },
   {
     date: '11-Μαρτίου-2023',
@@ -58,7 +66,23 @@ export const fakeAppointments: Appointment[] = [
     fullname: 'Bob Johnson',
     time: '15:00-17:00',
     comments: 'asdgqwergasfgasgas',
-    telephone: '432442626232',
+    telephone: '432442626287',
+  },
+  {
+    date: '13-Μαρτίου-2023',
+    profile: require('/public/images/myphoto.jpg'),
+    fullname: 'Bob Johnson',
+    time: '15:00-17:00',
+    comments: 'asdgqwergasfgasgas',
+    telephone: '432442626298',
+  },
+  {
+    date: '16-Μαρτίου-2023',
+    profile: require('/public/images/myphoto.jpg'),
+    fullname: 'Bob Johnson',
+    time: '15:00-17:00',
+    comments: 'asdgqwergasfgasgas',
+    telephone: '4324426262233',
   },
   {
     date: '11-Μαρτίου-2023',
@@ -66,7 +90,7 @@ export const fakeAppointments: Appointment[] = [
     fullname: 'Bob Johnson',
     time: '15:00-17:00',
     comments: 'asdgqwergasfgasgas',
-    telephone: '432442626232',
+    telephone: '4324426262233',
   },
 ];
 
@@ -102,7 +126,6 @@ var settingsCalendar: Settings = {
   swipeToSlide: true,
   nextArrow: <SampleArrow />,
   prevArrow: <SampleArrow />,
-
   className: 'mx-auto max-w-[16em] mt-8 mb-8 h-full',
 };
 
@@ -116,13 +139,13 @@ const CalendarC: React.FC = () => {
   useEffect(() => {
     setIsClient(true);
     handleApply();
-  }, []);
+  }, [selectedDate]);
 
   // My button functions
 
   const handleCancel = () => {
-    onChange(new Date());
     setSelectedDate('');
+    onChange(new Date());
   };
 
   const handleApply = () => {
@@ -139,19 +162,19 @@ const CalendarC: React.FC = () => {
   };
 
   return isClient ? (
-    <div className="mx-auto">
+    <div className="mx-auto w-full">
       {isInfo ? (
         <div className="  flex flex-col items-center gap-6">
           <DynamicCalendar onChange={onChange} className=" mt-3" />
-          <div className="space-x-4">
+          <div className="space-x-4 ">
             <button
-              className="rounded-lg border-2 py-1 px-7"
+              className="rounded-lg border-2 py-1 px-7 hover:scale-110 hover:bg-myRed hover:text-white "
               onClick={handleCancel}
             >
               Ακύρωση
             </button>
             <button
-              className="rounded-lg bg-black py-2 px-7 text-white"
+              className=" rounded-lg bg-black py-2 px-7 text-white hover:scale-110 hover:bg-myBlue-200"
               onClick={handleApply}
             >
               Εφαρμογή
@@ -180,7 +203,7 @@ const CalendarC: React.FC = () => {
                       <div className=" rounded-t-md bg-myBlue-200 text-lg font-normal text-white">
                         <h1 className="text-center">Αίτηση για Ραντεβού</h1>
                         <p className="text-center">
-                          {selectedDate}
+                          {selectedDate.replace(/-/g, '  ')}
                           {' : '} {client.time}
                         </p>
                       </div>
@@ -204,10 +227,10 @@ const CalendarC: React.FC = () => {
                           </button>
                         </div>
                         <div className="my-4 flex justify-center gap-4 font-exo font-normal">
-                          <button className="rounded-xl bg-myBlue-200 px-6 text-white ">
+                          <button className="rounded-xl bg-myBlue-200 px-6 text-white hover:scale-110   ">
                             Αποδοχή
                           </button>
-                          <button className="rounded-xl bg-myGrey-100 px-6">
+                          <button className="rounded-xl bg-myGrey-100 px-6 hover:scale-110 hover:bg-myRed hover:text-white ">
                             Απόρριψη
                           </button>
                         </div>
@@ -265,10 +288,10 @@ const CalendarC: React.FC = () => {
                           <ReadMore text={client.comments} />
                         </div>
                         <div className="mt-8 mb-8  flex justify-center gap-4 font-exo font-normal">
-                          <button className="rounded-xl bg-myBlue-200 px-5 text-white ">
+                          <button className="rounded-xl bg-myBlue-200 px-5 text-white hover:scale-110 hover:bg-myBlue-200 hover:text-white hover:outline hover:outline-2">
                             Αποδοχή
                           </button>
-                          <button className="rounded-xl bg-myGrey-100 px-5">
+                          <button className="rounded-xl bg-myGrey-100 px-5 hover:scale-110 hover:bg-myRed hover:text-white  ">
                             Απόρριψη
                           </button>
                         </div>

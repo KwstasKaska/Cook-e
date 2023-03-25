@@ -42,8 +42,8 @@ var settings: Settings = {
 
 const NutrArticles: React.FC = () => {
   return (
-    <section className="relative h-screen overflow-hidden ">
-      <div className="mt-[4em] mb-[1.9em] grid grid-flow-col-dense justify-start pl-5">
+    <section id="section_1" className="relative h-screen overflow-hidden ">
+      <div className="mt-[4em] mb-[1.9em] grid grid-flow-col-dense justify-start pl-5 ">
         <Image
           src={profile}
           alt={'profile'}
@@ -56,7 +56,7 @@ const NutrArticles: React.FC = () => {
           Πως είναι η μέρα σας σήμερα;
         </p>
       </div>
-      <div className="absolute left-[1.3em]  top-[2em] -z-[1]  h-[9em] w-[18em] -rotate-[13deg]  rounded-[1em] bg-myGrey-100 "></div>
+      <div className="absolute left-[1.3em]  top-[2em] -z-[1]  h-[9em] w-[18em] -rotate-[13deg]  rounded-[1em] bg-myGrey-100  "></div>
       <div className="absolute  left-[5em] top-[5em] -z-[2] h-[9em] w-[18em] -rotate-[13deg]  rounded-[1em] bg-myBlue-100 "></div>
 
       <div className="h-full w-full bg-myGrey-200 pb-12 pt-5 ">
