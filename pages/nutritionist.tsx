@@ -1,6 +1,6 @@
 import { NextPage } from 'next';
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Footer from '../components/Footer';
 import NutrNavbar from '../components/Nutritionist/NutrNavbar';
 
@@ -63,7 +63,7 @@ const Nutritionist: NextPage = ({}) => {
   const numberArrayLength = arrayLength[0];
 
   return (
-    <div>
+    <React.Fragment>
       <NutrNavbar />
 
       <main>
@@ -180,7 +180,7 @@ const Nutritionist: NextPage = ({}) => {
       </main>
 
       <Footer></Footer>
-    </div>
+    </React.Fragment>
   );
 };
 

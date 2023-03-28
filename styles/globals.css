@@ -17,11 +17,16 @@
   .chefImg {
     background-image: url('../public/images/mainImageOriginal.png');
   }
+
+  th,
+  td {
+    border: 1px solid #3f4756;
+  }
 }
 
 @layer utilities {
   .scrollbar::-webkit-scrollbar {
-    height: 15px;
+    height: 18px;
   }
 
   .scrollbar::-webkit-scrollbar-track {
@@ -30,12 +35,12 @@
   }
 
   .scrollbar::-webkit-scrollbar-thumb {
-    background: #b3d5f8;
+    background: #ed5b5b;
     border-radius: 100vh;
     border: 3px solid #f6f7ed;
   }
 
   .scrollbar::-webkit-scrollbar-thumb:hover {
-    background: #377cc3;
+    border: 2px solid black;
   }
 }
