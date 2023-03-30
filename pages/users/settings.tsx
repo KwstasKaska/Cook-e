@@ -7,14 +7,14 @@ import photo from '/public/images/myphoto.jpg';
 
 const Settings: NextPage = () => {
   return (
-    <div className="md:min-h-screen md:flex md:flex-col">
+    <div className="md:flex md:min-h-screen md:flex-col">
       <Navbar />
 
-      <main className="md:max-w-[1268px] md:w-full md:mx-auto md:px-[6em] md:grid md:grid-cols-2 md:gap-8">
-        <section className="bg-myBlue-100 rounded-[3em]  shadow-2xl drop-shadow-2xl  pt-[4em] pb-[10em] max-w-[18em]  mx-auto md:mx-0 mt-[2em]  md:my-[4em]">
+      <main className="md:mx-auto md:grid md:w-full md:max-w-[1268px] md:grid-cols-2 md:gap-8 md:px-[6em]">
+        <section className="mx-auto  max-w-[18em] rounded-[3em]  bg-myBlue-100 pt-[4em] pb-[10em]  shadow-2xl drop-shadow-2xl md:mx-0  md:my-[4em]">
           <div className="grid justify-items-center gap-5">
-            <h1 className="font-exo font-bold text-25">Ρυθμίσεις</h1>
-            <ul className="font-source font-normal text-19 flex flex-col cursor-pointer gap-4 ">
+            <h1 className="font-exo text-25 font-bold">Ρυθμίσεις</h1>
+            <ul className="flex cursor-pointer flex-col gap-4 font-source text-19 font-normal ">
               <li>
                 <Link href="">Προσωπικά Στοιχεία</Link>
               </li>
@@ -37,17 +37,17 @@ const Settings: NextPage = () => {
           </div>
         </section>
 
-        <section className="hidden md:block  md:bg-myGrey-100  md:rounded-[3em]  md:max-w-[35em]  md:shadow-2xl md:drop-shadow-2xl md:justify-self-end  md:my-[4em]">
-          <div className="grid grid-cols-2 grid-rows-2 justify-items-center items-center py-5">
+        <section className="hidden md:my-[4em]  md:block  md:max-w-[35em]  md:justify-self-end  md:rounded-[3em] md:bg-myGrey-100 md:shadow-2xl  md:drop-shadow-2xl">
+          <div className="grid grid-cols-2 grid-rows-2 items-center justify-items-center py-5">
             <Image
               src={photo}
               alt={'profile picture'}
-              className="md:rounded-full md:border-4 md:border-white md:max-w-[7.5em] md:max-h-[7em]  md:object-cover md:object-top md:row-span-2 "
+              className="md:row-span-2 md:max-h-[7em] md:max-w-[7.5em] md:rounded-full md:border-4  md:border-white md:object-cover md:object-top "
             ></Image>
-            <h1 className="font-exo font-bold text-20 justify-self-start">
+            <h1 className="justify-self-start font-exo text-20 font-bold">
               Προσωπικά στοιχεία
             </h1>
-            <p className="font-source font-normal text-15 justify-self-start max-w-[80%] ">
+            <p className="max-w-[80%] justify-self-start font-source text-15 font-normal ">
               Ανανεώστε την εικόνα προφίλ σας και τα προσωπικά σας στοιχεία
             </p>
           </div>
@@ -79,7 +79,7 @@ const Settings: NextPage = () => {
 
             <button
               type="submit"
-              className="rounded-[5px] bg-myBlue-100 mt-[.75em] py-[.5em] w-[40%] justify-self-center"
+              className="mt-[.75em] w-[40%] justify-self-center rounded-[5px] bg-myBlue-100 py-[.5em]"
             >
               Αποθήκευση
             </button>

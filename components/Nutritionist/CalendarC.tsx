@@ -253,7 +253,7 @@ const CalendarC: React.FC = () => {
                           Αίτηση για Ραντεβού
                         </h1>
                         <p className="absolute top-12 left-14 text-center font-bold">
-                          {selectedDate}
+                          {selectedDate.replace(/-/g, '  ')}
                           {' , '}
                           <br />
                           {client.time}

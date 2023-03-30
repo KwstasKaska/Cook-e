@@ -62,12 +62,12 @@ const NutrAppointments: React.FC<NutrAppointmentsProps> = ({}) => {
   );
 
   return (
-    <section id="section_3" className="h-screen bg-myGrey-200">
+    <section id="section_3" className="grid h-screen bg-myGrey-200">
       <div className="">
         <h1 className="relative z-[2] pt-6 text-center text-2xl font-bold text-white  hover:text-myRed">
           Σημερινά Ραντεβού
         </h1>
-        <div className="relative mx-auto mt-[9em] max-w-[19em] rounded-2xl bg-white px-4 shadow-2xl transition duration-500 hover:scale-110 ">
+        <div className="relative mx-auto   max-w-[19em]  content-center rounded-2xl bg-white px-4 shadow-2xl transition duration-500 hover:scale-110">
           {checkIfTrue >= 1 ? (
             sortedDates.map(
               (date, index) =>
@@ -141,8 +141,6 @@ const NutrAppointments: React.FC<NutrAppointmentsProps> = ({}) => {
               </div>
             </div>
           )}
-
-          <div></div>
         </div>
       </div>
     </section>

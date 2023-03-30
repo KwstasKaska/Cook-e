@@ -21,11 +21,11 @@ var settings: Settings = {
   className: '',
   responsive: [
     {
-      breakpoint: 768,
+      breakpoint: 850,
       settings: {
         slidesToShow: 2,
         slidesToScroll: 2,
-        className: '',
+        className: 'mx-8',
       },
     },
 
@@ -70,7 +70,6 @@ const NutrArticles: React.FC = () => {
                 src={articleImg}
                 alt={'Eικόνα άρθρου'}
                 className="rounded-t-[10px]"
-                priority
               ></Image>
               <h2 className="px-[.3em] text-center text-15 font-bold">
                 Η διατροφή στις μέρες μας, υπάρχει εύκολη λύση;
@@ -82,19 +81,17 @@ const NutrArticles: React.FC = () => {
                 src={articleImg}
                 alt={'Eικόνα άρθρου'}
                 className=" rounded-t-[10px]"
-                priority
               ></Image>
               <h2 className="px-[.3em] text-center text-15 font-bold">
                 Η διατροφή στις μέρες μας, υπάρχει εύκολη λύση;
               </h2>
               <p className="text-right text-12 font-normal">21.11.2022</p>
             </div>
-            <div className="flex   flex-col gap-4 rounded-[10px] bg-myBlue-100">
+            <div className="flex flex-col gap-4 rounded-[10px] bg-myBlue-100">
               <Image
                 src={articleImg}
                 alt={'Eικόνα άρθρου'}
                 className="rounded-t-[10px]"
-                priority
               ></Image>
               <h2 className="px-[.3em] text-center text-15 font-bold">
                 Η διατροφή στις μέρες μας, υπάρχει εύκολη λύση;
