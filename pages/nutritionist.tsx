@@ -10,6 +10,7 @@ import NutrAppointments from '../components/Nutritionist/NutrAppointments';
 
 import { DateContext } from '../components/Context';
 import NutrScheduler from '../components/Nutritionist/NutrScheduler';
+import ScrollToTopButton from '../components/Helper/ScrollToTopButton';
 
 const Nutritionist: NextPage = ({}) => {
   const [isShowCalendar, setIsShowCalendar] = useState<boolean>(true);
@@ -70,9 +71,9 @@ const Nutritionist: NextPage = ({}) => {
         <NutrArticles />
 
         <DateContext.Provider value={{ selectedDate, setSelectedDate }}>
-          <section id="section_2" className=" h-screen">
+          <section id="section_2" className=" min-h-screen ">
             {isShowCalendar ? (
-              <div>
+              <div className="h-full">
                 <CalendarC />
                 <div className="mx-auto mt-12 max-w-[16em] rounded-lg border-2 border-black bg-myGrey-100 hover:scale-110 hover:bg-myBlue-200 hover:text-white hover:transition hover:duration-300 hover:ease-in">
                   <button className="font-bold " onClick={handleSet}>
@@ -177,6 +178,7 @@ const Nutritionist: NextPage = ({}) => {
         </DateContext.Provider>
 
         <NutrScheduler />
+        <ScrollToTopButton />
       </main>
 
       <Footer></Footer>

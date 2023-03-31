@@ -22,6 +22,14 @@
   td {
     border: 1px solid #3f4756;
   }
+
+  main,
+  section {
+    overflow-y: auto;
+    overflow-x: hidden;
+    touch-action: auto;
+    overscroll-behavior: auto;
+  }
 }
 
 @layer utilities {

@@ -20,7 +20,7 @@ const Index: NextPage = () => {
   };
   return (
     <div className="h-screen md:grid md:grid-cols-2 ">
-      <main className="container mt-[1em]">
+      <main className="container mt-[1em] overflow-y-hidden">
         <GeneralNav />
 
         <div className="mt-12 grid  grid-flow-row justify-items-center gap-4 ">

@@ -8,10 +8,10 @@ const Login: NextPage = ({}) => {
   return (
     // Εδώ βρίσκεται το section με τις δύο εικόνες, δηλαδή το αριστερό section.
 
-    <main className="h-screen flex items-center  justify-center bg-myBeige-100 text-white md:block">
-      <div className="md:grid md:grid-cols-2  md:h-screen">
-        <section className="hidden md:block  md:bg-myBeige-100   md:min-h-full   md:relative">
-          <div className="md:grid md:grid-flow-row justify-center  rounded-l-[3.125rem] border-[5px] border-myBlue-200 bg-myBeige-100 md:absolute md:right-0   md:max-w-[600px] md:w-full md:top-[10%] ">
+    <main className="flex h-screen items-center justify-center  bg-myBeige-100 text-white md:block">
+      <div className="md:grid md:h-screen  md:grid-cols-2">
+        <section className="hidden md:relative  md:block   md:min-h-full   md:bg-myBeige-100">
+          <div className="justify-center rounded-l-[3.125rem] border-[5px]  border-myBlue-200 bg-myBeige-100 md:absolute md:right-0 md:top-[10%] md:grid   md:w-full md:max-w-[600px] md:grid-flow-row ">
             <Image
               src={logo}
               alt={'logo image'}
@@ -31,56 +31,56 @@ const Login: NextPage = ({}) => {
 
         {/* Εδώ βρίσκεται το section με την φόρμα εισαγωγής στοιχείων και τα κέιμενα, δηλαδή το δεξιά section. */}
 
-        <section className=" md:bg-myBlue-100   md:relative">
-          <div className="relative grid grid-flow-row  max-w-[350px]  justify-items-center gap-[1.5em] rounded-[1.5625em] bg-myBlue-200 md:rounded-r-[3.125rem] md:rounded-l-[0px]  md:absolute md:left-0   md:max-w-[600px] md:w-full md:py-[2.2em]  lg:py-[.8em] md:top-[10%]">
+        <section className=" md:relative   md:bg-myBlue-100">
+          <div className="relative grid max-w-[350px]  grid-flow-row  justify-items-center gap-[1.5em] rounded-[1.5625em] bg-myBlue-200 md:absolute md:left-0  md:top-[10%] md:w-full   md:max-w-[600px] md:rounded-r-[3.125rem] md:rounded-l-[0px]  md:py-[2.2em] lg:py-[.8em]">
             <Image
               src={logo}
               alt={'logo image'}
               height="54"
               width="143"
-              className="md:hidden justify-self-start absolute"
+              className="absolute justify-self-start md:hidden"
             ></Image>
-            <h1 className="font-vol font-bold text-25 mt-[2.5em] md:mt-[1.5em] md:text-[2rem] lg:text-40">
+            <h1 className="font-vol mt-[2.5em] text-25 font-bold md:mt-[1.5em] md:text-[2rem] lg:text-40">
               Καλωσήρθες πίσω!
             </h1>
 
-            <span className="font-source font-normal lg:text-20 -mt-[2em] text-15  md:text-20">
+            <span className="-mt-[2em] font-source text-15 font-normal md:text-20  lg:text-20">
               Έτοιμος για μαγειρική;
             </span>
             <form className="grid grid-flow-row justify-items-center gap-[.8em]">
-              <span className="font-vol font-bold text-25 md:text-[2rem] lg:text-40 mb-[.25em]">
+              <span className="font-vol mb-[.25em] text-25 font-bold md:text-[2rem] lg:text-40">
                 Είσοδος
               </span>
               <input
                 type="email"
-                className="rounded-[0.5rem] placeholder:italic  placeholder:text-myBlue-200 placeholder:text-15 lg:placeholder:text-20 text-black w-[17em] mx-[1em] "
+                className="mx-[1em] w-[17em]  rounded-[0.5rem] text-black placeholder:text-15 placeholder:italic placeholder:text-myBlue-200 lg:placeholder:text-20 "
                 placeholder="Διεύθυνση Email"
               />
 
               <input
                 type="password"
-                className="rounded-[0.5rem] w-[17em] placeholder:italic  placeholder:text-myBlue-200 text-black placeholder:text-15 lg:placeholder:text-20"
+                className="w-[17em] rounded-[0.5rem] text-black  placeholder:text-15 placeholder:italic placeholder:text-myBlue-200 lg:placeholder:text-20"
                 placeholder="Κωδικός Πρόσβασης"
               />
 
               <button
-                className="font-vol  font-normal text-15 lg:text-20 py-1 bg-myRed rounded-[.5rem]  w-[14em]"
+                className="font-vol  w-[14em] rounded-[.5rem] bg-myRed py-1 text-15 font-normal  lg:text-20"
                 type="submit"
               >
                 Είσοδος
               </button>
               <Link
-                className="font-source font-normal text-15 justify-self-center underline md:text-20 lg:text-20"
+                className="justify-self-center font-source text-15 font-normal underline md:text-20 lg:text-20"
                 href="#"
               >
                 Ξεχάσατε τον κωδικό;
               </Link>
             </form>
 
-            <p className="font-source  text-15 md:text-20 lg:text-20 mt-[2em] ">
+            <p className="mt-[2em]  font-source text-15 md:text-20 lg:text-20 ">
               Δεν έχεις ακόμα λογαριασμό;
               <Link
-                className="block font-source font-bold text-center text-xl lg:text-25 md:text-[1.8rem] underline"
+                className="block text-center font-source text-xl font-bold underline md:text-[1.8rem] lg:text-25"
                 href="#"
               >
                 Δημιούργησε έναν

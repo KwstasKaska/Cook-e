@@ -126,7 +126,7 @@ var settingsCalendar: Settings = {
   swipeToSlide: true,
   nextArrow: <SampleArrow />,
   prevArrow: <SampleArrow />,
-  className: 'mx-auto max-w-[16em] mt-8 mb-8 h-full',
+  className: 'mx-auto max-w-[20em] my-8  h-full',
 };
 
 const CalendarC: React.FC = () => {
@@ -162,7 +162,7 @@ const CalendarC: React.FC = () => {
   };
 
   return isClient ? (
-    <div className="mx-auto w-full">
+    <div className="mx-auto  w-full">
       {isInfo ? (
         <div className="  flex flex-col items-center gap-6">
           <DynamicCalendar onChange={onChange} className=" mt-3" />

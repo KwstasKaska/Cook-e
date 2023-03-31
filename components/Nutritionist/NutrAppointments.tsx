@@ -62,7 +62,7 @@ const NutrAppointments: React.FC<NutrAppointmentsProps> = ({}) => {
   );
 
   return (
-    <section id="section_3" className="grid h-screen bg-myGrey-200">
+    <section id="section_3" className="grid min-h-screen  bg-myGrey-200">
       <div className="">
         <h1 className="relative z-[2] pt-6 text-center text-2xl font-bold text-white  hover:text-myRed">
           Σημερινά Ραντεβού

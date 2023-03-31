@@ -4,6 +4,7 @@ export type Settings = {
   slidesToShow: number;
   slidesToScroll: number;
   initialSlide: number;
+  variableWidth?: boolean;
   autoplay: boolean;
   speed: number;
   autoplaySpeed: number;

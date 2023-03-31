@@ -58,14 +58,10 @@ const NutrScheduler: React.FC<NutrSchedulerProps> = ({}) => {
     setTogglePreview(!togglePreview);
   };
 
-  const customClassName = togglePreview
-    ? 'min-h-screen w-full overflow-x-hidden'
-    : 'w-full h-screen ';
-
   return (
-    <section id="section_4" className={customClassName}>
+    <section id="section_4" className="min-h-screen w-full ">
       {togglePreview ? (
-        <div className="md:grid md:min-h-screen md:grid-flow-col md:content-center ">
+        <div className=" md:grid md:min-h-screen md:grid-flow-col md:content-center ">
           <div>
             <div className="scrollbar container mt-20  ml-8 touch-pan-x overflow-x-auto  md:ml-auto md:text-xl  lg:text-2xl ">
               <h1 className="mb-5  text-center font-bold capitalize ">
@@ -114,9 +110,9 @@ const NutrScheduler: React.FC<NutrSchedulerProps> = ({}) => {
           </div>
         </div>
       ) : (
-        <div className="pt-6 md:grid md:h-full md:grid-flow-col md:content-center md:pt-0">
+        <div className=" pt-6 md:grid md:h-screen md:grid-flow-col md:items-center md:pt-0">
           <div>
-            <form className="flex flex-col items-center  gap-4 text-base md:grid md:grid-cols-fluid md:justify-items-center  md:gap-6 md:text-lg lg:text-2xl ">
+            <form className="flex flex-col  items-center  gap-4 text-base md:grid md:grid-cols-fluid md:justify-items-center  md:gap-6 md:text-lg lg:text-2xl ">
               <div className=" w-fit rounded-2xl border-2 border-black text-center hover:scale-110 hover:bg-myGrey-100 ">
                 <label className=" font-bold" htmlFor="person">
                   Ορισμός σε <br />

@@ -10,7 +10,7 @@ const Settings: NextPage = () => {
     <div className="md:flex md:min-h-screen md:flex-col">
       <Navbar />
 
-      <main className="md:mx-auto md:grid md:w-full md:max-w-[1268px] md:grid-cols-2 md:gap-8 md:px-[6em]">
+      <main className="py-6 md:mx-auto md:grid md:w-full md:max-w-[1268px] md:grid-cols-2 md:gap-8 md:px-[6em]">
         <section className="mx-auto  max-w-[18em] rounded-[3em]  bg-myBlue-100 pt-[4em] pb-[10em]  shadow-2xl drop-shadow-2xl md:mx-0  md:my-[4em]">
           <div className="grid justify-items-center gap-5">
             <h1 className="font-exo text-25 font-bold">Ρυθμίσεις</h1>
