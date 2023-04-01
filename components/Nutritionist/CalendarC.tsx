@@ -10,7 +10,7 @@ import info from '/public/images/info.png';
 import { format } from 'date-fns';
 import { el } from 'date-fns/locale';
 import Slider from 'react-slick';
-import ReadMore from './ReadMore';
+import ReadMore from '../Helper/ReadMore';
 import { DateContext } from '../Context';
 import { Settings } from '../Helper/SliderSettings';
 const DynamicCalendar = dynamic(() => import('react-calendar'), {
