@@ -2,6 +2,15 @@ import React, { useEffect, useState } from 'react';
 
 const ScrollToTopButton = () => {
   const [isVisible, setIsVisible] = useState<boolean>(false);
+  const [isHovered, setIsHovered] = useState<boolean>(false);
+
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+  };
 
   const toggleVisibility = () => {
     if (typeof window !== 'undefined' && window.pageYOffset > 300) {
@@ -33,7 +42,9 @@ const ScrollToTopButton = () => {
 
   return (
     <button
-      className={`fixed bottom-2 right-4  animate-bounce rounded-full border-2 border-myRed bg-transparent p-4 text-black transition-all duration-300  ${
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      className={`fixed bottom-2 right-4  rounded-full border-2  border-myRed bg-transparent p-4 text-black transition-all duration-300 hover:bg-myRed   ${
         isVisible ? 'visible opacity-100' : 'invisible opacity-0'
       }`}
       onClick={scrollToTop}
@@ -44,7 +55,7 @@ const ScrollToTopButton = () => {
         viewBox="0 0 24 24"
         strokeWidth="1.5"
         stroke="#ED5B5B"
-        className="h-6 w-6"
+        className={` h-6 w-6 ${isHovered && 'stroke-white'}`}
       >
         <path
           strokeLinecap="round"

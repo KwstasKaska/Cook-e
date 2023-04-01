@@ -1,147 +1,54 @@
 import Image from 'next/image';
-import React, { useContext, useState } from 'react';
-import { DateContext } from '../Context';
-import { Appointment, fakeAppointments } from './CalendarC';
-import profile from '/public/images/myphoto.jpg';
+
+import coffee from '/public/images/coffee.jpg';
+import MyAppointments from './MyAppointments';
+import { useEffect, useState } from 'react';
 
 interface NutrAppointmentsProps {}
 
-interface GroupedAppointments {
-  [date: string]: Appointment[];
-}
-
 const NutrAppointments: React.FC<NutrAppointmentsProps> = ({}) => {
-  const [start, setStart] = useState<number>(0);
-  const [end, setEnd] = useState<number>(3);
-  const { selectedDate } = useContext(DateContext);
+  const [showBackground, setShowBackground] = useState<boolean>(true);
 
-  const groupedAppointments: GroupedAppointments = {};
-
-  fakeAppointments.forEach((appointment) => {
-    const date = appointment.date;
-
-    if (!groupedAppointments[date]) {
-      groupedAppointments[date] = [appointment];
-    } else {
-      groupedAppointments[date].push(appointment);
-    }
-  });
-
-  const handleLoadMore = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
-    e.preventDefault();
-    setStart(start + 3);
-    setEnd(end + 3);
-  };
-
-  const handleBack = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    e.preventDefault();
-    setStart(Math.max(start - 3, 0));
-    setEnd(Math.max(end - 3, 3));
-  };
-
-  const sortedDates: string[] = Object.keys(groupedAppointments).sort(
-    (a, b) => {
-      return new Date(a).getTime() - new Date(b).getTime();
-    }
-  );
-
-  const counterDate: number[] = Object.keys(groupedAppointments).map(
-    (date: string): number => {
-      if (date === selectedDate) {
-        return 1;
+  useEffect(() => {
+    function handleResize() {
+      if (window.innerWidth >= 1279) {
+        setShowBackground(false);
+      } else {
+        setShowBackground(true);
       }
-      return 0;
     }
-  );
 
-  const checkIfTrue: number = counterDate.reduce(
-    (total: number, currVal: number): number => total + currVal,
-    0
-  );
-
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
   return (
-    // changing test
-    <section id="section_3" className="grid min-h-screen  bg-myGrey-200">
-      <div className="">
-        <h1 className="relative z-[2] pt-6 text-center text-2xl font-bold text-white  hover:text-myRed">
-          Σημερινά Ραντεβού
-        </h1>
-        <div className="relative mx-auto   max-w-[19em]  content-center rounded-2xl bg-white px-4 shadow-2xl transition duration-500 hover:scale-110">
-          {checkIfTrue >= 1 ? (
-            sortedDates.map(
-              (date, index) =>
-                date === selectedDate && (
-                  <div key={`${date}_${index}`} className="">
-                    <h2 className="relative z-[2] w-full pb-6 text-center text-2xl font-bold text-white">
-                      {date.replace(/-/g, '  ')}
-                    </h2>
-                    <span className="absolute">
-                      <span className="absolute -top-[5.2em] left-3  z-[1] block h-[5em] w-[16em] -skew-y-3 bg-myRed "></span>
-                    </span>
-                    {/* <h3 className="w-full text-center text-sm ">
-                      Eπιστροφή στην τωρινή
-                    </h3> */}
-
-                    <ul>
-                      {groupedAppointments[date]
-                        .slice(start, end)
-                        .map((appointment, appointmentIndex) => (
-                          <li
-                            key={`${date}_${index}_${appointmentIndex}`}
-                            className="mx-auto my-3 flex max-w-xs   flex-row items-center gap-3 rounded-lg border-2 border-black text-base font-bold leading-4 hover:scale-110 hover:bg-myRed hover:shadow-3xl "
-                          >
-                            <Image
-                              src={profile}
-                              alt={''}
-                              className="max-h-10 max-w-[2.5em]   rounded-full object-cover object-top"
-                            ></Image>
-                            <div className="grow">{appointment.fullname} </div>
-                            <span className="shrink-0 ">
-                              {appointment.time}
-                            </span>{' '}
-                          </li>
-                        ))}
-                      <div className="mx-2 flex flex-row gap-2">
-                        {start > 0 && (
-                          <button
-                            onClick={handleBack}
-                            className="my-5  w-full rounded-md bg-black  py-1  text-white hover:shadow-3xl"
-                          >
-                            Πίσω
-                          </button>
-                        )}
-                        {end < groupedAppointments[date].length && (
-                          <button
-                            onClick={handleLoadMore}
-                            className="my-5 w-full rounded-md border-2 border-black bg-white  py-1  font-bold text-black  hover:bg-myBlue-100 hover:font-bold hover:text-black hover:shadow-3xl"
-                          >
-                            Περισσότερα
-                          </button>
-                        )}
-                      </div>
-                    </ul>
-                  </div>
-                )
-            )
-          ) : (
-            // ToDO: να προσθέσω animations και transitions
-            <div className="relative ">
-              {/* <div className="absolute  top-32 -left-5 z-[2] h-[10em] w-[20em] -rotate-[6deg] bg-myGrey-100"></div> */}
-              <div className="absolute  -left-5 z-[3] h-[10em] w-[20em] rounded-xl  bg-myBlue-100"></div>
-
-              <div className="absolute top-4  z-[5]  text-center text-xl font-bold">
-                Δεν έχετε διαθέσιμα ραντεβού για τις <br />
-                <span className="relative">
-                  <span className="absolute -left-10 top-3 z-[6] block h-[3em] w-[12em] -skew-y-3 bg-myRed "></span>
-                  <span className="relative top-6 z-[10] text-white">
-                    {selectedDate}
-                  </span>
-                </span>
-              </div>
-            </div>
-          )}
+    <section id="section_3" className=" h-screen  bg-myGrey-200">
+      <h1 className="relative z-[2] pt-6 text-center text-2xl font-bold text-white  hover:text-myRed md:text-4xl xl:text-5xl">
+        Σημερινά Ραντεβού
+      </h1>
+      <div className=" flex   h-[90vh]  items-center justify-center    lg:justify-evenly lg:gap-24">
+        <MyAppointments
+          customClassName={`relative w-[19em] rounded-2xl ${
+            showBackground ? ' bg-white shadow-2xl' : ' bg-transparent'
+          }  px-4  transition duration-500 hover:scale-110 md:scale-110 md:hover:scale-125 xl:scale-125 xl:hover:scale-[1.4]`}
+          customDateClassName={'absolute'}
+          textColor="white"
+        />
+        <div className="relative">
+          <div className="hidden xl:absolute xl:-left-44 xl:bottom-0 xl:block">
+            <MyAppointments
+              customClassName={
+                'relative w-[19em] rounded-[2em] pt-4 min-h-[28em]   bg-white shadow-2xl px-4  transition duration-500'
+              }
+              customDateClassName={'hidden'}
+              textColor="black"
+            />
+          </div>
+          <Image
+            src={coffee}
+            alt={'An coffee image'}
+            className="hidden h-full w-[370px] lg:block"
+          ></Image>
         </div>
       </div>
     </section>
