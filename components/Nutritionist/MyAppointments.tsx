@@ -10,6 +10,7 @@ interface MyAppointmentsProps {
   textColor: string;
   showAttrs: boolean;
   marginCustom: string;
+  emptyAppointments: string;
 }
 
 interface GroupedAppointments {
@@ -22,6 +23,7 @@ const MyAppointments: React.FC<MyAppointmentsProps> = ({
   textColor,
   showAttrs,
   marginCustom,
+  emptyAppointments,
 }) => {
   const [start, setStart] = useState<number>(0);
   const [end, setEnd] = useState<number>(3);
@@ -141,7 +143,9 @@ const MyAppointments: React.FC<MyAppointmentsProps> = ({
             )
         )
       ) : (
-        <div className="relative z-[3]    h-[13em] w-[20em] rounded-xl   bg-white">
+        <div
+          className={`relative z-[3]    h-[13em] w-[20em] rounded-xl ${emptyAppointments}  bg-white`}
+        >
           <div className="absolute   z-[5] px-4 py-8 text-center text-xl font-bold">
             Δεν έχετε διαθέσιμα ραντεβού για τις <br />
             <span className="relative inline-block">

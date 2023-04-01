@@ -35,6 +35,7 @@ const NutrAppointments: React.FC<NutrAppointmentsProps> = ({}) => {
           textColor="white"
           showAttrs={true}
           marginCustom=""
+          emptyAppointments=""
         />
         <div className="relative">
           <div className="hidden xl:absolute xl:-left-44 xl:bottom-0 xl:block">
@@ -46,6 +47,7 @@ const NutrAppointments: React.FC<NutrAppointmentsProps> = ({}) => {
               textColor="black"
               showAttrs={false}
               marginCustom="20"
+              emptyAppointments="hidden"
             />
           </div>
           <Image
