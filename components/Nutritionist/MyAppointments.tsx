@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { DateContext } from '../Context';
 import { Appointment, fakeAppointments } from './CalendarC';
 import profile from '/public/images/myphoto.jpg';
@@ -8,6 +8,8 @@ interface MyAppointmentsProps {
   customClassName: string;
   customDateClassName: string;
   textColor: string;
+  showAttrs: boolean;
+  marginCustom: string;
 }
 
 interface GroupedAppointments {
@@ -18,6 +20,8 @@ const MyAppointments: React.FC<MyAppointmentsProps> = ({
   customClassName,
   customDateClassName,
   textColor,
+  showAttrs,
+  marginCustom,
 }) => {
   const [start, setStart] = useState<number>(0);
   const [end, setEnd] = useState<number>(3);
@@ -85,45 +89,53 @@ const MyAppointments: React.FC<MyAppointmentsProps> = ({
                   <span className={customDateClassName}>
                     <span className="absolute -top-[5.2em] left-3  z-[1] block h-[5em] w-[16em] -skew-y-3 bg-myRed "></span>
                   </span>
-
-                  <ul>
-                    {groupedAppointments[date]
-                      .slice(start, end)
-                      .map((appointment, appointmentIndex) => (
-                        <li
-                          key={`${date}_${index}_${appointmentIndex}`}
-                          className="mx-auto my-3 flex max-w-xs flex-row  items-center gap-3 rounded-lg border-2 border-black bg-white text-base font-bold leading-4 hover:scale-110 hover:bg-myRed hover:shadow-3xl "
-                        >
-                          <Image
-                            src={profile}
-                            alt={''}
-                            className="max-h-10 max-w-[2.5em]   rounded-full object-cover object-top"
-                          ></Image>
-                          <div className="grow">{appointment.fullname} </div>
-                          <span className="shrink-0 ">
-                            {appointment.time}
-                          </span>{' '}
-                        </li>
-                      ))}
-                    <div className="mx-2 flex flex-row gap-2">
-                      {start > 0 && (
-                        <button
-                          onClick={handleBack}
-                          className="my-5  w-full rounded-md bg-black  py-1  text-white hover:shadow-3xl"
-                        >
-                          Πίσω
-                        </button>
-                      )}
-                      {end < groupedAppointments[date].length && (
-                        <button
-                          onClick={handleLoadMore}
-                          className="my-5 w-full rounded-md border-2 border-black bg-white  py-1  font-bold text-black  hover:bg-myBlue-100 hover:font-bold hover:text-black hover:shadow-3xl"
-                        >
-                          Περισσότερα
-                        </button>
-                      )}
-                    </div>
-                  </ul>
+                  <div
+                    className={
+                      showAttrs
+                        ? ''
+                        : 'min-h-[20em] rounded-2xl border-2 border-black bg-black bg-opacity-80'
+                    }
+                  >
+                    <ul className={`py-${marginCustom}`}>
+                      {groupedAppointments[date]
+                        .slice(start, end)
+                        .map((appointment, appointmentIndex) => (
+                          <li
+                            key={`${date}_${index}_${appointmentIndex}`}
+                            className="mx-auto my-3 flex max-w-xs flex-row  items-center gap-3 rounded-lg border-2 border-black bg-white text-base font-bold leading-4 hover:scale-110 hover:bg-myRed hover:shadow-3xl  "
+                          >
+                            <Image
+                              src={profile}
+                              alt={''}
+                              className="max-h-10 max-w-[2.5em]   rounded-full object-cover object-top"
+                            ></Image>
+                            <div className="grow">{appointment.fullname} </div>
+                            <span className="shrink-0 ">
+                              {appointment.time}
+                            </span>{' '}
+                          </li>
+                        ))}
+                      <div className="mx-2 flex flex-row gap-2">
+                        {start > 0 && (
+                          <button
+                            onClick={handleBack}
+                            className="my-5  w-full rounded-md bg-black  py-1  text-white hover:shadow-3xl"
+                          >
+                            Πίσω
+                          </button>
+                        )}
+                        {end < groupedAppointments[date].length &&
+                          showAttrs && (
+                            <button
+                              onClick={handleLoadMore}
+                              className="my-5 w-full rounded-md border-2 border-black bg-white  py-1  font-bold text-black  hover:bg-myBlue-100 hover:font-bold hover:text-black hover:shadow-3xl"
+                            >
+                              Περισσότερα
+                            </button>
+                          )}
+                      </div>
+                    </ul>
+                  </div>
                 </div>
               </div>
             )

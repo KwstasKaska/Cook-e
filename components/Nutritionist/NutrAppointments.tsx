@@ -33,15 +33,19 @@ const NutrAppointments: React.FC<NutrAppointmentsProps> = ({}) => {
           }  px-4  transition duration-500 hover:scale-110 md:scale-110 md:hover:scale-125 xl:scale-125 xl:hover:scale-[1.4]`}
           customDateClassName={'absolute'}
           textColor="white"
+          showAttrs={true}
+          marginCustom=""
         />
         <div className="relative">
           <div className="hidden xl:absolute xl:-left-44 xl:bottom-0 xl:block">
             <MyAppointments
               customClassName={
-                'relative w-[19em] rounded-[2em] pt-4 min-h-[28em]   bg-white shadow-2xl px-4  transition duration-500'
+                'relative w-[19em] rounded-[2em] pt-4 min-h-[30em]   bg-white shadow-2xl px-4  transition duration-500  border-4 border-black '
               }
               customDateClassName={'hidden'}
               textColor="black"
+              showAttrs={false}
+              marginCustom="20"
             />
           </div>
           <Image
