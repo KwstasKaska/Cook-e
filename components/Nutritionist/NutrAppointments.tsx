@@ -22,11 +22,14 @@ const NutrAppointments: React.FC<NutrAppointmentsProps> = ({}) => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
   return (
-    <section id="section_3" className=" h-screen  bg-myGrey-200">
+    <section
+      id="section_3"
+      className=" flex min-h-screen w-full flex-col  bg-myGrey-200"
+    >
       <h1 className="relative z-[2] pt-6 text-center text-2xl font-bold text-white  hover:text-myRed md:text-4xl xl:text-5xl">
         Σημερινά Ραντεβού
       </h1>
-      <div className=" flex   h-[90vh]  items-center justify-center    lg:justify-evenly lg:gap-24">
+      <div className=" flex  flex-1  items-center justify-center    lg:justify-evenly lg:gap-24">
         <MyAppointments
           customClassName={`relative w-[19em] rounded-2xl ${
             showBackground ? ' bg-white shadow-2xl' : ' bg-transparent'
@@ -34,11 +37,11 @@ const NutrAppointments: React.FC<NutrAppointmentsProps> = ({}) => {
           customDateClassName={'absolute'}
           textColor="white"
           showAttrs={true}
-          marginCustom=""
+          marginCustom={''}
           emptyAppointments=""
         />
         <div className="relative">
-          <div className="hidden xl:absolute xl:-left-44 xl:bottom-0 xl:block">
+          <div className="xl: hidden xl:absolute xl:-left-44 xl:bottom-0 xl:block xl:py-10">
             <MyAppointments
               customClassName={
                 'relative w-[19em] rounded-[2em] pt-4 min-h-[30em]   bg-white shadow-2xl px-4  transition duration-500  border-4 border-black '
@@ -46,14 +49,14 @@ const NutrAppointments: React.FC<NutrAppointmentsProps> = ({}) => {
               customDateClassName={'hidden'}
               textColor="black"
               showAttrs={false}
-              marginCustom="20"
+              marginCustom={'py-20'}
               emptyAppointments="hidden"
             />
           </div>
           <Image
             src={coffee}
             alt={'An coffee image'}
-            className="hidden h-full w-[370px] lg:block"
+            className="hidden h-full w-[370px] py-10 lg:block"
           ></Image>
         </div>
       </div>

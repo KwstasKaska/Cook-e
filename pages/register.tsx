@@ -5,9 +5,9 @@ import logo from '/public/images/6.png';
 
 const Register: NextPage = ({}) => {
   return (
-    <main className="container h-screen">
-      <div className="customImg h-full bg-auto bg-fixed  bg-center  bg-no-repeat pt-[3em] md:mt-0 md:flex  md:flex-row    md:content-center md:justify-center md:gap-[2em] md:bg-none xl:gap-[4rem]">
-        <section className="md:chefImg flex flex-row  justify-center   gap-[5em] md:order-2 md:grid  md:grid-cols-2 md:grid-rows-none  md:content-center md:bg-contain md:bg-center md:bg-no-repeat md:px-[1em]">
+    <main className=" h-screen w-full bg-myGrey-100">
+      <div className="customImg container h-full bg-auto bg-fixed  bg-center  bg-no-repeat pt-[3em] md:mt-0 md:flex  md:flex-row    md:content-center md:justify-center md:gap-[2em] md:bg-none xl:gap-[4rem]">
+        <section className="md:chefImg flex flex-row justify-center  gap-[5em]   md:order-2 md:grid md:grid-cols-2  md:grid-rows-none md:content-center   md:bg-contain md:bg-center md:bg-no-repeat md:px-[1em]">
           <Image
             src={logo}
             alt={'Cook-e'}
@@ -36,7 +36,7 @@ const Register: NextPage = ({}) => {
             className=" grid grid-cols-1 justify-items-center   gap-5 text-[.7rem] font-normal text-black lg:text-20"
           >
             <input
-              className="w-[90%] border-none shadow-xl drop-shadow-2xl  "
+              className="w-[90%] border-none shadow-xl   "
               type="text"
               placeholder="Όνομα Χρήστη "
             />
@@ -44,19 +44,19 @@ const Register: NextPage = ({}) => {
             <input
               type="email"
               placeholder="Email "
-              className="w-[90%] border-none shadow-xl drop-shadow-2xl "
+              className="w-[90%] border-none shadow-xl  "
             />
 
             <input
               type="password"
               placeholder="Kωδικός Πρόσβασης"
-              className="w-[90%] border-none shadow-xl drop-shadow-2xl"
+              className="w-[90%] border-none shadow-xl "
             />
 
             <input
               type="password"
               placeholder="Επανάληψη Κωδικού Πρόσβασης"
-              className="w-[90%]  border-none shadow-xl drop-shadow-2xl"
+              className="w-[90%]  border-none shadow-xl "
             />
 
             <div className="grid grid-cols-4  items-center justify-items-center">

@@ -41,8 +41,8 @@ var settings: Settings = {
 
 const NutrArticles: React.FC = () => {
   return (
-    <section id="section_1" className="relative min-h-screen ">
-      <div className="mt-[4em] mb-[1.9em] grid grid-flow-col-dense justify-start  pl-5 md:pl-20 xl:pl-32">
+    <section id="section_1" className="relative flex min-h-screen flex-col ">
+      <div className="mt-[4em] mb-[1.9em] grid  grid-flow-col-dense  justify-start pl-5 md:pl-20 xl:pl-32">
         <Image
           src={profile}
           alt={'profile'}
@@ -58,11 +58,11 @@ const NutrArticles: React.FC = () => {
       <div className="absolute left-[1.3em]  top-[2em] -z-[1]  h-[9em] w-[18em] -rotate-[13deg]  rounded-[1em] bg-myGrey-100 md:left-28 md:scale-125 xl:left-48 xl:scale-150 2xl:left-64 2xl:top-20 2xl:scale-[2]"></div>
       <div className="absolute  left-[5em]  top-[5em] -z-[2] h-[9em] w-[18em] -rotate-[13deg] rounded-[1em]  bg-myBlue-100 md:left-48 md:scale-125 xl:left-72 xl:scale-150 2xl:top-40 2xl:left-[22em] 2xl:scale-[2]"></div>
 
-      <div className="flex h-[100vh] w-full flex-col items-center justify-center gap-6 bg-myGrey-200">
+      <div className="flex w-full  flex-1 flex-col items-center justify-center gap-6 bg-myGrey-200 ">
         <h1 className="bg-gradient-to-r from-[#B3D5F8]  to-[#FFFFFF]  bg-clip-text pb-[.75em] font-exo text-3xl font-bold uppercase text-transparent md:text-5xl lg:text-6xl">
           Τα αρθρα σας
         </h1>
-        <div className=" flex h-[70vh] items-center ">
+        <div className=" flex h-full items-center ">
           <Slider {...settings}>
             <div className="flex  flex-col gap-4 rounded-[10px] bg-myBlue-100">
               <Image

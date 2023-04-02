@@ -77,7 +77,7 @@ const NutrNavbar: React.FC = () => {
           <ul
             className={` ${
               isToggle ? 'flex max-w-[1268px] ' : 'flex flex-col  '
-            } items-center gap-4 text-xl font-bold capitalize text-black md:text-base lg:gap-12  xl:text-2xl`}
+            } items-center gap-4 text-xl font-bold capitalize text-myGrey-200 md:text-base lg:gap-12  xl:text-2xl`}
           >
             <li className="">
               <Link onClick={() => setIsToggle(true)} href="#section_1">
@@ -107,7 +107,7 @@ const NutrNavbar: React.FC = () => {
             <button
               className={` ${
                 isToggle ? 'hidden ' : ''
-              } rounded-[1.4rem] border-2  border-black bg-transparent px-4 py-1  text-15 font-bold text-black hover:bg-myRed hover:text-white md:block`}
+              } rounded-[1.4rem] border-2  border-myGrey-200 bg-transparent px-4 py-1  text-15 font-bold text-myGrey-200 hover:bg-myRed hover:text-white md:block`}
             >
               ΕΞΟΔΟΣ
             </button>

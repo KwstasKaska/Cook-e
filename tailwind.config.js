@@ -28,9 +28,7 @@ module.exports = {
         exo: ['"Exo 2"', 'sans-serif'],
         source: ['"Source Sans Pro"', 'sans-serif'],
       },
-      gridTemplateColumns: {
-        fluid: 'repeat(auto-fit,minmax(15rem,1fr))',
-      },
+
       fontSize: {
         9: '0.5625rem',
         12: '0.75rem',
@@ -52,15 +50,7 @@ module.exports = {
       container: {
         center: true,
       },
-      screens: {
-        desktop: '93.75em',
-        // => @media (min-width: 1500px) { ... }
 
-        laptop: '68.75em',
-        // => @media (min-width: 1100px) { ... }
-
-        bigScreen: '156em',
-      },
       boxShadow: {
         '3xl':
           'rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px',

@@ -67,15 +67,15 @@ const Nutritionist: NextPage = ({}) => {
     <React.Fragment>
       <NutrNavbar />
 
-      <main>
+      <main className="">
         <NutrArticles />
 
         <DateContext.Provider value={{ selectedDate, setSelectedDate }}>
-          <section id="section_2" className=" min-h-screen ">
+          <section id="section_2" className=" min-h-screen bg-myGrey-100">
             {isShowCalendar ? (
-              <div className="h-full">
+              <div className="py-12">
                 <CalendarC />
-                <div className="mx-auto mt-12 max-w-[16em] rounded-lg border-2 border-black bg-myGrey-100 hover:scale-110 hover:bg-myBlue-200 hover:text-white hover:transition hover:duration-300 hover:ease-in">
+                <div className="mx-auto mt-12 max-w-[16em] rounded-lg border-2 border-black bg-myGrey-100 hover:scale-110 hover:border-myBlue-200 hover:bg-myBlue-200 hover:text-white hover:transition hover:duration-300 hover:ease-in">
                   <button className="font-bold " onClick={handleSet}>
                     Ρύθμιση Διαθεσιμότητας Hμερομηνιών και Ωρών
                   </button>

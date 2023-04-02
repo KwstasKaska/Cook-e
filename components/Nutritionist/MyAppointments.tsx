@@ -95,10 +95,10 @@ const MyAppointments: React.FC<MyAppointmentsProps> = ({
                     className={
                       showAttrs
                         ? ''
-                        : 'min-h-[20em] rounded-2xl border-2 border-black bg-black bg-opacity-80'
+                        : 'min-h-[20em] rounded-2xl border-2 border-black bg-black bg-opacity-80 '
                     }
                   >
-                    <ul className={`py-${marginCustom}`}>
+                    <ul className={`${marginCustom}`}>
                       {groupedAppointments[date]
                         .slice(start, end)
                         .map((appointment, appointmentIndex) => (

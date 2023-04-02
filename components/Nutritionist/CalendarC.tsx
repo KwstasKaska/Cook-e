@@ -168,13 +168,13 @@ const CalendarC: React.FC = () => {
           <DynamicCalendar onChange={onChange} className=" mt-3" />
           <div className="space-x-4 ">
             <button
-              className="rounded-lg border-2 py-1 px-7 hover:scale-110 hover:bg-myRed hover:text-white "
+              className="rounded-lg border-2 border-black py-1 px-7 hover:scale-110 hover:border-myRed hover:bg-myRed hover:text-white "
               onClick={handleCancel}
             >
               Ακύρωση
             </button>
             <button
-              className=" rounded-lg bg-black py-2 px-7 text-white hover:scale-110 hover:bg-myBlue-200"
+              className=" rounded-lg bg-myGrey-200 py-2 px-7 text-white hover:scale-110 hover:bg-myBlue-200"
               onClick={handleApply}
             >
               Εφαρμογή
@@ -208,7 +208,7 @@ const CalendarC: React.FC = () => {
                         </p>
                       </div>
                       <div key={client.fullname}>
-                        <div className=" mt-4 grid grid-flow-col items-center justify-items-center">
+                        <div className=" mt-4 grid grid-flow-col items-center justify-items-center px-2">
                           <Image
                             src={client.profile}
                             alt={'Εικόνα Προφίλ'}
@@ -227,10 +227,10 @@ const CalendarC: React.FC = () => {
                           </button>
                         </div>
                         <div className="my-4 flex justify-center gap-4 font-exo font-normal">
-                          <button className="rounded-xl bg-myBlue-200 px-6 text-white hover:scale-110   ">
+                          <button className="rounded-xl bg-myBlue-200 px-6 text-white    ">
                             Αποδοχή
                           </button>
-                          <button className="rounded-xl bg-myGrey-100 px-6 hover:scale-110 hover:bg-myRed hover:text-white ">
+                          <button className="rounded-xl border border-black bg-myGrey-100  px-6 hover:border-myRed hover:bg-myRed hover:text-white">
                             Απόρριψη
                           </button>
                         </div>

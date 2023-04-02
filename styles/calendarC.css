@@ -66,7 +66,7 @@
   font-weight: bold;
 }
 .react-calendar__month-view__days__day--weekend {
-  color: #d10000;
+  color: #8f6262;
 }
 .react-calendar__month-view__days__day--neighboringMonth {
   color: #757575;
@@ -107,12 +107,12 @@
   color: white;
 }
 .react-calendar__tile--active {
-  background: #000000;
+  background: #3f4756;
   color: white;
 }
 .react-calendar__tile--active:enabled:hover,
 .react-calendar__tile--active:enabled:focus {
-  background: #000000;
+  background: #3f4756;
 }
 .react-calendar--selectRange .react-calendar__tile--hover {
   background-color: #e6e6e6;
