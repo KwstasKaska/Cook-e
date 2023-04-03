@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
-import { DateContext } from '../Context';
-import { Appointment, fakeAppointments } from './CalendarC';
+import { DateContext } from '../../Context';
+import { Appointment, fakeAppointments } from '../CalendarC';
 import profile from '/public/images/myphoto.jpg';
 import Image from 'next/image';
 
@@ -80,8 +80,8 @@ const MyAppointments: React.FC<MyAppointmentsProps> = ({
         sortedDates.map(
           (date, index) =>
             date === selectedDate && (
-              <div className={customClassName}>
-                <div key={`${date}_${index}`} className=" ">
+              <div key={`${date}_${index}`} className={customClassName}>
+                <div className=" ">
                   <h2
                     className={`relative z-[2] w-full pb-6 text-center text-2xl font-bold text-${textColor}  `}
                   >

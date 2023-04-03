@@ -10,6 +10,10 @@
     font-family: 'Exo 2', sans-serif;
   }
 
+  body {
+    scroll-behavior: smooth;
+  }
+
   .customImg {
     background-image: url('../public/images/mainImage.png');
   }
@@ -29,6 +33,7 @@
     touch-action: auto;
     overflow-x: hidden;
     overscroll-behavior: auto;
+    /* overflow-y: hidden; */
   }
 }
 

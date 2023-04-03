@@ -1,7 +1,7 @@
 import Image from 'next/image';
 
 import coffee from '/public/images/coffee.jpg';
-import MyAppointments from './MyAppointments';
+import MyAppointments from './Helper/MyAppointments';
 import { useEffect, useState } from 'react';
 
 interface NutrAppointmentsProps {}

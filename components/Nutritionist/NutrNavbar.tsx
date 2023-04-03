@@ -20,8 +20,22 @@ const NutrNavbar: React.FC = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({
+        behavior: 'smooth',
+      });
+    }
+  };
+
   const handleNavbarClick = () => {
     setIsToggle(!isToggle);
+  };
+
+  const handleLinkClick = (sectionId: string) => {
+    setIsToggle(true);
+    scrollToSection(sectionId);
   };
 
   return (
@@ -77,31 +91,23 @@ const NutrNavbar: React.FC = () => {
           <ul
             className={` ${
               isToggle ? 'flex max-w-[1268px] ' : 'flex flex-col  '
-            } items-center gap-4 text-xl font-bold capitalize text-myGrey-200 md:text-base lg:gap-12  xl:text-2xl`}
+            } cursor-pointer items-center gap-4 text-xl font-bold capitalize text-myGrey-200 md:text-base  lg:gap-12 xl:text-2xl`}
           >
             <li className="">
-              <Link onClick={() => setIsToggle(true)} href="#section_1">
-                Αρθρα
-              </Link>
+              <a onClick={() => handleLinkClick('section_1')}>Αρθρα</a>
             </li>
             <li>
-              <Link onClick={() => setIsToggle(true)} href="#section_2">
-                Ημερολογιο
-              </Link>
+              <a onClick={() => handleLinkClick('section_2')}>Ημερολογιο</a>
             </li>
             <li>
-              <Link onClick={() => setIsToggle(true)} href="#section_3">
+              <a onClick={() => handleLinkClick('section_3')}>
                 Διαχειριση Ραντεβου
-              </Link>
+              </a>
             </li>
             <li>
-              <Link
-                onClick={() => setIsToggle(true)}
-                href="#section_4"
-                className=""
-              >
+              <a onClick={() => handleLinkClick('section_4')} className="">
                 Προγραμματισμος Διατροφων
-              </Link>
+              </a>
             </li>
 
             <button
