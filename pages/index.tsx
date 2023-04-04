@@ -24,10 +24,10 @@ const Index: NextPage = () => {
         <GeneralNav />
 
         <div className="mt-12 grid h-full grid-flow-row justify-items-center gap-4 md:mt-0 md:items-center md:gap-0">
-          <h1 className="px-[1.5em] text-center text-[2rem] font-bold leading-10   md:mt-10 md:px-[1em] md:text-40  xl:text-7xl ">
+          <h1 className="px-[1.5em] text-center text-3xl font-bold leading-10   md:mt-10 md:px-[1em] md:text-4xl  xl:text-7xl ">
             Η μαγειρική σου εμπειρία αλλάζει
           </h1>
-          <p className=" px-[6em] text-center text-[0.8rem] leading-4 md:px-[3.5em] md:text-20 md:leading-6 xl:text-[1.75rem] xl:leading-[2rem]">
+          <p className=" px-[6em] text-center text-xs  md:px-[3.5em] md:text-xl  xl:text-3xl ">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
             eiusmod tempor incididunt ut labore et dolore magna aliqua.
             Condimentum id venenatis a vitae.
@@ -35,7 +35,7 @@ const Index: NextPage = () => {
           <button className="mb-2 hover:scale-125 hover:transition hover:duration-300 hover:ease-in">
             <Link
               href="/login"
-              className=" rounded-full bg-myBlue-200 py-[.25em] px-[3.5em] text-white hover:bg-myRed md:text-20 xl:text-[2rem]"
+              className=" rounded-full bg-myBlue-200 py-[.25em] px-[3.5em] text-white hover:bg-myRed md:text-xl xl:text-3xl"
             >
               Ξεκίνησε τώρα
             </Link>
@@ -54,7 +54,7 @@ const Index: NextPage = () => {
             <button className="transition duration-300 hover:scale-110 hover:ease-in">
               <Link
                 href="/login"
-                className="rounded-full   border-[1px] border-white px-[1.5em] py-[0.25em] text-white hover:bg-myRed md:text-15 xl:text-25  "
+                className="rounded-full   border-[1px] border-white px-[1.5em] py-[0.25em] text-white hover:bg-myRed md:text-base xl:text-2xl  "
               >
                 Login
               </Link>
@@ -62,7 +62,7 @@ const Index: NextPage = () => {
             <button className="transition duration-300 hover:scale-110 hover:ease-in">
               <Link
                 href="/register"
-                className="rounded-full bg-myGrey-100 px-[.9em] py-[0.25em]  text-myBlue-200   hover:outline hover:outline-2 hover:outline-black md:text-15 xl:text-25"
+                className="rounded-full bg-myGrey-100 px-[.9em] py-[0.25em]  text-myBlue-200   hover:outline hover:outline-2 hover:outline-black md:text-base xl:text-2xl"
               >
                 Register
               </Link>
@@ -81,10 +81,10 @@ const Index: NextPage = () => {
               alt={'Food Image'}
               className="-mt-[3em] max-h-[6em] max-w-[6em] rounded-full md:max-h-[7em] md:max-w-[7em] xl:-mt-[4.5em] xl:max-h-[12em] xl:max-w-[12em] "
             ></Image>
-            <h1 className="text-12 font-bold md:px-2 md:text-center md:text-xl  xl:text-2xl">
+            <h1 className="text-xs font-bold md:px-2 md:text-center md:text-xl  xl:text-2xl">
               Μακαρόνια με Κιμά
             </h1>
-            <p className="text-9 md:text-12 xl:text-xl">
+            <p className="text-9 md:text-xs xl:text-xl">
               Βαθμός Δυσκολίας: Εύκολο
             </p>
             <div className="m-[0.65em] flex flex-row items-center gap-2">
@@ -117,10 +117,10 @@ const Index: NextPage = () => {
               alt={'Food Image'}
               className="-mt-[3em] max-h-[6em] max-w-[6em] rounded-full md:max-h-[7em] md:max-w-[7em] xl:-mt-[4.5em] xl:max-h-[12em] xl:max-w-[12em]"
             ></Image>
-            <h1 className="text-12 font-bold md:px-2 md:text-center md:text-xl  xl:text-2xl">
+            <h1 className="text-xs font-bold md:px-2 md:text-center md:text-xl  xl:text-2xl">
               Μακαρόνια με Κιμά
             </h1>
-            <p className="text-9 md:text-12 xl:text-xl">
+            <p className="text-9 md:text-xs xl:text-xl">
               Βαθμός Δυσκολίας: Εύκολο
             </p>
             <div className="m-[0.65em] flex flex-row items-center gap-2">
@@ -148,18 +148,20 @@ const Index: NextPage = () => {
       <section className="container mt-7 grid grid-flow-col justify-items-center gap-4 overflow-y-hidden  text-9 leading-3 md:col-span-2  md:leading-4  xl:leading-5 ">
         <div className="">
           <h1 className="text-2xl font-bold md:text-4xl xl:text-6xl">85%</h1>
-          <p className="max-w-[12.1em] md:text-15 xl:text-20">
+          <p className="max-w-[12.1em] md:text-base xl:text-xl">
             Των ανθρώπων δεν ξέρει πως να αξιοποιεί τα υλικά και σκεύη τους
           </p>
         </div>
 
         <div className="">
           <h1 className="text-2xl font-bold md:text-4xl xl:text-6xl">100+</h1>
-          <p className="max-w-[7.1em] md:text-15 xl:text-20">Συνεργάτες Chef</p>
+          <p className="max-w-[7.1em] md:text-base xl:text-xl">
+            Συνεργάτες Chef
+          </p>
         </div>
         <div className=" ">
           <h1 className="text-2xl font-bold md:text-4xl xl:text-6xl">50+</h1>
-          <p className="max-w-[7.1em] md:text-15 xl:text-20">
+          <p className="max-w-[7.1em] md:text-base xl:text-xl">
             Εγκεκριμένοι Διατροφολόγοι
           </p>
         </div>
@@ -168,7 +170,7 @@ const Index: NextPage = () => {
             <h1 className="text-2xl font-bold md:text-4xl xl:text-6xl">
               1000+
             </h1>
-            <p className="max-w-[7.1em] md:text-15 xl:text-20">
+            <p className="max-w-[7.1em] md:text-base xl:text-xl">
               Συνταγές βάσει των επιλογών σου
             </p>
           </div>

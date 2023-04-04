@@ -184,7 +184,7 @@ const CalendarC: React.FC = () => {
               Εφαρμογή
             </button>
           </div>
-          <div className="mx-auto mt-8 max-w-[16em] rounded-lg border-2 border-black bg-myGrey-100 hover:scale-110 hover:border-myBlue-200 hover:bg-myBlue-200 hover:text-white hover:transition hover:duration-300 hover:ease-in">
+          <div className="mx-auto my-8 max-w-[16em] rounded-lg border-2 border-black bg-myGrey-100 hover:scale-110 hover:border-myBlue-200 hover:bg-myBlue-200 hover:text-white hover:transition hover:duration-300 hover:ease-in">
             <button className="font-bold " onClick={handleSet}>
               Ρύθμιση Διαθεσιμότητας Hμερομηνιών και Ωρών
             </button>
@@ -194,7 +194,7 @@ const CalendarC: React.FC = () => {
         {isShowCalendar ? (
           <SliderAppointments />
         ) : (
-          <div className="lg:mt-24 lg:scale-125 xl:mt-0">
+          <div className="lg:mt-24  xl:mt-0">
             <div className="mx-auto my-6 min-h-fit max-w-[20em] rounded-xl border-2 border-myBlue-200 ">
               <div className=" rounded-t-xl">
                 <div className="relative rounded-t-md rounded-br-[5em] bg-myBlue-200 pb-48 text-lg font-normal text-white">
@@ -208,13 +208,13 @@ const CalendarC: React.FC = () => {
                       <path d="M11.03 3.97a.75.75 0 010 1.06l-6.22 6.22H21a.75.75 0 010 1.5H4.81l6.22 6.22a.75.75 0 11-1.06 1.06l-7.5-7.5a.75.75 0 010-1.06l7.5-7.5a.75.75 0 011.06 0z" />
                     </svg>
                   </button>
-                  <h1 className="absolute left-20 top-5  font-bold">
+                  <h1 className="absolute left-20 top-5  font-bold lg:text-2xl">
                     Επιλεγμένη <br /> Ημερομηνία:
                   </h1>
-                  <p className="absolute top-20 left-20 text-center font-normal">
+                  <p className="absolute top-20 left-20 text-center font-normal lg:text-xl">
                     {selectedDate.replace(/-/g, '  ')}
                   </p>
-                  <h2 className="absolute left-20 top-32 font-bold">
+                  <h2 className="absolute left-20 top-32 font-bold lg:text-2xl">
                     Καταχώρηση <br />
                     Διαθέσιμων ωρών
                   </h2>
@@ -224,7 +224,10 @@ const CalendarC: React.FC = () => {
                     onSubmit={handleSubmit}
                     className="mt-4 flex flex-col items-center gap-3"
                   >
-                    <label htmlFor="time" className="text-base font-bold">
+                    <label
+                      htmlFor="time"
+                      className="text-base font-bold lg:text-lg"
+                    >
                       Διαλέξτε ώρα {''} {':'} {''}
                       <input
                         type="time"
@@ -252,7 +255,7 @@ const CalendarC: React.FC = () => {
                           {times.slice(start, end).map((time, index) => (
                             <li
                               key={index}
-                              className=" mt-4 h-full w-full p-3 hover:bg-myBlue-100  hover:shadow-3xl "
+                              className=" mt-4 h-full w-full p-3 hover:bg-myBlue-100  hover:shadow-3xl lg:text-lg"
                             >
                               {time}
                             </li>

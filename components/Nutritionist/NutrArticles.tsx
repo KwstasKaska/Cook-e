@@ -54,10 +54,10 @@ const NutrArticles: React.FC = () => {
                 alt={'Eικόνα άρθρου'}
                 className="rounded-t-[10px] "
               ></Image>
-              <h2 className="px-[.3em] text-center text-15 font-bold md:text-xl lg:text-2xl">
+              <h2 className="px-[.3em] text-center text-sm font-bold md:text-xl lg:text-2xl">
                 Η διατροφή στις μέρες μας, υπάρχει εύκολη λύση;
               </h2>
-              <p className="text-right text-12 font-normal md:text-base">
+              <p className="text-right text-xs font-normal md:text-base">
                 21.11.2022
               </p>
             </div>
@@ -67,10 +67,10 @@ const NutrArticles: React.FC = () => {
                 alt={'Eικόνα άρθρου'}
                 className=" rounded-t-[10px]"
               ></Image>
-              <h2 className="px-[.3em] text-center text-15 font-bold md:text-xl lg:text-2xl">
+              <h2 className="px-[.3em] text-center text-sm font-bold md:text-xl lg:text-2xl">
                 Η διατροφή στις μέρες μας, υπάρχει εύκολη λύση;
               </h2>
-              <p className="text-right text-12 font-normal md:text-base">
+              <p className="text-right text-xs font-normal md:text-base">
                 21.11.2022
               </p>
             </div>
@@ -80,10 +80,10 @@ const NutrArticles: React.FC = () => {
                 alt={'Eικόνα άρθρου'}
                 className="rounded-t-[10px]"
               ></Image>
-              <h2 className="px-[.3em] text-center text-15 font-bold md:text-xl lg:text-2xl">
+              <h2 className="px-[.3em] text-center text-sm font-bold md:text-xl lg:text-2xl">
                 Η διατροφή στις μέρες μας, υπάρχει εύκολη λύση;
               </h2>
-              <p className="text-right text-12 font-normal md:text-base">
+              <p className="text-right text-xs font-normal md:text-base">
                 21.11.2022
               </p>
             </div>
@@ -93,10 +93,10 @@ const NutrArticles: React.FC = () => {
                 alt={'Eικόνα άρθρου'}
                 className="rounded-t-[10px]"
               ></Image>
-              <h2 className="px-[.3em] text-center text-15 font-bold md:text-xl lg:text-2xl">
+              <h2 className="px-[.3em] text-center text-sm font-bold md:text-xl lg:text-2xl">
                 Η διατροφή στις μέρες μας, υπάρχει εύκολη λύση;
               </h2>
-              <p className="text-right text-12 font-normal md:text-base">
+              <p className="text-right text-xs font-normal md:text-base">
                 21.11.2022
               </p>
             </div>
@@ -106,10 +106,10 @@ const NutrArticles: React.FC = () => {
                 alt={'Eικόνα άρθρου'}
                 className="rounded-t-[10px]"
               ></Image>
-              <h2 className="px-[.3em] text-center text-15 font-bold md:text-xl lg:text-2xl">
+              <h2 className="px-[.3em] text-center text-sm font-bold md:text-xl lg:text-2xl">
                 Η διατροφή στις μέρες μας, υπάρχει εύκολη λύση;
               </h2>
-              <p className="text-right text-12 font-normal md:text-base">
+              <p className="text-right text-xs font-normal md:text-base">
                 21.11.2022
               </p>
             </div>

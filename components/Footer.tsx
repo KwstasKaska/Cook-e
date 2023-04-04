@@ -5,7 +5,7 @@ const Footer: React.FC = ({}) => {
     <footer className=" w-full  bg-myGrey-200  py-[4em]">
       <div className="grid w-full  max-w-[1268px] grid-flow-row gap-8 md:mx-auto md:grid-cols-2">
         <div className="grid grid-flow-row justify-center gap-4 md:grid-cols-2 md:grid-rows-2 md:justify-items-center">
-          <h3 className="col-span-2 text-19 font-normal text-white">
+          <h3 className="col-span-2 text-lg font-normal text-white">
             Find Us on Social Media
           </h3>
           <div className="cursor-pointer">
@@ -23,7 +23,7 @@ const Footer: React.FC = ({}) => {
           </span> */}
           </div>
         </div>
-        <div className="text-19 font-normal text-white">
+        <div className="text-lg font-normal text-white">
           <ul className="grid cursor-pointer grid-flow-row justify-items-center gap-2 md:grid-cols-2 md:grid-rows-3 md:gap-0">
             <h1 className="col-span-2 mb-[1.5em]">Χρήσιμες Πληροφορίες</h1>
             <li>

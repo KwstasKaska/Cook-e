@@ -3,7 +3,7 @@ import React from 'react';
 const GeneralNav: React.FC = () => {
   return (
     <nav className="  text-black">
-      <ul className=" grid  grid-flow-col justify-evenly text-9 font-bold uppercase    md:text-15 xl:text-20">
+      <ul className=" grid  grid-flow-col justify-evenly text-9 font-bold uppercase    md:text-sm xl:text-xl">
         <li className="">
           <a href="#">Αρχικη</a>
         </li>

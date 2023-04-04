@@ -31,14 +31,6 @@ module.exports = {
 
       fontSize: {
         9: '0.5625rem',
-        12: '0.75rem',
-        15: '0.9375rem',
-        19: '1.1875rem',
-
-        20: '1.25rem',
-        25: '1.5625rem',
-        30: '1.875rem',
-        40: '2.5rem',
       },
       borderRadius: {
         registerLogin: '7.5rem',

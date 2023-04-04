@@ -113,7 +113,7 @@ const NutrNavbar: React.FC = () => {
             <button
               className={` ${
                 isToggle ? 'hidden ' : ''
-              } rounded-[1.4rem] border-2  border-myGrey-200 bg-transparent px-4 py-1  text-15 font-bold text-myGrey-200 hover:bg-myRed hover:text-white md:block`}
+              } rounded-[1.4rem] border-2  border-myGrey-200 bg-transparent px-4 py-1  text-sm font-bold text-myGrey-200 hover:bg-myRed hover:text-white md:block`}
             >
               ΕΞΟΔΟΣ
             </button>

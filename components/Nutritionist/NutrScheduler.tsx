@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import Image from 'next/image';
+import weeklyPlanner from '/public/images/weeklyplanner.jpg';
 
 interface NutrSchedulerProps {}
 
@@ -64,7 +66,7 @@ const NutrScheduler: React.FC<NutrSchedulerProps> = ({}) => {
       className="flex min-h-screen w-full flex-col bg-myGrey-100"
     >
       {togglePreview ? (
-        <div className="scrollbar container   grid flex-1 touch-pan-x grid-flow-col content-center overflow-x-auto ">
+        <div className="scrollbar container   grid flex-1 touch-pan-x grid-cols-2 content-center overflow-x-auto ">
           <div className="mx-auto">
             <div className="pl-8 md:pl-0 md:text-xl  lg:text-2xl ">
               <h1 className="mb-5  text-center font-bold capitalize ">
@@ -113,10 +115,13 @@ const NutrScheduler: React.FC<NutrSchedulerProps> = ({}) => {
           </div>
         </div>
       ) : (
-        <div className=" flex-1   py-10 md:grid md:grid-flow-col md:content-center  md:py-0">
+        <div className=" flex-1 py-10 md:grid md:grid-flow-col md:items-center md:justify-items-center">
           <div>
-            <form className="md:grid-cols-fluid flex  flex-col  items-center gap-4 text-base md:grid md:justify-items-center  md:gap-6 md:text-lg lg:text-2xl ">
-              <div className="w-fit rounded-2xl border-2 border-black bg-myBlue-100 text-center hover:scale-110  ">
+            <form className=" relative flex flex-col  items-center gap-4     text-base md:items-end md:rounded-2xl md:bg-myBlue-100 md:text-lg lg:text-2xl">
+              <span className="absolute left-10 top-8 hidden -rotate-[20deg] text-xl font-bold capitalize italic ordinal text-myGrey-200 underline md:inline">
+                Βήμα 1ο
+              </span>
+              <div className="w-fit rounded-2xl border-2 border-black bg-myGrey-100 text-center hover:scale-110  ">
                 <label className=" font-bold" htmlFor="person">
                   Ορισμός σε <br />
                 </label>
@@ -128,12 +133,15 @@ const NutrScheduler: React.FC<NutrSchedulerProps> = ({}) => {
                   <option value="">Επιλέξτε πελάτη</option>
                 </select>
               </div>
-              <div className="w-fit rounded-2xl border-2 border-black text-center hover:scale-110 ">
+              <span className="absolute left-10 top-40 hidden -rotate-[20deg]  text-xl font-bold capitalize italic ordinal text-myGrey-200 underline md:inline">
+                Βήμα 2ο
+              </span>
+              <div className="w-fit rounded-2xl border-2 border-black bg-myGrey-100 text-center hover:scale-110">
                 <label className="font-bold" htmlFor="day">
                   Επιλέξτε Ημέρα <br />
                 </label>
                 <select
-                  className="m-4 rounded-2xl border-2 border-myGrey-200 bg-myBlue-100 capitalize lg:text-xl  "
+                  className="m-4 rounded-2xl border-2 border-myGrey-200  capitalize lg:text-xl  "
                   name="day"
                   id="day"
                   value={selectedDay}
@@ -147,7 +155,10 @@ const NutrScheduler: React.FC<NutrSchedulerProps> = ({}) => {
                   ))}
                 </select>
               </div>
-              <div className="w-fit rounded-2xl border-2 border-black text-center hover:scale-110 ">
+              <span className="absolute left-10 top-72 hidden -rotate-[20deg] text-xl font-bold capitalize italic ordinal text-myGrey-200 underline md:inline">
+                Βήμα 3ο
+              </span>
+              <div className="w-fit rounded-2xl border-2 border-black bg-myGrey-100 text-center hover:scale-110">
                 <label className="font-bold" htmlFor="field">
                   Επιλέξτε Γεύμα <br />
                 </label>
@@ -166,7 +177,10 @@ const NutrScheduler: React.FC<NutrSchedulerProps> = ({}) => {
                   ))}
                 </select>
               </div>
-              <div className="w-fit   rounded-2xl border-2 border-black text-center hover:scale-110  md:col-start-2">
+              <span className="absolute top-[80%] left-10 hidden -rotate-[20deg]  text-xl font-bold capitalize italic ordinal text-myGrey-200 underline md:inline">
+                Βήμα 4ο
+              </span>
+              <div className="w-fit   rounded-2xl border-2 border-black bg-myGrey-100 text-center  hover:scale-110 md:col-start-2">
                 <label className="font-bold" htmlFor="cell-info">
                   Ορίστε Περιεχόμενο <br />
                 </label>
@@ -183,7 +197,7 @@ const NutrScheduler: React.FC<NutrSchedulerProps> = ({}) => {
             <button
               type="submit"
               onSubmit={handleSubmit}
-              className="lg:pmt-12 mx-auto mt-8  block rounded-md border-2 border-myBlue-200 bg-myBlue-200 px-16   py-1 font-bold  text-white  hover:scale-110 hover:font-bold hover:shadow-3xl md:px-40 md:text-lg lg:px-60 lg:text-2xl "
+              className="lg:pmt-12 mx-auto mt-8  block rounded-md border-2 border-myBlue-200 bg-myBlue-200 px-16 py-1  font-bold text-white  hover:scale-110  hover:font-bold hover:shadow-3xl md:mx-6 md:px-40 md:text-lg lg:px-60 lg:text-2xl "
             >
               Ορισμός
             </button>
@@ -195,9 +209,15 @@ const NutrScheduler: React.FC<NutrSchedulerProps> = ({}) => {
               {togglePreview ? 'Πίσω' : 'Preview'}
             </button>
           </div>
+          <div className="hidden md:block">
+            <Image
+              src={weeklyPlanner}
+              alt={'weeklyPlanner'}
+              className=" max-w-[18em] rounded-2xl lg:max-w-[28em]"
+            ></Image>
+          </div>
         </div>
       )}
-      <div className=""></div>
     </section>
   );
 };

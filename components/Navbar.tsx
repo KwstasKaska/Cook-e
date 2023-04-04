@@ -74,7 +74,7 @@ const Navbar: React.FC = ({}) => {
               isToggle
                 ? 'hidden max-w-[1268px]  md:block'
                 : 'absolute z-[2]  mt-28 w-full md:max-w-[1268px]  '
-            } mx-auto text-[.8rem] font-bold  lg:text-15`}
+            } mx-auto text-xs font-bold  lg:text-sm`}
           >
             <ul
               id="primary-navigation"
@@ -127,7 +127,7 @@ const Navbar: React.FC = ({}) => {
               <button
                 className={` ${
                   isToggle ? 'hidden ' : ''
-                } rounded-[1.4rem] border-2  border-white bg-transparent px-4 py-1  text-15 font-bold text-white hover:bg-myRed hover:text-white md:block`}
+                } text-15 rounded-[1.4rem]  border-2 border-white bg-transparent px-4  py-1 font-bold text-white hover:bg-myRed hover:text-white md:block`}
               >
                 ΕΞΟΔΟΣ
               </button>

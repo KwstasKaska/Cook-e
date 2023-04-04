@@ -17,23 +17,23 @@ const Register: NextPage = ({}) => {
           ></Image>
           <button
             type="submit"
-            className=" cursor-pointer rounded-registerLogin bg-myBlue-200 px-[2.3em]  font-exo text-15 font-bold text-white  md:h-fit md:py-[.75em] "
+            className=" cursor-pointer rounded-registerLogin bg-myBlue-200 px-[2.3em]  font-exo text-sm font-bold text-white  md:h-fit md:py-[.75em] "
           >
             <Link href="/login">Login</Link>
           </button>
         </section>
 
         <section className="mt-[9em]  grid grid-flow-row place-content-center place-items-center gap-3 md:mt-0">
-          <h1 className=" font-exo text-[1.8rem] font-bold text-myBlue-200 lg:text-40">
+          <h1 className=" font-exo text-3xl font-bold text-myBlue-200 lg:text-4xl">
             Δημιουργία Λογαριασμού
           </h1>
-          <p className="mb-3 w-[20em] text-center text-15 font-normal lg:text-20">
+          <p className="mb-3 w-[20em] text-center text-sm font-normal lg:text-xl">
             Μια μαγειρική απόλαυση σε περιμένει! Ολοκλήρωσε την εγγραφή σου
           </p>
 
           <form
             action="#"
-            className=" grid grid-cols-1 justify-items-center   gap-5 text-[.7rem] font-normal text-black lg:text-20"
+            className=" grid grid-cols-1 justify-items-center   gap-5 text-xs font-normal text-black lg:text-xl"
           >
             <input
               className="w-[90%] border-none shadow-xl   "
@@ -79,7 +79,7 @@ const Register: NextPage = ({}) => {
 
             <button
               type="submit"
-              className="mt-[3em] cursor-pointer rounded-[0.56rem] bg-myBlue-200 px-[3em] py-[.5em] text-15 font-bold text-white lg:text-25"
+              className="mt-[3em] cursor-pointer rounded-[0.56rem] bg-myBlue-200 px-[3em] py-[.5em] text-sm font-bold text-white lg:text-2xl"
             >
               Δημιουργία Λογαριασμού
             </button>
