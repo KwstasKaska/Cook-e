@@ -24,6 +24,7 @@ module.exports = {
           200: '#3F4756',
         },
       },
+
       fontFamily: {
         exo: ['"Exo 2"', 'sans-serif'],
         source: ['"Source Sans Pro"', 'sans-serif'],
@@ -36,9 +37,7 @@ module.exports = {
         registerLogin: '7.5rem',
         registerImage: '3.75rem',
       },
-      lineHeight: {
-        registerLine: '1.5rem',
-      },
+
       container: {
         center: true,
       },

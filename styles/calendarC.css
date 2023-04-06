@@ -5,6 +5,7 @@
   border: 1px solid #a0a096;
   font-family: Arial, Helvetica, sans-serif;
   line-height: 1.125em;
+  border-radius: 1.5rem;
 }
 .react-calendar--doubleView {
   width: 700px;
@@ -119,5 +120,5 @@
 }
 
 .slick-slide > div {
-  margin: 0 30px;
+  margin: 0 10px;
 }

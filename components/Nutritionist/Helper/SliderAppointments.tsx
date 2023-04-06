@@ -57,7 +57,7 @@ const SliderAppointments: React.FC<SliderAppointmentsProps> = ({}) => {
       {clients.length < 1 && selectedDate ? (
         <div className="mt-10 mb-6  text-center font-exo text-base font-bold md:mt-0 lg:text-2xl">
           Δεν υπάρχουν αιτήσεις για ραντεβού για την ημέρα:{' '}
-          <div className=" text-red-500">{selectedDate}</div>
+          <div className=" text-myBlue-200">{selectedDate}</div>
         </div>
       ) : (
         <div className="lg:mt-16 lg:scale-125 xl:mt-16 ">
@@ -67,7 +67,7 @@ const SliderAppointments: React.FC<SliderAppointmentsProps> = ({}) => {
                 selectedDate && (
                   <div
                     key={`${selectedDate}_${client.fullname}`}
-                    className=" rounded-xl border-2 border-myBlue-200 "
+                    className="max-w-[17em] rounded-xl border-2 border-myBlue-200 "
                   >
                     {isInfo ? (
                       <div className="">

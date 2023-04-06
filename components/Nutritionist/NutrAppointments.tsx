@@ -41,10 +41,10 @@ const NutrAppointments: React.FC<NutrAppointmentsProps> = ({}) => {
           emptyAppointments=""
         />
         <div className="relative">
-          <div className="xl: hidden xl:absolute xl:-left-44 xl:bottom-0 xl:block xl:py-10">
+          <div className="xl: hidden xl:absolute xl:-left-44 xl:bottom-0 xl:block  xl:py-10">
             <MyAppointments
               customClassName={
-                'relative w-[19em] rounded-[2em] pt-4 min-h-[30em]   bg-white shadow-2xl px-4  transition duration-500  border-4 border-black '
+                'relative w-[19em] rounded-[2em] pt-4 min-h-[30em]   bg-white shadow-2xl px-4 xl:bg-myGrey-100 transition duration-500  border-4 border-black '
               }
               customDateClassName={'hidden'}
               textColor="black"
@@ -56,7 +56,8 @@ const NutrAppointments: React.FC<NutrAppointmentsProps> = ({}) => {
           <Image
             src={coffee}
             alt={'An coffee image'}
-            className="hidden h-full w-[370px] py-10 lg:block"
+            priority
+            className="hidden h-full  max-w-[380px]   py-10 lg:block "
           ></Image>
         </div>
       </div>

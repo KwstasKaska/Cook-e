@@ -165,7 +165,7 @@ const CalendarC: React.FC = () => {
   return isClient ? (
     <ClientsContextType.Provider value={{ clients, setClients }}>
       <div className="mx-auto  w-full  md:grid md:grid-cols-2  md:items-center md:justify-evenly md:gap-4 md:px-3">
-        <div className=" flex  flex-col items-center gap-4 pt-16 lg:gap-10 xl:mt-16 xl:gap-20">
+        <div className="flex flex-col  items-center gap-4  pt-16 lg:gap-10 xl:mt-16 xl:gap-20">
           <DynamicCalendar
             onChange={onChange}
             className="lg:mt-12  lg:scale-125 xl:scale-150"
@@ -184,7 +184,7 @@ const CalendarC: React.FC = () => {
               Εφαρμογή
             </button>
           </div>
-          <div className="mx-auto my-8 max-w-[16em] rounded-lg border-2 border-black bg-myGrey-100 hover:scale-110 hover:border-myBlue-200 hover:bg-myBlue-200 hover:text-white hover:transition hover:duration-300 hover:ease-in">
+          <div className="mx-auto my-8 max-w-[16em] rounded-lg border-2 border-black bg-myGrey-100 hover:scale-110 hover:border-myBlue-200 hover:bg-myBlue-200 hover:text-white hover:transition hover:duration-300 hover:ease-in lg:text-2xl">
             <button className="font-bold " onClick={handleSet}>
               Ρύθμιση Διαθεσιμότητας Hμερομηνιών και Ωρών
             </button>

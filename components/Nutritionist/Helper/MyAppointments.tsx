@@ -89,7 +89,7 @@ const MyAppointments: React.FC<MyAppointmentsProps> = ({
                   </h2>
 
                   <span className={customDateClassName}>
-                    <span className="absolute -top-[5.2em] left-3  z-[1] block h-[5em] w-[16em] -skew-y-3 bg-myRed "></span>
+                    <span className="absolute -top-[5.2em] left-3  z-[1] block h-[5em] w-[16em] -skew-y-3 bg-myBlue-200 "></span>
                   </span>
                   <div
                     className={

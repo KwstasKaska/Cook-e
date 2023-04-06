@@ -27,17 +27,15 @@ const Login: NextPage = ({}) => {
           <Image
             src={logo}
             alt={'logo image'}
-            height="76"
-            width="198"
-            className="md:absolute md:left-0 md:top-0"
+            priority
+            className="h-auto max-h-[76px] w-auto max-w-[200px] md:absolute md:left-0 md:top-0"
           ></Image>
           <div className="flex h-full items-end justify-center">
             <Image
               src={chef}
               alt={'chef image'}
-              width="340"
-              height="300"
-              className=" md:rounded-[3.125rem]"
+              priority
+              className="h-auto max-h-[400px] w-auto max-w-[330px] md:rounded-[3.125rem]"
             ></Image>
           </div>
         </div>
@@ -53,9 +51,8 @@ const Login: NextPage = ({}) => {
           <Image
             src={logo}
             alt={'logo image'}
-            height="54"
-            width="143"
-            className="absolute justify-self-start md:hidden"
+            className="absolute h-auto max-h-[55px] w-auto max-w-[140px] justify-self-start md:hidden"
+            priority
           ></Image>
           <h1 className="mt-[2.5em] font-exo text-xl font-bold md:mt-0 md:text-3xl lg:text-4xl">
             Καλωσήρθες πίσω!

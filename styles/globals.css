@@ -8,10 +8,13 @@
   html {
     scroll-behavior: smooth;
     font-family: 'Exo 2', sans-serif;
+    overflow-x: hidden;
+    touch-action: auto;
   }
 
   body {
     scroll-behavior: smooth;
+    overflow-x: hidden;
   }
 
   .customImg {
@@ -25,15 +28,6 @@
   th,
   td {
     border: 1px solid #3f4756;
-  }
-
-  main,
-  section {
-    /* overflow-y: auto; */
-    touch-action: auto;
-    overflow-x: hidden;
-    overscroll-behavior: auto;
-    /* overflow-y: hidden; */
   }
 }
 
@@ -55,5 +49,18 @@
 
   .scrollbar::-webkit-scrollbar-thumb:hover {
     border: 2px solid black;
+  }
+
+  .accordion-panel:has([aria-expanded='true']) {
+    flex-basis: clamp(15rem, 40vh, 20rem);
+    flex-grow: 1;
+  }
+  .accordion-panel:has([aria-expanded='true']) section {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  .accordion-panel:has([aria-expanded='true']) img {
+    filter: brightness(0.5);
+    transition: filter 500ms;
   }
 }

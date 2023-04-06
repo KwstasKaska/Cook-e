@@ -25,16 +25,16 @@ const Nutritionist: NextPage = ({}) => {
       <NutrNavbar />
 
       <main className="relative">
-        <div className="mt-[4em] mb-[1.9em] grid  grid-flow-col-dense  justify-start pl-5 md:pl-20 xl:pl-32">
+        <div className="grid grid-flow-col-dense justify-start  pt-[4em]  pb-[1.9em] pl-5 md:pl-20 xl:pl-32">
           <Image
             src={profile}
             alt={'profile'}
             className="row-span-2 max-h-[3.5em] max-w-[3.5em] justify-self-end rounded-full object-cover object-top md:max-h-[5em] md:max-w-[5em]  xl:max-h-[7em] xl:max-w-[7em]"
           ></Image>
-          <h1 className="font-exo text-19 font-bold md:text-2xl xl:text-3xl">
+          <h1 className="text-19 font-exo font-bold md:text-2xl xl:text-3xl">
             Καλωσήρθατε, <br></br> Dr. Kwstas Kaskantiris
           </h1>
-          <p className="font-exo text-15 font-normal md:text-xl xl:text-2xl">
+          <p className="text-15 font-exo font-normal md:text-xl xl:text-2xl">
             Πως είναι η μέρα σας σήμερα;
           </p>
         </div>
@@ -45,19 +45,17 @@ const Nutritionist: NextPage = ({}) => {
         <DateContext.Provider value={{ selectedDate, setSelectedDate }}>
           <section id="section_2" className=" min-h-screen bg-myGrey-100">
             <div className="">
-              <div className="mt-20 text-center text-base font-bold capitalize italic underline md:text-xl lg:text-2xl xl:text-3xl">
-                Επιλέξτε Ημερομηνία για{' '}
-                <span className="text-myBlue-200">αναζήτηση αιτήσεων</span>{' '}
-                ραντεβού
-              </div>
+              <h1 className="mx-auto  pt-16  text-center text-xl   font-bold capitalize md:text-4xl lg:text-5xl">
+                αναζήτηση αιτημάτων ραντεβού
+              </h1>
               <CalendarC />
             </div>
           </section>
 
           <NutrAppointments />
-        </DateContext.Provider>
 
-        <NutrScheduler />
+          <NutrScheduler />
+        </DateContext.Provider>
         <ScrollToTopButton />
       </main>
 

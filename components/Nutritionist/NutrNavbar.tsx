@@ -39,10 +39,10 @@ const NutrNavbar: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className="">
       <header
         className={` ${
-          isToggle ? ' flex w-full  bg-myBlue-100  ' : 'relative'
+          isToggle ? ' flex w-full  bg-myBlue-100  ' : 'relative '
         }  `}
       >
         <div
