@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import weeklyPlanner from '/public/images/weeklyplanner.jpg';
 import mealsPlanner from '/public/images/meals.jpg';
 import personPlanner from '/public/images/person-planner.jpg';
