@@ -13,8 +13,8 @@ const Settings: NextPage = () => {
       <main className="py-6 md:mx-auto md:grid md:w-full md:max-w-[1268px] md:grid-cols-2 md:gap-8 md:px-[6em]">
         <section className="mx-auto  max-w-[18em] rounded-[3em]  bg-myBlue-100 pt-[4em] pb-[10em]  shadow-2xl drop-shadow-2xl md:mx-0  md:my-[4em]">
           <div className="grid justify-items-center gap-5">
-            <h1 className="font-exo text-25 font-bold">Ρυθμίσεις</h1>
-            <ul className="flex cursor-pointer flex-col gap-4 font-source text-19 font-normal ">
+            <h1 className="text-25 font-exo font-bold">Ρυθμίσεις</h1>
+            <ul className="text-19 flex cursor-pointer flex-col gap-4 font-source font-normal ">
               <li>
                 <Link href="">Προσωπικά Στοιχεία</Link>
               </li>
@@ -44,14 +44,14 @@ const Settings: NextPage = () => {
               alt={'profile picture'}
               className="md:row-span-2 md:max-h-[7em] md:max-w-[7.5em] md:rounded-full md:border-4  md:border-white md:object-cover md:object-top "
             ></Image>
-            <h1 className="justify-self-start font-exo text-20 font-bold">
+            <h1 className="text-20 justify-self-start font-exo font-bold">
               Προσωπικά στοιχεία
             </h1>
-            <p className="max-w-[80%] justify-self-start font-source text-15 font-normal ">
+            <p className="text-15 max-w-[80%] justify-self-start font-source font-normal ">
               Ανανεώστε την εικόνα προφίλ σας και τα προσωπικά σας στοιχεία
             </p>
           </div>
-          <form className="grid grid-flow-row justify-center  gap-3 text-19">
+          <form className="text-19 grid grid-flow-row  justify-center gap-3">
             <span className="grid grid-cols-2  items-center">
               <label htmlFor="">Όνομα Χρήστη</label>
               <input type="text" />
@@ -79,7 +79,7 @@ const Settings: NextPage = () => {
 
             <button
               type="submit"
-              className="mt-[.75em] w-[40%] justify-self-center rounded-[5px] bg-myBlue-100 py-[.5em]"
+              className="mt-[.75em] mb-4 w-[40%] justify-self-center rounded-[5px] bg-myBlue-100 py-[.5em]"
             >
               Αποθήκευση
             </button>

@@ -51,8 +51,8 @@ const NutrArticles: React.FC = () => {
   };
   return (
     <section id="section_1" className=" flex min-h-screen flex-col ">
-      <div className="flex  w-full flex-1 flex-col items-center justify-center gap-6 bg-myGrey-200 py-10">
-        <h1 className="bg-gradient-to-r from-[#B3D5F8]  to-[#FFFFFF]  bg-clip-text pb-[.75em] font-exo text-3xl font-bold uppercase text-transparent md:text-5xl lg:text-6xl">
+      <div className="relative flex w-full flex-1 flex-col items-center justify-center gap-6 bg-myGrey-200 py-10">
+        <h1 className="absolute top-6 bg-gradient-to-r from-[#B3D5F8]  to-[#FFFFFF]  bg-clip-text pb-[.75em] font-exo text-3xl font-bold uppercase text-transparent md:text-5xl lg:text-6xl">
           Τα αρθρα σας
         </h1>
         <div
@@ -79,6 +79,8 @@ const NutrArticles: React.FC = () => {
                   src={articleImg}
                   alt={'Eικόνα άρθρου'}
                   className="aspect-[5/4] rounded-[10px] "
+                  priority
+                  placeholder="blur"
                 ></Image>
               </div>
             </div>
@@ -100,6 +102,8 @@ const NutrArticles: React.FC = () => {
                   src={articleImg}
                   alt={'Eικόνα άρθρου'}
                   className="aspect-[5/4] rounded-[10px] "
+                  priority
+                  placeholder="blur"
                 ></Image>
               </div>
             </div>
@@ -121,6 +125,8 @@ const NutrArticles: React.FC = () => {
                   src={articleImg}
                   alt={'Eικόνα άρθρου'}
                   className="aspect-[5/4] rounded-[10px] "
+                  priority
+                  placeholder="blur"
                 ></Image>
               </div>
             </div>
@@ -142,6 +148,8 @@ const NutrArticles: React.FC = () => {
                   src={articleImg}
                   alt={'Eικόνα άρθρου'}
                   className="aspect-[5/4] rounded-[10px] "
+                  priority
+                  placeholder="blur"
                 ></Image>
               </div>
             </div>

@@ -40,7 +40,7 @@ var settingsCalendar: Settings = {
   swipeToSlide: true,
   nextArrow: <SampleArrow />,
   prevArrow: <SampleArrow />,
-  className: 'mx-auto max-w-[20em] my-8  h-full',
+  className: 'mx-auto  max-w-[20em]',
 };
 
 const SliderAppointments: React.FC<SliderAppointmentsProps> = ({}) => {
@@ -55,12 +55,12 @@ const SliderAppointments: React.FC<SliderAppointmentsProps> = ({}) => {
   return (
     <div>
       {clients.length < 1 && selectedDate ? (
-        <div className="mt-10 mb-6  text-center font-exo text-base font-bold md:mt-0 lg:text-2xl">
+        <div className="mt-10 mb-6  text-center font-exo text-base font-bold  md:mt-0 lg:text-2xl">
           Δεν υπάρχουν αιτήσεις για ραντεβού για την ημέρα:{' '}
           <div className=" text-myBlue-200">{selectedDate}</div>
         </div>
       ) : (
-        <div className="lg:mt-16 lg:scale-125 xl:mt-16 ">
+        <div className=" lg:mt-16 lg:scale-125 xl:mt-16 ">
           <Slider {...settingsCalendar}>
             {clients.map(
               (client) =>

@@ -105,6 +105,9 @@ const NutrScheduler: React.FC<NutrSchedulerProps> = ({}) => {
           </div>
         ) : (
           <div>
+            <h1 className="mt-4 text-center text-2xl font-bold lg:text-4xl">
+              Δημιουργία Προγράμματος Διατροφής
+            </h1>
             <Accordion />
             <div className="mx-auto my-8 flex w-full flex-col items-center justify-center lg:my-10">
               <button
@@ -117,7 +120,7 @@ const NutrScheduler: React.FC<NutrSchedulerProps> = ({}) => {
               <button
                 type="submit"
                 onClick={handleTogglePreview}
-                className="mx-auto mt-4 block  rounded-md border-2 border-black py-2 px-16 font-bold   text-black hover:scale-110 hover:bg-myBeige-100 hover:font-bold   hover:shadow-3xl md:px-20 md:text-lg lg:px-40 lg:text-2xl "
+                className="mx-auto mt-4 block  rounded-md border-2 border-black py-2 px-16 font-bold   text-black hover:scale-110 hover:bg-myGrey-200 hover:font-bold hover:text-white hover:shadow-3xl hover:transition   hover:duration-500 md:px-20 md:text-lg lg:px-40 lg:text-2xl "
               >
                 {togglePreview ? 'Πίσω' : 'Preview'}
               </button>

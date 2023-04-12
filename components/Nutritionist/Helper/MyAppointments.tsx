@@ -104,7 +104,7 @@ const MyAppointments: React.FC<MyAppointmentsProps> = ({
                         .map((appointment, appointmentIndex) => (
                           <li
                             key={`${date}_${index}_${appointmentIndex}`}
-                            className="mx-auto my-3 flex max-w-xs flex-row  items-center gap-3 rounded-lg border-2 border-black bg-white text-base font-bold leading-4 hover:scale-110 hover:bg-myRed hover:shadow-3xl  "
+                            className="mx-auto my-3 flex max-w-xs flex-row  items-center gap-3 rounded-lg border-2 border-black bg-white text-base font-bold leading-4 hover:scale-110 hover:bg-myBlue-200 hover:text-white hover:shadow-3xl  hover:transition hover:duration-500"
                           >
                             <Image
                               src={profile}
