@@ -2,7 +2,7 @@ import React from 'react';
 
 const Footer: React.FC = ({}) => {
   return (
-    <footer className=" w-full  bg-myGrey-200  py-[4em]">
+    <footer className="mt-auto  w-full  bg-myGrey-200  py-[4em]">
       <div className="grid w-full  max-w-[1268px] grid-flow-row gap-8 md:mx-auto md:grid-cols-2">
         <div className="grid grid-flow-row justify-center gap-4 md:grid-cols-2 md:grid-rows-2 md:justify-items-center">
           <h3 className="col-span-2 text-lg font-normal text-white">

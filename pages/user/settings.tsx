@@ -1,20 +1,22 @@
 import { NextPage } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
-import Footer from '../../components/Footer';
-import Navbar from '../../components/Navbar';
+import Footer from '../../components/Users/Footer';
 import photo from '/public/images/myphoto.jpg';
+import Navbar from '../../components/Users/Navbar';
 
 const Settings: NextPage = () => {
   return (
-    <div className="md:flex md:min-h-screen md:flex-col">
+    <div className="flex min-h-screen flex-col">
       <Navbar />
 
-      <main className="py-6 md:mx-auto md:grid md:w-full md:max-w-[1268px] md:grid-cols-2 md:gap-8 md:px-[6em]">
-        <section className="mx-auto  max-w-[18em] rounded-[3em]  bg-myBlue-100 pt-[4em] pb-[10em]  shadow-2xl drop-shadow-2xl md:mx-0  md:my-[4em]">
+      <main className="container  w-full py-6 md:mx-auto md:grid md:max-w-[1268px] md:grid-cols-2 md:gap-8">
+        <section className="mx-auto  max-w-[20em] rounded-[3em]  bg-myBlue-100 pt-[4em] pb-[10em]  shadow-2xl drop-shadow-2xl md:mx-0  md:my-[4em]">
           <div className="grid justify-items-center gap-5">
-            <h1 className="text-25 font-exo font-bold">Ρυθμίσεις</h1>
-            <ul className="text-19 flex cursor-pointer flex-col gap-4 font-source font-normal ">
+            <h1 className="font-exo text-2xl font-bold lg:text-3xl">
+              Ρυθμίσεις
+            </h1>
+            <ul className="flex cursor-pointer flex-col gap-4 font-source text-lg font-normal lg:text-2xl">
               <li>
                 <Link href="">Προσωπικά Στοιχεία</Link>
               </li>
@@ -37,21 +39,22 @@ const Settings: NextPage = () => {
           </div>
         </section>
 
-        <section className="hidden md:my-[4em]  md:block  md:max-w-[35em]  md:justify-self-end  md:rounded-[3em] md:bg-myGrey-100 md:shadow-2xl  md:drop-shadow-2xl">
+        <section className="hidden md:my-[4em] md:block  md:max-w-[35em]  md:justify-self-end  md:rounded-[3em]  md:bg-myGrey-100 md:px-4 md:shadow-2xl  md:drop-shadow-2xl">
           <div className="grid grid-cols-2 grid-rows-2 items-center justify-items-center py-5">
             <Image
               src={photo}
               alt={'profile picture'}
-              className="md:row-span-2 md:max-h-[7em] md:max-w-[7.5em] md:rounded-full md:border-4  md:border-white md:object-cover md:object-top "
+              className="md:row-span-2 md:max-h-[5em] md:max-w-[5em] md:rounded-full md:border-4  md:border-white md:object-cover md:object-top lg:max-h-[7em] lg:max-w-[7em] "
+              priority
             ></Image>
-            <h1 className="text-20 justify-self-start font-exo font-bold">
+            <h1 className="justify-self-start font-exo text-lg font-bold lg:text-xl">
               Προσωπικά στοιχεία
             </h1>
-            <p className="text-15 max-w-[80%] justify-self-start font-source font-normal ">
+            <p className="max-w-[80%] justify-self-start font-source text-sm font-normal lg:text-base">
               Ανανεώστε την εικόνα προφίλ σας και τα προσωπικά σας στοιχεία
             </p>
           </div>
-          <form className="text-19 grid grid-flow-row  justify-center gap-3">
+          <form className="grid grid-flow-row justify-center  gap-3 text-lg">
             <span className="grid grid-cols-2  items-center">
               <label htmlFor="">Όνομα Χρήστη</label>
               <input type="text" />

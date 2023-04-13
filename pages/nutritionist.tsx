@@ -1,7 +1,7 @@
 import { NextPage } from 'next';
 
 import React, { useState } from 'react';
-import Footer from '../components/Footer';
+import Footer from '../components/Users/Footer';
 import NutrNavbar from '../components/Nutritionist/NutrNavbar';
 
 import CalendarC from '../components/Nutritionist/CalendarC';

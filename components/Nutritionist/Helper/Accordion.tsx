@@ -69,7 +69,7 @@ const Accordion: React.FC<AccordionProps> = ({}) => {
   };
 
   return (
-    <div className="mx-auto mt-10 max-w-[45rem] px-4 lg:max-w-[55rem] xl:max-w-[65rem]">
+    <div className="container  mt-10">
       <div
         onClick={handleClick}
         className="flex flex-col gap-4  text-white  md:h-[40em] md:flex-row"

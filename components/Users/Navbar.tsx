@@ -30,7 +30,7 @@ const Navbar: React.FC = ({}) => {
         <div
           className={` ${
             isToggle
-              ? 'flex items-center justify-between  py-[2em] md:relative'
+              ? 'container flex items-center  justify-between  py-[2em] md:relative '
               : 'absolute z-[1] grid w-full  grid-flow-col  justify-between   bg-myGrey-200 pb-[26em] pt-8 md:relative md:z-0  md:items-center '
           }  `}
         >
@@ -46,7 +46,7 @@ const Navbar: React.FC = ({}) => {
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
                 fill="white"
-                className="mr-3 h-8 w-8"
+                className=" h-8 w-8"
               >
                 <path
                   fillRule="evenodd"
@@ -59,7 +59,7 @@ const Navbar: React.FC = ({}) => {
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
                 fill="white"
-                className="mr-3 h-8 w-8 md:hidden"
+                className=" h-8 w-8 md:hidden"
               >
                 <path
                   fillRule="evenodd"
@@ -74,21 +74,21 @@ const Navbar: React.FC = ({}) => {
               isToggle
                 ? 'hidden max-w-[1268px]  md:block'
                 : 'absolute z-[2]  mt-28 w-full md:max-w-[1268px]  '
-            } mx-auto text-xs font-bold  lg:text-sm`}
+            } mx-auto text-xs font-bold  lg:text-sm xl:text-lg`}
           >
             <ul
               id="primary-navigation"
               className={` ${
                 isToggle
                   ? 'md:grid md:grid-flow-col md:items-center md:gap-[2em] md:text-white lg:gap-[4em] 2xl:gap-[6.5em]'
-                  : 'flex flex-col  items-center gap-4 text-lg font-bold  text-white md:grid md:w-full  md:grid-flow-col  md:gap-[2em] md:text-base  lg:gap-[4em] 2xl:gap-[6.5em]'
+                  : 'flex flex-col  items-center gap-4 text-lg font-bold  text-white md:grid md:w-full  md:grid-flow-col  md:gap-[2em]   lg:gap-[4em]   2xl:gap-[6.5em]'
               } capitalize`}
             >
               <li>
                 <Link href="">αρχικη</Link>
               </li>
               <li>
-                <Link href="">ευρεση συνταγης</Link>
+                <Link href="">συνταγες</Link>
               </li>
               <li>
                 <Link href="">διατροφολογοι</Link>
@@ -104,9 +104,7 @@ const Navbar: React.FC = ({}) => {
                   <Image
                     src={shop}
                     alt={'Καλάθι Αγορών'}
-                    width={30}
-                    height={30}
-                    className=" lg:h-[40px] lg:w-[40px]"
+                    className="h-8 w-8 lg:h-[40px] lg:w-[40px]"
                   ></Image>
                 </Link>
               </li>
@@ -118,9 +116,7 @@ const Navbar: React.FC = ({}) => {
                   <Image
                     src={set}
                     alt={'Ρυθμίσεις'}
-                    width={30}
-                    height={30}
-                    className="lg:h-[40px] lg:w-[40px]"
+                    className="h-8 w-8 lg:h-[40px] lg:w-[40px]"
                   ></Image>
                 </Link>
               </li>

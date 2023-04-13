@@ -17,9 +17,9 @@ const Login: NextPage = ({}) => {
   }, []);
 
   return (
-    <main className="flex min-h-screen w-full  items-center  justify-center bg-myBeige-100 text-white md:flex-row md:items-stretch md:justify-items-stretch ">
+    <main className=" flex min-h-screen  w-full  items-center justify-center bg-myBeige-100 text-white md:flex-row md:items-stretch md:justify-items-stretch">
       {/* Εδώ βρίσκεται το section με τις δύο εικόνες, δηλαδή το αριστερό section */}
-      <section className="hidden md:flex md:flex-1 md:flex-col  md:items-end  md:justify-center md:bg-myBeige-100">
+      <section className=" hidden md:flex md:flex-1 md:flex-col  md:items-end  md:justify-center md:bg-myBeige-100">
         <div
           ref={div2Ref}
           className="rounded-l-[3.125rem]  border-[5px] border-myBlue-200 bg-myBeige-100  md:relative    md:w-full md:max-w-[600px]  "

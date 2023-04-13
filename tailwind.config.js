@@ -40,7 +40,7 @@ module.exports = {
 
       container: {
         center: true,
-        padding: '0.5rem',
+        padding: '1rem',
       },
 
       boxShadow: {

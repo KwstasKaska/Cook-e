@@ -6,7 +6,7 @@ import logo from '/public/images/6.png';
 const Register: NextPage = ({}) => {
   return (
     <main className=" h-screen w-full bg-myGrey-100">
-      <div className="customImg container h-full bg-auto bg-fixed  bg-center  bg-no-repeat pt-[3em] md:mt-0 md:flex  md:flex-row    md:content-center md:justify-center md:gap-[2em] md:bg-none xl:gap-[4rem]">
+      <div className="customImg container  h-full bg-auto bg-fixed  bg-center  bg-no-repeat pt-[3em] md:mt-0 md:flex  md:flex-row    md:content-center md:justify-center md:gap-[2em] md:bg-none xl:gap-[4rem]">
         <section className="md:chefImg flex flex-row justify-center  gap-[5em]   md:order-2 md:grid md:grid-cols-2  md:grid-rows-none md:content-center    md:bg-contain md:bg-center md:bg-no-repeat md:px-[1em]">
           <Image
             src={logo}
