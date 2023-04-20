@@ -58,10 +58,10 @@ const NutrScheduler: React.FC<NutrSchedulerProps> = ({}) => {
           <div className=" container grid flex-1 touch-pan-x   grid-flow-col content-center justify-center   ">
             <div className="scrollbar overflow-x-auto overflow-y-hidden">
               <div className="pl-8 md:pl-0 md:text-xl  lg:text-2xl ">
-                <h1 className="mb-5  text-center font-bold capitalize ">
-                  Πρόγραμμα Διατροφής για τον Xρήστη testing
-                </h1>
-                <table className=" border-separate border-myGrey-200 ">
+                <table className="w-full border-separate border-myGrey-200 text-white">
+                  <caption className="bg-myGrey-200 py-5 text-center font-bold capitalize text-white">
+                    Πρόγραμμα Διατροφής για τον Xρήστη testing
+                  </caption>
                   <thead>
                     <tr className="snap-x snap-mandatory">
                       <th className="snap-center">Γεύματα / Ημέρες</th>

@@ -27,7 +27,14 @@
 
   th,
   td {
-    border: 1px solid #3f4756;
+    /* border: 1px solid #3f4756; */
+    background: hsl(0 0% 0% / 0.6);
+
+    padding: 1rem;
+  }
+
+  tr:nth-of-type(2n + 1) {
+    background: hsl(0 0% 0% / 0.1);
   }
 }
 
