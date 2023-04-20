@@ -35,7 +35,7 @@ const Navbar: React.FC = ({}) => {
           }  `}
         >
           <Link href="#" className="">
-            <Image src={logo} alt={'Cook-e logo'}></Image>
+            <Image src={logo} alt={'Cook-e logo'} priority></Image>
           </Link>
           <button
             onClick={handleNavbarClick}
