@@ -59,7 +59,7 @@ const NutrScheduler: React.FC<NutrSchedulerProps> = ({}) => {
             <div className="scrollbar overflow-x-auto overflow-y-hidden">
               <div className="pl-8 md:pl-0 md:text-xl  lg:text-2xl ">
                 <table className="w-full border-separate border-myGrey-200 text-white">
-                  <caption className="bg-myGrey-200 py-5 text-center font-bold capitalize text-white">
+                  <caption className="bg-myGrey-200 py-5 text-center font-bold  text-white">
                     Πρόγραμμα διατροφής για τον χρήστη testing
                   </caption>
                   <thead>
