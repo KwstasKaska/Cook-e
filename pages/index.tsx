@@ -83,10 +83,10 @@ const Index: NextPage = () => {
                 className="-mt-[3em] max-h-[6em] max-w-[6em] rounded-full md:max-h-[7em] md:max-w-[7em] xl:-mt-[4.5em] xl:max-h-[12em] xl:max-w-[12em] "
               ></Image>
               <h1 className="text-xs font-bold md:px-2 md:text-center md:text-xl  xl:text-2xl">
-                Μακαρόνια με Κιμά
+                Μακαρόνια με κιμά
               </h1>
               <p className="text-9 md:text-xs xl:text-xl">
-                Βαθμός Δυσκολίας: Εύκολο
+                Βαθμός δυσκολίας: Εύκολο
               </p>
               <div className="m-[0.65em] flex flex-row items-center gap-2">
                 <Image
@@ -119,10 +119,10 @@ const Index: NextPage = () => {
                 className="-mt-[3em] max-h-[6em] max-w-[6em] rounded-full md:max-h-[7em] md:max-w-[7em] xl:-mt-[4.5em] xl:max-h-[12em] xl:max-w-[12em]"
               ></Image>
               <h1 className="text-xs font-bold md:px-2 md:text-center md:text-xl  xl:text-2xl">
-                Μακαρόνια με Κιμά
+                Μακαρόνια με κιμά
               </h1>
               <p className="text-9 md:text-xs xl:text-xl">
-                Βαθμός Δυσκολίας: Εύκολο
+                Βαθμός δυσκολίας: Εύκολο
               </p>
               <div className="m-[0.65em] flex flex-row items-center gap-2">
                 <Image
@@ -150,20 +150,20 @@ const Index: NextPage = () => {
           <div className="">
             <h1 className="text-2xl font-bold md:text-4xl xl:text-6xl">85%</h1>
             <p className="max-w-[12.1em] md:text-base xl:text-xl">
-              Των ανθρώπων δεν ξέρει πως να αξιοποιεί τα υλικά και σκεύη τους
+              Των ανθρώπων δεν ξέρει πώς να αξιοποιεί τα υλικά και σκεύη τους
             </p>
           </div>
 
           <div className="">
             <h1 className="text-2xl font-bold md:text-4xl xl:text-6xl">100+</h1>
             <p className="max-w-[7.1em] md:text-base xl:text-xl">
-              Συνεργάτες Chef
+              Συνεργάτες chef
             </p>
           </div>
           <div className=" ">
             <h1 className="text-2xl font-bold md:text-4xl xl:text-6xl">50+</h1>
             <p className="max-w-[7.1em] md:text-base xl:text-xl">
-              Εγκεκριμένοι Διατροφολόγοι
+              Εγκεκριμένοι διατροφολόγοι
             </p>
           </div>
           {isHovered && (

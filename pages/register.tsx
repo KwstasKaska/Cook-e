@@ -25,7 +25,7 @@ const Register: NextPage = ({}) => {
 
         <section className="mt-[9em]  grid grid-flow-row place-content-center place-items-center gap-3 md:mt-0">
           <h1 className=" font-exo text-3xl font-bold text-myBlue-200 lg:text-4xl">
-            Δημιουργία Λογαριασμού
+            Δημιουργία λογαριασμού
           </h1>
           <p className="mb-3 w-[20em] text-center text-sm font-normal lg:text-xl">
             Μια μαγειρική απόλαυση σε περιμένει! Ολοκλήρωσε την εγγραφή σου
@@ -81,7 +81,7 @@ const Register: NextPage = ({}) => {
               type="submit"
               className="mt-[3em] cursor-pointer rounded-[0.56rem] bg-myBlue-200 px-[3em] py-[.5em] text-sm font-bold text-white lg:text-2xl"
             >
-              Δημιουργία Λογαριασμού
+              Δημιουργία λογαριασμού
             </button>
           </form>
         </section>

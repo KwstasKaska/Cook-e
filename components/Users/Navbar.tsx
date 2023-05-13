@@ -82,23 +82,23 @@ const Navbar: React.FC = ({}) => {
                 isToggle
                   ? 'md:grid md:grid-flow-col md:items-center md:gap-[2em] md:text-white lg:gap-[4em] 2xl:gap-[6.5em]'
                   : 'flex flex-col  items-center gap-4 text-lg font-bold  text-white md:grid md:w-full  md:grid-flow-col  md:gap-[2em]   lg:gap-[4em]   2xl:gap-[6.5em]'
-              } capitalize`}
+              } `}
             >
               <li>
-                <Link href="">αρχικη</Link>
+                <Link href="">Αρχική</Link>
               </li>
               <li>
-                <Link href="">συνταγες</Link>
+                <Link href="">Συνταγές</Link>
               </li>
               <li>
-                <Link href="">διατροφολογοι</Link>
+                <Link href="">Διατροφολόγοι</Link>
               </li>
               <li>
-                <Link href="">premium</Link>
+                <Link href="">Premium</Link>
               </li>
               <li>
                 <Link className="md:hidden" href="">
-                  Καλαθι αγορων
+                  Καλάθι αγορών
                 </Link>
                 <Link className="hidden md:block" href="">
                   <Image
@@ -110,7 +110,7 @@ const Navbar: React.FC = ({}) => {
               </li>
               <li>
                 <Link className="md:hidden" href="">
-                  Ρυθμισεις{' '}
+                  Ρυθμίσεις{' '}
                 </Link>
                 <Link className="hidden md:block" href="">
                   <Image
@@ -125,7 +125,7 @@ const Navbar: React.FC = ({}) => {
                   isToggle ? 'hidden ' : ''
                 } text-15 rounded-[1.4rem]  border-2 border-white bg-transparent px-4  py-1 font-bold text-white hover:bg-myRed hover:text-white md:block`}
               >
-                ΕΞΟΔΟΣ
+                Έξοδος
               </button>
             </ul>
           </nav>

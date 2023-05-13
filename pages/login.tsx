@@ -87,7 +87,7 @@ const Login: NextPage = ({}) => {
               className="justify-self-center font-source text-base font-normal underline md:text-xl "
               href="#"
             >
-              Ξεχάσατε τον κωδικό;
+              Ξέχασες τον κωδικό;
             </Link>
           </form>
 
