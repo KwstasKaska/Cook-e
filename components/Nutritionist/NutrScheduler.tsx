@@ -5,20 +5,20 @@ import { TableContextType } from '../Context';
 interface NutrSchedulerProps {}
 
 export const daysOfWeek = [
-  'Δευτερα',
-  'Τριτη',
-  'Τεταρτη',
-  'πεμπτη',
-  'παρασκευη',
-  'σαββατο',
-  'κυριακη',
+  'Δευτέρα',
+  'Τρίτη',
+  'Τετάρτη',
+  'Πέμπτη',
+  'Παρασκευή',
+  'Σάββατο',
+  'Κυριακή',
 ];
 export const randomFields = [
-  'Πρωινο',
-  'δεκατιανο',
-  'μεσημεριανο',
-  'απογευματινο',
-  'βραδινο',
+  'Πρωινό',
+  'δεκατιανό',
+  'μεσημεριανό',
+  'απογευματινό',
+  'βραδινό',
 ];
 
 export type CellInfo = Record<string, string>;
