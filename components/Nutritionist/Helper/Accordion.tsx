@@ -88,7 +88,7 @@ const Accordion: React.FC<AccordionProps> = ({}) => {
                 id="panel1-title"
                 className="text-2xl font-bold text-white "
               >
-                Επιλέξτε Χρήστη
+                Επιλογή χρήστη
                 <span className=""></span>
               </span>
               <svg
@@ -123,7 +123,7 @@ const Accordion: React.FC<AccordionProps> = ({}) => {
                 name="person"
                 id="person"
               >
-                <option value="">Επιλέξτε πελάτη</option>
+                <option value="">Επιλογή χρήστη </option>
               </select>
             </section>
             <Image
@@ -149,7 +149,7 @@ const Accordion: React.FC<AccordionProps> = ({}) => {
                 id="panel2-title"
                 className="text-2xl font-bold text-white "
               >
-                Επιλέξτε Ημέρα
+                Επιλογή ημέρας
               </span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -184,7 +184,7 @@ const Accordion: React.FC<AccordionProps> = ({}) => {
                 value={selectedDay}
                 onChange={handleDayChange}
               >
-                <option value="">Επιλέξτε Ημέρα</option>
+                <option value="">Επιλογή ημέρας</option>
                 {daysOfWeek.map((day) => (
                   <option key={day} value={day}>
                     {day}
@@ -216,7 +216,7 @@ const Accordion: React.FC<AccordionProps> = ({}) => {
                 id="panel3-title"
                 className="text-2xl font-bold text-white "
               >
-                Επιλέξτε Γεύμα
+                Επιλογή γεύματος
               </span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -251,7 +251,7 @@ const Accordion: React.FC<AccordionProps> = ({}) => {
                 value={selectedField}
                 onChange={handleFieldChange}
               >
-                <option value="">Επιλέξτε Γεύμα</option>
+                <option value="">Επιλογή γεύματος</option>
                 {randomFields.map((field) => (
                   <option key={field} value={field}>
                     {field}
@@ -283,7 +283,7 @@ const Accordion: React.FC<AccordionProps> = ({}) => {
                 id="panel4-title"
                 className="text-2xl font-bold text-white "
               >
-                Ορίστε Περιεχόμενο
+                Ορισμός περιεχομένου
               </span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -317,7 +317,7 @@ const Accordion: React.FC<AccordionProps> = ({}) => {
                 id="cell-info"
                 value={cellInfo[`${selectedDay}-${selectedField}`] || ''}
                 onChange={handleCellInfoChange}
-                placeholder="Επιλέξτε το περιεχόμενο για την ημέρα και το είδος γεύματος που επιθυμείτε"
+                placeholder="Όρισε το περιεχόμενο για την ημέρα και το είδος γεύματος που επιθυμείς"
               />
             </section>
 

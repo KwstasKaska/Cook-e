@@ -32,10 +32,10 @@ const Nutritionist: NextPage = ({}) => {
             className="row-span-2 max-h-[3.5em] max-w-[3.5em] justify-self-end rounded-full object-cover object-top md:max-h-[5em] md:max-w-[5em]  xl:max-h-[7em] xl:max-w-[7em]"
           ></Image>
           <h1 className="text-19 font-exo font-bold md:text-2xl xl:text-3xl">
-            Καλωσήρθατε, <br></br> Dr. Kwstas Kaskantiris
+            Καλωσήρθες, <br></br> Dr. Kwstas Kaskantiris
           </h1>
           <p className="text-15 font-exo font-normal md:text-xl xl:text-2xl">
-            Πως είναι η μέρα σας σήμερα;
+            Πως είναι η μέρα σου σήμερα;
           </p>
         </div>
         <div className="absolute left-[1.3em]  top-[2em] -z-[1]  h-[9em] w-[18em] -rotate-[13deg]  rounded-[1em] bg-myGrey-100 md:left-28 md:scale-125 xl:left-48 xl:scale-150 2xl:left-64 2xl:top-20 2xl:scale-[2]"></div>

@@ -94,19 +94,19 @@ const NutrNavbar: React.FC = () => {
             } cursor-pointer items-center gap-4 text-xl font-bold capitalize text-myGrey-200 md:text-base  lg:gap-12 xl:text-2xl`}
           >
             <li className="">
-              <a onClick={() => handleLinkClick('section_1')}>Αρθρα</a>
+              <a onClick={() => handleLinkClick('section_1')}>Άρθρα</a>
             </li>
             <li>
-              <a onClick={() => handleLinkClick('section_2')}>Ημερολογιο</a>
+              <a onClick={() => handleLinkClick('section_2')}>Ημερολόγιο</a>
             </li>
             <li>
               <a onClick={() => handleLinkClick('section_3')}>
-                Διαχειριση Ραντεβου
+                Διαχείριση ραντεβού
               </a>
             </li>
             <li>
               <a onClick={() => handleLinkClick('section_4')} className="">
-                Προγραμματισμος Διατροφων
+                Προγραμματισμός διατροφών
               </a>
             </li>
 
@@ -115,7 +115,7 @@ const NutrNavbar: React.FC = () => {
                 isToggle ? 'hidden ' : ''
               } rounded-[1.4rem] border-2  border-myGrey-200 bg-transparent px-4 py-1  text-sm font-bold text-myGrey-200 hover:bg-myRed hover:text-white md:block`}
             >
-              ΕΞΟΔΟΣ
+              Έξοδος
             </button>
           </ul>
         </nav>

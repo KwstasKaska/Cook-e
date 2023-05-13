@@ -72,7 +72,7 @@ const SliderAppointments: React.FC<SliderAppointmentsProps> = ({}) => {
                     {isInfo ? (
                       <div className="">
                         <div className=" rounded-t-md bg-myBlue-200 text-lg font-normal text-white">
-                          <h1 className="text-center">Αίτηση για Ραντεβού</h1>
+                          <h1 className="text-center">Αίτηση για ραντεβού</h1>
                           <p className="text-center">
                             {selectedDate.replace(/-/g, '  ')}
                             {' : '} {client.time}
@@ -121,7 +121,7 @@ const SliderAppointments: React.FC<SliderAppointmentsProps> = ({}) => {
                             </svg>
                           </button>
                           <h1 className="absolute top-0 left-10 text-center">
-                            Αίτηση για Ραντεβού
+                            Αίτηση για ραντεβού
                           </h1>
                           <p className="absolute top-12 left-14 text-center font-bold">
                             {selectedDate.replace(/-/g, '  ')}
@@ -155,7 +155,7 @@ const SliderAppointments: React.FC<SliderAppointmentsProps> = ({}) => {
                             </p>
                           </div>
                           <div className="ml-6 mt-4 ">
-                            <p>Σχόλια : </p>
+                            <p>Σχόλια: </p>
                             <ReadMore text={client.comments} />
                           </div>
                           <div className="mt-8 mb-8  flex justify-center gap-4 font-exo font-normal">
