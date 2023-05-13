@@ -60,7 +60,7 @@ const NutrScheduler: React.FC<NutrSchedulerProps> = ({}) => {
               <div className="pl-8 md:pl-0 md:text-xl  lg:text-2xl ">
                 <table className="w-full border-separate border-myGrey-200 text-white">
                   <caption className="bg-myGrey-200 py-5 text-center font-bold capitalize text-white">
-                    Πρόγραμμα Διατροφής για τον Xρήστη testing
+                    Πρόγραμμα διατροφής για τον χρήστη testing
                   </caption>
                   <thead>
                     <tr className="snap-x snap-mandatory">
@@ -106,7 +106,7 @@ const NutrScheduler: React.FC<NutrSchedulerProps> = ({}) => {
         ) : (
           <div>
             <h1 className="mt-4 text-center text-2xl font-bold lg:text-4xl">
-              Δημιουργία Προγράμματος Διατροφής
+              Δημιουργία προγράμματος διατροφής
             </h1>
             <Accordion />
             <div className="mx-auto my-8 flex w-full flex-col items-center justify-center lg:my-10">

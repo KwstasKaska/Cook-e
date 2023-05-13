@@ -18,22 +18,22 @@ const Settings: NextPage = () => {
             </h1>
             <ul className="flex cursor-pointer flex-col gap-4 font-source text-lg font-normal lg:text-2xl">
               <li>
-                <Link href="">Προσωπικά Στοιχεία</Link>
+                <Link href="">Προσωπικά στοιχεία</Link>
               </li>
               <li>
-                <Link href="">Ιατρικά Στοιχεία</Link>
+                <Link href="">Ιατρικά στοιχεία</Link>
               </li>
               <li>
-                <Link href="">Διατροφικές Συνήθειες</Link>
+                <Link href="">Διατροφικές συνήθειες</Link>
               </li>
               <li>
                 <Link href="">Ειδοποιήσεις</Link>
               </li>
               <li>
-                <Link href="">Πληροφορίες Πληρωμής</Link>
+                <Link href="">Πληροφορίες πληρωμής</Link>
               </li>
               <li>
-                <Link href="">Πληροφορίες Εφαρμογής</Link>
+                <Link href="">Πληροφορίες εφαρμογής</Link>
               </li>
             </ul>
           </div>
@@ -51,12 +51,12 @@ const Settings: NextPage = () => {
               Προσωπικά στοιχεία
             </h1>
             <p className="max-w-[80%] justify-self-start font-source text-sm font-normal lg:text-base">
-              Ανανεώστε την εικόνα προφίλ σας και τα προσωπικά σας στοιχεία
+              Ανανέωσε την εικόνα προφίλ σου και τα προσωπικά σου στοιχεία
             </p>
           </div>
           <form className="grid grid-flow-row justify-center  gap-3 text-lg">
             <span className="grid grid-cols-2  items-center">
-              <label htmlFor="">Όνομα Χρήστη</label>
+              <label htmlFor="">Όνομα χρήστη</label>
               <input type="text" />
             </span>
 
@@ -66,12 +66,12 @@ const Settings: NextPage = () => {
             </span>
 
             <span className="grid grid-cols-2  items-center">
-              <label htmlFor="">Νέος Κωδικός</label>
+              <label htmlFor="">Νέος κωδικός</label>
               <input type="text" />
             </span>
 
             <span className="grid grid-cols-2  items-center">
-              <label htmlFor="">Επανάληψη Νέου Κωδικού</label>
+              <label htmlFor="">Επανάληψη νέου κωδικού</label>
               <input type="password" />
             </span>
 

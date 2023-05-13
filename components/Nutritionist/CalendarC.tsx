@@ -209,14 +209,14 @@ const CalendarC: React.FC = () => {
                     </svg>
                   </button>
                   <h1 className="absolute left-20 top-5  font-bold lg:text-2xl">
-                    Επιλεγμένη <br /> Ημερομηνία:
+                    Επιλεγμένη <br /> ημερομηνία:
                   </h1>
                   <p className="absolute top-20 left-20 text-center font-normal lg:text-xl">
                     {selectedDate.replace(/-/g, '  ')}
                   </p>
                   <h2 className="absolute left-20 top-32 font-bold lg:text-2xl">
                     Καταχώρηση <br />
-                    Διαθέσιμων ωρών
+                    διαθέσιμων ωρών
                   </h2>
                 </div>
                 <div>
@@ -228,7 +228,7 @@ const CalendarC: React.FC = () => {
                       htmlFor="time"
                       className="text-base font-bold lg:text-lg"
                     >
-                      Διαλέξτε ώρα {''} {':'} {''}
+                      Επιλογή ώρας{':'} {''}
                       <input
                         type="time"
                         className="form-input ml-2 cursor-pointer rounded-[14px]  border-none  outline outline-2 outline-myGrey-200  hover:shadow-3xl hover:outline-4"

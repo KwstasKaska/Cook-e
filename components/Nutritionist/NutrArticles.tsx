@@ -52,8 +52,8 @@ const NutrArticles: React.FC = () => {
   return (
     <section id="section_1" className=" flex min-h-screen flex-col ">
       <div className=" relative flex w-full flex-1 flex-col items-center justify-center gap-6  bg-myGrey-200 py-10">
-        <h1 className="absolute top-6 bg-gradient-to-r from-[#B3D5F8]  to-[#FFFFFF]  bg-clip-text pb-[.75em] font-exo text-3xl font-bold uppercase text-transparent md:text-5xl lg:text-6xl">
-          Τα αρθρα σας
+        <h1 className="absolute top-6 bg-gradient-to-r from-[#B3D5F8]  to-[#FFFFFF]  bg-clip-text pb-[.75em] font-exo text-3xl font-bold  text-transparent md:text-5xl lg:text-6xl">
+          Τα άρθρα σου
         </h1>
         <div
           onMouseEnter={handleMouseEnter}

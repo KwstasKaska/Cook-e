@@ -27,7 +27,7 @@ const NutrAppointments: React.FC<NutrAppointmentsProps> = ({}) => {
       className=" flex min-h-screen w-full flex-col  bg-myGrey-200"
     >
       <h1 className="relative z-[2] pt-6 text-center text-2xl font-bold text-white  hover:text-myRed md:text-4xl xl:text-5xl">
-        Σημερινά Ραντεβού
+        Σημερινά ραντεβού
       </h1>
       <div className=" flex  flex-1  items-center justify-center    lg:justify-evenly lg:gap-24">
         <MyAppointments
