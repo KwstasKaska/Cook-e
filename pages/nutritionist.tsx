@@ -45,8 +45,8 @@ const Nutritionist: NextPage = ({}) => {
         <DateContext.Provider value={{ selectedDate, setSelectedDate }}>
           <section id="section_2" className="min-h-screen  bg-myGrey-100">
             <div className=" mx-auto max-w-[70em] ">
-              <h1 className="mx-auto  pt-16 text-center text-xl font-bold   capitalize  md:text-4xl lg:text-5xl">
-                αναζήτηση αιτημάτων ραντεβού
+              <h1 className="mx-auto  pt-16 text-center text-xl font-bold     md:text-4xl lg:text-5xl">
+                Αναζήτηση αιτημάτων ραντεβού
               </h1>
               <CalendarC />
             </div>

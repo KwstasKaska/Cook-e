@@ -93,7 +93,7 @@ const SliderAppointments: React.FC<SliderAppointmentsProps> = ({}) => {
                               <Image
                                 src={info}
                                 alt={''}
-                                className="h-[2em] w-[2em]"
+                                className="h-[2em] w-[2em] animate-bounce "
                               ></Image>
                             </button>
                           </div>

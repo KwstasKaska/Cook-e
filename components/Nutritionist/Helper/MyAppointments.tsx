@@ -147,7 +147,7 @@ const MyAppointments: React.FC<MyAppointmentsProps> = ({
           className={`relative z-[3]    h-[13em] w-[20em] rounded-xl ${emptyAppointments}  bg-white`}
         >
           <div className="absolute   z-[5] px-4 py-8 text-center text-xl font-bold">
-            Δεν έχετε διαθέσιμα ραντεβού για τις <br />
+            Δεν υπάρχουν διαθέσιμα ραντεβού για τις <br />
             <span className="relative inline-block">
               <span className="absolute -left-10 top-3 z-[6] block h-[3em] w-[12em] -skew-y-3 bg-myRed "></span>
               <span className="relative top-6 z-[10] text-white">
