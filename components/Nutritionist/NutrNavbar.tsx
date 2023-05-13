@@ -91,7 +91,7 @@ const NutrNavbar: React.FC = () => {
           <ul
             className={` ${
               isToggle ? 'flex max-w-[1268px] ' : 'flex flex-col  '
-            } cursor-pointer items-center gap-4 text-xl font-bold capitalize text-myGrey-200 md:text-base  lg:gap-12 xl:text-2xl`}
+            } cursor-pointer items-center gap-4 text-xl font-bold  text-myGrey-200 md:text-base  lg:gap-12 xl:text-2xl`}
           >
             <li className="">
               <a onClick={() => handleLinkClick('section_1')}>Άρθρα</a>
