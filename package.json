@@ -4,13 +4,18 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "gen": "graphql-codegen --config codegen.ts"
+    "gen": "graphql-codegen --config codegen.yml"
   },
   "dependencies": {
+    "@apollo/client": "^3.8.6",
+    "@types/lodash": "^4.14.200",
     "date-fns": "^2.29.3",
+    "deepmerge": "^4.3.1",
     "eslint-config-next": "^13.2.3",
-    "graphql": "^16.6.0",
-    "next": "^13.1.5",
+    "formik": "^2.4.5",
+    "graphql": "^16.8.1",
+    "lodash": "^4.17.21",
+    "next": "^13.5.3",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-calendar": "^4.0.0",
@@ -21,10 +26,11 @@
     "slick-carousel": "^1.8.1"
   },
   "devDependencies": {
-    "@graphql-codegen/cli": "^2.16.4",
-    "@graphql-codegen/client-preset": "^1.2.6",
+    "@graphql-codegen/cli": "5.0.0",
+    "@graphql-codegen/client-preset": "4.1.0",
     "@graphql-codegen/typescript-operations": "^2.5.12",
     "@graphql-codegen/typescript-react-apollo": "^3.3.7",
+    "@graphql-typed-document-node/core": "^3.2.0",
     "@tailwindcss/forms": "^0.5.3",
     "@types/node": "18.11.3",
     "@types/react": "18.0.21",
@@ -37,6 +43,6 @@
     "prettier-plugin-tailwindcss": "^0.2.4",
     "tailwindcss": "^3.2.4",
     "ts-node": "^10.9.1",
-    "typescript": "^4.9.4"
+    "typescript": "^5.2.2"
   }
 }
