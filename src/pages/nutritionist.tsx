@@ -13,9 +13,12 @@ import NutrScheduler from '../components/Nutritionist/NutrScheduler';
 import ScrollToTopButton from '../components/Helper/ScrollToTopButton';
 import Image from 'next/image';
 import profile from '/public/images/myphoto.jpg';
+import { useMeQuery } from '../generated/graphql';
 
 const Nutritionist: NextPage = ({}) => {
   const [selectedDate, setSelectedDate] = useState<string>('');
+
+  const { data } = useMeQuery();
 
   // ToDO: Να φτιάξω κουμπί διαγραφής για τις ώρες
   // TODO: Να φτιάξω το κομμάτι της αποθήκευσης όταν το συνδέσω με την βάση
@@ -32,7 +35,7 @@ const Nutritionist: NextPage = ({}) => {
             className="row-span-2 max-h-[3.5em] max-w-[3.5em] justify-self-end rounded-full object-cover object-top md:max-h-[5em] md:max-w-[5em]  xl:max-h-[7em] xl:max-w-[7em]"
           ></Image>
           <h1 className="text-19 font-exo font-bold md:text-2xl xl:text-3xl">
-            Καλωσήρθες, <br></br> Dr. Kwstas Kaskantiris
+            Καλωσήρθες, <br></br> Dr. {data?.me?.username}
           </h1>
           <p className="text-15 font-exo font-normal md:text-xl xl:text-2xl">
             Πως είναι η μέρα σου σήμερα;

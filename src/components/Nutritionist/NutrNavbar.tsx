@@ -3,9 +3,25 @@ import Image from 'next/image';
 // import settings from '/public/images/settings.svg';
 import logo from '/public/images/logo.png';
 import Link from 'next/link';
+import { useMeQuery } from '../../generated/graphql';
 
 const NutrNavbar: React.FC = () => {
   const [isToggle, setIsToggle] = useState<boolean>(true);
+
+  const { data, loading } = useMeQuery();
+  let body = null;
+  if (loading) {
+  } else if (data?.me) {
+    body = (
+      <button
+        className={` ${
+          isToggle ? 'hidden ' : ''
+        } rounded-[1.4rem] border-2  border-myGrey-200 bg-transparent px-4 py-1  text-sm font-bold text-myGrey-200 hover:bg-myRed hover:text-white md:block`}
+      >
+        Έξοδος
+      </button>
+    );
+  }
 
   useEffect(() => {
     const handleResize = () => {
@@ -52,7 +68,7 @@ const NutrNavbar: React.FC = () => {
               : 'absolute z-[1]  grid w-full grid-flow-col items-start justify-between   pb-[22em] pt-4'
           } bg-myBlue-100 px-[.4em] `}
         >
-          <Link href="#" className="cursor-pointer">
+          <Link href="/" className="cursor-pointer">
             <Image src={logo} alt={'Cook-e logo'} className=" "></Image>
           </Link>
           <button
@@ -110,13 +126,7 @@ const NutrNavbar: React.FC = () => {
               </a>
             </li>
 
-            <button
-              className={` ${
-                isToggle ? 'hidden ' : ''
-              } rounded-[1.4rem] border-2  border-myGrey-200 bg-transparent px-4 py-1  text-sm font-bold text-myGrey-200 hover:bg-myRed hover:text-white md:block`}
-            >
-              Έξοδος
-            </button>
+            {body}
           </ul>
         </nav>
       </header>

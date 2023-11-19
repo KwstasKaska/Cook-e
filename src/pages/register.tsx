@@ -43,8 +43,8 @@ const Register: NextPage = ({}) => {
           </button>
         </section>
 
-        <section className="mt-[9em]  grid grid-flow-row place-content-center place-items-center gap-3 md:mt-0">
-          <h1 className=" font-exo text-2xl font-bold text-myBlue-200 lg:text-4xl">
+        <section className="mt-[7em]  grid grid-flow-row content-center  gap-3 md:mt-0">
+          <h1 className="text-center font-exo text-2xl font-bold text-myBlue-200 lg:text-4xl">
             Δημιουργία λογαριασμού
           </h1>
           <p className="mb-3 w-[20em] text-center text-sm font-normal lg:text-xl">
@@ -70,13 +70,26 @@ const Register: NextPage = ({}) => {
               });
               if (response.data?.register.errors) {
                 setErrors(toErrorMap(response.data.register.errors));
-              } else if (response.data?.register.user) {
+              } else if (
+                response.data?.register.user &&
+                response.data?.register.user?.role === 'NUTRITIONIST'
+              ) {
+                router.push('/nutritionist');
+              } else if (
+                response.data?.register.user &&
+                response.data?.register.user?.role === 'CHEF'
+              ) {
+                router.push('/chef');
+              } else if (
+                response.data?.register.user &&
+                response.data?.register.user?.role === 'USER'
+              ) {
                 router.push('/');
               }
             }}
           >
             {({ isSubmitting }) => (
-              <Form className=" grid grid-cols-1 justify-items-center   gap-5 text-xs font-normal text-black lg:text-xl">
+              <Form className=" grid grid-cols-1 justify-items-center   gap-5 text-xs font-normal text-black lg:text-2xl">
                 <Field
                   className="w-[88%] border-none shadow-xl   "
                   type="text"
@@ -86,7 +99,7 @@ const Register: NextPage = ({}) => {
                 <ErrorMessage
                   name="username"
                   component="div"
-                  className="text-center text-sm text-red-500"
+                  className="max-w-[23em] text-center text-sm font-bold text-red-500 md:max-w-[20em] md:text-base lg:max-w-[26em] lg:text-lg"
                 />
 
                 <Field
@@ -98,7 +111,7 @@ const Register: NextPage = ({}) => {
                 <ErrorMessage
                   name="email"
                   component="div"
-                  className="text-center text-sm text-red-500"
+                  className="max-w-[23em] text-center text-sm font-bold text-red-500 md:max-w-[20em] md:text-base lg:max-w-[26em] lg:text-lg"
                 />
 
                 <Field
@@ -110,13 +123,20 @@ const Register: NextPage = ({}) => {
                 <ErrorMessage
                   name="password"
                   component="div"
-                  className="text-center text-sm text-red-500"
+                  className=" max-w-[23em] whitespace-pre-line text-center text-sm font-bold text-red-500 md:max-w-[20em] md:text-base lg:max-w-[26em] lg:text-lg"
                 />
 
-                <div id="my-radio-group" className="text-base font-normal">
+                <div
+                  id="my-radio-group"
+                  className="text-lg font-bold md:text-xl lg:text-2xl"
+                >
                   Ιδιότητα:
                 </div>
-                <div role="group" aria-labelledby="my-radio-group">
+                <div
+                  role="group"
+                  className="grid grid-flow-row  gap-2 text-base md:text-lg lg:text-xl"
+                  aria-labelledby="my-radio-group"
+                >
                   <label>
                     <Field type="radio" name="role" value="user" />
                     Χρήστης
@@ -129,6 +149,11 @@ const Register: NextPage = ({}) => {
                     <Field type="radio" name="role" value="nutritionist" />
                     Διατροφολόγος
                   </label>
+                  <ErrorMessage
+                    name="role"
+                    component="div"
+                    className="max-w-[23em] text-center text-sm font-bold text-red-500 md:max-w-[20em] md:text-base lg:max-w-[26em] lg:text-lg"
+                  />
                 </div>
 
                 <button

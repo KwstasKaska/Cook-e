@@ -7,9 +7,58 @@ import photo from '/public/images/myphoto.jpg';
 import GeneralNav from '../components/GeneralNav';
 import Link from 'next/link';
 import { useState } from 'react';
+import { useLogoutMutation, useMeQuery } from '../generated/graphql';
+import { useApolloClient } from '@apollo/client';
 
 const Index: NextPage = () => {
   const [isHovered, setIsHovered] = useState<boolean>(false);
+  const [logout, { loading: logoutLoading }] = useLogoutMutation();
+  const apolloClient = useApolloClient();
+
+  const { loading, data } = useMeQuery();
+  let body = null;
+  // data is loading
+  if (loading) {
+  }
+  // user not logged in
+  else if (!data?.me) {
+    body = (
+      <div className="my-3  flex flex-row gap-6 font-bold">
+        <button className="transition duration-300 hover:scale-110 hover:ease-in">
+          <Link
+            href="/login"
+            className="rounded-full   border-[1px] border-white px-[1.5em] py-[0.25em] text-white hover:bg-myRed md:text-base xl:text-2xl  "
+          >
+            Login
+          </Link>
+        </button>
+        <button className="transition duration-300 hover:scale-110 hover:ease-in">
+          <Link
+            href="/register"
+            className="rounded-full bg-myGrey-100 px-[.9em] py-[0.25em]  text-myBlue-200   hover:outline hover:outline-2 hover:outline-black md:text-base xl:text-2xl"
+          >
+            Register
+          </Link>
+        </button>
+      </div>
+    );
+    // user logged in
+  } else {
+    body = (
+      <div className="my-3  flex flex-row gap-6 font-bold">
+        <button
+          onClick={() => {
+            logout();
+            apolloClient.resetStore();
+          }}
+          disabled={logoutLoading}
+          className=" rounded-full border-[1px] border-white    px-[1.5em] py-[0.25em]   text-white transition duration-300 hover:scale-110 hover:bg-myRed hover:ease-in md:text-base xl:text-2xl"
+        >
+          Αποσύνδεση
+        </button>
+      </div>
+    );
+  }
 
   const handleMouseEnter = () => {
     setIsHovered(true);
@@ -51,24 +100,7 @@ const Index: NextPage = () => {
               alt={'logo'}
               className="xl:min-h-[2em] xl:min-w-[5em]"
             />
-            <div className="my-3  flex flex-row gap-6 font-bold">
-              <button className="transition duration-300 hover:scale-110 hover:ease-in">
-                <Link
-                  href="/login"
-                  className="rounded-full   border-[1px] border-white px-[1.5em] py-[0.25em] text-white hover:bg-myRed md:text-base xl:text-2xl  "
-                >
-                  Login
-                </Link>
-              </button>
-              <button className="transition duration-300 hover:scale-110 hover:ease-in">
-                <Link
-                  href="/register"
-                  className="rounded-full bg-myGrey-100 px-[.9em] py-[0.25em]  text-myBlue-200   hover:outline hover:outline-2 hover:outline-black md:text-base xl:text-2xl"
-                >
-                  Register
-                </Link>
-              </button>
-            </div>
+            {body}
           </div>
 
           <div className="my-[3.5em] grid grid-flow-col justify-evenly gap-7  md:py-[5em] md:px-3">
