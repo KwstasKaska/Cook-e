@@ -5,9 +5,10 @@ import logo from '/public/images/5.png';
 import Link from 'next/link';
 import { useRef, useEffect } from 'react';
 import { MeDocument, MeQuery, useLoginMutation } from '../generated/graphql';
-import { ErrorMessage, Field, Form, Formik } from 'formik';
+import { Form, Formik } from 'formik';
 import { toErrorMap } from '../utils/toErrorMap';
 import { useRouter } from 'next/router';
+import InputField from '../components/InputField';
 
 interface MyLoginFormValues {
   usernameOrEmail: string;
@@ -112,28 +113,18 @@ const Login: NextPage = ({}) => {
                 <span className=" mb-[.25em] text-xl font-bold md:text-3xl lg:text-4xl">
                   Είσοδος
                 </span>
-                <Field
+                <InputField
                   type="text"
                   name="usernameOrEmail"
                   className="mx-[1em] w-[17em]  rounded-[0.5rem] text-black placeholder:text-base placeholder:italic placeholder:text-myBlue-200  "
                   placeholder="Διεύθυνση email ή Όνομα χρήστη"
                 />
-                <ErrorMessage
-                  name="usernameOrEmail"
-                  component="div"
-                  className="  text-center text-sm font-bold text-myRed  md:text-base lg:max-w-[26em] lg:text-lg"
-                />
 
-                <Field
+                <InputField
                   type="password"
                   name="password"
                   className="w-[17em] rounded-[0.5rem] text-black  placeholder:text-base placeholder:italic placeholder:text-myBlue-200 "
                   placeholder="Κωδικός Πρόσβασης"
-                />
-                <ErrorMessage
-                  name="password"
-                  component="div"
-                  className=" text-center text-sm font-bold text-myRed  md:text-base lg:max-w-[26em] lg:text-lg"
                 />
 
                 <button

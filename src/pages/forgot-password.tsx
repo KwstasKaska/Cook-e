@@ -1,6 +1,7 @@
-import { Formik, Form, ErrorMessage, Field } from 'formik';
+import { Formik, Form } from 'formik';
 import React, { useState } from 'react';
 import { useForgotPasswordMutation } from '../generated/graphql';
+import InputField from '../components/InputField';
 
 const ForgotPassword: React.FC<{}> = ({}) => {
   const [complete, setComplete] = useState(false);
@@ -21,18 +22,13 @@ const ForgotPassword: React.FC<{}> = ({}) => {
           </div>
         ) : (
           <Form>
-            <Field
+            <InputField
               className=""
-              label="Email"
               type="email"
               placeholder="Email"
               name="email"
             />
-            <ErrorMessage
-              name="email"
-              component="div"
-              className="max-w-[23em] text-center text-sm font-bold text-red-500 md:max-w-[20em] md:text-base lg:max-w-[26em] lg:text-lg"
-            />
+
             <button
               type="submit"
               disabled={isSubmitting}
