@@ -1,0 +1,5 @@
+mutation createArticle($data: AddArticleInput!) {
+  createArticle(data: $data) {
+    ...RegularArticleResponse
+  }
+}

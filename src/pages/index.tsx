@@ -29,7 +29,7 @@ const Index: NextPage = () => {
             href="/login"
             className="rounded-full   border-[1px] border-white px-[1.5em] py-[0.25em] text-white hover:bg-myRed md:text-base xl:text-2xl  "
           >
-            Login
+            Σύνδεση
           </Link>
         </button>
         <button className="transition duration-300 hover:scale-110 hover:ease-in">
@@ -37,7 +37,7 @@ const Index: NextPage = () => {
             href="/register"
             className="rounded-full bg-myGrey-100 px-[.9em] py-[0.25em]  text-myBlue-200   hover:outline hover:outline-2 hover:outline-black md:text-base xl:text-2xl"
           >
-            Register
+            Εγγραφή
           </Link>
         </button>
       </div>

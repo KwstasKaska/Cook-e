@@ -1,0 +1,8 @@
+fragment RegularArticleResponse on ArticleResponse {
+  errors {
+    ...RegualarError
+  }
+  article {
+    ...RegularArticle
+  }
+}

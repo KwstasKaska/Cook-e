@@ -1,0 +1,9 @@
+fragment RegularArticle on Article {
+  id
+  title
+  text
+  image
+  creatorId
+  createdAt
+  updatedAt
+}

@@ -3,22 +3,33 @@ import Image from 'next/image';
 // import settings from '/public/images/settings.svg';
 import logo from '/public/images/logo.png';
 import Link from 'next/link';
-import { useMeQuery } from '../../generated/graphql';
+import { useLogoutMutation, useMeQuery } from '../../generated/graphql';
+import { useApolloClient } from '@apollo/client';
+import useIsAuth from '../../utils/useIsAuth';
 
 const NutrNavbar: React.FC = () => {
   const [isToggle, setIsToggle] = useState<boolean>(true);
 
+  const [logout, { loading: logoutLoading }] = useLogoutMutation();
+  const apolloClient = useApolloClient();
+
   const { data, loading } = useMeQuery();
   let body = null;
   if (loading) {
+    body = <div>Παρακαλώ περιμένετε εώς ότου φορτώσει η σελίδα</div>;
   } else if (data?.me) {
     body = (
       <button
+        onClick={() => {
+          logout();
+          apolloClient.resetStore();
+        }}
+        disabled={logoutLoading}
         className={` ${
           isToggle ? 'hidden ' : ''
         } rounded-[1.4rem] border-2  border-myGrey-200 bg-transparent px-4 py-1  text-sm font-bold text-myGrey-200 hover:bg-myRed hover:text-white md:block`}
       >
-        Έξοδος
+        Αποσύνδεση
       </button>
     );
   }
@@ -54,6 +65,7 @@ const NutrNavbar: React.FC = () => {
     scrollToSection(sectionId);
   };
 
+  useIsAuth();
   return (
     <div className="">
       <header

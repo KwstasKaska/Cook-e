@@ -20,6 +20,7 @@ export type Scalars = {
 /** New Article Data */
 export type AddArticleInput = {
   image: Scalars['String']['input'];
+  text: Scalars['String']['input'];
   title: Scalars['String']['input'];
 };
 
@@ -33,9 +34,19 @@ export type AddMealSchedulerInput = {
 export type Article = {
   __typename?: 'Article';
   createdAt: Scalars['String']['output'];
-  id: Scalars['ID']['output'];
+  creator: User;
+  creatorId: Scalars['Float']['output'];
+  id: Scalars['Float']['output'];
   image: Scalars['String']['output'];
+  text: Scalars['String']['output'];
   title: Scalars['String']['output'];
+  updatedAt: Scalars['String']['output'];
+};
+
+export type ArticleResponse = {
+  __typename?: 'ArticleResponse';
+  article: Article;
+  errors?: Maybe<Array<FieldError>>;
 };
 
 export type FieldError = {
@@ -75,11 +86,12 @@ export type Mutation = {
   __typename?: 'Mutation';
   addMealScheduler: MealScheduler;
   changePassword: UserResponse;
-  createArticle: Article;
+  createArticle: ArticleResponse;
   forgotPassword: Scalars['Boolean']['output'];
   login: UserResponse;
   logout: Scalars['Boolean']['output'];
   register: UserResponse;
+  updateArticle: Article;
 };
 
 
@@ -114,6 +126,11 @@ export type MutationRegisterArgs = {
   options: RegisterUserInput;
 };
 
+
+export type MutationUpdateArticleArgs = {
+  data: UpdateArticleInput;
+};
+
 export type Query = {
   __typename?: 'Query';
   articles: Array<Article>;
@@ -126,6 +143,14 @@ export type RegisterUserInput = {
   password: Scalars['String']['input'];
   role: Scalars['String']['input'];
   username: Scalars['String']['input'];
+};
+
+/** Update Article Data */
+export type UpdateArticleInput = {
+  id: Scalars['Float']['input'];
+  image?: InputMaybe<Scalars['String']['input']>;
+  text: Scalars['String']['input'];
+  title?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type User = {
@@ -160,6 +185,10 @@ export type RegularUserFragment = { __typename?: 'User', id: number, username: s
 
 export type RegularUserResponseFragment = { __typename?: 'UserResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, user?: { __typename?: 'User', id: number, username: string, email: string, role: UserRole } | null };
 
+export type RegularArticleFragment = { __typename?: 'Article', id: number, title: string, text: string, image: string, creatorId: number, createdAt: string, updatedAt: string };
+
+export type RegularArticleResponseFragment = { __typename?: 'ArticleResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, article: { __typename?: 'Article', id: number, title: string, text: string, image: string, creatorId: number, createdAt: string, updatedAt: string } };
+
 export type ChangePasswordMutationVariables = Exact<{
   token: Scalars['String']['input'];
   newPassword: Scalars['String']['input'];
@@ -167,6 +196,13 @@ export type ChangePasswordMutationVariables = Exact<{
 
 
 export type ChangePasswordMutation = { __typename?: 'Mutation', changePassword: { __typename?: 'UserResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, user?: { __typename?: 'User', id: number, username: string, email: string, role: UserRole } | null } };
+
+export type CreateArticleMutationVariables = Exact<{
+  data: AddArticleInput;
+}>;
+
+
+export type CreateArticleMutation = { __typename?: 'Mutation', createArticle: { __typename?: 'ArticleResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, article: { __typename?: 'Article', id: number, title: string, text: string, image: string, creatorId: number, createdAt: string, updatedAt: string } } };
 
 export type ForgotPasswordMutationVariables = Exact<{
   email: Scalars['String']['input'];
@@ -225,6 +261,28 @@ export const RegularUserResponseFragmentDoc = gql`
 }
     ${RegualarErrorFragmentDoc}
 ${RegularUserFragmentDoc}`;
+export const RegularArticleFragmentDoc = gql`
+    fragment RegularArticle on Article {
+  id
+  title
+  text
+  image
+  creatorId
+  createdAt
+  updatedAt
+}
+    `;
+export const RegularArticleResponseFragmentDoc = gql`
+    fragment RegularArticleResponse on ArticleResponse {
+  errors {
+    ...RegualarError
+  }
+  article {
+    ...RegularArticle
+  }
+}
+    ${RegualarErrorFragmentDoc}
+${RegularArticleFragmentDoc}`;
 export const ChangePasswordDocument = gql`
     mutation ChangePassword($token: String!, $newPassword: String!) {
   changePassword(token: $token, newPassword: $newPassword) {
@@ -259,6 +317,39 @@ export function useChangePasswordMutation(baseOptions?: Apollo.MutationHookOptio
 export type ChangePasswordMutationHookResult = ReturnType<typeof useChangePasswordMutation>;
 export type ChangePasswordMutationResult = Apollo.MutationResult<ChangePasswordMutation>;
 export type ChangePasswordMutationOptions = Apollo.BaseMutationOptions<ChangePasswordMutation, ChangePasswordMutationVariables>;
+export const CreateArticleDocument = gql`
+    mutation createArticle($data: AddArticleInput!) {
+  createArticle(data: $data) {
+    ...RegularArticleResponse
+  }
+}
+    ${RegularArticleResponseFragmentDoc}`;
+export type CreateArticleMutationFn = Apollo.MutationFunction<CreateArticleMutation, CreateArticleMutationVariables>;
+
+/**
+ * __useCreateArticleMutation__
+ *
+ * To run a mutation, you first call `useCreateArticleMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateArticleMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createArticleMutation, { data, loading, error }] = useCreateArticleMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useCreateArticleMutation(baseOptions?: Apollo.MutationHookOptions<CreateArticleMutation, CreateArticleMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateArticleMutation, CreateArticleMutationVariables>(CreateArticleDocument, options);
+      }
+export type CreateArticleMutationHookResult = ReturnType<typeof useCreateArticleMutation>;
+export type CreateArticleMutationResult = Apollo.MutationResult<CreateArticleMutation>;
+export type CreateArticleMutationOptions = Apollo.BaseMutationOptions<CreateArticleMutation, CreateArticleMutationVariables>;
 export const ForgotPasswordDocument = gql`
     mutation ForgotPassword($email: String!) {
   forgotPassword(email: $email)
