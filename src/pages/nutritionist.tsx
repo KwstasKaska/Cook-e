@@ -27,18 +27,18 @@ export const getServerSideProps = async (
   const { data: meData } = await client.query({
     query: MeDocument,
   });
-  if (!meData?.me) {
-    return {
-      redirect: {
-        destination: '/login?next=' + encodeURIComponent(context.req.url ?? ''),
-        permanent: false,
-      },
-    };
-  }
   if (meData.me.role !== 'NUTRITIONIST') {
     return {
       redirect: {
         destination: '/',
+        permanent: false,
+      },
+    };
+  }
+  if (!meData?.me) {
+    return {
+      redirect: {
+        destination: '/login?next=' + encodeURIComponent(context.req.url ?? ''),
         permanent: false,
       },
     };

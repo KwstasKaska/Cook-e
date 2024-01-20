@@ -103,7 +103,8 @@ const Login: NextPage = ({}) => {
                   router.push(router.query.next);
                 } else {
                   // worked
-                  router.push('/');
+                  const userRouter = response.data.login.user.role.toLowerCase();
+                  router.push(`/${userRouter}`);
                 }
               }
             }}

@@ -1,5 +1,5 @@
-mutation createArticle($data: AddArticleInput!) {
-  createArticle(data: $data) {
+mutation CreateArticle($picture: Upload!, $data: AddArticleInput!) {
+  createArticle(picture: $picture, data: $data) {
     ...RegularArticleResponse
   }
 }

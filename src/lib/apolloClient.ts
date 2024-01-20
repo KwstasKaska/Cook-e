@@ -1,17 +1,17 @@
 import { useMemo } from 'react';
 import {
   ApolloClient,
-  HttpLink,
   InMemoryCache,
   from,
   NormalizedCacheObject,
+  ApolloLink,
 } from '@apollo/client';
 import merge from 'deepmerge';
 import isEqual from 'lodash/isEqual';
 import { AppProps } from 'next/app';
 import { IncomingHttpHeaders } from 'http';
-
 export const APOLLO_STATE_PROP_NAME = '__APOLLO_STATE__';
+import createUploadLink from 'apollo-upload-client/createUploadLink.mjs';
 
 let apolloClient: ApolloClient<NormalizedCacheObject> | null = null;
 
@@ -27,15 +27,16 @@ const createApolloClient = (headers: IncomingHttpHeaders | null = null) => {
     }).then((response) => response);
   };
 
-  const httpLink = new HttpLink({
+  const httpLink = createUploadLink({
     uri: 'http://localhost:4000/graphql',
     credentials: 'include',
-    fetch: enhancedFetch,
+    fetch: enhancedFetch as any,
+    headers: { 'Apollo-Require-Preflight': 'true' },
   });
 
   return new ApolloClient({
     ssrMode: typeof window === 'undefined',
-    link: from([httpLink]),
+    link: from([httpLink as unknown as ApolloLink]),
     cache: new InMemoryCache({
       typePolicies: {
         Query: {

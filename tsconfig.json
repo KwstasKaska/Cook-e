@@ -1,8 +1,9 @@
 {
   "compilerOptions": {
-    "target": "ES6",
+    "target": "ES2017",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
+    "maxNodeModuleJsDepth": 10,
     "skipLibCheck": true,
     "strict": true,
     "noImplicitAny": true,
@@ -21,7 +22,10 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "incremental": true
+    "incremental": true,
+    "paths": {
+      "react": ["./node_modules/@types/react"]
+    }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]

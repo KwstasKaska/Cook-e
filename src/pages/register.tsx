@@ -70,22 +70,11 @@ const Register: NextPage = ({}) => {
               });
               if (response.data?.register.errors) {
                 setErrors(toErrorMap(response.data.register.errors));
-              } else if (
-                response.data?.register.user &&
-                response.data?.register.user?.role === 'NUTRITIONIST'
-              ) {
-                router.push('/nutritionist');
-              } else if (
-                response.data?.register.user &&
-                response.data?.register.user?.role === 'CHEF'
-              ) {
-                router.push('/chef');
-              } else if (
-                response.data?.register.user &&
-                response.data?.register.user?.role === 'USER'
-              ) {
-                router.push('/');
+              } else {
+                const userRouter = response.data?.register.user?.role.toLowerCase();
+                router.push(`/${userRouter}`);
               }
+                
             }}
           >
             {({ isSubmitting }) => (
