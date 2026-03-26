@@ -21,7 +21,7 @@ interface NutritionistProps {
 }
 
 export const getServerSideProps = async (
-  context: GetServerSidePropsContext
+  context: GetServerSidePropsContext,
 ) => {
   const client = initializeApollo({ headers: context.req.headers });
   const { data: meData } = await client.query({

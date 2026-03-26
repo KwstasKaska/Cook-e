@@ -1,97 +1,212 @@
-import { NextPage } from 'next';
-import Image from 'next/image';
-import Link from 'next/link';
-import Footer from '../../components/Users/Footer';
-import photo from '/public/images/myphoto.jpg';
+import React, { useState } from 'react';
 import Navbar from '../../components/Users/Navbar';
 
-const Settings: NextPage = () => {
+type SettingsTab =
+  | 'personal'
+  | 'notifications'
+  | 'general'
+  | 'payment'
+  | 'app'
+  | 'identity'
+  | 'allergies'
+  | 'diet';
+
+const TABS: { key: SettingsTab; label: string }[] = [
+  { key: 'personal', label: 'Προσωπικά Στοιχεία' },
+  { key: 'notifications', label: 'Ειδοποιήσεις' },
+  { key: 'general', label: 'Γενικές Ρυθμίσεις' },
+  { key: 'payment', label: 'Πληροφορίες Πληρωμής' },
+  { key: 'app', label: 'Πληροφορίες Εφαρμογής' },
+  { key: 'identity', label: 'Ταυτοποίηση' },
+  { key: 'allergies', label: 'Αλλεργίες και Ιατρικές Παθήσεις' },
+  { key: 'diet', label: 'Διατροφικές Συνήθειες' },
+];
+
+// Personal info panel
+const PersonalInfo = () => {
+  const [username, setUsername] = useState('Κώνσταντίνος Κασκαντίρης');
+  const [email, setEmail] = useState('kwstas@kwstas.com');
+  const [password, setPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [saved, setSaved] = useState(false);
+
+  const handleSave = () => {
+    setSaved(true);
+    setTimeout(() => setSaved(false), 2000);
+  };
+
   return (
-    <div className="flex min-h-screen flex-col">
-      <Navbar />
+    <div className="flex flex-col gap-6">
+      <div>
+        <h2 className="text-xl font-bold text-myGrey-200 md:text-2xl">
+          Προσωπικά Στοιχεία
+        </h2>
+        <p className="mt-1 text-sm text-gray-500">
+          Ανανεώστε την εικόνα προφίλ σας και τα προσωπικά σας στοιχεία
+        </p>
+      </div>
 
-      <main className="container  w-full py-6 md:mx-auto md:grid md:max-w-[1268px] md:grid-cols-2 md:gap-8">
-        <section className="mx-auto  max-w-[20em] rounded-[3em]  bg-myBlue-100 pt-[4em] pb-[10em]  shadow-2xl drop-shadow-2xl md:mx-0  md:my-[4em]">
-          <div className="grid justify-items-center gap-5">
-            <h1 className="font-exo text-2xl font-bold lg:text-3xl">
-              Ρυθμίσεις
-            </h1>
-            <ul className="flex cursor-pointer flex-col gap-4 font-source text-lg font-normal lg:text-2xl">
-              <li>
-                <Link href="">Προσωπικά στοιχεία</Link>
-              </li>
-              <li>
-                <Link href="">Ιατρικά στοιχεία</Link>
-              </li>
-              <li>
-                <Link href="">Διατροφικές συνήθειες</Link>
-              </li>
-              <li>
-                <Link href="">Ειδοποιήσεις</Link>
-              </li>
-              <li>
-                <Link href="">Πληροφορίες πληρωμής</Link>
-              </li>
-              <li>
-                <Link href="">Πληροφορίες εφαρμογής</Link>
-              </li>
-            </ul>
-          </div>
-        </section>
+      {/* Avatar upload */}
+      <div className="flex items-center gap-4">
+        <div className="flex h-20 w-20 items-center justify-center rounded-full bg-myBlue-200 text-3xl font-bold text-white">
+          Κ
+        </div>
+        <button className="rounded-full border-2 border-myBlue-200 px-4 py-2 text-sm font-bold text-myBlue-200 transition hover:bg-myBlue-200 hover:text-white">
+          Αλλαγή φωτογραφίας
+        </button>
+      </div>
 
-        <section className="hidden md:my-[4em] md:block  md:max-w-[35em]  md:justify-self-end  md:rounded-[3em]  md:bg-myGrey-100 md:px-4 md:shadow-2xl  md:drop-shadow-2xl">
-          <div className="grid grid-cols-2 grid-rows-2 items-center justify-items-center py-5">
-            <Image
-              src={photo}
-              alt={'profile picture'}
-              className="md:row-span-2 md:max-h-[5em] md:max-w-[5em] md:rounded-full md:border-4  md:border-white md:object-cover md:object-top lg:max-h-[7em] lg:max-w-[7em] "
-              priority
-            ></Image>
-            <h1 className="justify-self-start font-exo text-lg font-bold lg:text-xl">
-              Προσωπικά στοιχεία
-            </h1>
-            <p className="max-w-[80%] justify-self-start font-source text-sm font-normal lg:text-base">
-              Ανανέωσε την εικόνα προφίλ σου και τα προσωπικά σου στοιχεία
-            </p>
-          </div>
-          <form className="grid grid-flow-row justify-center  gap-3 text-lg">
-            <span className="grid grid-cols-2  items-center">
-              <label htmlFor="">Όνομα χρήστη</label>
-              <input type="text" />
-            </span>
+      {/* Form */}
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div className="md:col-span-2">
+          <label className="mb-1 block text-sm font-bold text-myGrey-200">
+            Όνομα Χρήστη
+          </label>
+          <input
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            className="w-full rounded-xl border-2 border-myGrey-100 px-4 py-2 text-sm text-myGrey-200 focus:border-myBlue-200 focus:outline-none"
+          />
+        </div>
+        <div>
+          <label className="mb-1 block text-sm font-bold text-myGrey-200">
+            Κωδικός
+          </label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Τρέχων κωδικός"
+            className="w-full rounded-xl border-2 border-myGrey-100 px-4 py-2 text-sm text-myGrey-200 focus:border-myBlue-200 focus:outline-none"
+          />
+        </div>
+        <div>
+          <label className="mb-1 block text-sm font-bold text-myGrey-200">
+            Νέος Κωδικός
+          </label>
+          <input
+            type="password"
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+            placeholder="Νέος κωδικός"
+            className="w-full rounded-xl border-2 border-myGrey-100 px-4 py-2 text-sm text-myGrey-200 focus:border-myBlue-200 focus:outline-none"
+          />
+        </div>
+        <div className="md:col-span-2">
+          <label className="mb-1 block text-sm font-bold text-myGrey-200">
+            Email
+          </label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full rounded-xl border-2 border-myGrey-100 px-4 py-2 text-sm text-myGrey-200 focus:border-myBlue-200 focus:outline-none"
+          />
+        </div>
+      </div>
 
-            <span className="grid grid-cols-2  items-center">
-              <label htmlFor="">Κωδικός</label>
-              <input type="text" />
-            </span>
-
-            <span className="grid grid-cols-2  items-center">
-              <label htmlFor="">Νέος κωδικός</label>
-              <input type="text" />
-            </span>
-
-            <span className="grid grid-cols-2  items-center">
-              <label htmlFor="">Επανάληψη νέου κωδικού</label>
-              <input type="password" />
-            </span>
-
-            <span className="grid grid-cols-2  items-center">
-              <label htmlFor="">Email</label>
-              <input type="email" />
-            </span>
-
-            <button
-              type="submit"
-              className="mt-[.75em] mb-4 w-[40%] justify-self-center rounded-[5px] bg-myBlue-100 py-[.5em]"
-            >
-              Αποθήκευση
-            </button>
-          </form>
-        </section>
-      </main>
-      <Footer />
+      <button
+        onClick={handleSave}
+        className={`w-fit rounded-full px-8 py-2 text-sm font-bold transition ${
+          saved
+            ? 'bg-green-500 text-white'
+            : 'bg-myBlue-200 text-white hover:scale-105 hover:bg-myBlue-100'
+        }`}
+      >
+        {saved ? 'Αποθηκεύτηκε!' : 'Αποθήκευση'}
+      </button>
     </div>
   );
 };
 
-export default Settings;
+// Placeholder for other tabs
+const PlaceholderPanel = ({ label }: { label: string }) => (
+  <div className="flex flex-col gap-4">
+    <h2 className="text-xl font-bold text-myGrey-200 md:text-2xl">{label}</h2>
+    <div className="rounded-2xl border-2 border-dashed border-myGrey-100 p-10 text-center">
+      <p className="text-sm text-gray-400">Σύντομα διαθέσιμο.</p>
+    </div>
+  </div>
+);
+
+export default function SettingsPage() {
+  const [activeTab, setActiveTab] = useState<SettingsTab>('personal');
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  const activeLabel = TABS.find((t) => t.key === activeTab)?.label ?? '';
+
+  return (
+    <div className="flex min-h-screen flex-col">
+      <Navbar />
+
+      <main className="flex-1 bg-myGrey-100 py-14">
+        <div className="container mx-auto max-w-5xl">
+          <h1 className="mb-8 text-2xl font-bold text-myGrey-200 md:text-3xl">
+            Ρυθμίσεις
+          </h1>
+
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-[240px_1fr]">
+            {/* Sidebar */}
+            <div className="rounded-2xl bg-white p-4 shadow-3xl">
+              {/* Mobile: show/hide */}
+              <button
+                onClick={() => setMobileOpen(!mobileOpen)}
+                className="mb-2 flex w-full items-center justify-between md:hidden"
+              >
+                <span className="text-sm font-bold text-myBlue-200">
+                  {activeLabel}
+                </span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  className={`h-5 w-5 text-myGrey-200 transition ${
+                    mobileOpen ? 'rotate-180' : ''
+                  }`}
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M12.53 16.28a.75.75 0 01-1.06 0l-7.5-7.5a.75.75 0 011.06-1.06L12 14.69l6.97-6.97a.75.75 0 111.06 1.06l-7.5 7.5z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </button>
+
+              <ul
+                className={`flex flex-col gap-1 ${
+                  mobileOpen ? 'block' : 'hidden md:flex'
+                }`}
+              >
+                {TABS.map((tab) => (
+                  <li key={tab.key}>
+                    <button
+                      onClick={() => {
+                        setActiveTab(tab.key);
+                        setMobileOpen(false);
+                      }}
+                      className={`w-full rounded-lg px-3 py-2 text-left text-sm transition md:text-base ${
+                        activeTab === tab.key
+                          ? 'bg-myBlue-100 font-bold text-myBlue-200'
+                          : 'text-myGrey-200 hover:bg-myGrey-100'
+                      }`}
+                    >
+                      {tab.label}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Content panel */}
+            <div className="rounded-2xl bg-white p-6 shadow-3xl">
+              {activeTab === 'personal' && <PersonalInfo />}
+              {activeTab !== 'personal' && (
+                <PlaceholderPanel label={activeLabel} />
+              )}
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  );
+}

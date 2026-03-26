@@ -71,10 +71,10 @@ const Register: NextPage = ({}) => {
               if (response.data?.register.errors) {
                 setErrors(toErrorMap(response.data.register.errors));
               } else {
-                const userRouter = response.data?.register.user?.role.toLowerCase();
+                const userRouter =
+                  response.data?.register.user?.role.toLowerCase();
                 router.push(`/${userRouter}`);
               }
-                
             }}
           >
             {({ isSubmitting }) => (
@@ -82,7 +82,7 @@ const Register: NextPage = ({}) => {
                 <Field
                   className="w-[88%] border-none shadow-xl   "
                   type="text"
-                  placeholder="Όνομα Χρήστη"
+                  placeholder="Ονοματεπώνυμο"
                   name="username"
                 />
                 <ErrorMessage

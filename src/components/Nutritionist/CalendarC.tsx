@@ -8,6 +8,7 @@ import dynamic from 'next/dynamic';
 
 import { format } from 'date-fns';
 import { el } from 'date-fns/locale';
+import { Value } from 'react-calendar/dist/cjs/shared/types';
 
 import { ClientsContextType, DateContext } from '../Context';
 import SliderAppointments from './Helper/SliderAppointments';
@@ -26,7 +27,7 @@ export type Appointment = InputHTMLAttributes<HTMLInputElement> & {
 
 export const fakeAppointments: Appointment[] = [
   {
-    date: '11-Μαρτίου-2023',
+    date: '12-Ιουλίου-2025',
     profile: require('/public/images/myphoto.jpg'),
     fullname: 'John Doe',
     time: '12:00-13:00',
@@ -35,7 +36,7 @@ export const fakeAppointments: Appointment[] = [
     telephone: '432442626232',
   },
   {
-    date: '11-Μαρτίου-2023',
+    date: '11-Ιουλίου-2025',
     profile: require('/public/images/myphoto.jpg'),
     fullname: 'Κωνσταντίνος Κασκαντιρης',
     time: '13:00-14:00',
@@ -43,7 +44,7 @@ export const fakeAppointments: Appointment[] = [
     telephone: '432442626232',
   },
   {
-    date: '24-Μαρτίου-2023',
+    date: '12-Ιουλίου-2025',
     profile: require('/public/images/myphoto.jpg'),
     fullname: 'Bob Johnson',
     time: '15:00-17:00',
@@ -51,7 +52,7 @@ export const fakeAppointments: Appointment[] = [
     telephone: '432442626233',
   },
   {
-    date: '12-Μαρτίου-2023',
+    date: '12-Ιουλίου-2025',
     profile: require('/public/images/myphoto.jpg'),
     fullname: 'Bob Johnson',
     time: '15:00-17:00',
@@ -59,7 +60,7 @@ export const fakeAppointments: Appointment[] = [
     telephone: '432442626236',
   },
   {
-    date: '11-Μαρτίου-2023',
+    date: '13-Ιουλίου-2025',
     profile: require('/public/images/myphoto.jpg'),
     fullname: 'Bob Johnson',
     time: '15:00-17:00',
@@ -67,7 +68,7 @@ export const fakeAppointments: Appointment[] = [
     telephone: '432442626287',
   },
   {
-    date: '13-Μαρτίου-2023',
+    date: '12-Ιουλίου-2025',
     profile: require('/public/images/myphoto.jpg'),
     fullname: 'Bob Johnson',
     time: '15:00-17:00',
@@ -75,7 +76,7 @@ export const fakeAppointments: Appointment[] = [
     telephone: '432442626298',
   },
   {
-    date: '16-Μαρτίου-2023',
+    date: '12-Ιουλίου-2025',
     profile: require('/public/images/myphoto.jpg'),
     fullname: 'Bob Johnson',
     time: '15:00-17:00',
@@ -83,7 +84,7 @@ export const fakeAppointments: Appointment[] = [
     telephone: '4324426262233',
   },
   {
-    date: '11-Μαρτίου-2023',
+    date: '12-Ιουλίου-2025',
     profile: require('/public/images/myphoto.jpg'),
     fullname: 'Bob Johnson',
     time: '15:00-17:00',
@@ -93,7 +94,7 @@ export const fakeAppointments: Appointment[] = [
 ];
 
 const CalendarC: React.FC = () => {
-  const [value, onChange] = useState<Date>(new Date());
+  const [value, setValue] = useState<Value>(new Date());
   const [isShowCalendar, setIsShowCalendar] = useState<boolean>(true);
   const [clients, setClients] = useState<Appointment[]>([]);
   const [isClient, setIsClient] = useState<boolean>(false);
@@ -109,17 +110,30 @@ const CalendarC: React.FC = () => {
     handleApply();
   }, [selectedDate]);
 
+  const handleDateChange = (val: Value) => {
+    if (val instanceof Date) {
+      setValue(val);
+    } else if (Array.isArray(val)) {
+      // val is [Date | null, Date | null]
+      setValue(val[0]); // or keep full range if you want
+    } else {
+      setValue(null);
+    }
+  };
+
   // My button functions
 
   const handleCancel = () => {
     setSelectedDate('');
-    onChange(new Date());
+    setValue(new Date());
   };
 
   const handleApply = () => {
+    if (!(value instanceof Date)) return;
+
     const formattedDate = format(value, 'dd-MMMM-yyyy', { locale: el });
     const filteredClients = fakeAppointments.filter(
-      (appointment) => appointment.date === formattedDate
+      (appointment) => appointment.date === formattedDate,
     );
     setClients(filteredClients);
     setSelectedDate(formattedDate);
@@ -132,7 +146,7 @@ const CalendarC: React.FC = () => {
     e.preventDefault();
 
     const element = e.currentTarget.elements.namedItem(
-      'time'
+      'time',
     ) as HTMLInputElement;
     const value = element.value;
 
@@ -146,7 +160,7 @@ const CalendarC: React.FC = () => {
   };
 
   const handleLoadMore = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
     e.preventDefault();
     setStart(start + 4);
@@ -167,7 +181,8 @@ const CalendarC: React.FC = () => {
       <div className="mx-auto  w-full  md:grid md:grid-cols-2  md:items-center md:justify-evenly md:gap-4 md:px-3">
         <div className="flex flex-col  items-center gap-4  pt-16 lg:gap-10 xl:mt-16 xl:gap-20">
           <DynamicCalendar
-            onChange={onChange}
+            onChange={handleDateChange}
+            value={value}
             className="lg:mt-12  lg:scale-125 xl:scale-150"
           />
           <div className="mt-3 space-x-4 lg:scale-125 ">
@@ -261,7 +276,7 @@ const CalendarC: React.FC = () => {
                             </li>
                           ))}
                         </ul>
-                      )
+                      ),
                     )}
                     <div className="mx-2 flex flex-row gap-2">
                       {start > 0 && (
