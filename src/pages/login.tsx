@@ -62,7 +62,7 @@ const Login: NextPage = ({}) => {
 
       {/* Εδώ βρίσκεται το section με την φόρμα εισαγωγής στοιχείων και τα κέιμενα, δηλαδή το δεξιά section. */}
 
-      <section className="md:flex md:flex-1 md:flex-col md:justify-center  md:bg-myBlue-100">
+      <section className="flex flex-1 flex-col items-center justify-center bg-myBlue-100 md:items-start">
         <div
           ref={div1Ref}
           className="relative grid h-fit  max-w-[350px]  grid-flow-row  justify-items-center gap-[1.5em] rounded-[1.5625em] border-[5px] border-myBlue-200 bg-myBlue-200 py-6 md:w-full md:max-w-[600px]  md:rounded-r-[3.125rem] md:rounded-l-[0px] lg:border-none"
@@ -103,7 +103,8 @@ const Login: NextPage = ({}) => {
                   router.push(router.query.next);
                 } else {
                   // worked
-                  const userRouter = response.data.login.user.role.toLowerCase();
+                  const userRouter =
+                    response.data.login.user.role.toLowerCase();
                   router.push(`/${userRouter}`);
                 }
               }
@@ -136,7 +137,7 @@ const Login: NextPage = ({}) => {
                   Είσοδος
                 </button>
                 <Link
-                  className="justify-self-center font-source text-base font-normal underline md:text-xl "
+                  className="justify-self-center font-source text-sm font-normal underline md:text-xl "
                   href="/forgot-password"
                 >
                   Ξέχασες τον κωδικό;
@@ -145,10 +146,10 @@ const Login: NextPage = ({}) => {
             )}
           </Formik>
 
-          <p className="mt-[2em]  font-source text-base md:text-xl  ">
-            Δεν έχεις ακόμα λογαριασμό;
+          <p className="mt-[2em]  font-source text-base md:text-xl text-center">
+            Δεν έχεις ακόμα λογαριασμό;{' '}
             <Link
-              className=" block text-center font-source text-base font-bold underline md:text-xl "
+              className="font-source text-base font-bold underline"
               href="/register"
             >
               Δημιούργησε έναν

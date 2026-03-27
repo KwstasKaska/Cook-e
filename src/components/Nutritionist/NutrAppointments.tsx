@@ -7,7 +7,9 @@ import { useEffect, useState } from 'react';
 interface NutrAppointmentsProps {}
 
 const NutrAppointments: React.FC<NutrAppointmentsProps> = ({}) => {
-  const [showBackground, setShowBackground] = useState<boolean>(true);
+  const [showBackground, setShowBackground] = useState<boolean>(
+    typeof window !== 'undefined' ? window.innerWidth < 1279 : true,
+  );
 
   useEffect(() => {
     function handleResize() {

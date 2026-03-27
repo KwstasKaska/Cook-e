@@ -24,7 +24,6 @@ function SampleArrow(props: any) {
   );
 }
 
-// my Slider function settings
 var settingsCalendar: Settings = {
   dots: true,
   infinite: true,
@@ -46,10 +45,11 @@ var settingsCalendar: Settings = {
 const SliderAppointments: React.FC<SliderAppointmentsProps> = ({}) => {
   const { clients } = useContext(ClientsContextType);
   const { selectedDate } = useContext(DateContext);
-  const [isInfo, setIsInfo] = useState<boolean>(true);
 
-  const handleClick = () => {
-    setIsInfo(!isInfo);
+  const [expandedCardKey, setExpandedCardKey] = useState<string | null>(null);
+
+  const handleClick = (key: string) => {
+    setExpandedCardKey((prev) => (prev === key ? null : key));
   };
 
   return (
@@ -62,11 +62,14 @@ const SliderAppointments: React.FC<SliderAppointmentsProps> = ({}) => {
       ) : (
         <div className=" lg:mt-16 lg:scale-125 xl:mt-16 ">
           <Slider {...settingsCalendar}>
-            {clients.map(
-              (client) =>
+            {clients.map((client) => {
+              const cardKey = client.telephone as string;
+              const isInfo = expandedCardKey !== cardKey;
+
+              return (
                 selectedDate && (
                   <div
-                    key={`${selectedDate}_${client.fullname}`}
+                    key={`${selectedDate}_${cardKey}`}
                     className="max-w-[17em] rounded-xl border-2 border-myBlue-200 "
                   >
                     {isInfo ? (
@@ -88,8 +91,7 @@ const SliderAppointments: React.FC<SliderAppointmentsProps> = ({}) => {
                             <p className="text-center text-base font-bold">
                               {client.fullname}
                             </p>
-
-                            <button onClick={handleClick}>
+                            <button onClick={() => handleClick(cardKey)}>
                               <Image
                                 src={info}
                                 alt={''}
@@ -110,7 +112,7 @@ const SliderAppointments: React.FC<SliderAppointmentsProps> = ({}) => {
                     ) : (
                       <div className=" h-full rounded-t-xl">
                         <div className="relative rounded-t-md rounded-br-[5em] bg-myBlue-200 pb-32 text-lg font-normal text-white">
-                          <button onClick={handleClick}>
+                          <button onClick={() => handleClick(cardKey)}>
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
                               viewBox="0 0 24 24"
@@ -171,7 +173,8 @@ const SliderAppointments: React.FC<SliderAppointmentsProps> = ({}) => {
                     )}
                   </div>
                 )
-            )}
+              );
+            })}
           </Slider>
         </div>
       )}

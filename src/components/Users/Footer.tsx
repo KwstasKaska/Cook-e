@@ -2,52 +2,54 @@ import React from 'react';
 
 const Footer: React.FC = ({}) => {
   return (
-    <footer className="mt-auto  w-full  bg-myGrey-200  py-[4em]">
-      <div className="grid w-full  max-w-[1268px] grid-flow-row gap-8 md:mx-auto md:grid-cols-2">
-        <div className="grid grid-flow-row justify-center gap-4 md:grid-cols-2 md:grid-rows-2 md:justify-items-center">
-          <h3 className="col-span-2 text-lg font-normal text-white">
-            Find us on social media
-          </h3>
-          <div className="cursor-pointer">
-            {/* <span>
-            <Image src={''} alt={'Instagram'}></Image>
-          </span>
-          <span>
-            <Image src={''} alt={'Facebook'}></Image>
-          </span>
-          <span>
-            <Image src={''} alt={'Linkedln'}></Image>
-          </span>
-          <span>
-            <Image src={''} alt={'TikTok'}></Image>
-          </span> */}
+    <footer
+      style={{
+        backgroundColor: '#3F4756',
+        borderTop: '1px solid rgba(255,255,255,0.1)',
+      }}
+      className="px-8 py-10 md:px-16"
+    >
+      <div className="flex flex-col gap-8 md:flex-row md:justify-between">
+        <div>
+          <p className="mb-4 text-sm font-semibold text-white">
+            Find Us on Social Media
+          </p>
+          <div className="grid grid-cols-2 gap-3">
+            {['', '', '', ''].map((icon, i) => (
+              <button
+                key={i}
+                className="text-2xl hover:scale-110 transition-transform"
+              >
+                {icon}
+              </button>
+            ))}
           </div>
         </div>
-        <div className="text-lg font-normal text-white">
-          <ul className="grid cursor-pointer grid-flow-row justify-items-center gap-2 md:grid-cols-2 md:grid-rows-3 md:gap-0">
-            <h1 className="col-span-2 mb-[1.5em]">Χρήσιμες πληροφορίες</h1>
-            <li>
-              <a href="">Ρυθμίσεις</a>
-            </li>
-            <li>
-              <a href="">Ποιοί είμαστε</a>
-            </li>
-
-            <li>
-              <a href="">Επικοινωνία</a>
-            </li>
-            <li>
-              <a href="">Συχνές ερωτήσεις</a>
-            </li>
-            <li>
-              <a href="">Όροι χρήσης</a>
-            </li>
-            <li>
-              <a href="">Πολιτική απορρήτου</a>
-            </li>
-          </ul>
+        <div>
+          <p className="mb-4 text-sm font-semibold text-white">
+            Χρήσιμες Πληροφορίες
+          </p>
+          <div className="grid grid-cols-2 gap-x-12 gap-y-2">
+            {[
+              'Ρυθμίσεις',
+              'Επικοινωνία',
+              'Συχνές ερωτήσεις',
+              'Όροι Χρήσης',
+              'Πολιτική Απορρήτου',
+              'Ποιοί είμαστε',
+            ].map((link) => (
+              <a
+                key={link}
+                href="#"
+                className="text-sm text-gray-300 hover:text-white transition-colors"
+              >
+                {link}
+              </a>
+            ))}
+          </div>
         </div>
       </div>
+      <p className="mt-8 text-center text-xs text-gray-400"></p>
     </footer>
   );
 };

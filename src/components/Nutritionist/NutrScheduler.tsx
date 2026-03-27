@@ -30,8 +30,9 @@ const NutrScheduler: React.FC<NutrSchedulerProps> = ({}) => {
   const [cellInfo, setCellInfo] = useState<CellInfo>({});
 
   // A function that
-  const handleSubmit = (event: React.FormEvent<HTMLButtonElement>) => {
+  const handleSubmit = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
+    // TODO: connect to GraphQL mutation to persist the schedule
   };
 
   // A function in order to toggle my table for phone screen media
@@ -95,7 +96,7 @@ const NutrScheduler: React.FC<NutrSchedulerProps> = ({}) => {
               </div>
 
               <button
-                type="submit"
+                type="button"
                 onClick={handleTogglePreview}
                 className="mx-auto mt-4 block  rounded-md border-2 border-myRed py-1 px-10 font-bold   text-black hover:scale-110 hover:bg-myRed hover:font-bold  hover:text-white hover:shadow-3xl md:px-20  md:text-xl lg:px-40 lg:text-2xl  "
               >
@@ -111,7 +112,7 @@ const NutrScheduler: React.FC<NutrSchedulerProps> = ({}) => {
             <Accordion />
             <div className="mx-auto my-8 flex w-full flex-col items-center justify-center lg:my-10">
               <button
-                type="submit"
+                type="button"
                 onSubmit={handleSubmit}
                 className="mx-auto  block  rounded-md border-2 border-myBlue-200 bg-myBlue-200 px-28 py-2 font-bold  text-white hover:scale-110  hover:font-bold  hover:shadow-3xl md:mx-6 md:px-40 md:text-lg lg:px-60  lg:text-2xl "
               >

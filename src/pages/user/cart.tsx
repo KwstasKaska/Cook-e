@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
+import ScrollToTopButton from '../../components/Helper/ScrollToTopButton';
 import Navbar from '../../components/Users/Navbar';
 
-import ScrollToTopButton from '../../components/Helper/ScrollToTopButton';
-
-interface CartItem {
+// ── Type ─────────────────────────────────────────────────────────────────────
+type CartItem = {
   id: number;
   name: string;
   emoji: string;
   weightGrams: number;
   checked: boolean;
-}
+};
 
+// ── Fake data ────────────────────────────────────────────────────────────────
 const INITIAL_ITEMS: CartItem[] = [
   { id: 1, name: 'Τομάτες', emoji: '🍅', weightGrams: 300, checked: true },
   { id: 2, name: 'Κρεμμύδια', emoji: '🧅', weightGrams: 150, checked: false },
@@ -67,39 +68,50 @@ export default function CartPage() {
   const checkedCount = items.filter((i) => i.checked).length;
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="min-h-screen" style={{ backgroundColor: '#3F4756' }}>
       <Navbar />
 
-      <main className="flex-1 bg-white py-14">
-        <div className="container mx-auto max-w-2xl">
-          <h2 className="mb-2 text-center text-2xl font-bold text-myGrey-200 md:text-3xl xl:text-4xl">
+      {/* ── Diagonal split background ── */}
+      <div className="relative overflow-hidden min-h-screen">
+        <div
+          className="absolute bottom-0 left-0 w-full bg-white"
+          style={{
+            height: '80%',
+            clipPath: 'polygon(0 12%, 100% 0%, 100% 100%, 0% 100%)',
+          }}
+        />
+
+        <div className="relative z-10 max-w-2xl mx-auto px-6 pt-14 pb-20">
+          {/* Heading */}
+          <h2 className="text-white text-3xl md:text-4xl font-bold text-center mb-1">
             Το Καλάθι Μου
           </h2>
-          <p className="mb-8 text-center text-xs text-gray-400 md:text-sm">
+          <p className="text-gray-300 text-sm text-center mb-10">
             Λίστα αγορών για το σούπερ μάρκετ. Επιλέξτε αυτά που έχετε ήδη.
           </p>
 
           {/* Add item */}
-          <div className="mb-6 flex gap-2">
+          <div className="flex gap-2 mb-6">
             <input
               type="text"
               value={newItem}
               onChange={(e) => setNewItem(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && addItem()}
               placeholder="Προσθήκη υλικού..."
-              className="flex-1 rounded-xl border-2 border-myGrey-100 px-4 py-2 text-sm text-myGrey-200 placeholder-gray-400 focus:border-myBlue-200 focus:outline-none md:text-base"
+              className="flex-1 rounded-xl border-2 border-gray-200 px-4 py-2 text-sm text-gray-700 placeholder-gray-400 focus:border-myBlue-200 focus:outline-none"
             />
             <button
               onClick={addItem}
-              className="rounded-xl bg-myBlue-200 px-4 py-2 text-sm font-bold text-white transition hover:scale-105 hover:bg-myBlue-100"
+              className="rounded-xl px-4 py-2 text-sm font-bold text-white transition hover:scale-105"
+              style={{ backgroundColor: '#377CC3' }}
             >
               +
             </button>
           </div>
 
           {items.length === 0 ? (
-            <div className="rounded-2xl border-2 border-dashed border-myGrey-100 p-10 text-center">
-              <p className="text-myGrey-200">Το καλάθι σου είναι άδειο.</p>
+            <div className="rounded-2xl border-2 border-dashed border-gray-200 p-10 text-center bg-white">
+              <p className="text-gray-500">Το καλάθι σου είναι άδειο.</p>
             </div>
           ) : (
             <>
@@ -108,20 +120,24 @@ export default function CartPage() {
                 {items.map((item) => (
                   <div
                     key={item.id}
-                    className={`flex items-center gap-3 rounded-2xl border-2 px-3 py-3 transition ${
-                      item.checked
-                        ? 'border-myBlue-100 bg-myBlue-100 bg-opacity-20'
-                        : 'border-myGrey-100'
-                    }`}
+                    className="flex items-center gap-3 rounded-2xl border-2 px-3 py-3 bg-white transition"
+                    style={{
+                      borderColor: item.checked ? '#B3D5F8' : '#EAEAEA',
+                      backgroundColor: item.checked
+                        ? 'rgba(179,213,248,0.15)'
+                        : 'white',
+                    }}
                   >
                     {/* Checkbox */}
                     <button
                       onClick={() => toggle(item.id)}
-                      className={`flex h-5 w-5 flex-shrink-0 items-center justify-center rounded border-2 transition ${
-                        item.checked
-                          ? 'border-myBlue-200 bg-myBlue-200'
-                          : 'border-myGrey-200 bg-transparent'
-                      }`}
+                      className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded border-2 transition"
+                      style={{
+                        borderColor: item.checked ? '#377CC3' : '#3F4756',
+                        backgroundColor: item.checked
+                          ? '#377CC3'
+                          : 'transparent',
+                      }}
                     >
                       {item.checked && (
                         <svg
@@ -141,25 +157,40 @@ export default function CartPage() {
                     </button>
 
                     {/* Emoji */}
-                    <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-myGrey-100 text-xl">
+                    <div
+                      className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full text-xl"
+                      style={{ backgroundColor: '#EAEAEA' }}
+                    >
                       {item.emoji}
                     </div>
 
                     {/* Name + weight */}
                     <div className="flex-1 min-w-0">
                       <p
-                        className={`truncate text-sm font-bold md:text-base ${
-                          item.checked
-                            ? 'text-gray-400 line-through'
-                            : 'text-myGrey-200'
-                        }`}
+                        className="truncate text-sm font-bold md:text-base"
+                        style={{
+                          color: item.checked ? '#9CA3AF' : '#3F4756',
+                          textDecoration: item.checked
+                            ? 'line-through'
+                            : 'none',
+                        }}
                       >
                         {item.name}
                       </p>
                       <div className="mt-1 flex items-center gap-1">
                         <button
                           onClick={() => dec(item.id)}
-                          className="flex h-5 w-5 items-center justify-center rounded-full bg-myGrey-100 text-xs font-bold text-myGrey-200 hover:bg-myRed hover:text-white transition"
+                          className="flex h-5 w-5 items-center justify-center rounded-full text-xs font-bold transition hover:text-white"
+                          style={{
+                            backgroundColor: '#EAEAEA',
+                            color: '#3F4756',
+                          }}
+                          onMouseEnter={(e) =>
+                            (e.currentTarget.style.backgroundColor = '#ED5B5B')
+                          }
+                          onMouseLeave={(e) =>
+                            (e.currentTarget.style.backgroundColor = '#EAEAEA')
+                          }
                         >
                           −
                         </button>
@@ -168,7 +199,17 @@ export default function CartPage() {
                         </span>
                         <button
                           onClick={() => inc(item.id)}
-                          className="flex h-5 w-5 items-center justify-center rounded-full bg-myGrey-100 text-xs font-bold text-myGrey-200 hover:bg-myBlue-200 hover:text-white transition"
+                          className="flex h-5 w-5 items-center justify-center rounded-full text-xs font-bold transition hover:text-white"
+                          style={{
+                            backgroundColor: '#EAEAEA',
+                            color: '#3F4756',
+                          }}
+                          onMouseEnter={(e) =>
+                            (e.currentTarget.style.backgroundColor = '#377CC3')
+                          }
+                          onMouseLeave={(e) =>
+                            (e.currentTarget.style.backgroundColor = '#EAEAEA')
+                          }
                         >
                           +
                         </button>
@@ -178,7 +219,7 @@ export default function CartPage() {
                     {/* Remove */}
                     <button
                       onClick={() => remove(item.id)}
-                      className="flex-shrink-0 text-gray-300 hover:text-myRed transition"
+                      className="flex-shrink-0 text-gray-300 transition hover:text-red-400"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -198,18 +239,33 @@ export default function CartPage() {
               </div>
 
               {/* Footer */}
-              <div className="mt-6 flex items-center justify-between border-t-2 border-myGrey-100 pt-5">
+              <div
+                className="mt-6 flex items-center justify-between border-t-2 pt-5"
+                style={{ borderColor: '#EAEAEA' }}
+              >
                 <p className="text-sm text-gray-400">
                   {checkedCount}/{items.length} αντικείμενα
                 </p>
                 <button
                   onClick={clearChecked}
                   disabled={checkedCount === 0}
-                  className={`rounded-full border-2 px-5 py-2 text-sm font-bold transition ${
-                    checkedCount > 0
-                      ? 'border-myRed text-myRed hover:bg-myRed hover:text-white'
-                      : 'border-myGrey-100 text-gray-300 cursor-not-allowed'
-                  }`}
+                  className="rounded-full border-2 px-5 py-2 text-sm font-bold transition"
+                  style={{
+                    borderColor: checkedCount > 0 ? '#ED5B5B' : '#EAEAEA',
+                    color: checkedCount > 0 ? '#ED5B5B' : '#9CA3AF',
+                    cursor: checkedCount > 0 ? 'pointer' : 'not-allowed',
+                  }}
+                  onMouseEnter={(e) => {
+                    if (checkedCount > 0) {
+                      e.currentTarget.style.backgroundColor = '#ED5B5B';
+                      e.currentTarget.style.color = 'white';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = 'transparent';
+                    e.currentTarget.style.color =
+                      checkedCount > 0 ? '#ED5B5B' : '#9CA3AF';
+                  }}
                 >
                   Καθαρισμός επιλεγμένων
                 </button>
@@ -217,7 +273,7 @@ export default function CartPage() {
             </>
           )}
         </div>
-      </main>
+      </div>
 
       <ScrollToTopButton />
     </div>

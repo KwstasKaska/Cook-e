@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-// import settings from '/public/images/settings.svg';
 import logo from '/public/images/logo.png';
 import Link from 'next/link';
 import { useLogoutMutation, useMeQuery } from '../../generated/graphql';
@@ -119,7 +118,7 @@ const NutrNavbar: React.FC = () => {
           <ul
             className={` ${
               isToggle ? 'flex max-w-[1268px] ' : 'flex flex-col  '
-            } cursor-pointer items-center gap-4 text-xl font-bold  text-myGrey-200 md:text-base  lg:gap-12 xl:text-2xl`}
+            } cursor-pointer items-center gap-4 text-sm font-semibold text-myGrey-200 lg:gap-12`}
           >
             <li className="">
               <a onClick={() => handleLinkClick('section_1')}>Άρθρα</a>
@@ -136,6 +135,35 @@ const NutrNavbar: React.FC = () => {
               <a onClick={() => handleLinkClick('section_4')} className="">
                 Προγραμματισμός διατροφών
               </a>
+            </li>
+
+            {/* Settings icon */}
+            <li>
+              <Link
+                href="/settings"
+                className="flex items-center justify-center hover:text-myBlue-200 transition-colors"
+                title="Ρυθμίσεις"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={1.8}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+                  />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                  />
+                </svg>
+              </Link>
             </li>
 
             {body}

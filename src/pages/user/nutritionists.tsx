@@ -1,448 +1,519 @@
-import React, { useState } from 'react';
-import Image, { StaticImageData } from 'next/image';
+import { useState } from 'react';
 import Navbar from '../../components/Users/Navbar';
 
-import ScrollToTopButton from '../../components/Helper/ScrollToTopButton';
-
-// ─── Types ────────────────────────────────────────────────────────────────────
-interface NutrCard {
+//Types
+export type Nutritionist = {
   id: number;
   name: string;
-  image: StaticImageData | string;
   city: string;
   rating: number;
   ratingCount: number;
-  cardColor: 'yellow' | 'green' | 'blue';
-}
-interface TimeSlot {
-  id: number;
-  time: string;
-  isAvailable: boolean;
-}
-interface DaySlots {
-  label: string;
-  slots: TimeSlot[];
-}
-
-// ─── Fake data ────────────────────────────────────────────────────────────────
-const NUTRITIONISTS: NutrCard[] = [
-  {
-    id: 1,
-    name: 'Dr. Κωνσταντίνος Κωνσταντίνος',
-    image: '/images/myphoto.jpg',
-    city: 'Αθήνα',
-    rating: 4.5,
-    ratingCount: 100,
-    cardColor: 'yellow',
-  },
-  {
-    id: 2,
-    name: 'Dr. Κωνσταντίνος Κωνσταντίνος',
-    image: '/images/myphoto.jpg',
-    city: 'Αθήνα',
-    rating: 4,
-    ratingCount: 80,
-    cardColor: 'green',
-  },
-  {
-    id: 3,
-    name: 'Dr. Κωνσταντίνος Κωνσταντίνος',
-    image: '/images/myphoto.jpg',
-    city: 'Αθήνα',
-    rating: 3.5,
-    ratingCount: 60,
-    cardColor: 'blue',
-  },
-  {
-    id: 4,
-    name: 'Dr. Κωνσταντίνος Κωνσταντίνος',
-    image: '/images/myphoto.jpg',
-    city: 'Αθήνα',
-    rating: 5,
-    ratingCount: 120,
-    cardColor: 'yellow',
-  },
-  {
-    id: 5,
-    name: 'Dr. Κωνσταντίνος Κωνσταντίνος',
-    image: '/images/myphoto.jpg',
-    city: 'Αθήνα',
-    rating: 4.5,
-    ratingCount: 90,
-    cardColor: 'green',
-  },
-  {
-    id: 6,
-    name: 'Dr. Κωνσταντίνος Κωνσταντίνος',
-    image: '/images/myphoto.jpg',
-    city: 'Αθήνα',
-    rating: 4,
-    ratingCount: 70,
-    cardColor: 'blue',
-  },
-];
-
-const WEEK_DAYS: DaySlots[] = [
-  {
-    label: 'Δευ 23',
-    slots: [
-      { id: 1, time: '10:30 - 11:30', isAvailable: true },
-      { id: 2, time: '11:30 - 12:30', isAvailable: false },
-    ],
-  },
-  {
-    label: 'Τρι 24',
-    slots: [
-      { id: 3, time: '10:30 - 11:30', isAvailable: true },
-      { id: 4, time: '14:00 - 15:00', isAvailable: true },
-    ],
-  },
-  {
-    label: 'Τετ 25',
-    slots: [
-      { id: 5, time: '10:30 - 11:30', isAvailable: false },
-      { id: 6, time: '16:00 - 17:00', isAvailable: true },
-    ],
-  },
-  {
-    label: 'Παρ 26',
-    slots: [{ id: 7, time: '10:30 - 11:30', isAvailable: true }],
-  },
-  {
-    label: 'Παρ 27',
-    slots: [{ id: 8, time: '10:30 - 11:30', isAvailable: true }],
-  },
-  { label: 'Σαβ 28', slots: [] },
-  { label: 'Κυρ 29', slots: [] },
-];
-
-// ─── Star row ─────────────────────────────────────────────────────────────────
-const StarRow = ({ rating }: { rating: number }) => (
-  <div className="flex gap-[2px]">
-    {Array.from({ length: 5 }).map((_, i) => (
-      <svg
-        key={i}
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-        fill={i < Math.round(rating) ? '#EF9F27' : 'none'}
-        stroke="#EF9F27"
-        strokeWidth={i < Math.round(rating) ? 0 : 1.5}
-        className="h-3 w-3"
-      >
-        <path
-          fillRule="evenodd"
-          d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z"
-          clipRule="evenodd"
-        />
-      </svg>
-    ))}
-  </div>
-);
-
-const COLOR_MAP = {
-  yellow: 'bg-yellow-400',
-  green: 'bg-green-400',
-  blue: 'bg-myBlue-100',
+  bio: string;
+  phone: string;
+  email: string;
+  avatar: string;
 };
 
-// ─── Grid view ────────────────────────────────────────────────────────────────
-const NutrGrid = ({ onSelect }: { onSelect: (id: number) => void }) => {
-  const [query, setQuery] = useState('');
-  const filtered = NUTRITIONISTS.filter(
-    (n) =>
-      n.name.toLowerCase().includes(query.toLowerCase()) ||
-      n.city.toLowerCase().includes(query.toLowerCase()),
+export type TimeSlot = {
+  id: number;
+  label: string;
+};
+
+//Fake data
+const FAKE_NUTRITIONISTS: Nutritionist[] = Array.from(
+  { length: 6 },
+  (_, i) => ({
+    id: i + 1,
+    name: 'Dr. Κασκαντίρης Κωνσταντίνος',
+    city: 'Αθήνα',
+    rating: 4.9,
+    ratingCount: 30,
+    bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Mauris nunc congue nisi vitae suscipit tellus mauris. Semper risus in hendrerit gravida rutrum quisque non tellus.',
+    phone: '+30 210 0000000',
+    email: 'dr.kaskantires@example.com',
+    avatar: `https://randomuser.me/api/portraits/men/${30 + i}.jpg`,
+  }),
+);
+
+const CARD_COLORS = ['#EAB308', '#86EFAC', '#B3D5F8'];
+
+const DAYS = [
+  { short: 'Δευ', num: 23 },
+  { short: 'Τρι', num: 24 },
+  { short: 'Τετ', num: 25 },
+  { short: 'Πεμ', num: 26 },
+  { short: 'Παρ', num: 27 },
+  { short: 'Σαβ', num: 28 },
+  { short: 'Κυρ', num: 29 },
+];
+
+const FAKE_SLOTS: TimeSlot[] = [
+  { id: 1, label: '10:30 - 11:30' },
+  { id: 2, label: '10:30 - 11:30' },
+  { id: 3, label: '10:30 - 11:30' },
+  { id: 4, label: '10:30 - 11:30' },
+  { id: 5, label: '10:30 - 11:30' },
+];
+
+const MONTHS = [
+  'Ιανουάριος',
+  'Φεβρουάριος',
+  'Μάρτιος',
+  'Απρίλιος',
+  'Μάιος',
+  'Ιούνιος',
+  'Ιούλιος',
+  'Αύγουστος',
+  'Σεπτέμβριος',
+  'Οκτώβριος',
+  'Νοέμβριος',
+  'Δεκέμβριος',
+];
+
+//Star rating
+function Stars({ rating, small = false }: { rating: number; small?: boolean }) {
+  return (
+    <div className="flex items-center gap-0.5">
+      {[1, 2, 3, 4, 5].map((s) => (
+        <svg
+          key={s}
+          className={`${small ? 'w-3.5 h-3.5' : 'w-4 h-4'} ${
+            s <= Math.round(rating) ? 'text-yellow-400' : 'text-gray-300'
+          }`}
+          fill="currentColor"
+          viewBox="0 0 20 20"
+        >
+          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+        </svg>
+      ))}
+    </div>
+  );
+}
+
+//Nutritionist card
+function NutrCard({
+  nutr,
+  onClick,
+}: {
+  nutr: Nutritionist;
+  colorIndex: number;
+  onClick: () => void;
+}) {
+  return (
+    <div
+      className="border-2 border-black relative rounded-2xl pt-10 pb-4 px-4 cursor-pointer hover:scale-105 transition-transform duration-200 shadow-sm"
+      onClick={onClick}
+    >
+      {/* Avatar overlapping top */}
+      <div className="absolute -top-8 left-1/2 -translate-x-1/2">
+        <img
+          src={nutr.avatar}
+          alt={nutr.name}
+          className="w-16 h-16 rounded-full object-cover border-4 border-white shadow"
+        />
+      </div>
+      <div className="text-center">
+        <p className="font-bold text-gray-800 text-sm leading-tight mb-2">
+          {nutr.name}
+        </p>
+        <div className="flex items-center justify-center gap-1.5 text-xs text-gray-700">
+          <span>{nutr.city}</span>
+          <Stars rating={nutr.rating} small />
+          <span className="font-semibold">
+            {nutr.rating}/ 5 ({nutr.ratingCount})
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+//List view
+function ListView({ onSelect }: { onSelect: (n: Nutritionist) => void }) {
+  const [search, setSearch] = useState('');
+  const [page, setPage] = useState(0); // 0-based page, 6 per page
+
+  const filtered = FAKE_NUTRITIONISTS.filter((n) =>
+    n.name.toLowerCase().includes(search.toLowerCase()),
   );
 
   return (
-    <div className="container mx-auto py-14">
-      {/* Top bar */}
-      <div className="mb-8 flex flex-col items-center justify-between gap-4 md:flex-row">
-        <h2 className="text-xl font-bold text-white md:text-2xl xl:text-3xl">
-          Αναζητήστε τον Διατροφολόγο σας:
-        </h2>
-        <div className="flex w-full max-w-xs items-center gap-2 rounded-full border border-white border-opacity-20 bg-white bg-opacity-10 px-4 py-2">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="white"
-            className="h-4 w-4 flex-shrink-0"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+    <div className="min-h-screen" style={{ backgroundColor: '#3F4756' }}>
+      <Navbar />
+
+      {/* diagonal split */}
+      <div className="relative overflow-hidden">
+        <div
+          className="absolute bottom-0 left-0 w-full bg-gray-100"
+          style={{
+            height: '72%',
+            clipPath: 'polygon(0 30%, 100% 0%, 100% 100%, 0% 100%)',
+          }}
+        />
+
+        <div className="relative z-10 max-w-5xl mx-auto px-6 pt-12 pb-20">
+          {/* Search row */}
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-12">
+            <h1 className="text-white text-2xl md:text-3xl font-bold">
+              Αναζητήστε τον Διατροφολόγο σας:
+            </h1>
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Εύρεση Διατροφολόγου"
+              className="bg-white text-gray-700 text-sm placeholder-gray-400 px-5 py-2.5 rounded-full border border-gray-200 focus:outline-none focus:ring-2 focus:ring-myBlue-200 w-64"
             />
-          </svg>
-          <input
-            type="text"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Αναζήτηση..."
-            className="w-full border-none bg-transparent text-sm text-white placeholder-white placeholder-opacity-60 focus:outline-none"
-          />
+          </div>
+
+          {/* Popular heading */}
+          <h2 className="text-center text-gray-800 text-2xl font-bold mb-6">
+            Δημοφιλείς Διατροφολόγοι
+          </h2>
+
+          {/* White container */}
+          <div className="bg-white rounded-2xl shadow-lg p-6 relative">
+            {/* ΟΛΟΙ link */}
+            <div className="absolute top-4 right-5">
+              <button className="text-gray-500 text-sm font-semibold hover:text-gray-800 transition-colors">
+                ΟΛΟΙ
+              </button>
+            </div>
+
+            {/* Left arrow */}
+            <button
+              onClick={() => setPage((p) => Math.max(0, p - 1))}
+              className="absolute left-[-22px] top-1/2 -translate-y-1/2 w-11 h-11 rounded-full border-2 border-gray-600 bg-white flex items-center justify-center text-gray-700 hover:bg-gray-700 hover:text-white transition-colors shadow"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="w-4 h-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2.5}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M15 19l-7-7 7-7"
+                />
+              </svg>
+            </button>
+
+            {/* Grid */}
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-12 pt-8">
+              {filtered.slice(0, 6).map((nutr, i) => (
+                <NutrCard
+                  key={nutr.id}
+                  nutr={nutr}
+                  colorIndex={i}
+                  onClick={() => onSelect(nutr)}
+                />
+              ))}
+            </div>
+
+            {/* Right arrow */}
+            <button
+              onClick={() => setPage((p) => p + 1)}
+              className="absolute right-[-22px] top-1/2 -translate-y-1/2 w-11 h-11 rounded-full border-2 border-gray-600 bg-white flex items-center justify-center text-gray-700 hover:bg-gray-700 hover:text-white transition-colors shadow"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="w-4 h-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2.5}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
-
-      <h3 className="mb-6 text-base font-bold text-white md:text-lg">
-        Δημοφιλείς Διατροφολόγοι
-      </h3>
-
-      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
-        {filtered.map((n) => (
-          <div
-            key={n.id}
-            onClick={() => onSelect(n.id)}
-            className="cursor-pointer overflow-hidden rounded-2xl bg-white shadow-3xl transition duration-300 hover:scale-105"
-          >
-            <div className={`h-2 w-full ${COLOR_MAP[n.cardColor]}`} />
-            <div className="flex flex-col items-center gap-2 p-3">
-              <div className="relative h-14 w-14 overflow-hidden rounded-full border-2 border-myGrey-100">
-                <Image
-                  src={n.image}
-                  alt={n.name}
-                  fill
-                  className="object-cover object-top"
-                />
-              </div>
-              <p className="text-center text-xs font-bold text-myGrey-200 leading-tight md:text-sm">
-                {n.name}
-              </p>
-              <p className="text-9 text-gray-400">{n.city}</p>
-              <StarRow rating={n.rating} />
-              <p className="text-9 text-gray-400">
-                {n.rating}/5 ({n.ratingCount})
-              </p>
-            </div>
-          </div>
-        ))}
-      </div>
-      {filtered.length === 0 && (
-        <p className="mt-10 text-center text-myGrey-100">
-          Δεν βρέθηκαν αποτελέσματα.
-        </p>
-      )}
     </div>
   );
-};
+}
 
-// ─── Profile / booking view ───────────────────────────────────────────────────
-const NutrProfile = ({
+//Profile / booking view
+function ProfileView({
   nutr,
   onBack,
 }: {
-  nutr: NutrCard;
+  nutr: Nutritionist;
   onBack: () => void;
-}) => {
-  const [activeDayIdx, setActiveDayIdx] = useState(1);
-  const [selectedSlot, setSelectedSlot] = useState<number | null>(null);
-  const [dayOffset, setDayOffset] = useState(0);
-  const visibleDays = 7;
-  const visibleWeek = WEEK_DAYS.slice(dayOffset, dayOffset + visibleDays);
+}) {
+  const [monthIndex, setMonthIndex] = useState(7); // August = index 7
+  const [selectedDay, setSelectedDay] = useState(1); // index into DAYS
+  const [selectedSlot, setSelectedSlot] = useState<number | null>(2);
 
   return (
-    <div className="container mx-auto max-w-3xl py-14">
-      <button
-        onClick={onBack}
-        className="mb-6 flex items-center gap-2 text-sm font-bold text-myBlue-100 hover:text-white transition"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="currentColor"
-          className="h-4 w-4"
-        >
-          <path
-            fillRule="evenodd"
-            d="M7.72 12.53a.75.75 0 010-1.06l7.5-7.5a.75.75 0 111.06 1.06L9.31 12l6.97 6.97a.75.75 0 11-1.06 1.06l-7.5-7.5z"
-            clipRule="evenodd"
-          />
-        </svg>
-        Πίσω
-      </button>
-
-      {/* Profile header */}
-      <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-[auto_1fr_auto] md:items-start">
-        <div className="relative mx-auto h-20 w-20 overflow-hidden rounded-full border-2 border-myBlue-100 md:mx-0">
-          <Image
-            src={nutr.image}
-            alt={nutr.name}
-            fill
-            className="object-cover object-top"
-          />
-        </div>
-        <div>
-          <h2 className="text-2xl font-bold text-white md:text-3xl">
-            {nutr.name}
-          </h2>
-          <p className="mt-2 text-sm text-myGrey-100 md:text-base">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Mauris
-            nunc congue nisi vitae suscipit tellus mauris. Semper risus in
-            hendrerit gravida rutrum quisque non tellus.
-          </p>
-        </div>
-        <div className="flex justify-center gap-2 md:justify-start">
-          <button className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-myBlue-100 text-myBlue-100 hover:bg-myBlue-200 hover:border-myBlue-200 hover:text-white transition">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              className="h-5 w-5"
-            >
-              <path d="M1.5 4.5a3 3 0 013-3h1.372c.86 0 1.61.586 1.819 1.42l1.105 4.423a1.875 1.875 0 01-.694 1.955l-1.293.97c-.135.101-.164.249-.126.352a11.285 11.285 0 006.697 6.697c.103.038.25.009.352-.126l.97-1.293a1.875 1.875 0 011.955-.694l4.423 1.105c.834.209 1.42.959 1.42 1.82V19.5a3 3 0 01-3 3h-2.25C8.552 22.5 1.5 15.448 1.5 6.75V4.5z" />
-            </svg>
-          </button>
-          <button className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-myBlue-200 bg-myBlue-200 text-white hover:bg-myBlue-100 transition">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              className="h-5 w-5"
-            >
-              <path d="M4.913 2.658c2.075-.27 4.19-.408 6.337-.408 2.147 0 4.262.139 6.337.408 1.922.25 3.291 1.861 3.405 3.727a4.403 4.403 0 00-1.032-.211 50.89 50.89 0 00-8.42 0c-2.358.196-4.04 2.19-4.04 4.434v4.286a4.47 4.47 0 002.433 3.984L7.28 21.53A.75.75 0 016 21v-4.03a48.527 48.527 0 01-1.087-.128C2.905 16.58 1.5 14.833 1.5 12.862V6.638c0-1.97 1.405-3.718 3.413-3.979z" />
-            </svg>
-          </button>
-        </div>
-      </div>
-
-      {/* Slots card */}
-      <div className="rounded-2xl bg-white p-5 shadow-3xl">
-        <h3 className="mb-4 text-center text-base font-bold text-myGrey-200 md:text-lg">
-          Διαθέσιμες ημερομηνίες και ώρες
-        </h3>
-
-        {/* Month nav */}
-        <div className="mb-4 flex items-center justify-center gap-3">
-          <button
-            onClick={() => setDayOffset((d) => Math.max(d - 1, 0))}
-            className="flex h-7 w-7 items-center justify-center rounded-full border border-myGrey-100 text-myGrey-200 hover:bg-myBlue-200 hover:text-white transition"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              className="h-4 w-4"
-            >
-              <path
-                fillRule="evenodd"
-                d="M7.72 12.53a.75.75 0 010-1.06l7.5-7.5a.75.75 0 111.06 1.06L9.31 12l6.97 6.97a.75.75 0 11-1.06 1.06l-7.5-7.5z"
-                clipRule="evenodd"
-              />
-            </svg>
-          </button>
-          <span className="text-sm font-bold text-myGrey-200">Αύγουστος</span>
-          <button
-            onClick={() =>
-              setDayOffset((d) =>
-                Math.min(d + 1, Math.max(WEEK_DAYS.length - visibleDays, 0)),
-              )
-            }
-            className="flex h-7 w-7 items-center justify-center rounded-full border border-myGrey-100 text-myGrey-200 hover:bg-myBlue-200 hover:text-white transition"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              className="h-4 w-4"
-            >
-              <path
-                fillRule="evenodd"
-                d="M16.28 11.47a.75.75 0 010 1.06l-7.5 7.5a.75.75 0 01-1.06-1.06L14.69 12 7.72 5.03a.75.75 0 011.06-1.06l7.5 7.5z"
-                clipRule="evenodd"
-              />
-            </svg>
-          </button>
-        </div>
-
-        {/* Day strip */}
-        <div className="mb-5 flex gap-1 overflow-x-auto">
-          {visibleWeek.map((day, i) => {
-            const realIdx = dayOffset + i;
-            const isActive = realIdx === activeDayIdx;
-            return (
-              <button
-                key={i}
-                onClick={() => {
-                  setActiveDayIdx(realIdx);
-                  setSelectedSlot(null);
-                }}
-                className={`flex min-w-[2.8rem] flex-1 flex-col items-center rounded-xl py-2 text-xs font-bold transition md:text-sm ${
-                  isActive
-                    ? 'bg-myBlue-200 text-white'
-                    : 'bg-myGrey-100 text-myGrey-200 hover:bg-myBlue-100'
-                }`}
-              >
-                {day.label.split(' ').map((part, pi) => (
-                  <span key={pi}>{part}</span>
-                ))}
-              </button>
-            );
-          })}
-        </div>
-
-        {/* Time slots */}
-        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4">
-          {WEEK_DAYS[activeDayIdx]?.slots.map((slot) => (
-            <button
-              key={slot.id}
-              disabled={!slot.isAvailable}
-              onClick={() => setSelectedSlot(slot.id)}
-              className={`rounded-full py-2 text-xs font-medium transition md:text-sm ${
-                !slot.isAvailable
-                  ? 'cursor-not-allowed bg-myGrey-100 text-gray-400 line-through opacity-50'
-                  : selectedSlot === slot.id
-                    ? 'bg-myBlue-200 text-white ring-2 ring-myBlue-100'
-                    : 'bg-myGrey-100 text-myGrey-200 hover:bg-myBlue-100'
-              }`}
-            >
-              {slot.time}
-            </button>
-          ))}
-          {WEEK_DAYS[activeDayIdx]?.slots.length === 0 && (
-            <p className="col-span-4 text-center text-sm text-gray-400">
-              Δεν υπάρχουν διαθέσιμες ώρες.
-            </p>
-          )}
-        </div>
-
-        <button
-          disabled={!selectedSlot}
-          onClick={() =>
-            selectedSlot && alert(`Κλείσατε ραντεβού! Slot: ${selectedSlot}`)
-          }
-          className={`mt-6 w-full rounded-full py-3 text-sm font-bold transition md:text-base ${
-            selectedSlot
-              ? 'bg-myBlue-200 text-white hover:scale-105 hover:bg-myBlue-100'
-              : 'cursor-not-allowed bg-myGrey-100 text-gray-400'
-          }`}
-        >
-          Προγραμματισμός Επίσκεψης
-        </button>
-      </div>
-    </div>
-  );
-};
-
-// ─── Page ─────────────────────────────────────────────────────────────────────
-export default function NutritionistsPage() {
-  const [selectedId, setSelectedId] = useState<number | null>(null);
-  const selected = NUTRITIONISTS.find((n) => n.id === selectedId) ?? null;
-
-  return (
-    <div className="flex min-h-screen flex-col">
+    <div className="min-h-screen" style={{ backgroundColor: '#3F4756' }}>
       <Navbar />
-      <main className="flex-1 bg-myGrey-200">
-        {!selected ? (
-          <NutrGrid onSelect={setSelectedId} />
-        ) : (
-          <NutrProfile nutr={selected} onBack={() => setSelectedId(null)} />
-        )}
-      </main>
 
-      <ScrollToTopButton />
+      <div className="relative overflow-hidden">
+        {/* diagonal split */}
+        <div
+          className="absolute bottom-0 left-0 w-full bg-gray-100"
+          style={{
+            height: '60%',
+            clipPath: 'polygon(0 35%, 100% 5%, 100% 100%, 0% 100%)',
+          }}
+        />
+
+        <div className="relative z-10 max-w-4xl mx-auto px-6 pt-10 pb-20">
+          {/* Back */}
+          <button
+            onClick={onBack}
+            className="flex items-center gap-1 text-gray-300 hover:text-white text-sm mb-6 transition-colors"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-4 h-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M15 19l-7-7 7-7"
+              />
+            </svg>
+            Πίσω
+          </button>
+
+          {/* Name + contact */}
+          <div className="flex items-start justify-between mb-4">
+            <h1
+              className="text-white text-3xl md:text-4xl font-bold italic"
+              style={{ fontFamily: 'Georgia, serif' }}
+            >
+              {nutr.name
+                .split(' ')
+                .map((word, i) =>
+                  i === 1 ? (
+                    <em key={i}>{word} </em>
+                  ) : (
+                    <span key={i}>{word} </span>
+                  ),
+                )}
+            </h1>
+            <div className="flex gap-3 flex-shrink-0 ml-4">
+              <a
+                href={`tel:${nutr.phone}`}
+                className="w-12 h-12 rounded-full flex items-center justify-center shadow-md"
+                style={{ backgroundColor: '#377CC3' }}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-5 h-5 text-white"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                  />
+                </svg>
+              </a>
+              <a
+                href={`mailto:${nutr.email}`}
+                className="w-12 h-12 rounded-full flex items-center justify-center shadow-md"
+                style={{ backgroundColor: '#377CC3' }}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-5 h-5 text-white"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                  />
+                </svg>
+              </a>
+            </div>
+          </div>
+
+          {/* Bio */}
+          <p className="text-gray-300 text-sm leading-relaxed max-w-xl mb-10">
+            {nutr.bio}
+          </p>
+
+          {/* Booking section */}
+          <div className="flex flex-col items-center">
+            {/* Pill heading */}
+            <div className="border-2 border-gray-800 bg-gray-100 rounded-full px-8 py-3 mb-6">
+              <h2 className="text-gray-800 text-xl font-bold">
+                Διαθέσιμες ημερομηνίες και ώρες
+              </h2>
+            </div>
+
+            {/* Month navigator */}
+            <div className="flex items-center gap-4 mb-6 self-start">
+              <button
+                onClick={() => setMonthIndex((m) => Math.max(0, m - 1))}
+                className="text-gray-700 hover:text-gray-900 transition-colors"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-5 h-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2.5}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M15 19l-7-7 7-7"
+                  />
+                </svg>
+              </button>
+              <span className="text-gray-800 font-semibold text-base">
+                {MONTHS[monthIndex]}
+              </span>
+              <button
+                onClick={() => setMonthIndex((m) => Math.min(11, m + 1))}
+                className="text-gray-700 hover:text-gray-900 transition-colors"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-5 h-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2.5}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
+              </button>
+            </div>
+
+            {/* Day pills row */}
+            <div className="flex items-center gap-2 mb-6 w-full justify-center">
+              {/* Left arrow */}
+              <button className="w-10 h-10 rounded-full border-2 border-gray-600 flex items-center justify-center text-gray-700 hover:bg-gray-700 hover:text-white transition-colors flex-shrink-0">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-4 h-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2.5}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M15 19l-7-7 7-7"
+                  />
+                </svg>
+              </button>
+
+              <div className="flex gap-2 flex-wrap justify-center">
+                {DAYS.map((day, i) => {
+                  const isSelected = selectedDay === i;
+                  return (
+                    <button
+                      key={i}
+                      onClick={() => setSelectedDay(i)}
+                      className="flex flex-col items-center justify-center w-14 h-16 rounded-2xl border-2 font-bold text-sm transition-all duration-150"
+                      style={{
+                        backgroundColor: isSelected ? '#B3D5F8' : 'white',
+                        borderColor: isSelected ? '#377CC3' : '#D1D5DB',
+                        color: '#3F4756',
+                      }}
+                    >
+                      <span className="text-xs">{day.short}</span>
+                      <span className="text-lg leading-tight">{day.num}</span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Right arrow */}
+              <button className="w-10 h-10 rounded-full border-2 border-gray-600 flex items-center justify-center text-gray-700 hover:bg-gray-700 hover:text-white transition-colors flex-shrink-0">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-4 h-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2.5}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
+              </button>
+            </div>
+
+            {/* Time slot pills */}
+            <div className="flex flex-wrap gap-3 justify-center mb-8">
+              {FAKE_SLOTS.map((slot) => {
+                const isSelected = selectedSlot === slot.id;
+                return (
+                  <button
+                    key={slot.id}
+                    onClick={() => setSelectedSlot(slot.id)}
+                    className="px-5 py-2.5 rounded-full border-2 text-sm font-semibold transition-all duration-150"
+                    style={{
+                      backgroundColor: isSelected ? '#B3D5F8' : 'white',
+                      borderColor: isSelected ? '#377CC3' : '#3F4756',
+                      color: '#3F4756',
+                    }}
+                  >
+                    {slot.label}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* CTA */}
+            <button
+              className="px-12 py-3.5 rounded-full text-white font-bold text-base shadow-lg hover:opacity-90 transition-opacity"
+              style={{ backgroundColor: '#377CC3' }}
+              onClick={() => {
+                // TODO: GraphQL mutation — book appointment
+                alert('Η επίσκεψη προγραμματίστηκε!');
+              }}
+            >
+              Προγραμματισμός Επίσκεψης
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   );
+}
+
+// Main page
+export default function NutritionistsPage() {
+  const [selected, setSelected] = useState<Nutritionist | null>(null);
+
+  if (selected) {
+    return <ProfileView nutr={selected} onBack={() => setSelected(null)} />;
+  }
+
+  return <ListView onSelect={setSelected} />;
 }

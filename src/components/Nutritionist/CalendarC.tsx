@@ -107,21 +107,28 @@ const CalendarC: React.FC = () => {
 
   useEffect(() => {
     setIsClient(true);
-    handleApply();
-  }, [selectedDate]);
+  }, []);
+
+  useEffect(() => {
+    if (!(value instanceof Date)) return;
+
+    const formattedDate = format(value, 'dd-MMMM-yyyy', { locale: el });
+    const filteredClients = fakeAppointments.filter(
+      (appointment) => appointment.date === formattedDate,
+    );
+    setClients(filteredClients);
+    setSelectedDate(formattedDate);
+  }, [value]);
 
   const handleDateChange = (val: Value) => {
     if (val instanceof Date) {
       setValue(val);
     } else if (Array.isArray(val)) {
-      // val is [Date | null, Date | null]
-      setValue(val[0]); // or keep full range if you want
+      setValue(val[0]);
     } else {
       setValue(null);
     }
   };
-
-  // My button functions
 
   const handleCancel = () => {
     setSelectedDate('');
@@ -142,6 +149,7 @@ const CalendarC: React.FC = () => {
   const handleSet = () => {
     setIsShowCalendar(!isShowCalendar);
   };
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -173,12 +181,28 @@ const CalendarC: React.FC = () => {
     setEnd(Math.max(end - 4, 4));
   };
 
+  const handleDelete = (date: string, indexToRemove: number) => {
+    setSelectedTimes((prevTimes) => {
+      const updatedTimes = prevTimes[date].filter(
+        (_, i) => i !== indexToRemove,
+      );
+      // If no times remain for that date, remove the date key entirely
+      if (updatedTimes.length === 0) {
+        const { [date]: _, ...rest } = prevTimes;
+        return rest;
+      }
+      return { ...prevTimes, [date]: updatedTimes };
+    });
+    // Pull pagination back if the current page becomes empty after deletion
+    setStart((prev) => Math.max(prev - 1 < 0 ? 0 : prev, 0));
+  };
+
   const arrayLength = Object.values(selectedTimes).map((array) => array.length);
   const numberArrayLength = arrayLength[0];
 
   return isClient ? (
     <ClientsContextType.Provider value={{ clients, setClients }}>
-      <div className="mx-auto  w-full  md:grid md:grid-cols-2  md:items-center md:justify-evenly md:gap-4 md:px-3">
+      <div className="mx-auto flex w-full flex-col md:grid md:grid-cols-2 md:items-center md:justify-evenly md:gap-4 md:px-3">
         <div className="flex flex-col  items-center gap-4  pt-16 lg:gap-10 xl:mt-16 xl:gap-20">
           <DynamicCalendar
             onChange={handleDateChange}
@@ -207,9 +231,11 @@ const CalendarC: React.FC = () => {
         </div>
 
         {isShowCalendar ? (
-          <SliderAppointments />
+          <div className="mt-8 md:mt-0">
+            <SliderAppointments />
+          </div>
         ) : (
-          <div className="lg:mt-24  xl:mt-0">
+          <div className="mt-8 lg:mt-24 xl:mt-0">
             <div className="mx-auto my-6 min-h-fit max-w-[20em] rounded-xl border-2 border-myBlue-200 ">
               <div className=" rounded-t-xl">
                 <div className="relative rounded-t-md rounded-br-[5em] bg-myBlue-200 pb-48 text-lg font-normal text-white">
@@ -270,9 +296,29 @@ const CalendarC: React.FC = () => {
                           {times.slice(start, end).map((time, index) => (
                             <li
                               key={index}
-                              className=" mt-4 h-full w-full p-3 hover:bg-myBlue-100  hover:shadow-3xl lg:text-lg"
+                              className="mt-4 flex h-full w-full items-center justify-between p-3 hover:bg-myBlue-100 hover:shadow-3xl lg:text-lg"
                             >
-                              {time}
+                              <span className="flex-1 text-center">{time}</span>
+                              <button
+                                onClick={() =>
+                                  handleDelete(date, start + index)
+                                }
+                                className="ml-2 shrink-0 rounded-full p-1 text-myGrey-200 hover:bg-myRed hover:text-white hover:transition hover:duration-300"
+                                title="Διαγραφή ώρας"
+                              >
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  viewBox="0 0 24 24"
+                                  fill="currentColor"
+                                  className="h-4 w-4"
+                                >
+                                  <path
+                                    fillRule="evenodd"
+                                    d="M16.5 4.478v.227a48.816 48.816 0 013.878.512.75.75 0 11-.256 1.478l-.209-.035-1.005 13.07a3 3 0 01-2.991 2.77H8.084a3 3 0 01-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 01-.256-1.478A48.567 48.567 0 017.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 013.369 0c1.603.051 2.815 1.387 2.815 2.951zm-6.136-1.452a51.196 51.196 0 013.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 00-6 0v-.113c0-.794.609-1.428 1.364-1.452zm-.355 5.945a.75.75 0 10-1.5.058l.347 9a.75.75 0 101.499-.058l-.346-9zm5.48.058a.75.75 0 10-1.498-.058l-.347 9a.75.75 0 001.5.058l.345-9z"
+                                    clipRule="evenodd"
+                                  />
+                                </svg>
+                              </button>
                             </li>
                           ))}
                         </ul>

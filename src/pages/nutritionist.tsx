@@ -27,18 +27,18 @@ export const getServerSideProps = async (
   const { data: meData } = await client.query({
     query: MeDocument,
   });
-  if (meData.me.role !== 'NUTRITIONIST') {
-    return {
-      redirect: {
-        destination: '/',
-        permanent: false,
-      },
-    };
-  }
   if (!meData?.me) {
     return {
       redirect: {
         destination: '/login?next=' + encodeURIComponent(context.req.url ?? ''),
+        permanent: false,
+      },
+    };
+  }
+  if (meData.me.role !== 'NUTRITIONIST') {
+    return {
+      redirect: {
+        destination: '/',
         permanent: false,
       },
     };
@@ -53,7 +53,6 @@ export const getServerSideProps = async (
 const Nutritionist: NextPage<NutritionistProps> = ({ meData }) => {
   const [selectedDate, setSelectedDate] = useState<string>('');
 
-  // ToDO: Να φτιάξω κουμπί διαγραφής για τις ώρες
   // TODO: Να φτιάξω το κομμάτι της αποθήκευσης όταν το συνδέσω με την βάση
 
   return (
@@ -78,7 +77,10 @@ const Nutritionist: NextPage<NutritionistProps> = ({ meData }) => {
         <NutrArticles />
 
         <DateContext.Provider value={{ selectedDate, setSelectedDate }}>
-          <section id="section_2" className="min-h-screen  bg-myGrey-100">
+          <section
+            id="section_2"
+            className="min-h-screen overflow-hidden  bg-myGrey-100 pb-16"
+          >
             <div className=" mx-auto max-w-[70em] ">
               <h1 className="mx-auto  pt-16 text-center text-xl font-bold     md:text-4xl lg:text-5xl">
                 Αναζήτηση αιτημάτων ραντεβού
