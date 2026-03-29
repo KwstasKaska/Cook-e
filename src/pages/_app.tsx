@@ -6,6 +6,7 @@ import type { AppProps } from 'next/app';
 import HeadComponent from '../components/Head';
 import { ApolloProvider } from '@apollo/client';
 import { useApollo } from '../lib/apolloClient';
+import { appWithTranslation } from 'next-i18next';
 
 function MyApp({ Component, pageProps }: AppProps) {
   const apolloClient = useApollo(pageProps);
@@ -18,4 +19,4 @@ function MyApp({ Component, pageProps }: AppProps) {
   );
 }
 
-export default MyApp;
+export default appWithTranslation(MyApp);

@@ -6,8 +6,9 @@ import RecipeSummaryModal, {
   RecipeSummaryData,
 } from '../../components/Chef/RecipeSummary';
 import Footer from '../../components/Users/Footer';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
-// ─── Types ────────────────────────────────────────────────────────────────────
+// ─── Types
 interface RecipeCard {
   id: number;
   title: string;
@@ -24,7 +25,7 @@ interface RecipeCard {
   tags: string[];
 }
 
-// ─── Fake data ────────────────────────────────────────────────────────────────
+// ─── Fake data
 const FAKE_RECIPE_CARDS: RecipeCard[] = [
   {
     id: 1,
@@ -101,7 +102,7 @@ const FAKE_RATING = {
   ],
 };
 
-// ─── Star component ────────────────────────────────────────────────────────────
+// ─── Star component
 const Stars = ({
   rating,
   size = 'md',
@@ -133,7 +134,7 @@ const Stars = ({
   );
 };
 
-// ─── Rating breakdown panel ────────────────────────────────────────────────────
+// ─── Rating breakdown panel
 const RatingPanel = ({ onClose }: { onClose: () => void }) => (
   <div className="rounded-2xl bg-white p-8 shadow-2xl w-full max-w-sm">
     {/* Back button */}
@@ -196,7 +197,7 @@ const RatingPanel = ({ onClose }: { onClose: () => void }) => (
   </div>
 );
 
-// ─── Main page ─────────────────────────────────────────────────────────────────
+// ─── Main page
 export default function ChefIndex() {
   const [showRatings, setShowRatings] = useState(false);
   const [selectedRecipe, setSelectedRecipe] =
@@ -417,4 +418,12 @@ export default function ChefIndex() {
       <Footer />
     </div>
   );
+}
+
+export async function getServerSideProps({ locale }: { locale: string }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ['common'])),
+    },
+  };
 }

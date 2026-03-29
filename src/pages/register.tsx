@@ -128,14 +128,14 @@ const Register: NextPage = ({}) => {
                 >
                   <label>
                     <Field type="radio" name="role" value="user" />
-                    Χρήστης
+                    {'   '}Χρήστης
                   </label>
                   <label>
-                    <Field type="radio" name="role" value="chef" />
-                    Chef
+                    <Field type="radio" name="role" value="chef" /> {'   '}Chef
                   </label>
                   <label>
                     <Field type="radio" name="role" value="nutritionist" />
+                    {'   '}
                     Διατροφολόγος
                   </label>
                   <ErrorMessage

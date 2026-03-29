@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import ChefNavbar from '../../components/Chef/ChefNavbar';
 import Footer from '../../components/Users/Footer';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 interface RecipeItem {
@@ -324,4 +325,12 @@ export default function ChefProfile() {
       <Footer></Footer>
     </div>
   );
+}
+
+export async function getServerSideProps({ locale }: { locale: string }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ['common'])),
+    },
+  };
 }

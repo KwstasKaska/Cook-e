@@ -1,0 +1,26 @@
+{
+  "nav": {
+    "home": "Αρχική",
+    "recipes": "Συνταγές",
+    "nutritionists": "Διατροφολόγοι",
+    "logout": "Έξοδος",
+    "cart": "Καλάθι",
+    "settings": "Ρυθμίσεις",
+    "tagline": "A Food Journey"
+  },
+  "chefnav": {
+    "chef_home": "Αρχική",
+    "chef_profile": "Προφίλ",
+    "chef_recipes": "Οι συνταγές μου",
+    "chef_create": "Δημιουργία συνταγής",
+    "settings": "Ρυθμίσεις",
+    "logout": "Έξοδος"
+  },
+  "nutrnav": {
+    "nutr_articles": "Άρθρα",
+    "nutr_calendar": "Ημερολόγιο",
+    "nutr_appointments": "Διαχείριση ραντεβού",
+    "nutr_scheduler": "Προγραμματισμός διατροφών",
+    "nutr_logout": "Αποσύνδεση"
+  }
+}

@@ -15,7 +15,7 @@ const NutrNavbar: React.FC = () => {
   const { data, loading } = useMeQuery();
   let body = null;
   if (loading) {
-    body = <div>Παρακαλώ περιμένετε εώς ότου φορτώσει η σελίδα</div>;
+    return body;
   } else if (data?.me) {
     body = (
       <button

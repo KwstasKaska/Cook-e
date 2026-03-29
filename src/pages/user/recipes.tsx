@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import ScrollToTopButton from '../../components/Helper/ScrollToTopButton';
 import Navbar from '../../components/Users/Navbar';
 
-// ─── Types ────────────────────────────────────────────────────────────────────
+// ─── Types
 type IngredientItem = {
   id: number;
   name: string;
@@ -269,7 +269,7 @@ function DiagonalLayout({
   );
 }
 
-// ─── HOME step: favorites + centered CTA ──────────────────────────────────────
+// ─── HOME step: favorites + centered CTA
 function HomeStep({ onStartPicker }: { onStartPicker: () => void }) {
   return (
     <DiagonalLayout whiteStart="18%">
@@ -381,7 +381,7 @@ function HomeStep({ onStartPicker }: { onStartPicker: () => void }) {
   );
 }
 
-// ─── Step 1: Ingredient picker ─────────────────────────────────────────────────
+// ─── Step 1: Ingredient picker
 function IngredientStep({
   selectedIds,
   onToggle,
@@ -498,7 +498,7 @@ function IngredientStep({
   );
 }
 
-// ─── Step 2: Utensil picker ────────────────────────────────────────────────────
+// ─── Step 2: Utensil picker
 function UtensilStep({
   selectedIds,
   onToggle,
@@ -590,7 +590,7 @@ function UtensilStep({
   );
 }
 
-// ─── Recipe result card ────────────────────────────────────────────────────────
+// ─── Recipe result card
 const RecipeCard = ({
   recipe,
   index,
@@ -600,7 +600,7 @@ const RecipeCard = ({
   index: number;
   onClick: () => void;
 }) => {
-  const topPad = index === 0 ? 'pt-24' : index === 1 ? 'pt-16' : 'pt-10';
+  const topPad = index === 0 ? 'pt-28' : index === 1 ? 'pt-24' : 'pt-20';
   const imgSize =
     index === 0 ? 'h-40 w-40' : index === 1 ? 'h-36 w-36' : 'h-32 w-32';
   const imgTop = index === 0 ? '-top-20' : index === 1 ? '-top-16' : '-top-14';
@@ -632,7 +632,7 @@ const RecipeCard = ({
   );
 };
 
-// ─── Step 3: Results ───────────────────────────────────────────────────────────
+// ─── Step 3: Results
 function ResultsStep({
   recipes,
   onSelectRecipe,

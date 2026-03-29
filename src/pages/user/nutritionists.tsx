@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Navbar from '../../components/Users/Navbar';
 
-//Types
+// Types
 export type Nutritionist = {
   id: number;
   name: string;
@@ -19,7 +19,7 @@ export type TimeSlot = {
   label: string;
 };
 
-//Fake data
+// Fake data
 const FAKE_NUTRITIONISTS: Nutritionist[] = Array.from(
   { length: 6 },
   (_, i) => ({
@@ -47,10 +47,10 @@ const DAYS = [
 
 const FAKE_SLOTS: TimeSlot[] = [
   { id: 1, label: '10:30 - 11:30' },
-  { id: 2, label: '10:30 - 11:30' },
-  { id: 3, label: '10:30 - 11:30' },
-  { id: 4, label: '10:30 - 11:30' },
-  { id: 5, label: '10:30 - 11:30' },
+  { id: 2, label: '11:30 - 12:30' },
+  { id: 3, label: '13:00 - 14:00' },
+  { id: 4, label: '15:00 - 16:00' },
+  { id: 5, label: '17:00 - 18:00' },
 ];
 
 const MONTHS = [
@@ -68,14 +68,14 @@ const MONTHS = [
   'Δεκέμβριος',
 ];
 
-//Star rating
+// Star rating
 function Stars({ rating, small = false }: { rating: number; small?: boolean }) {
   return (
     <div className="flex items-center gap-0.5">
       {[1, 2, 3, 4, 5].map((s) => (
         <svg
           key={s}
-          className={`${small ? 'w-3.5 h-3.5' : 'w-4 h-4'} ${
+          className={`${small ? 'h-3.5 w-3.5' : 'h-4 w-4'} ${
             s <= Math.round(rating) ? 'text-yellow-400' : 'text-gray-300'
           }`}
           fill="currentColor"
@@ -88,7 +88,7 @@ function Stars({ rating, small = false }: { rating: number; small?: boolean }) {
   );
 }
 
-//Nutritionist card
+// Nutritionist card
 function NutrCard({
   nutr,
   onClick,
@@ -99,7 +99,7 @@ function NutrCard({
 }) {
   return (
     <div
-      className="border-2 border-black relative rounded-2xl pt-10 pb-4 px-4 cursor-pointer hover:scale-105 transition-transform duration-200 shadow-sm"
+      className="relative cursor-pointer rounded-2xl border-2 border-black px-4 pb-4 pt-10 shadow-sm transition-transform duration-200 hover:scale-105"
       onClick={onClick}
     >
       {/* Avatar overlapping top */}
@@ -107,14 +107,15 @@ function NutrCard({
         <img
           src={nutr.avatar}
           alt={nutr.name}
-          className="w-16 h-16 rounded-full object-cover border-4 border-white shadow"
+          className="h-16 w-16 rounded-full border-4 border-white object-cover shadow"
         />
       </div>
       <div className="text-center">
-        <p className="font-bold text-gray-800 text-sm leading-tight mb-2">
+        <p className="mb-2 text-sm font-bold leading-tight text-gray-800">
           {nutr.name}
         </p>
-        <div className="flex items-center justify-center gap-1.5 text-xs text-gray-700">
+        {/* FIX: stack on mobile, row on sm+ to prevent overflow */}
+        <div className="flex flex-col items-center gap-1 text-xs text-gray-700 sm:flex-row sm:justify-center sm:gap-1.5">
           <span>{nutr.city}</span>
           <Stars rating={nutr.rating} small />
           <span className="font-semibold">
@@ -126,10 +127,10 @@ function NutrCard({
   );
 }
 
-//List view
+// List view
 function ListView({ onSelect }: { onSelect: (n: Nutritionist) => void }) {
   const [search, setSearch] = useState('');
-  const [_page, setPage] = useState(0); // 0-based page, 6 per page
+  const [_page, setPage] = useState(0);
 
   const filtered = FAKE_NUTRITIONISTS.filter((n) =>
     n.name.toLowerCase().includes(search.toLowerCase()),
@@ -139,20 +140,12 @@ function ListView({ onSelect }: { onSelect: (n: Nutritionist) => void }) {
     <div className="min-h-screen" style={{ backgroundColor: '#3F4756' }}>
       <Navbar />
 
-      {/* diagonal split */}
-      <div className="relative overflow-hidden">
-        <div
-          className="absolute bottom-0 left-0 w-full bg-gray-100"
-          style={{
-            height: '72%',
-            clipPath: 'polygon(0 30%, 100% 0%, 100% 100%, 0% 100%)',
-          }}
-        />
-
-        <div className="relative z-10 max-w-5xl mx-auto px-6 pt-12 pb-20">
+      {/* Use flex-col so the bg stretches to fit content height, not a fixed % */}
+      <div className="flex flex-col" style={{ backgroundColor: '#3F4756' }}>
+        <div className="relative z-10 mx-auto w-full max-w-5xl px-6 pb-20 pt-12">
           {/* Search row */}
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-12">
-            <h1 className="text-white text-2xl md:text-3xl font-bold">
+          <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+            <h1 className="text-2xl font-bold text-white md:text-3xl">
               Αναζητήστε τον Διατροφολόγο σας:
             </h1>
             <input
@@ -160,32 +153,27 @@ function ListView({ onSelect }: { onSelect: (n: Nutritionist) => void }) {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Εύρεση Διατροφολόγου"
-              className="bg-white text-gray-700 text-sm placeholder-gray-400 px-5 py-2.5 rounded-full border border-gray-200 focus:outline-none focus:ring-2 focus:ring-myBlue-200 w-64"
+              className="w-full rounded-full border border-gray-200 bg-white px-5 py-2.5 text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-myBlue-200 md:w-64"
             />
           </div>
 
           {/* Popular heading */}
-          <h2 className="text-center text-gray-800 text-2xl font-bold mb-6">
+          <h2 className="mb-6 text-center text-2xl font-bold text-white">
             Δημοφιλείς Διατροφολόγοι
           </h2>
 
-          {/* White container */}
-          <div className="bg-white rounded-2xl shadow-lg p-6 relative">
-            {/* ΟΛΟΙ link */}
-            <div className="absolute top-4 right-5">
-              <button className="text-gray-500 text-sm font-semibold hover:text-gray-800 transition-colors">
-                ΟΛΟΙ
-              </button>
-            </div>
-
-            {/* Left arrow */}
+          {/* On mobile: no side arrows at all — just the white card + grid.
+              On md+: position:relative wrapper allows arrows to peek outside. */}
+          <div className="relative mx-auto md:px-8">
+            {/* Left arrow — md+ only, sits outside the white card */}
             <button
               onClick={() => setPage((p) => Math.max(0, p - 1))}
-              className="absolute left-[-22px] top-1/2 -translate-y-1/2 w-11 h-11 rounded-full border-2 border-gray-600 bg-white flex items-center justify-center text-gray-700 hover:bg-gray-700 hover:text-white transition-colors shadow"
+              className="absolute left-0 top-1/2 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border-2 border-white bg-transparent text-white shadow transition-colors hover:bg-white hover:text-gray-700 md:flex"
+              aria-label="Προηγούμενη σελίδα"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="w-4 h-4"
+                className="h-4 w-4"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -199,26 +187,81 @@ function ListView({ onSelect }: { onSelect: (n: Nutritionist) => void }) {
               </svg>
             </button>
 
-            {/* Grid */}
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-12 pt-8">
-              {filtered.slice(0, 6).map((nutr, i) => (
-                <NutrCard
-                  key={nutr.id}
-                  nutr={nutr}
-                  colorIndex={i}
-                  onClick={() => onSelect(nutr)}
-                />
-              ))}
+            {/* White card — no relative/absolute arrows inside it */}
+            <div className="rounded-2xl bg-white px-4 pb-8 pt-2 shadow-lg">
+              {/* ΟΛΟΙ */}
+              <div className="flex justify-end pr-1 pt-3 pb-1">
+                <button className="text-sm font-semibold text-gray-500 transition-colors hover:text-gray-800">
+                  ΟΛΟΙ
+                </button>
+              </div>
+
+              {/* Grid — avatar overhangs handled by pt-8 on the grid rows */}
+              <div className="grid grid-cols-2 gap-x-4 gap-y-14 pt-6 md:grid-cols-3">
+                {filtered.slice(0, 6).map((nutr, i) => (
+                  <NutrCard
+                    key={nutr.id}
+                    nutr={nutr}
+                    colorIndex={i}
+                    onClick={() => onSelect(nutr)}
+                  />
+                ))}
+              </div>
             </div>
 
-            {/* Right arrow */}
+            {/* Right arrow — md+ only */}
             <button
               onClick={() => setPage((p) => p + 1)}
-              className="absolute right-[-22px] top-1/2 -translate-y-1/2 w-11 h-11 rounded-full border-2 border-gray-600 bg-white flex items-center justify-center text-gray-700 hover:bg-gray-700 hover:text-white transition-colors shadow"
+              className="absolute right-0 top-1/2 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border-2 border-white bg-transparent text-white shadow transition-colors hover:bg-white hover:text-gray-700 md:flex"
+              aria-label="Επόμενη σελίδα"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="w-4 h-4"
+                className="h-4 w-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2.5}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            </button>
+          </div>
+
+          {/* Mobile-only pagination row below the card */}
+          <div className="mt-6 flex justify-center gap-4 md:hidden">
+            <button
+              onClick={() => setPage((p) => Math.max(0, p - 1))}
+              className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-white text-white transition-colors hover:bg-white hover:text-gray-700"
+              aria-label="Προηγούμενη σελίδα"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-4 w-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2.5}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M15 19l-7-7 7-7"
+                />
+              </svg>
+            </button>
+            <button
+              onClick={() => setPage((p) => p + 1)}
+              className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-white text-white transition-colors hover:bg-white hover:text-gray-700"
+              aria-label="Επόμενη σελίδα"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-4 w-4"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -238,7 +281,7 @@ function ListView({ onSelect }: { onSelect: (n: Nutritionist) => void }) {
   );
 }
 
-//Profile / booking view
+// Profile / booking view
 function ProfileView({
   nutr,
   onBack,
@@ -246,8 +289,8 @@ function ProfileView({
   nutr: Nutritionist;
   onBack: () => void;
 }) {
-  const [monthIndex, setMonthIndex] = useState(7); // August = index 7
-  const [selectedDay, setSelectedDay] = useState(1); // index into DAYS
+  const [monthIndex, setMonthIndex] = useState(7);
+  const [selectedDay, setSelectedDay] = useState(1);
   const [selectedSlot, setSelectedSlot] = useState<number | null>(2);
 
   return (
@@ -255,7 +298,7 @@ function ProfileView({
       <Navbar />
 
       <div className="relative overflow-hidden">
-        {/* diagonal split */}
+        {/* Diagonal split */}
         <div
           className="absolute bottom-0 left-0 w-full bg-gray-100"
           style={{
@@ -264,15 +307,15 @@ function ProfileView({
           }}
         />
 
-        <div className="relative z-10 max-w-4xl mx-auto px-6 pt-10 pb-20">
+        <div className="relative z-10 mx-auto max-w-4xl px-6 pb-20 pt-10">
           {/* Back */}
           <button
             onClick={onBack}
-            className="flex items-center gap-1 text-gray-300 hover:text-white text-sm mb-6 transition-colors"
+            className="mb-6 flex items-center gap-1 text-sm text-gray-300 transition-colors hover:text-white"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="w-4 h-4"
+              className="h-4 w-4"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -287,10 +330,11 @@ function ProfileView({
             Πίσω
           </button>
 
-          {/* Name + contact */}
-          <div className="flex items-start justify-between mb-4">
+          {/* FIX: name + contact buttons — on mobile stack vertically so the long
+              Greek name doesn't fight with the icon buttons for horizontal space */}
+          <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
             <h1
-              className="text-white text-3xl md:text-4xl font-bold italic"
+              className="text-2xl font-bold italic text-white md:text-4xl"
               style={{ fontFamily: 'Georgia, serif' }}
             >
               {nutr.name
@@ -303,15 +347,16 @@ function ProfileView({
                   ),
                 )}
             </h1>
-            <div className="flex gap-3 flex-shrink-0 ml-4">
+            <div className="flex gap-3 sm:ml-4 sm:flex-shrink-0">
               <a
                 href={`tel:${nutr.phone}`}
-                className="w-12 h-12 rounded-full flex items-center justify-center shadow-md"
+                className="flex h-12 w-12 items-center justify-center rounded-full shadow-md"
                 style={{ backgroundColor: '#377CC3' }}
+                aria-label="Κλήση"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="w-5 h-5 text-white"
+                  className="h-5 w-5 text-white"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -326,12 +371,13 @@ function ProfileView({
               </a>
               <a
                 href={`mailto:${nutr.email}`}
-                className="w-12 h-12 rounded-full flex items-center justify-center shadow-md"
+                className="flex h-12 w-12 items-center justify-center rounded-full shadow-md"
                 style={{ backgroundColor: '#377CC3' }}
+                aria-label="Αποστολή email"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="w-5 h-5 text-white"
+                  className="h-5 w-5 text-white"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -348,28 +394,29 @@ function ProfileView({
           </div>
 
           {/* Bio */}
-          <p className="text-gray-300 text-sm leading-relaxed max-w-xl mb-10">
+          <p className="mb-10 max-w-xl text-sm leading-relaxed text-gray-300">
             {nutr.bio}
           </p>
 
           {/* Booking section */}
           <div className="flex flex-col items-center">
             {/* Pill heading */}
-            <div className="border-2 border-gray-800 bg-gray-100 rounded-full px-8 py-3 mb-6">
-              <h2 className="text-gray-800 text-xl font-bold">
+            <div className="mb-6 rounded-full border-2 border-gray-800 bg-gray-100 px-6 py-3">
+              <h2 className="text-center text-lg font-bold text-gray-800 md:text-xl">
                 Διαθέσιμες ημερομηνίες και ώρες
               </h2>
             </div>
 
             {/* Month navigator */}
-            <div className="flex items-center gap-4 mb-6 self-start">
+            <div className="mb-6 flex items-center gap-4 self-start">
               <button
                 onClick={() => setMonthIndex((m) => Math.max(0, m - 1))}
-                className="text-gray-700 hover:text-gray-900 transition-colors"
+                className="text-gray-700 transition-colors hover:text-gray-900"
+                aria-label="Προηγούμενος μήνας"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="w-5 h-5"
+                  className="h-5 w-5"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -382,16 +429,17 @@ function ProfileView({
                   />
                 </svg>
               </button>
-              <span className="text-gray-800 font-semibold text-base">
+              <span className="text-base font-semibold text-gray-800">
                 {MONTHS[monthIndex]}
               </span>
               <button
                 onClick={() => setMonthIndex((m) => Math.min(11, m + 1))}
-                className="text-gray-700 hover:text-gray-900 transition-colors"
+                className="text-gray-700 transition-colors hover:text-gray-900"
+                aria-label="Επόμενος μήνας"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="w-5 h-5"
+                  className="h-5 w-5"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -406,13 +454,19 @@ function ProfileView({
               </button>
             </div>
 
-            {/* Day pills row */}
-            <div className="flex items-center gap-2 mb-6 w-full justify-center">
-              {/* Left arrow */}
-              <button className="w-10 h-10 rounded-full border-2 border-gray-600 flex items-center justify-center text-gray-700 hover:bg-gray-700 hover:text-white transition-colors flex-shrink-0">
+            {/* FIX: day pills row — on mobile remove the side arrows entirely and
+                let the pills wrap naturally. Arrows only appear on sm+ where there's
+                enough horizontal room. This prevents the row from overflowing the
+                viewport width on small screens. */}
+            <div className="mb-6 flex w-full items-center justify-center gap-2">
+              {/* Left arrow — sm+ only */}
+              <button
+                className="hidden h-10 w-10 flex-shrink-0 items-center justify-center rounded-full border-2 border-gray-600 text-gray-700 transition-colors hover:bg-gray-700 hover:text-white sm:flex"
+                aria-label="Προηγούμενες ημέρες"
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="w-4 h-4"
+                  className="h-4 w-4"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -426,19 +480,23 @@ function ProfileView({
                 </svg>
               </button>
 
-              <div className="flex gap-2 flex-wrap justify-center">
+              {/* FIX: overflow-x-auto on mobile so pills scroll horizontally
+                  instead of wrapping onto multiple rows and pushing content down */}
+              <div className="flex gap-2 overflow-x-auto pb-1 sm:flex-wrap sm:justify-center sm:overflow-visible sm:pb-0">
                 {DAYS.map((day, i) => {
                   const isSelected = selectedDay === i;
                   return (
                     <button
                       key={i}
                       onClick={() => setSelectedDay(i)}
-                      className="flex flex-col items-center justify-center w-14 h-16 rounded-2xl border-2 font-bold text-sm transition-all duration-150"
+                      className="flex h-16 w-14 flex-shrink-0 flex-col items-center justify-center rounded-2xl border-2 text-sm font-bold transition-all duration-150"
                       style={{
                         backgroundColor: isSelected ? '#B3D5F8' : 'white',
                         borderColor: isSelected ? '#377CC3' : '#D1D5DB',
                         color: '#3F4756',
                       }}
+                      aria-pressed={isSelected}
+                      aria-label={`${day.short} ${day.num}`}
                     >
                       <span className="text-xs">{day.short}</span>
                       <span className="text-lg leading-tight">{day.num}</span>
@@ -447,11 +505,14 @@ function ProfileView({
                 })}
               </div>
 
-              {/* Right arrow */}
-              <button className="w-10 h-10 rounded-full border-2 border-gray-600 flex items-center justify-center text-gray-700 hover:bg-gray-700 hover:text-white transition-colors flex-shrink-0">
+              {/* Right arrow — sm+ only */}
+              <button
+                className="hidden h-10 w-10 flex-shrink-0 items-center justify-center rounded-full border-2 border-gray-600 text-gray-700 transition-colors hover:bg-gray-700 hover:text-white sm:flex"
+                aria-label="Επόμενες ημέρες"
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="w-4 h-4"
+                  className="h-4 w-4"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -467,19 +528,20 @@ function ProfileView({
             </div>
 
             {/* Time slot pills */}
-            <div className="flex flex-wrap gap-3 justify-center mb-8">
+            <div className="mb-8 flex flex-wrap justify-center gap-3">
               {FAKE_SLOTS.map((slot) => {
                 const isSelected = selectedSlot === slot.id;
                 return (
                   <button
                     key={slot.id}
                     onClick={() => setSelectedSlot(slot.id)}
-                    className="px-5 py-2.5 rounded-full border-2 text-sm font-semibold transition-all duration-150"
+                    className="rounded-full border-2 px-5 py-2.5 text-sm font-semibold transition-all duration-150"
                     style={{
                       backgroundColor: isSelected ? '#B3D5F8' : 'white',
                       borderColor: isSelected ? '#377CC3' : '#3F4756',
                       color: '#3F4756',
                     }}
+                    aria-pressed={isSelected}
                   >
                     {slot.label}
                   </button>
@@ -489,7 +551,7 @@ function ProfileView({
 
             {/* CTA */}
             <button
-              className="px-12 py-3.5 rounded-full text-white font-bold text-base shadow-lg hover:opacity-90 transition-opacity"
+              className="rounded-full px-12 py-3.5 text-base font-bold text-white shadow-lg transition-opacity hover:opacity-90"
               style={{ backgroundColor: '#377CC3' }}
               onClick={() => {
                 // TODO: GraphQL mutation — book appointment

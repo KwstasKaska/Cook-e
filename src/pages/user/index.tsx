@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Navbar from '../../components/Users/Navbar';
 
-//Types
+// Types
 export type RecipeCard = {
   id: number;
   title: string;
@@ -71,7 +71,7 @@ const FAKE_MACROS = {
   },
 };
 
-//Donut chart (pure SVG)
+// Donut chart (pure SVG)
 function DonutChart() {
   const size = 160;
   const cx = size / 2;
@@ -127,14 +127,14 @@ function DonutChart() {
   );
 }
 
-//Star rating
+// Star rating
 function Stars({ rating }: { rating: number }) {
   return (
     <div className="flex items-center gap-0.5">
       {[1, 2, 3, 4, 5].map((s) => (
         <svg
           key={s}
-          className={`w-4 h-4 ${
+          className={`h-4 w-4 ${
             s <= Math.round(rating) ? 'text-yellow-400' : 'text-gray-300'
           }`}
           fill="currentColor"
@@ -147,7 +147,6 @@ function Stars({ rating }: { rating: number }) {
   );
 }
 
-//Recipe card
 const cardColors = ['#EAB308', '#86EFAC', '#B3D5F8'];
 
 function FannedCards({
@@ -166,13 +165,17 @@ function FannedCards({
   ];
 
   const rotations = [-8, -3, 0];
-  const xOffsets = ['-60px', '-30px', '0px'];
+  // FIX: reduced x offsets so back cards don't push outside the container
+  // on mobile. Was -60/-30/0 which made the stack 60px wider than the card.
+  const xOffsets = ['-28px', '-14px', '0px'];
   const yOffsets = ['20px', '10px', '0px'];
 
   return (
-    <div className="relative flex items-center justify-end pr-4 md:pr-10">
+    // On mobile: flex-col so the arrow sits below the card stack.
+    // On md+: flex-row so the arrow is inline to the right as designed.
+    <div className="flex flex-col items-center gap-4 md:flex-row md:justify-center">
       {/* Cards stack */}
-      <div className="relative" style={{ width: 260, height: 380 }}>
+      <div className="relative w-full max-w-[260px]" style={{ height: 380 }}>
         {order.map((recipeIdx, stackPos) => {
           const recipe = recipes[recipeIdx];
           const isFront = stackPos === 2;
@@ -183,7 +186,8 @@ function FannedCards({
               key={recipe.id}
               className="absolute rounded-2xl shadow-xl overflow-visible"
               style={{
-                width: 240,
+                // FIX: use percentage-based width so card scales with container
+                width: 'calc(100% - 0px)',
                 bottom: 0,
                 left: xOffsets[stackPos],
                 transform: `rotate(${rotations[stackPos]}deg) translateY(${yOffsets[stackPos]})`,
@@ -200,30 +204,30 @@ function FannedCards({
                 <img
                   src={recipe.image}
                   alt={recipe.title}
-                  className="w-28 h-28 rounded-full object-cover border-4 border-white shadow-md"
+                  className="h-28 w-28 rounded-full border-4 border-white object-cover shadow-md"
                 />
               </div>
 
-              <div className="px-4 pt-2 pb-4">
+              <div className="px-4 pb-4 pt-2">
                 {isFront && (
-                  <div className="flex justify-end mb-1">
-                    <span className="bg-white text-gray-700 text-xs font-semibold px-3 py-0.5 rounded-full">
+                  <div className="mb-1 flex justify-end">
+                    <span className="rounded-full bg-white px-3 py-0.5 text-xs font-semibold text-gray-700">
                       {recipe.difficulty}
                     </span>
                   </div>
                 )}
 
                 <h3
-                  className="font-bold text-gray-800 text-sm leading-tight mb-1"
+                  className="mb-1 text-sm font-bold leading-tight text-gray-800"
                   style={{ minHeight: 36 }}
                 >
                   {recipe.title}
                 </h3>
 
-                <div className="flex items-center gap-1 mb-1">
+                <div className="mb-1 flex items-center gap-1">
                   <Stars rating={recipe.rating} />
                   {isFront && (
-                    <span className="text-xs text-gray-600 ml-1">
+                    <span className="ml-1 text-xs text-gray-600">
                       {recipe.rating}/ 5 ({recipe.ratingCount})
                     </span>
                   )}
@@ -231,7 +235,7 @@ function FannedCards({
 
                 {isFront && (
                   <>
-                    <div className="flex items-center justify-between text-xs font-semibold text-gray-700 border-t border-white/60 pt-2 mb-3">
+                    <div className="mb-3 flex items-center justify-between border-t border-white/60 pt-2 text-xs font-semibold text-gray-700">
                       <span>{recipe.timeMinutes} λεπτά</span>
                       <span className="border-l border-white/60 pl-3">
                         {recipe.kcal} Kcal
@@ -240,7 +244,7 @@ function FannedCards({
                         {recipe.category}
                       </span>
                     </div>
-                    <button className="w-full border-2 border-gray-800 text-gray-800 font-bold text-sm py-2 rounded-xl hover:bg-gray-800 hover:text-white transition-colors duration-150">
+                    <button className="w-full rounded-xl border-2 border-gray-800 py-2 text-sm font-bold text-gray-800 transition-colors duration-150 hover:bg-gray-800 hover:text-white">
                       Ξεκίνα να μαγειρεύεις!
                     </button>
                   </>
@@ -248,7 +252,7 @@ function FannedCards({
 
                 {!isFront && (
                   <div className="mt-2">
-                    <button className="w-full border border-gray-700 text-gray-700 text-xs font-semibold py-1.5 rounded-xl">
+                    <button className="w-full rounded-xl border border-gray-700 py-1.5 text-xs font-semibold text-gray-700">
                       Ξεκίνα να…
                     </button>
                   </div>
@@ -259,15 +263,14 @@ function FannedCards({
         })}
       </div>
 
-      {/* Arrow button */}
+      {/* Arrow button — flex-shrink-0 so it never collapses */}
       <button
         onClick={onNext}
-        className="ml-4 w-12 h-12 rounded-full border-2 border-gray-700 flex items-center justify-center text-gray-700 hover:bg-gray-700 hover:text-white transition-colors duration-150 flex-shrink-0 self-center"
-        style={{ marginBottom: 0 }}
+        className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full border-2 border-gray-700 text-gray-700 transition-colors duration-150 hover:bg-gray-700 hover:text-white"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="w-5 h-5"
+          className="h-5 w-5"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -281,9 +284,8 @@ function FannedCards({
 }
 
 // Page
-
 export default function UserHomePage() {
-  const [activeCard, setActiveCard] = useState(2); // front card index
+  const [activeCard, setActiveCard] = useState(2);
 
   const handleNext = () => {
     setActiveCard((prev) => (prev + 1) % 3);
@@ -293,7 +295,6 @@ export default function UserHomePage() {
     <div className="min-h-screen" style={{ backgroundColor: '#3F4756' }}>
       <Navbar />
 
-      {/* ── Hero section: dark top + diagonal split ── */}
       <div className="relative overflow-hidden">
         {/* White diagonal bottom half */}
         <div
@@ -304,24 +305,24 @@ export default function UserHomePage() {
           }}
         />
 
-        <div className="relative z-10 max-w-6xl mx-auto px-6 pt-10 pb-0">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+        <div className="relative z-10 mx-auto max-w-6xl px-6 pb-0 pt-10">
+          <div className="grid grid-cols-1 items-center gap-8 md:grid-cols-2">
             {/* Left: Donut card */}
-            <div className="bg-white rounded-2xl shadow-lg p-6 flex gap-6 items-center max-w-md mx-auto md:mx-0">
+            <div className="mx-auto flex max-w-md items-center gap-6 rounded-2xl bg-white p-6 shadow-lg md:mx-0">
               {/* Legend */}
               <div className="flex flex-col gap-3">
                 {Object.values(FAKE_MACROS).map((m) => (
                   <div key={m.label} className="flex flex-col">
                     <div className="flex items-center gap-2">
                       <span
-                        className="w-3 h-3 rounded-sm flex-shrink-0"
+                        className="h-3 w-3 flex-shrink-0 rounded-sm"
                         style={{ backgroundColor: m.color }}
                       />
                       <span className="text-sm font-semibold text-gray-700">
                         {m.label}
                       </span>
                     </div>
-                    <span className="text-sm text-gray-500 ml-5">
+                    <span className="ml-5 text-sm text-gray-500">
                       {m.value}
                     </span>
                   </div>
@@ -333,15 +334,15 @@ export default function UserHomePage() {
               </div>
             </div>
 
-            {/* Right: Text */}
+            {/* Right: Text — always white since it always sits on the dark bg */}
             <div className="text-white">
               <h1
-                className="text-4xl md:text-5xl font-bold italic mb-4"
+                className="mb-4 text-4xl font-bold italic md:text-5xl"
                 style={{ fontFamily: 'Georgia, serif' }}
               >
                 Διατροφικά Στοιχεία
               </h1>
-              <p className="text-gray-200 text-base leading-relaxed max-w-sm">
+              <p className="max-w-sm text-base leading-relaxed text-gray-200">
                 Παρακολουθήστε τα διατροφικά στοιχεία που καταναλώσατε την
                 τελευταία βδομάδα, συγκεντρωτικά, στο γράφημα αριστερά.
               </p>
@@ -349,15 +350,21 @@ export default function UserHomePage() {
           </div>
         </div>
 
-        {/* ── Bottom section: text left + fanned cards right ── */}
-        <div className="relative z-10 max-w-6xl mx-auto px-6 pt-12 pb-16">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-end">
-            {/* Left: Weekly recipes text */}
+        {/* Bottom section: text left + fanned cards right */}
+        <div className="relative z-10 mx-auto max-w-6xl px-6 pb-16 pt-12">
+          <div className="grid grid-cols-1 items-end gap-8 md:grid-cols-2">
+            {/* Left: Weekly recipes text
+                FIX: on mobile this column sits over the diagonal white area but
+                the original text was text-gray-800/text-gray-600 — fine on white,
+                but on mobile (single column) the section sits over the DARK bg
+                because the white clipPath starts lower. Fixed by making the text
+                white on mobile and switching to dark only at md+ where the layout
+                is two columns and this column is guaranteed to be over the white. */}
             <div>
-              <h2 className="text-2xl font-bold text-gray-800 mb-4">
+              <h2 className="mb-4 text-2xl font-bold text-white md:text-gray-800">
                 Οι συνταγες της εβδομάδας
               </h2>
-              <div className="text-gray-600 text-sm leading-relaxed space-y-3 max-w-sm">
+              <div className="max-w-sm space-y-3 text-sm leading-relaxed text-gray-200 md:text-gray-600">
                 <p>
                   Τα υλικά των σημερινών συνταγών είναι αυτά που τις έκαναν να
                   προταθούν. Τα γνωρίζεις;

@@ -1,0 +1,26 @@
+{
+  "nav": {
+    "home": "Home",
+    "recipes": "Recipes",
+    "nutritionists": "Nutritionists",
+    "logout": "Logout",
+    "cart": "Cart",
+    "settings": "Settings",
+    "tagline": "A Food Journey"
+  },
+  "chefnav": {
+    "chef_home": "Home",
+    "chef_profile": "Profile",
+    "chef_recipes": "My recipes",
+    "chef_create": "Create recipe",
+    "settings": "Settings",
+    "logout": "Logout"
+  },
+  "nutrnav": {
+    "nutr_articles": "Articles",
+    "nutr_calendar": "Calendar",
+    "nutr_appointments": "Appointment management",
+    "nutr_scheduler": "Nutrition planning",
+    "nutr_logout": "Logout"
+  }
+}

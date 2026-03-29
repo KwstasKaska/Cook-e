@@ -5,6 +5,7 @@ import RecipeSummaryModal, {
   RecipeSummaryData,
 } from '../../components/Chef/RecipeSummary';
 import Footer from '../../components/Users/Footer';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 // ─── Types
 interface Recipe {
@@ -424,4 +425,12 @@ export default function ChefRecipes() {
       <Footer />
     </div>
   );
+}
+
+export async function getServerSideProps({ locale }: { locale: string }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ['common'])),
+    },
+  };
 }
