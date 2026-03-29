@@ -244,7 +244,7 @@ const StarRow = ({
   </div>
 );
 
-// ─── Diagonal background wrapper ──────────────────────────────────────────────
+//  Diagonal background wrapper
 function DiagonalLayout({
   children,
   whiteStart = '15%',
