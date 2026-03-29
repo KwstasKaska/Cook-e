@@ -54,7 +54,7 @@ const Nutritionist: NextPage<NutritionistProps> = ({ meData }) => {
   const [selectedDate, setSelectedDate] = useState<string>('');
 
   // TODO: Να φτιάξω το κομμάτι της αποθήκευσης όταν το συνδέσω με την βάση
-
+  //vercel commit
   return (
     <React.Fragment>
       <NutrNavbar />
