@@ -590,7 +590,7 @@ function UtensilStep({
   );
 }
 
-// Recipe result card
+// ─── Recipe result card ────────────────────────────────────────────────────────
 const RecipeCard = ({
   recipe,
   index,
@@ -648,8 +648,11 @@ function ResultsStep({
       style={{ backgroundColor: '#3F4756' }}
     >
       <div
-        className="absolute inset-0 hidden bg-white md:block"
-        style={{ clipPath: 'polygon(60% 0%, 100% 0%, 100% 100%, 25% 100%)' }}
+        className="absolute bottom-0 left-0 w-full bg-gray-100"
+        style={{
+          height: '72%',
+          clipPath: 'polygon(0 15%, 100% 0%, 100% 100%, 0% 100%)',
+        }}
       />
       <div className="relative z-10 max-w-5xl mx-auto px-6 pt-10 pb-20">
         {/* Back button */}
@@ -673,7 +676,7 @@ function ResultsStep({
           Πίσω στην αναζήτηση
         </button>
 
-        <h2 className="text-center text-2xl font-bold text-white mb-20">
+        <h2 className="text-center text-2xl font-bold text-white mb-24">
           Διάλεξε ανάμεσα στις προτεινόμενες συνταγές
         </h2>
 
@@ -704,7 +707,7 @@ function ResultsStep({
         <div className="mt-16 flex justify-center">
           <button
             onClick={onBack}
-            className="rounded-full border-2 border-white px-8 py-2 text-sm font-bold text-white transition hover:bg-white hover:text-gray-800"
+            className="rounded-full border-2 bg-gray-500 border-white px-8 py-2 text-sm font-bold text-white transition hover:bg-white hover:text-gray-800"
           >
             Νέα αναζήτηση
           </button>
@@ -714,7 +717,7 @@ function ResultsStep({
   );
 }
 
-//Recipe detail
+// ─── Recipe detail
 type IngredientLine = { id: number; name: string; checked: boolean };
 type Review = {
   id: number;
@@ -726,7 +729,7 @@ type Review = {
 type DetailTab = 'ingredients' | 'reviews';
 
 function RecipeDetailPage({
-  recipeId,
+  recipeId: _recipeId,
   onBack,
 }: {
   recipeId: number;

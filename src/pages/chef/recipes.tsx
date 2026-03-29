@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
-import { useRouter } from 'next/router';
 import ChefNavbar from '../../components/Chef/ChefNavbar';
 import RecipeSummaryModal, {
   RecipeSummaryData,
 } from '../../components/Chef/RecipeSummary';
 import Footer from '../../components/Users/Footer';
 
-// ─── Types ────────────────────────────────────────────────────────────────────
+// ─── Types
 interface Recipe {
   id: number;
   title: string;
@@ -21,7 +20,7 @@ interface Recipe {
   tags: string[];
 }
 
-// ─── Fake data ────────────────────────────────────────────────────────────────
+// ─── Fake data
 const CATEGORIES = [
   'Κρέας',
   'Όσπρια',
@@ -84,7 +83,7 @@ const FAKE_RECIPES: Recipe[] = [
   },
 ];
 
-// ─── Compact recipe row card ─────────────────────────────────────────────────
+// ─── Compact recipe row card
 const CompactCard = ({
   recipe,
   onClick,
@@ -169,7 +168,6 @@ const FeaturedCard = ({
 
 // ─── Main page ─────────────────────────────────────────────────────────────────
 export default function ChefRecipes() {
-  const router = useRouter();
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [search, setSearch] = useState('');
   const [sort, setSort] = useState('Νεότερα');

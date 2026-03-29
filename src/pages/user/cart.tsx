@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import ScrollToTopButton from '../../components/Helper/ScrollToTopButton';
 import Navbar from '../../components/Users/Navbar';
 
-// ── Type ─────────────────────────────────────────────────────────────────────
+// ── Type
 type CartItem = {
   id: number;
   name: string;
@@ -11,7 +11,7 @@ type CartItem = {
   checked: boolean;
 };
 
-// ── Fake data ────────────────────────────────────────────────────────────────
+// ── Fake data
 const INITIAL_ITEMS: CartItem[] = [
   { id: 1, name: 'Τομάτες', emoji: '🍅', weightGrams: 300, checked: true },
   { id: 2, name: 'Κρεμμύδια', emoji: '🧅', weightGrams: 150, checked: false },
@@ -71,7 +71,6 @@ export default function CartPage() {
     <div className="min-h-screen" style={{ backgroundColor: '#3F4756' }}>
       <Navbar />
 
-      {/* ── Diagonal split background ── */}
       <div className="relative overflow-hidden min-h-screen">
         <div
           className="absolute bottom-0 left-0 w-full bg-white"
@@ -274,7 +273,6 @@ export default function CartPage() {
           )}
         </div>
       </div>
-
       <ScrollToTopButton />
     </div>
   );

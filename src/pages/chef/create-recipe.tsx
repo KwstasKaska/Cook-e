@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import ChefNavbar from '../../components/Chef/ChefNavbar';
 import Footer from '../../components/Users/Footer';
 
-// ─── Types ────────────────────────────────────────────────────────────────────
+// ─── Types
 interface Ingredient {
   id: number;
   quantity: string;
@@ -37,7 +37,7 @@ interface FormData {
   steps: ExecutionStep[];
 }
 
-// ─── Stars ────────────────────────────────────────────────────────────────────
+// ─── Stars
 const Stars = ({ rating }: { rating: number }) => (
   <div className="flex gap-0.5">
     {Array.from({ length: 5 }).map((_, i) => (
@@ -60,7 +60,7 @@ const Stars = ({ rating }: { rating: number }) => (
   </div>
 );
 
-// ─── Live Preview Panel ───────────────────────────────────────────────────────
+// ─── Live Preview Panel
 const LivePreview = ({
   form,
   step,
@@ -195,7 +195,7 @@ const LivePreview = ({
           <div className="flex flex-col gap-1">
             {form.steps
               .filter((s) => s.text)
-              .map((s, i) => (
+              .map((s) => (
                 <div key={s.id} className="flex items-start gap-1.5">
                   <div className="mt-0.5 h-3.5 w-3.5 flex-shrink-0 rounded-full border border-gray-400" />
                   <span className="text-xs text-gray-600 leading-relaxed">
@@ -779,6 +779,8 @@ export default function CreateRecipe() {
             </button>
           </div>
         );
+      default:
+        return null;
     }
   };
 

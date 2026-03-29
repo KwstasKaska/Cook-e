@@ -1,8 +1,7 @@
 import { useState } from 'react';
-import { useRouter } from 'next/router';
 import Navbar from '../components/Users/Navbar';
 
-// ─── Types ────────────────────────────────────────────────────────────────────
+// ─── Types
 type Role = 'user' | 'chef' | 'nutritionist';
 
 type TabKey =

@@ -35,8 +35,6 @@ const FAKE_NUTRITIONISTS: Nutritionist[] = Array.from(
   }),
 );
 
-const CARD_COLORS = ['#EAB308', '#86EFAC', '#B3D5F8'];
-
 const DAYS = [
   { short: 'Δευ', num: 23 },
   { short: 'Τρι', num: 24 },
@@ -131,7 +129,7 @@ function NutrCard({
 //List view
 function ListView({ onSelect }: { onSelect: (n: Nutritionist) => void }) {
   const [search, setSearch] = useState('');
-  const [page, setPage] = useState(0); // 0-based page, 6 per page
+  const [_page, setPage] = useState(0); // 0-based page, 6 per page
 
   const filtered = FAKE_NUTRITIONISTS.filter((n) =>
     n.name.toLowerCase().includes(search.toLowerCase()),

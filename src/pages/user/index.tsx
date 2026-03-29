@@ -78,7 +78,6 @@ function DonutChart() {
   const cy = size / 2;
   const r = 58;
   const stroke = 18;
-  const circumference = 2 * Math.PI * r;
 
   const segments = Object.values(FAKE_MACROS);
   let cumulativePct = 0;
