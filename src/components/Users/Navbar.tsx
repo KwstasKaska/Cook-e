@@ -1,19 +1,21 @@
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { useState } from 'react';
+import { useTranslation } from 'next-i18next';
+import LanguageSwitcher from '../Helper/LanguageSwitcher';
 
 export default function Navbar() {
   const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
+  const { t } = useTranslation('common');
 
   const navLinks = [
-    { label: 'Αρχική', href: '/user' },
-    { label: 'Συνταγές', href: '/user/recipes' },
-    { label: 'Διατροφολόγοι', href: '/user/nutritionists' },
+    { label: t('nav.home'), href: '/user' },
+    { label: t('nav.recipes'), href: '/user/recipes' },
+    { label: t('nav.nutritionists'), href: '/user/nutritionists' },
   ];
 
   const handleLogout = () => {
-    // TODO: GraphQL mutation — clear token/session
     router.push('/login');
   };
 
@@ -28,7 +30,7 @@ export default function Navbar() {
           <span className="text-yellow-400">🍪</span>ook-e
         </span>
         <span className="text-gray-400 text-[10px] tracking-widest uppercase">
-          A Food Journey
+          {t('nav.tagline')}
         </span>
       </Link>
 
@@ -62,7 +64,7 @@ export default function Navbar() {
               ? 'text-yellow-400'
               : 'text-white hover:text-yellow-300'
           }`}
-          aria-label="Καλάθι"
+          aria-label={t('nav.cart')}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -80,6 +82,10 @@ export default function Navbar() {
           </svg>
         </Link>
 
+        {/* Language switcher */}
+
+        <LanguageSwitcher />
+
         {/* Settings */}
         <Link
           href="/settings"
@@ -88,7 +94,7 @@ export default function Navbar() {
               ? 'text-yellow-400'
               : 'text-white hover:text-yellow-300'
           }`}
-          aria-label="Ρυθμίσεις"
+          aria-label={t('nav.settings')}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -115,9 +121,8 @@ export default function Navbar() {
         <button
           onClick={handleLogout}
           className="ml-2 border border-white text-white text-sm font-semibold px-5 py-1.5 rounded-full hover:bg-white hover:text-myGrey-200 transition-colors duration-150"
-          style={{ transition: 'background 0.15s, color 0.15s' }}
         >
-          ΕΞΟΔΟΣ
+          {t('nav.logout')}
         </button>
       </div>
 
@@ -174,10 +179,12 @@ export default function Navbar() {
           })}
 
           <div className="flex items-center gap-4 pt-2 border-t border-gray-600 w-full">
+            <LanguageSwitcher />
             <Link
               href="/user/cart"
               onClick={() => setMenuOpen(false)}
               className="text-white hover:text-yellow-300"
+              aria-label={t('nav.cart')}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -198,6 +205,7 @@ export default function Navbar() {
               href="/user/settings"
               onClick={() => setMenuOpen(false)}
               className="text-white hover:text-yellow-300"
+              aria-label={t('nav.settings')}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -223,7 +231,7 @@ export default function Navbar() {
               onClick={handleLogout}
               className="ml-auto border border-white text-white text-sm font-semibold px-5 py-1.5 rounded-full hover:bg-white hover:text-gray-800 transition-colors"
             >
-              ΕΞΟΔΟΣ
+              {t('nav.logout')}
             </button>
           </div>
         </div>

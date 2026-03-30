@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import Navbar from '../components/Users/Navbar';
+import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 // ─── Types
 type Role = 'user' | 'chef' | 'nutritionist';
@@ -14,52 +16,63 @@ type TabKey =
 
 type Tab = {
   key: TabKey;
-  label: string;
+  labelKey: string;
   icon: string;
-  roles: Role[]; // which roles see this tab
+  roles: Role[];
 };
 
-//Fake data
+// Fake data
 const FAKE_USER = {
   name: 'Κωνσταντίνος Κασκαντίρης',
   email: 'kostas@example.com',
   phone: '+30 210 0000000',
   city: 'Αθήνα',
   avatar: 'https://randomuser.me/api/portraits/men/32.jpg',
-  role: 'chef' as Role, // TODO: pull from meData.me.role
+  role: 'chef' as Role,
 };
 
-//Tabs config
 const TABS: Tab[] = [
   {
     key: 'personal',
-    label: 'Προσωπικά Στοιχεία',
+    labelKey: 'settings.personalInfo',
     icon: '👤',
     roles: ['user', 'chef', 'nutritionist'],
   },
   {
     key: 'security',
-    label: 'Ασφάλεια',
+    labelKey: 'settings.security',
     icon: '🔒',
     roles: ['user', 'chef', 'nutritionist'],
   },
   {
     key: 'notifications',
-    label: 'Ειδοποιήσεις',
+    labelKey: 'settings.notifications',
     icon: '🔔',
     roles: ['user', 'chef', 'nutritionist'],
   },
-
-  { key: 'chef-profile', label: 'Προφίλ Chef', icon: '👨‍🍳', roles: ['chef'] },
+  {
+    key: 'chef-profile',
+    labelKey: 'settings.chefProfile',
+    icon: '👨‍🍳',
+    roles: ['chef'],
+  },
   {
     key: 'nutritionist-profile',
-    label: 'Επαγγελματικό Προφίλ',
+    labelKey: 'settings.nutritionistProfile',
     icon: '🥗',
     roles: ['nutritionist'],
   },
 ];
 
-//Functions
+export async function getServerSideProps({ locale }: { locale: string }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ['common'])),
+    },
+  };
+}
+
+// ─── Shared components
 function FieldGroup({
   title,
   children,
@@ -147,6 +160,7 @@ function Toggle({
 }
 
 function SaveButton({ onClick }: { onClick?: () => void }) {
+  const { t } = useTranslation('common');
   return (
     <div className="mt-8 flex justify-end">
       <button
@@ -154,17 +168,18 @@ function SaveButton({ onClick }: { onClick?: () => void }) {
         className="px-8 py-2.5 rounded-full text-sm font-bold text-white transition hover:opacity-90 hover:scale-105"
         style={{ backgroundColor: '#377CC3' }}
       >
-        Αποθήκευση
+        {t('settings.save')}
       </button>
     </div>
   );
 }
 
-//Tab panels
+// ─── Tab panels
 function PersonalTab({ user }: { user: typeof FAKE_USER }) {
+  const { t } = useTranslation('common');
+
   return (
     <div>
-      {/* Avatar */}
       <div
         className="flex items-center gap-5 mb-8 pb-8 border-b"
         style={{ borderColor: '#EAEAEA' }}
@@ -213,25 +228,29 @@ function PersonalTab({ user }: { user: typeof FAKE_USER }) {
         </div>
       </div>
 
-      <FieldGroup title="Βασικά Στοιχεία">
+      <FieldGroup title={t('settings.basicInfo')}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <Field label="Ονοματεπώνυμο" defaultValue={user.name} />
+          <Field label={t('settings.fullName')} defaultValue={user.name} />
           <Field label="Email" type="email" defaultValue={user.email} />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <Field label="Τηλέφωνο" type="tel" defaultValue={user.phone} />
-          <Field label="Πόλη" defaultValue={user.city} />
+          <Field
+            label={t('settings.phone')}
+            type="tel"
+            defaultValue={user.phone}
+          />
+          <Field label={t('settings.city')} defaultValue={user.city} />
         </div>
       </FieldGroup>
 
-      <FieldGroup title="Σχετικά με εμένα">
+      <FieldGroup title={t('settings.aboutMe')}>
         <div>
           <label className="block text-xs font-semibold text-gray-500 mb-1">
-            Βιογραφικό
+            {t('settings.bio')}
           </label>
           <textarea
             rows={4}
-            placeholder="Πες μας λίγα λόγια για σένα..."
+            placeholder={t('settings.bioPlaceholder')}
             className="w-full rounded-xl border-2 px-4 py-2.5 text-sm resize-none focus:outline-none transition"
             style={{ borderColor: '#EAEAEA', color: '#3F4756' }}
             onFocus={(e) => (e.currentTarget.style.borderColor = '#377CC3')}
@@ -240,68 +259,77 @@ function PersonalTab({ user }: { user: typeof FAKE_USER }) {
         </div>
       </FieldGroup>
 
-      {/* TODO: GraphQL mutation — updateUser */}
       <SaveButton />
     </div>
   );
 }
 
 function SecurityTab() {
+  const { t } = useTranslation('common');
+
   return (
     <div>
-      <FieldGroup title="Αλλαγή Κωδικού">
-        <Field label="Τρέχων κωδικός" type="password" placeholder="••••••••" />
-        <Field label="Νέος κωδικός" type="password" placeholder="••••••••" />
+      <FieldGroup title={t('settings.changePassword')}>
         <Field
-          label="Επιβεβαίωση νέου κωδικού"
+          label={t('settings.currentPassword')}
+          type="password"
+          placeholder="••••••••"
+        />
+        <Field
+          label={t('settings.newPassword')}
+          type="password"
+          placeholder="••••••••"
+        />
+        <Field
+          label={t('settings.confirmPassword')}
           type="password"
           placeholder="••••••••"
         />
       </FieldGroup>
-
-      {/* TODO: GraphQL mutation — changePassword */}
       <SaveButton />
     </div>
   );
 }
 
 function NotificationsTab() {
+  const { t } = useTranslation('common');
+
   return (
     <div>
-      <FieldGroup title="Email Ειδοποιήσεις">
+      <FieldGroup title={t('settings.emailNotifications')}>
         <Toggle
-          label="Νέες συνταγές"
-          description="Ενημέρωση όταν δημοσιεύονται νέες συνταγές από chefs που ακολουθείς."
+          label={t('settings.newRecipes')}
+          description={t('settings.newRecipesDesc')}
           defaultChecked
         />
         <Toggle
-          label="Υπενθυμίσεις ραντεβού"
-          description="Λάβε email πριν από κάθε ραντεβού με διατροφολόγο."
+          label={t('settings.appointmentReminders')}
+          description={t('settings.appointmentRemindersDesc')}
           defaultChecked
         />
       </FieldGroup>
-
-      {/* TODO: GraphQL mutation — updateNotificationPreferences */}
       <SaveButton />
     </div>
   );
 }
 
 function ChefProfileTab() {
+  const { t } = useTranslation('common');
+
   return (
     <div>
-      <FieldGroup title="Δημόσιο Προφίλ Chef">
+      <FieldGroup title={t('settings.chefPublicProfile')}>
         <Field
-          label="Επαγγελματικός τίτλος"
-          placeholder="π.χ. Executive Chef, Pastry Chef..."
+          label={t('settings.professionalTitle')}
+          placeholder={t('settings.professionalTitlePlaceholder')}
         />
         <div>
           <label className="block text-xs font-semibold text-gray-500 mb-1">
-            Βιογραφικό Chef
+            {t('settings.chefBio')}
           </label>
           <textarea
             rows={4}
-            placeholder="Περίγραψε την εμπειρία και την εξειδίκευσή σου..."
+            placeholder={t('settings.chefBioPlaceholder')}
             className="w-full rounded-xl border-2 px-4 py-2.5 text-sm resize-none focus:outline-none transition"
             style={{ borderColor: '#EAEAEA', color: '#3F4756' }}
             onFocus={(e) => (e.currentTarget.style.borderColor = '#377CC3')}
@@ -310,47 +338,47 @@ function ChefProfileTab() {
         </div>
       </FieldGroup>
 
-      <FieldGroup title="Κοινωνικά Δίκτυα">
-        <Field label="Website" placeholder="https://..." />
+      <FieldGroup title={t('settings.socialMedia')}>
+        <Field label={t('settings.website')} placeholder="https://..." />
       </FieldGroup>
 
-      {/* TODO: GraphQL mutation — updateChefProfile */}
       <SaveButton />
     </div>
   );
 }
 
 function NutritionistProfileTab() {
+  const { t } = useTranslation('common');
+
   return (
     <div>
-      <FieldGroup title="Επαγγελματικά Στοιχεία">
+      <FieldGroup title={t('settings.professionalDetails')}>
         <Field
-          label="Τίτλος σπουδών"
+          label={t('settings.degreeTitle')}
           placeholder="π.χ. MSc Κλινική Διατροφολογία"
         />
-        <Field label="Αριθμός άδειας ασκήσεως" placeholder="π.χ. 12345" />
-        <Field label="Ειδικότητα" placeholder="π.χ. Αθλητική διατροφή" />
+        <Field label={t('settings.licenseNumber')} placeholder="π.χ. 12345" />
+        <Field
+          label={t('settings.specialization')}
+          placeholder="π.χ. Αθλητική διατροφή"
+        />
       </FieldGroup>
-
-      {/* TODO: GraphQL mutation — updateNutritionistProfile */}
       <SaveButton />
     </div>
   );
 }
 
-//Page
+// ─── Page
 export default function SettingsPage() {
-  // TODO: replace with real role from getServerSideProps / meData.me.role
+  const { t } = useTranslation('common');
   const role = FAKE_USER.role;
-
-  const visibleTabs = TABS.filter((t) => t.roles.includes(role));
+  const visibleTabs = TABS.filter((tab) => tab.roles.includes(role));
   const [activeTab, setActiveTab] = useState<TabKey>('personal');
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#3F4756' }}>
       <Navbar />
 
-      {/* Diagonal split */}
       <div className="relative overflow-hidden min-h-screen">
         <div
           className="absolute bottom-0 left-0 w-full bg-gray-50"
@@ -361,11 +389,12 @@ export default function SettingsPage() {
         />
 
         <div className="relative z-10 max-w-5xl mx-auto px-6 pt-10 pb-20">
-          {/* Page title */}
-          <h1 className="text-white text-3xl font-bold mb-8">Ρυθμίσεις</h1>
+          <h1 className="text-white text-3xl font-bold mb-8">
+            {t('settings.title')}
+          </h1>
 
           <div className="flex flex-col md:flex-row gap-6 items-start">
-            {/* ── Sidebar tabs ── */}
+            {/* Sidebar */}
             <aside className="w-full md:w-56 flex-shrink-0">
               <div className="bg-white rounded-2xl shadow-md overflow-hidden">
                 {visibleTabs.map((tab) => {
@@ -382,25 +411,24 @@ export default function SettingsPage() {
                       }}
                     >
                       <span className="text-base">{tab.icon}</span>
-                      <span>{tab.label}</span>
+                      <span>{t(tab.labelKey)}</span>
                     </button>
                   );
                 })}
               </div>
 
-              {/* Danger zone */}
               <div className="mt-4 bg-white rounded-2xl shadow-md overflow-hidden">
                 <button
                   className="w-full flex items-center gap-3 px-4 py-3.5 text-sm font-semibold text-left transition-colors hover:bg-red-50"
                   style={{ color: '#ED5B5B' }}
                 >
                   <span className="text-base">🗑️</span>
-                  <span>Διαγραφή λογαριασμού</span>
+                  <span>{t('settings.deleteAccount')}</span>
                 </button>
               </div>
             </aside>
 
-            {/* ── Main panel ── */}
+            {/* Main panel */}
             <main className="flex-1 bg-white rounded-2xl shadow-md p-6 md:p-8 min-w-0">
               {activeTab === 'personal' && <PersonalTab user={FAKE_USER} />}
               {activeTab === 'security' && <SecurityTab />}

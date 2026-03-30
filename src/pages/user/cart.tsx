@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import ScrollToTopButton from '../../components/Helper/ScrollToTopButton';
 import Navbar from '../../components/Users/Navbar';
+import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 // ── Type
 type CartItem = {
@@ -21,7 +23,16 @@ const INITIAL_ITEMS: CartItem[] = [
   { id: 6, name: 'Τυρί', emoji: '🧀', weightGrams: 200, checked: false },
 ];
 
+export async function getServerSideProps({ locale }: { locale: string }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ['common'])),
+    },
+  };
+}
+
 export default function CartPage() {
+  const { t } = useTranslation('common');
   const [items, setItems] = useState<CartItem[]>(INITIAL_ITEMS);
   const [newItem, setNewItem] = useState('');
 
@@ -83,10 +94,10 @@ export default function CartPage() {
         <div className="relative z-10 max-w-2xl mx-auto px-6 pt-14 pb-20">
           {/* Heading */}
           <h2 className="text-white text-3xl md:text-4xl font-bold text-center mb-1">
-            Το Καλάθι Μου
+            {t('cart.title')}
           </h2>
           <p className="text-gray-300 text-sm text-center mb-10">
-            Λίστα αγορών για το σούπερ μάρκετ. Επιλέξτε αυτά που έχετε ήδη.
+            {t('cart.subtitle')}
           </p>
 
           {/* Add item */}
@@ -96,7 +107,7 @@ export default function CartPage() {
               value={newItem}
               onChange={(e) => setNewItem(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && addItem()}
-              placeholder="Προσθήκη υλικού..."
+              placeholder={t('cart.addIngredient')}
               className="flex-1 rounded-xl border-2 border-gray-200 px-4 py-2 text-sm text-gray-700 placeholder-gray-400 focus:border-myBlue-200 focus:outline-none"
             />
             <button
@@ -110,7 +121,7 @@ export default function CartPage() {
 
           {items.length === 0 ? (
             <div className="rounded-2xl border-2 border-dashed border-gray-200 p-10 text-center bg-white">
-              <p className="text-gray-500">Το καλάθι σου είναι άδειο.</p>
+              <p className="text-gray-500">{t('cart.emptyCart')}</p>
             </div>
           ) : (
             <>
@@ -243,7 +254,7 @@ export default function CartPage() {
                 style={{ borderColor: '#EAEAEA' }}
               >
                 <p className="text-sm text-gray-400">
-                  {checkedCount}/{items.length} αντικείμενα
+                  {checkedCount}/{items.length} {t('cart.items')}
                 </p>
                 <button
                   onClick={clearChecked}
@@ -266,7 +277,7 @@ export default function CartPage() {
                       checkedCount > 0 ? '#ED5B5B' : '#9CA3AF';
                   }}
                 >
-                  Καθαρισμός επιλεγμένων
+                  {t('cart.clearSelected')}
                 </button>
               </div>
             </>

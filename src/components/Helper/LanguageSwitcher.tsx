@@ -13,7 +13,7 @@ export default function LanguageSwitcher() {
   return (
     <button
       onClick={toggleLanguage}
-      className="text-black text-sm font-semibold hover:text-yellow-300 transition-colors duration-150"
+      className="text-white text-sm font-semibold hover:text-yellow-300 transition-colors duration-150"
     >
       {router.locale === 'el' ? 'EN' : 'EL'}
     </button>

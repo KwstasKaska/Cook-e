@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import Navbar from '../../components/Users/Navbar';
+import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 // Types
 export type Nutritionist = {
@@ -68,6 +70,14 @@ const MONTHS = [
   'Δεκέμβριος',
 ];
 
+export async function getServerSideProps({ locale }: { locale: string }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ['common'])),
+    },
+  };
+}
+
 // Star rating
 function Stars({ rating, small = false }: { rating: number; small?: boolean }) {
   return (
@@ -127,8 +137,8 @@ function NutrCard({
   );
 }
 
-// List view
 function ListView({ onSelect }: { onSelect: (n: Nutritionist) => void }) {
+  const { t } = useTranslation('common');
   const [search, setSearch] = useState('');
   const [_page, setPage] = useState(0);
 
@@ -139,33 +149,26 @@ function ListView({ onSelect }: { onSelect: (n: Nutritionist) => void }) {
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#3F4756' }}>
       <Navbar />
-
-      {/* Use flex-col so the bg stretches to fit content height, not a fixed % */}
       <div className="flex flex-col" style={{ backgroundColor: '#3F4756' }}>
         <div className="relative z-10 mx-auto w-full max-w-5xl px-6 pb-20 pt-12">
-          {/* Search row */}
           <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <h1 className="text-2xl font-bold text-white md:text-3xl">
-              Αναζητήστε τον Διατροφολόγο σας:
+              {t('nutritionists.searchTitle')}
             </h1>
             <input
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Εύρεση Διατροφολόγου"
+              placeholder={t('nutritionists.searchPlaceholder')}
               className="w-full rounded-full border border-gray-200 bg-white px-5 py-2.5 text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-myBlue-200 md:w-64"
             />
           </div>
 
-          {/* Popular heading */}
           <h2 className="mb-6 text-center text-2xl font-bold text-white">
-            Δημοφιλείς Διατροφολόγοι
+            {t('nutritionists.popularTitle')}
           </h2>
 
-          {/* On mobile: no side arrows at all — just the white card + grid.
-              On md+: position:relative wrapper allows arrows to peek outside. */}
           <div className="relative mx-auto md:px-8">
-            {/* Left arrow — md+ only, sits outside the white card */}
             <button
               onClick={() => setPage((p) => Math.max(0, p - 1))}
               className="absolute left-0 top-1/2 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border-2 border-white bg-transparent text-white shadow transition-colors hover:bg-white hover:text-gray-700 md:flex"
@@ -187,16 +190,12 @@ function ListView({ onSelect }: { onSelect: (n: Nutritionist) => void }) {
               </svg>
             </button>
 
-            {/* White card — no relative/absolute arrows inside it */}
             <div className="rounded-2xl bg-white px-4 pb-8 pt-2 shadow-lg">
-              {/* ΟΛΟΙ */}
               <div className="flex justify-end pr-1 pt-3 pb-1">
                 <button className="text-sm font-semibold text-gray-500 transition-colors hover:text-gray-800">
-                  ΟΛΟΙ
+                  {t('nutritionists.showAll')}
                 </button>
               </div>
-
-              {/* Grid — avatar overhangs handled by pt-8 on the grid rows */}
               <div className="grid grid-cols-2 gap-x-4 gap-y-14 pt-6 md:grid-cols-3">
                 {filtered.slice(0, 6).map((nutr, i) => (
                   <NutrCard
@@ -209,7 +208,6 @@ function ListView({ onSelect }: { onSelect: (n: Nutritionist) => void }) {
               </div>
             </div>
 
-            {/* Right arrow — md+ only */}
             <button
               onClick={() => setPage((p) => p + 1)}
               className="absolute right-0 top-1/2 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border-2 border-white bg-transparent text-white shadow transition-colors hover:bg-white hover:text-gray-700 md:flex"
@@ -232,7 +230,6 @@ function ListView({ onSelect }: { onSelect: (n: Nutritionist) => void }) {
             </button>
           </div>
 
-          {/* Mobile-only pagination row below the card */}
           <div className="mt-6 flex justify-center gap-4 md:hidden">
             <button
               onClick={() => setPage((p) => Math.max(0, p - 1))}
@@ -281,7 +278,6 @@ function ListView({ onSelect }: { onSelect: (n: Nutritionist) => void }) {
   );
 }
 
-// Profile / booking view
 function ProfileView({
   nutr,
   onBack,
@@ -289,6 +285,7 @@ function ProfileView({
   nutr: Nutritionist;
   onBack: () => void;
 }) {
+  const { t } = useTranslation('common');
   const [monthIndex, setMonthIndex] = useState(7);
   const [selectedDay, setSelectedDay] = useState(1);
   const [selectedSlot, setSelectedSlot] = useState<number | null>(2);
@@ -296,9 +293,7 @@ function ProfileView({
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#3F4756' }}>
       <Navbar />
-
       <div className="relative overflow-hidden">
-        {/* Diagonal split */}
         <div
           className="absolute bottom-0 left-0 w-full bg-gray-100"
           style={{
@@ -306,9 +301,7 @@ function ProfileView({
             clipPath: 'polygon(0 35%, 100% 5%, 100% 100%, 0% 100%)',
           }}
         />
-
         <div className="relative z-10 mx-auto max-w-4xl px-6 pb-20 pt-10">
-          {/* Back */}
           <button
             onClick={onBack}
             className="mb-6 flex items-center gap-1 text-sm text-gray-300 transition-colors hover:text-white"
@@ -327,11 +320,9 @@ function ProfileView({
                 d="M15 19l-7-7 7-7"
               />
             </svg>
-            Πίσω
+            {t('nutritionists.back')}
           </button>
 
-          {/* FIX: name + contact buttons — on mobile stack vertically so the long
-              Greek name doesn't fight with the icon buttons for horizontal space */}
           <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
             <h1
               className="text-2xl font-bold italic text-white md:text-4xl"
@@ -393,25 +384,21 @@ function ProfileView({
             </div>
           </div>
 
-          {/* Bio */}
           <p className="mb-10 max-w-xl text-sm leading-relaxed text-gray-300">
             {nutr.bio}
           </p>
 
-          {/* Booking section */}
           <div className="flex flex-col items-center">
-            {/* Pill heading */}
             <div className="mb-6 rounded-full border-2 border-gray-800 bg-gray-100 px-6 py-3">
               <h2 className="text-center text-lg font-bold text-gray-800 md:text-xl">
-                Διαθέσιμες ημερομηνίες και ώρες
+                {t('nutritionists.availableTimes')}
               </h2>
             </div>
 
-            {/* Month navigator */}
             <div className="mb-6 flex items-center gap-4 self-start">
               <button
                 onClick={() => setMonthIndex((m) => Math.max(0, m - 1))}
-                className="text-gray-700 transition-colors hover:text-gray-900"
+                className="text-white transition-colors hover:text-gray-900"
                 aria-label="Προηγούμενος μήνας"
               >
                 <svg
@@ -429,12 +416,12 @@ function ProfileView({
                   />
                 </svg>
               </button>
-              <span className="text-base font-semibold text-gray-800">
+              <span className="text-base font-semibold text-white">
                 {MONTHS[monthIndex]}
               </span>
               <button
                 onClick={() => setMonthIndex((m) => Math.min(11, m + 1))}
-                className="text-gray-700 transition-colors hover:text-gray-900"
+                className="text-white transition-colors hover:text-gray-900"
                 aria-label="Επόμενος μήνας"
               >
                 <svg
@@ -454,12 +441,7 @@ function ProfileView({
               </button>
             </div>
 
-            {/* FIX: day pills row — on mobile remove the side arrows entirely and
-                let the pills wrap naturally. Arrows only appear on sm+ where there's
-                enough horizontal room. This prevents the row from overflowing the
-                viewport width on small screens. */}
             <div className="mb-6 flex w-full items-center justify-center gap-2">
-              {/* Left arrow — sm+ only */}
               <button
                 className="hidden h-10 w-10 flex-shrink-0 items-center justify-center rounded-full border-2 border-gray-600 text-gray-700 transition-colors hover:bg-gray-700 hover:text-white sm:flex"
                 aria-label="Προηγούμενες ημέρες"
@@ -479,9 +461,6 @@ function ProfileView({
                   />
                 </svg>
               </button>
-
-              {/* FIX: overflow-x-auto on mobile so pills scroll horizontally
-                  instead of wrapping onto multiple rows and pushing content down */}
               <div className="flex gap-2 overflow-x-auto pb-1 sm:flex-wrap sm:justify-center sm:overflow-visible sm:pb-0">
                 {DAYS.map((day, i) => {
                   const isSelected = selectedDay === i;
@@ -504,8 +483,6 @@ function ProfileView({
                   );
                 })}
               </div>
-
-              {/* Right arrow — sm+ only */}
               <button
                 className="hidden h-10 w-10 flex-shrink-0 items-center justify-center rounded-full border-2 border-gray-600 text-gray-700 transition-colors hover:bg-gray-700 hover:text-white sm:flex"
                 aria-label="Επόμενες ημέρες"
@@ -527,7 +504,6 @@ function ProfileView({
               </button>
             </div>
 
-            {/* Time slot pills */}
             <div className="mb-8 flex flex-wrap justify-center gap-3">
               {FAKE_SLOTS.map((slot) => {
                 const isSelected = selectedSlot === slot.id;
@@ -549,16 +525,12 @@ function ProfileView({
               })}
             </div>
 
-            {/* CTA */}
             <button
               className="rounded-full px-12 py-3.5 text-base font-bold text-white shadow-lg transition-opacity hover:opacity-90"
               style={{ backgroundColor: '#377CC3' }}
-              onClick={() => {
-                // TODO: GraphQL mutation — book appointment
-                alert('Η επίσκεψη προγραμματίστηκε!');
-              }}
+              onClick={() => alert('Η επίσκεψη προγραμματίστηκε!')}
             >
-              Προγραμματισμός Επίσκεψης
+              {t('nutritionists.bookAppointment')}
             </button>
           </div>
         </div>
@@ -566,7 +538,6 @@ function ProfileView({
     </div>
   );
 }
-
 // Main page
 export default function NutritionistsPage() {
   const [selected, setSelected] = useState<Nutritionist | null>(null);

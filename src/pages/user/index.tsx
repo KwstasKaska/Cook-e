@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import Navbar from '../../components/Users/Navbar';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useTranslation } from 'next-i18next';
 
 // Types
 export type RecipeCard = {
@@ -56,23 +58,42 @@ const FAKE_WEEK_RECIPES: RecipeCard[] = [
 
 const FAKE_MACROS = {
   energia: {
-    label: 'Ενέργεια',
+    labelKey: 'landing.energy',
     value: '2000kcal',
     color: '#F9A8D4',
     pct: 0.28,
   },
-  lipara: { label: 'Λιπαρά', value: '90g', color: '#EAB308', pct: 0.18 },
-  proteini: { label: 'Πρωτείνη', value: '50g', color: '#86EFAC', pct: 0.12 },
+  lipara: {
+    labelKey: 'landing.fat',
+    value: '90g',
+    color: '#EAB308',
+    pct: 0.18,
+  },
+  proteini: {
+    labelKey: 'landing.protein',
+    value: '50g',
+    color: '#86EFAC',
+    pct: 0.12,
+  },
   ydatanthrakes: {
-    label: 'Υδατάνθρακες',
+    labelKey: 'landing.carbs',
     value: '300g',
     color: '#93C5FD',
     pct: 0.42,
   },
 };
 
+export async function getServerSideProps({ locale }: { locale: string }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ['common'])),
+    },
+  };
+}
+
 // Donut chart (pure SVG)
 function DonutChart() {
+  const { t } = useTranslation('common');
   const size = 160;
   const cx = size / 2;
   const cy = size / 2;
@@ -121,7 +142,7 @@ function DonutChart() {
         7
       </text>
       <text x={cx} y={cy + 14} textAnchor="middle" fontSize="11" fill="#6B7280">
-        ημέρες
+        {t('landing.days')}
       </text>
     </svg>
   );
@@ -158,6 +179,8 @@ function FannedCards({
   activeIndex: number;
   onNext: () => void;
 }) {
+  const { t } = useTranslation('common');
+
   const order = [
     (activeIndex + 0) % 3,
     (activeIndex + 1) % 3,
@@ -165,16 +188,11 @@ function FannedCards({
   ];
 
   const rotations = [-8, -3, 0];
-  // FIX: reduced x offsets so back cards don't push outside the container
-  // on mobile. Was -60/-30/0 which made the stack 60px wider than the card.
   const xOffsets = ['-28px', '-14px', '0px'];
   const yOffsets = ['20px', '10px', '0px'];
 
   return (
-    // On mobile: flex-col so the arrow sits below the card stack.
-    // On md+: flex-row so the arrow is inline to the right as designed.
     <div className="flex flex-col items-center gap-4 md:flex-row md:justify-center">
-      {/* Cards stack */}
       <div className="relative w-full max-w-[260px]" style={{ height: 380 }}>
         {order.map((recipeIdx, stackPos) => {
           const recipe = recipes[recipeIdx];
@@ -186,7 +204,6 @@ function FannedCards({
               key={recipe.id}
               className="absolute rounded-2xl shadow-xl overflow-visible"
               style={{
-                // FIX: use percentage-based width so card scales with container
                 width: 'calc(100% - 0px)',
                 bottom: 0,
                 left: xOffsets[stackPos],
@@ -196,7 +213,6 @@ function FannedCards({
                 transition: 'all 0.4s ease',
               }}
             >
-              {/* Food image overlapping top */}
               <div
                 className="relative flex justify-center"
                 style={{ marginTop: -40 }}
@@ -236,7 +252,9 @@ function FannedCards({
                 {isFront && (
                   <>
                     <div className="mb-3 flex items-center justify-between border-t border-white/60 pt-2 text-xs font-semibold text-gray-700">
-                      <span>{recipe.timeMinutes} λεπτά</span>
+                      <span>
+                        {recipe.timeMinutes} {t('landing.minutes')}
+                      </span>
                       <span className="border-l border-white/60 pl-3">
                         {recipe.kcal} Kcal
                       </span>
@@ -245,7 +263,7 @@ function FannedCards({
                       </span>
                     </div>
                     <button className="w-full rounded-xl border-2 border-gray-800 py-2 text-sm font-bold text-gray-800 transition-colors duration-150 hover:bg-gray-800 hover:text-white">
-                      Ξεκίνα να μαγειρεύεις!
+                      {t('landing.startCooking')}
                     </button>
                   </>
                 )}
@@ -253,7 +271,7 @@ function FannedCards({
                 {!isFront && (
                   <div className="mt-2">
                     <button className="w-full rounded-xl border border-gray-700 py-1.5 text-xs font-semibold text-gray-700">
-                      Ξεκίνα να…
+                      {t('landing.startCooking')}…
                     </button>
                   </div>
                 )}
@@ -263,7 +281,6 @@ function FannedCards({
         })}
       </div>
 
-      {/* Arrow button — flex-shrink-0 so it never collapses */}
       <button
         onClick={onNext}
         className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full border-2 border-gray-700 text-gray-700 transition-colors duration-150 hover:bg-gray-700 hover:text-white"
@@ -285,6 +302,7 @@ function FannedCards({
 
 // Page
 export default function UserHomePage() {
+  const { t } = useTranslation('common');
   const [activeCard, setActiveCard] = useState(2);
 
   const handleNext = () => {
@@ -296,7 +314,6 @@ export default function UserHomePage() {
       <Navbar />
 
       <div className="relative overflow-hidden">
-        {/* White diagonal bottom half */}
         <div
           className="absolute bottom-0 left-0 w-full bg-white"
           style={{
@@ -309,17 +326,16 @@ export default function UserHomePage() {
           <div className="grid grid-cols-1 items-center gap-8 md:grid-cols-2">
             {/* Left: Donut card */}
             <div className="mx-auto flex max-w-md items-center gap-6 rounded-2xl bg-white p-6 shadow-lg md:mx-0">
-              {/* Legend */}
               <div className="flex flex-col gap-3">
                 {Object.values(FAKE_MACROS).map((m) => (
-                  <div key={m.label} className="flex flex-col">
+                  <div key={m.labelKey} className="flex flex-col">
                     <div className="flex items-center gap-2">
                       <span
                         className="h-3 w-3 flex-shrink-0 rounded-sm"
                         style={{ backgroundColor: m.color }}
                       />
                       <span className="text-sm font-semibold text-gray-700">
-                        {m.label}
+                        {t(m.labelKey)}
                       </span>
                     </div>
                     <span className="ml-5 text-sm text-gray-500">
@@ -328,52 +344,37 @@ export default function UserHomePage() {
                   </div>
                 ))}
               </div>
-              {/* Donut */}
               <div className="flex-shrink-0">
                 <DonutChart />
               </div>
             </div>
 
-            {/* Right: Text — always white since it always sits on the dark bg */}
+            {/* Right: Text */}
             <div className="text-white">
               <h1
                 className="mb-4 text-4xl font-bold italic md:text-5xl"
                 style={{ fontFamily: 'Georgia, serif' }}
               >
-                Διατροφικά Στοιχεία
+                {t('landing.nutritionTitle')}
               </h1>
               <p className="max-w-sm text-base leading-relaxed text-gray-200">
-                Παρακολουθήστε τα διατροφικά στοιχεία που καταναλώσατε την
-                τελευταία βδομάδα, συγκεντρωτικά, στο γράφημα αριστερά.
+                {t('landing.nutritionDesc')}
               </p>
             </div>
           </div>
         </div>
 
-        {/* Bottom section: text left + fanned cards right */}
         <div className="relative z-10 mx-auto max-w-6xl px-6 pb-16 pt-12">
           <div className="grid grid-cols-1 items-end gap-8 md:grid-cols-2">
-            {/* Left: Weekly recipes text
-                FIX: on mobile this column sits over the diagonal white area but
-                the original text was text-gray-800/text-gray-600 — fine on white,
-                but on mobile (single column) the section sits over the DARK bg
-                because the white clipPath starts lower. Fixed by making the text
-                white on mobile and switching to dark only at md+ where the layout
-                is two columns and this column is guaranteed to be over the white. */}
+            {/* Left: Weekly recipes text */}
             <div>
               <h2 className="mb-4 text-2xl font-bold text-white md:text-gray-800">
-                Οι συνταγες της εβδομάδας
+                {t('landing.weeklyRecipesTitle')}
               </h2>
               <div className="max-w-sm space-y-3 text-sm leading-relaxed text-gray-200 md:text-gray-600">
-                <p>
-                  Τα υλικά των σημερινών συνταγών είναι αυτά που τις έκαναν να
-                  προταθούν. Τα γνωρίζεις;
-                </p>
-                <p>
-                  Μάλλον ναι, αφού πολλά απο αυτά τα χρησιμοποίησες το τελευταίο
-                  διάστημα.
-                </p>
-                <p>Δοκίμασε τες και πες μας την γνώμη σου!</p>
+                <p>{t('landing.weeklyRecipesDesc1')}</p>
+                <p>{t('landing.weeklyRecipesDesc2')}</p>
+                <p>{t('landing.weeklyRecipesDesc3')}</p>
               </div>
             </div>
 

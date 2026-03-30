@@ -1,6 +1,8 @@
 import React, { useState, useRef } from 'react';
 import ScrollToTopButton from '../../components/Helper/ScrollToTopButton';
 import Navbar from '../../components/Users/Navbar';
+import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 // ─── Types
 type IngredientItem = {
@@ -118,6 +120,28 @@ const CATEGORIES: IngredientCat[] = [
   },
 ];
 
+const UTENSIL_KEY_MAP: Record<number, string> = {
+  1: 'pot',
+  2: 'pan',
+  3: 'dutchOven',
+  4: 'wok',
+  5: 'mortar',
+  6: 'knives',
+  7: 'pressureCooker',
+  8: 'otherUtensils',
+};
+
+const CAT_KEY_MAP: Record<string, string> = {
+  vegetables: 'vegetables',
+  fruits: 'fruits',
+  bread: 'breadGrains',
+  dairy: 'dairy',
+  meat: 'meatEggsFishSeafood',
+  oils: 'fatOils',
+  legumes: 'legumes',
+  snacks: 'sweetsSnacks',
+};
+
 const UTENSILS: UtensilItem[] = [
   { id: 1, name: 'Κατσαρόλα' },
   { id: 2, name: 'Τηγάνι' },
@@ -208,6 +232,14 @@ const FAKE_FAVORITES: FavoriteRecipe[] = [
   },
 ];
 
+export async function getServerSideProps({ locale }: { locale: string }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ['common'])),
+    },
+  };
+}
+
 // ─── Shared helpers ────────────────────────────────────────────────────────────
 const StarRow = ({
   rating,
@@ -244,7 +276,6 @@ const StarRow = ({
   </div>
 );
 
-//  Diagonal background wrapper
 function DiagonalLayout({
   children,
   whiteStart = '15%',
@@ -269,32 +300,30 @@ function DiagonalLayout({
   );
 }
 
-// ─── HOME step: favorites + centered CTA
+// ─── HOME step
 function HomeStep({ onStartPicker }: { onStartPicker: () => void }) {
+  const { t } = useTranslation('common');
+
   return (
     <DiagonalLayout whiteStart="18%">
       <div className="max-w-5xl mx-auto px-6 pt-10 pb-20">
-        {/* ── Page title ── */}
         <div className="mb-10">
           <h1 className="text-white text-3xl md:text-4xl font-bold mb-1">
-            Συνταγές
+            {t('recipes.title')}
           </h1>
-          <p className="text-gray-300 text-sm">
-            Βρες συνταγές με βάση τα υλικά σου ή ανακάλυψε αγαπημένες.
-          </p>
+          <p className="text-gray-300 text-sm">{t('recipes.subtitle')}</p>
         </div>
 
-        {/* ── Favorite recipes ── */}
         <div className="mb-12">
           <div className="flex items-center justify-between mb-5">
             <h2 className="text-white text-xl font-bold">
-              Αγαπημένες Συνταγές
+              {t('recipes.favourites')}
             </h2>
             <button
               className="text-sm font-semibold hover:underline"
               style={{ color: '#B3D5F8' }}
             >
-              Όλες →
+              {t('recipes.seeAll')}
             </button>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -337,7 +366,7 @@ function HomeStep({ onStartPicker }: { onStartPicker: () => void }) {
                       small
                     />
                     <span className="text-xs text-gray-400">
-                      {fav.timeMinutes} λεπτά
+                      {fav.timeMinutes} {t('landing.minutes')}
                     </span>
                   </div>
                 </div>
@@ -346,11 +375,8 @@ function HomeStep({ onStartPicker }: { onStartPicker: () => void }) {
           </div>
         </div>
 
-        {/* ── Centered CTA ── */}
         <div className="flex flex-col items-center gap-3 pt-4">
-          <p className="text-gray-500 text-sm">
-            Θέλεις να ανακαλύψεις νέες συνταγές;
-          </p>
+          <p className="text-gray-500 text-sm">{t('recipes.discoverPrompt')}</p>
           <button
             onClick={onStartPicker}
             className="flex items-center gap-3 px-10 py-4 rounded-full font-bold text-base text-gray-800 hover:scale-105 transition-transform shadow-xl"
@@ -370,11 +396,9 @@ function HomeStep({ onStartPicker }: { onStartPicker: () => void }) {
                 d="M21 21l-4.35-4.35M17 11A6 6 0 115 11a6 6 0 0112 0z"
               />
             </svg>
-            Ανακάλυψε Συνταγές
+            {t('recipes.discoverBtn')}
           </button>
-          <p className="text-gray-400 text-xs">
-            Πρόσθεσε υλικά και σκεύη για εξατομικευμένες προτάσεις
-          </p>
+          <p className="text-gray-400 text-xs">{t('recipes.discoverHint')}</p>
         </div>
       </div>
     </DiagonalLayout>
@@ -391,16 +415,16 @@ function IngredientStep({
   onToggle: (id: number) => void;
   onNext: () => void;
 }) {
+  const { t } = useTranslation('common');
   const [activeCat, setActiveCat] = useState(CATEGORIES[0].key);
   const items = CATEGORIES.find((c) => c.key === activeCat)?.items ?? [];
 
   return (
     <DiagonalLayout whiteStart="50%">
       <div className="max-w-2xl mx-auto px-6 pt-10 pb-24">
-        {/* Centered card */}
         <div className="bg-gray-100 rounded-2xl shadow-xl p-6 mb-8">
           <h2 className="text-center text-xl font-bold text-gray-800 mb-5">
-            Συστατικά
+            {t('ingredientCategories.title')}
           </h2>
           <div className="flex flex-col gap-2.5">
             {CATEGORIES.map((cat) => (
@@ -414,17 +438,16 @@ function IngredientStep({
                   color: 'white',
                 }}
               >
-                {cat.label}
+                {t(`ingredientCategories.${CAT_KEY_MAP[cat.key]}`)}
               </button>
             ))}
           </div>
         </div>
 
-        {/* Selected ingredient rows */}
         {items.length > 0 && (
           <div className="mb-6">
             <h3 className="text-gray-800 text-sm font-bold mb-3 ml-1">
-              {CATEGORIES.find((c) => c.key === activeCat)?.label}
+              {t(`ingredientCategories.${CAT_KEY_MAP[activeCat]}`)}
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
               {items.map((item) => {
@@ -480,7 +503,7 @@ function IngredientStep({
 
         {selectedIds.length > 0 && (
           <p className="text-center text-sm mb-4" style={{ color: '#B3D5F8' }}>
-            {selectedIds.length} υλικά επιλεγμένα
+            {selectedIds.length} {t('recipes.selectedIngredients')}
           </p>
         )}
 
@@ -490,7 +513,7 @@ function IngredientStep({
             className="rounded-full px-12 py-3 text-sm font-bold text-gray-800 transition hover:scale-105"
             style={{ backgroundColor: '#EAB308' }}
           >
-            Επόμενο
+            {t('recipes.next')}
           </button>
         </div>
       </div>
@@ -510,12 +533,12 @@ function UtensilStep({
   onBack: () => void;
   onSearch: () => void;
 }) {
+  const { t } = useTranslation('common');
   const selected = UTENSILS.filter((u) => selectedIds.includes(u.id));
 
   return (
     <DiagonalLayout whiteStart="50%">
       <div className="max-w-2xl mx-auto px-6 pt-10 pb-24">
-        {/* Centered card */}
         <div className="bg-gray-100 rounded-2xl shadow-xl p-6 mb-8">
           <div className="flex items-center gap-3 mb-5">
             <button
@@ -536,7 +559,9 @@ function UtensilStep({
                 />
               </svg>
             </button>
-            <h2 className="text-xl font-bold text-gray-800">Σκεύη</h2>
+            <h2 className="text-xl font-bold text-gray-800">
+              {t('utensils.title')}
+            </h2>
           </div>
           <div className="flex flex-col gap-2.5">
             {UTENSILS.map((u) => {
@@ -551,14 +576,13 @@ function UtensilStep({
                     color: 'white',
                   }}
                 >
-                  {u.name}
+                  {t(`utensils.${UTENSIL_KEY_MAP[u.id]}`)}
                 </button>
               );
             })}
           </div>
         </div>
 
-        {/* Selected utensils list */}
         {selected.length > 0 && (
           <div className="mb-6 grid grid-cols-1 sm:grid-cols-2 gap-2.5">
             {selected.map((u) => (
@@ -570,7 +594,9 @@ function UtensilStep({
                 <div className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 text-sm">
                   🍳
                 </div>
-                <span className="text-sm font-bold text-white">{u.name}</span>
+                <span className="text-sm font-bold text-white">
+                  {t(`utensils.${UTENSIL_KEY_MAP[u.id]}`)}
+                </span>
               </div>
             ))}
           </div>
@@ -582,7 +608,7 @@ function UtensilStep({
             className="rounded-full px-12 py-3 text-sm font-bold text-gray-800 transition hover:scale-105"
             style={{ backgroundColor: '#EAB308' }}
           >
-            Αναζήτηση
+            {t('recipes.search')}
           </button>
         </div>
       </div>
@@ -600,6 +626,7 @@ const RecipeCard = ({
   index: number;
   onClick: () => void;
 }) => {
+  const { t } = useTranslation('common');
   const topPad = index === 0 ? 'pt-28' : index === 1 ? 'pt-24' : 'pt-20';
   const imgSize =
     index === 0 ? 'h-40 w-40' : index === 1 ? 'h-36 w-36' : 'h-32 w-32';
@@ -626,7 +653,7 @@ const RecipeCard = ({
       <p className="text-sm text-gray-600">{recipe.mealType}</p>
       <p className="text-sm text-gray-600">{recipe.difficulty}</p>
       <p className="mt-auto pt-4 text-sm text-gray-600">
-        Από: {recipe.chefName}
+        {t('recipes.by')} {recipe.chefName}
       </p>
     </div>
   );
@@ -642,6 +669,8 @@ function ResultsStep({
   onSelectRecipe: (id: number) => void;
   onBack: () => void;
 }) {
+  const { t } = useTranslation('common');
+
   return (
     <div
       className="min-h-screen relative overflow-hidden"
@@ -655,7 +684,6 @@ function ResultsStep({
         }}
       />
       <div className="relative z-10 max-w-5xl mx-auto px-6 pt-10 pb-20">
-        {/* Back button */}
         <button
           onClick={onBack}
           className="flex items-center gap-2 text-sm font-bold mb-8 transition hover:opacity-80"
@@ -673,14 +701,13 @@ function ResultsStep({
               clipRule="evenodd"
             />
           </svg>
-          Πίσω στην αναζήτηση
+          {t('recipes.backToSearch')}
         </button>
 
         <h2 className="text-center text-2xl font-bold text-white mb-24">
-          Διάλεξε ανάμεσα στις προτεινόμενες συνταγές
+          {t('recipes.resultsTitle')}
         </h2>
 
-        {/* Mobile */}
         <div className="flex flex-col gap-16 md:hidden">
           {recipes.map((r) => (
             <RecipeCard
@@ -692,7 +719,6 @@ function ResultsStep({
           ))}
         </div>
 
-        {/* Desktop: staggered */}
         <div className="hidden md:grid md:grid-cols-3 md:items-end md:gap-6">
           {recipes.map((r, i) => (
             <RecipeCard
@@ -709,7 +735,7 @@ function ResultsStep({
             onClick={onBack}
             className="rounded-full border-2 bg-gray-500 border-white px-8 py-2 text-sm font-bold text-white transition hover:bg-white hover:text-gray-800"
           >
-            Νέα αναζήτηση
+            {t('recipes.newSearch')}
           </button>
         </div>
       </div>
@@ -735,6 +761,7 @@ function RecipeDetailPage({
   recipeId: number;
   onBack: () => void;
 }) {
+  const { t } = useTranslation('common');
   const [activeTab, setActiveTab] = useState<DetailTab>('ingredients');
   const [ingredients, setIngredients] = useState<IngredientLine[]>([
     { id: 1, name: '2 φιλέτα μοσχάρι', checked: true },
@@ -854,7 +881,7 @@ function RecipeDetailPage({
                     clipRule="evenodd"
                   />
                 </svg>
-                Πίσω στα αποτελέσματα
+                {t('recipes.backToSearch')}
               </button>
 
               <div className="relative">
@@ -926,7 +953,6 @@ function RecipeDetailPage({
                       </div>
                     ))}
                   </div>
-                  {/* Progress bar */}
                   <div className="hidden flex-col items-center gap-2 md:flex">
                     <div className="flex-1 w-1 rounded-full bg-white/20">
                       <div
@@ -1172,10 +1198,12 @@ export default function RecipesPage() {
     setSelectedIngredients((p) =>
       p.includes(id) ? p.filter((i) => i !== id) : [...p, id],
     );
+
   const toggleUtensil = (id: number) =>
     setSelectedUtensils((p) =>
       p.includes(id) ? p.filter((i) => i !== id) : [...p, id],
     );
+
   const reset = () => {
     setStep('home');
     setSelectedIngredients([]);
@@ -1183,7 +1211,6 @@ export default function RecipesPage() {
     setSelectedRecipeId(null);
   };
 
-  // Recipe detail view
   if (selectedRecipeId !== null) {
     return (
       <RecipeDetailPage
@@ -1196,7 +1223,6 @@ export default function RecipesPage() {
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#3F4756' }}>
       <Navbar />
-
       {step === 'home' && (
         <HomeStep onStartPicker={() => setStep('ingredients')} />
       )}
