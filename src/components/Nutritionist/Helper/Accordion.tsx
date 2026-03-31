@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import React, { useContext } from 'react';
+import { useTranslation } from 'next-i18next';
 import weeklyPlanner from '/public/images/weeklyplanner.jpg';
 import mealsPlanner from '/public/images/meals.jpg';
 import personPlanner from '/public/images/person-planner.jpg';
@@ -11,6 +12,7 @@ import { TableContextType } from '../../Context';
 interface AccordionProps {}
 
 const Accordion: React.FC<AccordionProps> = ({}) => {
+  const { t } = useTranslation('common');
   const { selectedDay, setSelectedDay } = useContext(TableContextType);
   const { selectedField, setSelectedField } = useContext(TableContextType);
   const { cellInfo, setCellInfo } = useContext(TableContextType);
@@ -26,10 +28,9 @@ const Accordion: React.FC<AccordionProps> = ({}) => {
   };
 
   const handleCellInfoChange = (
-    event: React.ChangeEvent<HTMLTextAreaElement>
+    event: React.ChangeEvent<HTMLTextAreaElement>,
   ) => {
     event.preventDefault();
-
     setCellInfo({
       ...cellInfo,
       [`${selectedDay}-${selectedField}`]: event.target.value,
@@ -38,16 +39,15 @@ const Accordion: React.FC<AccordionProps> = ({}) => {
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     const activePanel = (e.target as HTMLElement).closest(
-      '[data-name="accordion-panel"]'
+      '[data-name="accordion-panel"]',
     );
 
     if (!activePanel) {
       return;
     }
     const buttons = activePanel.parentElement?.querySelectorAll('button');
-
     const contents = activePanel.parentElement?.querySelectorAll(
-      '[data-content="accordion-content"]'
+      '[data-content="accordion-content"]',
     );
 
     buttons?.forEach((button) => {
@@ -62,34 +62,30 @@ const Accordion: React.FC<AccordionProps> = ({}) => {
     clickedButton?.setAttribute('aria-expanded', 'true');
 
     const toggleContent = activePanel.querySelector(
-      '[data-content="accordion-content"]'
+      '[data-content="accordion-content"]',
     );
-
     toggleContent?.setAttribute('aria-hidden', 'false');
   };
 
   return (
-    <div className="container  mt-10">
+    <div className="container mt-10">
       <div
         onClick={handleClick}
-        className="flex flex-col gap-4  text-white  md:h-[40em] md:flex-row"
+        className="flex flex-col gap-4 text-white md:h-[40em] md:flex-row"
       >
+        {/* Panel 1 — Select user */}
         <div
           data-name="accordion-panel"
-          className={`accordion-panel relative isolate  basis-[calc((0.75rem)*2+3rem)] overflow-hidden rounded-[calc(((0.75rem)*2_+_3rem)_/_2)] p-3 transition-[flex-basis_flex-grow]  duration-500 `}
+          className="accordion-panel relative isolate basis-[calc((0.75rem)*2+3rem)] overflow-hidden rounded-[calc(((0.75rem)*2_+_3rem)_/_2)] p-3 transition-[flex-basis_flex-grow] duration-500"
         >
           <h2 id="panel1-heading">
             <button
               aria-controls="panel1-content"
               aria-expanded="true"
-              className="  flex flex-row-reverse items-center gap-4"
+              className="flex flex-row-reverse items-center gap-4"
             >
-              <span
-                id="panel1-title"
-                className="text-2xl font-bold text-white "
-              >
-                Επιλογή χρήστη
-                <span className=""></span>
+              <span id="panel1-title" className="text-2xl font-bold text-white">
+                {t('nutr.selectUser')}
               </span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -115,29 +111,30 @@ const Accordion: React.FC<AccordionProps> = ({}) => {
             aria-labelledby="panel1-heading"
             role="region"
             aria-hidden="false"
-            className=" flex h-full flex-col items-center "
+            className="flex h-full flex-col items-center"
           >
-            <section className="mt-12 translate-y-8 opacity-0 transition delay-300 duration-500  ">
+            <section className="mt-12 translate-y-8 opacity-0 transition delay-300 duration-500">
               <select
-                className=" rounded-2xl bg-myGrey-100 capitalize text-myGrey-200 lg:text-xl "
+                className="rounded-2xl bg-myGrey-100 capitalize text-myGrey-200 text-base md:text-lg"
                 name="person"
                 id="person"
               >
-                <option value="">Επιλογή χρήστη </option>
+                <option value="">{t('nutr.selectUser')}</option>
               </select>
             </section>
             <Image
               src={personPlanner}
-              alt={'weekly calendar'}
+              alt={''}
               priority
-              className="absolute inset-0 -z-[1] h-full w-full  object-cover  transition-[filter] duration-500"
-            ></Image>
+              className="absolute inset-0 -z-[1] h-full w-full object-cover transition-[filter] duration-500"
+            />
           </div>
         </div>
 
+        {/* Panel 2 — Select day */}
         <div
           data-name="accordion-panel"
-          className={`accordion-panel relative isolate basis-[calc((0.75rem)*2+3rem)] overflow-hidden rounded-[calc(((0.75rem)*2_+_3rem)_/_2)] p-3 transition-[flex-basis_flex-grow]  duration-500 `}
+          className="accordion-panel relative isolate basis-[calc((0.75rem)*2+3rem)] overflow-hidden rounded-[calc(((0.75rem)*2_+_3rem)_/_2)] p-3 transition-[flex-basis_flex-grow] duration-500"
         >
           <h2 id="panel2-heading">
             <button
@@ -145,11 +142,8 @@ const Accordion: React.FC<AccordionProps> = ({}) => {
               className="flex flex-row-reverse items-center gap-4"
               aria-expanded="false"
             >
-              <span
-                id="panel2-title"
-                className="text-2xl font-bold text-white "
-              >
-                Επιλογή ημέρας
+              <span id="panel2-title" className="text-2xl font-bold text-white">
+                {t('nutr.selectDay')}
               </span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -174,17 +168,17 @@ const Accordion: React.FC<AccordionProps> = ({}) => {
             aria-labelledby="panel2-heading"
             role="region"
             aria-hidden="true"
-            className=" flex h-full flex-col items-center "
+            className="flex h-full flex-col items-center"
           >
-            <section className="mt-12  translate-y-8 opacity-0 transition delay-300 duration-500  ">
+            <section className="mt-12 translate-y-8 opacity-0 transition delay-300 duration-500">
               <select
-                className="rounded-2xl bg-myGrey-100 capitalize text-myGrey-200 lg:text-xl  "
+                className="rounded-2xl bg-myGrey-100 capitalize text-myGrey-200 text-base md:text-lg"
                 name="day"
                 id="day"
                 value={selectedDay}
                 onChange={handleDayChange}
               >
-                <option value="">Επιλογή ημέρας</option>
+                <option value="">{t('nutr.selectDay')}</option>
                 {daysOfWeek.map((day) => (
                   <option key={day} value={day}>
                     {day}
@@ -192,19 +186,19 @@ const Accordion: React.FC<AccordionProps> = ({}) => {
                 ))}
               </select>
             </section>
-
             <Image
               src={weeklyPlanner}
-              alt={'meals image'}
+              alt={''}
               priority
-              className="absolute inset-0 -z-[1] h-full w-full  object-cover  transition-[filter] duration-500"
-            ></Image>
+              className="absolute inset-0 -z-[1] h-full w-full object-cover transition-[filter] duration-500"
+            />
           </div>
         </div>
 
+        {/* Panel 3 — Select meal */}
         <div
           data-name="accordion-panel"
-          className={`accordion-panel relative isolate basis-[calc((0.75rem)*2+3rem)] overflow-hidden rounded-[calc(((0.75rem)*2_+_3rem)_/_2)] p-3 transition-[flex-basis_flex-grow] duration-500 `}
+          className="accordion-panel relative isolate basis-[calc((0.75rem)*2+3rem)] overflow-hidden rounded-[calc(((0.75rem)*2_+_3rem)_/_2)] p-3 transition-[flex-basis_flex-grow] duration-500"
         >
           <h2 id="panel3-heading">
             <button
@@ -212,11 +206,8 @@ const Accordion: React.FC<AccordionProps> = ({}) => {
               aria-controls="panel3-content"
               className="flex flex-row-reverse items-center gap-4"
             >
-              <span
-                id="panel3-title"
-                className="text-2xl font-bold text-white "
-              >
-                Επιλογή γεύματος
+              <span id="panel3-title" className="text-2xl font-bold text-white">
+                {t('nutr.selectMeal')}
               </span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -224,7 +215,7 @@ const Accordion: React.FC<AccordionProps> = ({}) => {
                 viewBox="0 0 24 24"
                 strokeWidth="1.5"
                 stroke="currentColor"
-                className=" w-12 rounded-full bg-myBlue-100 p-3"
+                className="w-12 rounded-full bg-myBlue-100 p-3"
                 xlinkHref="#meal"
               >
                 <path
@@ -241,17 +232,17 @@ const Accordion: React.FC<AccordionProps> = ({}) => {
             aria-labelledby="panel3-heading"
             role="region"
             aria-hidden="true"
-            className=" flex h-full flex-col items-center "
+            className="flex h-full flex-col items-center"
           >
-            <section className="mt-12 translate-y-8 opacity-0 transition delay-300 duration-500  ">
+            <section className="mt-12 translate-y-8 opacity-0 transition delay-300 duration-500">
               <select
-                className=" rounded-2xl bg-myGrey-100 capitalize text-myGrey-200 lg:text-xl "
+                className="rounded-2xl bg-myGrey-100 capitalize text-myGrey-200 text-base md:text-lg"
                 name="field"
                 id="field"
                 value={selectedField}
                 onChange={handleFieldChange}
               >
-                <option value="">Επιλογή γεύματος</option>
+                <option value="">{t('nutr.selectMeal')}</option>
                 {randomFields.map((field) => (
                   <option key={field} value={field}>
                     {field}
@@ -259,19 +250,19 @@ const Accordion: React.FC<AccordionProps> = ({}) => {
                 ))}
               </select>
             </section>
-
             <Image
               src={mealsPlanner}
-              alt={'type of meal'}
+              alt={''}
               priority
-              className="absolute inset-0 -z-[1] h-full w-full  object-cover object-top  transition-[filter] duration-500"
-            ></Image>
+              className="absolute inset-0 -z-[1] h-full w-full object-cover object-top transition-[filter] duration-500"
+            />
           </div>
         </div>
 
+        {/* Panel 4 — Set content */}
         <div
           data-name="accordion-panel"
-          className={`accordion-panel relative isolate basis-[calc((0.75rem)*2+3rem)] overflow-hidden rounded-[calc(((0.75rem)*2_+_3rem)_/_2)] p-3 transition-[flex-basis_flex-grow] duration-500 `}
+          className="accordion-panel relative isolate basis-[calc((0.75rem)*2+3rem)] overflow-hidden rounded-[calc(((0.75rem)*2_+_3rem)_/_2)] p-3 transition-[flex-basis_flex-grow] duration-500"
         >
           <h2 id="panel4-heading">
             <button
@@ -279,11 +270,8 @@ const Accordion: React.FC<AccordionProps> = ({}) => {
               aria-controls="panel4-content"
               className="flex flex-row-reverse items-center gap-4"
             >
-              <span
-                id="panel4-title"
-                className="text-2xl font-bold text-white "
-              >
-                Ορισμός περιεχομένου
+              <span id="panel4-title" className="text-2xl font-bold text-white">
+                {t('nutr.setContent')}
               </span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -308,25 +296,24 @@ const Accordion: React.FC<AccordionProps> = ({}) => {
             aria-labelledby="panel4-heading"
             role="region"
             aria-hidden="true"
-            className=" flex h-full flex-col items-center "
+            className="flex h-full flex-col items-center"
           >
-            <section className="mt-12  translate-y-8 opacity-0 transition delay-300 duration-500  ">
+            <section className="mt-12 translate-y-8 opacity-0 transition delay-300 duration-500">
               <textarea
-                className=" h-[10em] resize-none   rounded-2xl  border-2 bg-myGrey-100 text-myGrey-200 lg:text-xl "
+                className="h-[10em] resize-none rounded-2xl border-2 bg-myGrey-100 text-base text-myGrey-200 md:text-lg"
                 name="cell-info"
                 id="cell-info"
                 value={cellInfo[`${selectedDay}-${selectedField}`] || ''}
                 onChange={handleCellInfoChange}
-                placeholder="Όρισε το περιεχόμενο για την ημέρα και το είδος γεύματος που επιθυμείς"
+                placeholder={t('nutr.setContentPlaceholder')}
               />
             </section>
-
             <Image
               src={contentPlanner}
-              alt={'content image'}
+              alt={''}
               priority
-              className="absolute inset-0 -z-[1] h-full w-full  object-cover  transition-[filter] duration-500"
-            ></Image>
+              className="absolute inset-0 -z-[1] h-full w-full object-cover transition-[filter] duration-500"
+            />
           </div>
         </div>
       </div>

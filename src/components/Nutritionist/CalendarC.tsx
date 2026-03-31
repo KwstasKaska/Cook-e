@@ -1,9 +1,6 @@
-import React, {
-  InputHTMLAttributes,
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { useTranslation } from 'next-i18next';
+
 import dynamic from 'next/dynamic';
 
 import { format } from 'date-fns';
@@ -16,14 +13,14 @@ const DynamicCalendar = dynamic(() => import('react-calendar'), {
   ssr: false,
 });
 
-export type Appointment = InputHTMLAttributes<HTMLInputElement> & {
+export interface Appointment {
   date: string;
   profile: string;
   fullname: string;
   time: string;
   comments: string;
   telephone: string;
-};
+}
 
 export const fakeAppointments: Appointment[] = [
   {
@@ -94,6 +91,7 @@ export const fakeAppointments: Appointment[] = [
 ];
 
 const CalendarC: React.FC = () => {
+  const { t } = useTranslation('common');
   const [value, setValue] = useState<Value>(new Date());
   const [isShowCalendar, setIsShowCalendar] = useState<boolean>(true);
   const [clients, setClients] = useState<Appointment[]>([]);
@@ -203,29 +201,32 @@ const CalendarC: React.FC = () => {
   return isClient ? (
     <ClientsContextType.Provider value={{ clients, setClients }}>
       <div className="mx-auto flex w-full flex-col md:grid md:grid-cols-2 md:items-center md:justify-evenly md:gap-4 md:px-3">
-        <div className="flex flex-col  items-center gap-4  pt-16 lg:gap-10 xl:mt-16 xl:gap-20">
+        <div className="flex flex-col items-center gap-4 pt-16 lg:gap-10 xl:mt-16 xl:gap-20">
           <DynamicCalendar
             onChange={handleDateChange}
             value={value}
-            className="lg:mt-12  lg:scale-125 xl:scale-150"
+            className="lg:mt-12 lg:scale-125 xl:scale-150"
           />
-          <div className="mt-3 space-x-4 lg:scale-125 ">
+          <div className="mt-3 space-x-4 lg:scale-125">
             <button
-              className="rounded-lg border-2 border-black py-1 px-7 hover:scale-110 hover:border-myRed hover:bg-myRed hover:text-white "
+              className="rounded-lg border-2 border-black py-1 px-7 hover:scale-110 hover:border-myRed hover:bg-myRed hover:text-white"
               onClick={handleCancel}
             >
-              Ακύρωση
+              {t('nutr.cancel')}
             </button>
             <button
-              className=" rounded-lg bg-myGrey-200 py-2 px-7 text-white hover:scale-110 hover:bg-myBlue-200"
+              className="rounded-lg bg-myGrey-200 py-2 px-7 text-white hover:scale-110 hover:bg-myBlue-200"
               onClick={handleApply}
             >
-              Εφαρμογή
+              {t('nutr.apply')}
             </button>
           </div>
-          <div className="mx-auto my-8 max-w-[16em] rounded-lg border-2 border-black bg-myGrey-100 hover:scale-110 hover:border-myBlue-200 hover:bg-myBlue-200 hover:text-white hover:transition hover:duration-300 hover:ease-in lg:text-2xl">
-            <button className="font-bold " onClick={handleSet}>
-              Ρύθμιση Διαθεσιμότητας Hμερομηνιών και Ωρών
+          <div className="mx-auto my-8 max-w-[16em] rounded-lg border-2 border-black bg-myGrey-100 hover:scale-110 hover:border-myBlue-200 hover:bg-myBlue-200 hover:text-white hover:transition hover:duration-300 hover:ease-in">
+            <button
+              className="text-base font-bold leading-relaxed md:text-lg"
+              onClick={handleSet}
+            >
+              {t('nutr.setAvailability')}
             </button>
           </div>
         </div>
@@ -236,9 +237,9 @@ const CalendarC: React.FC = () => {
           </div>
         ) : (
           <div className="mt-8 lg:mt-24 xl:mt-0">
-            <div className="mx-auto my-6 min-h-fit max-w-[20em] rounded-xl border-2 border-myBlue-200 ">
-              <div className=" rounded-t-xl">
-                <div className="relative rounded-t-md rounded-br-[5em] bg-myBlue-200 pb-48 text-lg font-normal text-white">
+            <div className="mx-auto my-6 min-h-fit max-w-[20em] rounded-xl border-2 border-myBlue-200">
+              <div className="rounded-t-xl">
+                <div className="relative rounded-t-md rounded-br-[5em] bg-myBlue-200 pb-48 text-base font-normal text-white">
                   <button onClick={handleSet}>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -249,15 +250,14 @@ const CalendarC: React.FC = () => {
                       <path d="M11.03 3.97a.75.75 0 010 1.06l-6.22 6.22H21a.75.75 0 010 1.5H4.81l6.22 6.22a.75.75 0 11-1.06 1.06l-7.5-7.5a.75.75 0 010-1.06l7.5-7.5a.75.75 0 011.06 0z" />
                     </svg>
                   </button>
-                  <h1 className="absolute left-20 top-5  font-bold lg:text-2xl">
-                    Επιλεγμένη <br /> ημερομηνία:
-                  </h1>
-                  <p className="absolute top-20 left-20 text-center font-normal lg:text-xl">
+                  <h2 className="absolute left-20 top-5 text-base font-bold md:text-lg">
+                    {t('nutr.selectedDate')}
+                  </h2>
+                  <p className="absolute top-20 left-20 text-center font-normal">
                     {selectedDate.replace(/-/g, '  ')}
                   </p>
-                  <h2 className="absolute left-20 top-32 font-bold lg:text-2xl">
-                    Καταχώρηση <br />
-                    διαθέσιμων ωρών
+                  <h2 className="absolute left-20 top-32 text-base font-bold md:text-lg">
+                    {t('nutr.registerAvailableHours')}
                   </h2>
                 </div>
                 <div>
@@ -265,23 +265,21 @@ const CalendarC: React.FC = () => {
                     onSubmit={handleSubmit}
                     className="mt-4 flex flex-col items-center gap-3"
                   >
-                    <label
-                      htmlFor="time"
-                      className="text-base font-bold lg:text-lg"
-                    >
-                      Επιλογή ώρας{':'} {''}
+                    <label htmlFor="time" className="text-base font-bold">
+                      {t('nutr.selectTime')}
+                      {':'}{' '}
                       <input
                         type="time"
-                        className="form-input ml-2 cursor-pointer rounded-[14px]  border-none  outline outline-2 outline-myGrey-200  hover:shadow-3xl hover:outline-4"
+                        className="form-input ml-2 cursor-pointer rounded-[14px] border-none outline outline-2 outline-myGrey-200 hover:shadow-3xl hover:outline-4"
                         name="time"
                         id="time"
                       />
                     </label>
                     <button
                       type="submit"
-                      className="rounded-md bg-myBlue-200 px-5 py-1  text-white   hover:bg-myBlue-100 hover:font-bold hover:text-black hover:shadow-3xl"
+                      className="rounded-md bg-myBlue-200 px-5 py-1 text-white hover:bg-myBlue-100 hover:font-bold hover:text-black hover:shadow-3xl"
                     >
-                      Καταχώρηση
+                      {t('nutr.register')}
                     </button>
                   </form>
                 </div>
@@ -291,12 +289,12 @@ const CalendarC: React.FC = () => {
                       ([date, times], index) => (
                         <ul
                           key={`${date}_${index}`}
-                          className="grid  grid-flow-row items-center divide-y-2 divide-black text-center"
+                          className="grid grid-flow-row items-center divide-y-2 divide-black text-center"
                         >
                           {times.slice(start, end).map((time, index) => (
                             <li
                               key={index}
-                              className="mt-4 flex h-full w-full items-center justify-between p-3 hover:bg-myBlue-100 hover:shadow-3xl lg:text-lg"
+                              className="mt-4 flex h-full w-full items-center justify-between p-3 text-base hover:bg-myBlue-100 hover:shadow-3xl"
                             >
                               <span className="flex-1 text-center">{time}</span>
                               <button
@@ -304,7 +302,7 @@ const CalendarC: React.FC = () => {
                                   handleDelete(date, start + index)
                                 }
                                 className="ml-2 shrink-0 rounded-full p-1 text-myGrey-200 hover:bg-myRed hover:text-white hover:transition hover:duration-300"
-                                title="Διαγραφή ώρας"
+                                title={t('nutr.deleteTime')}
                               >
                                 <svg
                                   xmlns="http://www.w3.org/2000/svg"
@@ -328,17 +326,17 @@ const CalendarC: React.FC = () => {
                       {start > 0 && (
                         <button
                           onClick={handleBack}
-                          className="my-5  w-full rounded-md bg-black  py-1  text-white hover:shadow-3xl"
+                          className="my-5 w-full rounded-md bg-black py-1 text-white hover:shadow-3xl"
                         >
-                          Πίσω
+                          {t('nutr.back')}
                         </button>
                       )}
                       {end < numberArrayLength && (
                         <button
                           onClick={handleLoadMore}
-                          className="my-5 w-full rounded-md bg-myBlue-200  py-1  text-white  hover:bg-myBlue-100 hover:font-bold hover:text-black hover:shadow-3xl"
+                          className="my-5 w-full rounded-md bg-myBlue-200 py-1 text-white hover:bg-myBlue-100 hover:font-bold hover:text-black hover:shadow-3xl"
                         >
-                          Περισσότερα
+                          {t('nutr.loadMore')}
                         </button>
                       )}
                     </div>

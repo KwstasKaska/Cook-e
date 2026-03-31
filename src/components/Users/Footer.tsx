@@ -1,6 +1,18 @@
 import React from 'react';
+import { useTranslation } from 'next-i18next';
 
-const Footer: React.FC = ({}) => {
+const Footer: React.FC = () => {
+  const { t } = useTranslation('common');
+
+  const links = [
+    { key: 'settings', label: t('footer.settings') },
+    { key: 'contact', label: t('footer.contact') },
+    { key: 'faq', label: t('footer.faq') },
+    { key: 'terms', label: t('footer.terms') },
+    { key: 'privacy', label: t('footer.privacy') },
+    { key: 'aboutUs', label: t('footer.aboutUs') },
+  ];
+
   return (
     <footer
       style={{
@@ -12,13 +24,13 @@ const Footer: React.FC = ({}) => {
       <div className="flex flex-col gap-8 md:flex-row md:justify-between">
         <div>
           <p className="mb-4 text-sm font-semibold text-white">
-            Find Us on Social Media
+            {t('footer.socialMedia')}
           </p>
           <div className="grid grid-cols-2 gap-3">
             {['', '', '', ''].map((icon, i) => (
               <button
                 key={i}
-                className="text-2xl hover:scale-110 transition-transform"
+                className="text-2xl transition-transform hover:scale-110"
               >
                 {icon}
               </button>
@@ -27,23 +39,16 @@ const Footer: React.FC = ({}) => {
         </div>
         <div>
           <p className="mb-4 text-sm font-semibold text-white">
-            Χρήσιμες Πληροφορίες
+            {t('footer.usefulInfo')}
           </p>
           <div className="grid grid-cols-2 gap-x-12 gap-y-2">
-            {[
-              'Ρυθμίσεις',
-              'Επικοινωνία',
-              'Συχνές ερωτήσεις',
-              'Όροι Χρήσης',
-              'Πολιτική Απορρήτου',
-              'Ποιοί είμαστε',
-            ].map((link) => (
+            {links.map(({ key, label }) => (
               <a
-                key={link}
+                key={key}
                 href="#"
-                className="text-sm text-gray-300 hover:text-white transition-colors"
+                className="text-sm text-gray-300 transition-colors hover:text-white"
               >
-                {link}
+                {label}
               </a>
             ))}
           </div>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
+import { useTranslation } from 'next-i18next';
 
 import articleImg from '/public/images/articleImg.jpg';
 import Slider from 'react-slick';
@@ -8,7 +9,6 @@ import { Settings } from '../Helper/SliderSettings';
 import moment from 'moment';
 import 'moment/locale/el';
 
-// FIX: set locale explicitly so Greek date formatting is guaranteed
 moment.locale('el');
 
 // TODO: replace with useArticlesQuery() when backend is connected
@@ -40,8 +40,6 @@ const FAKE_ARTICLES = [
   },
 ];
 
-// FIX: infinite must be true when autoplay is enabled — react-slick throws a
-// warning and behaves erratically when autoplay:true + infinite:false are combined
 var settings: Settings = {
   dots: false,
   infinite: true,
@@ -76,6 +74,7 @@ var settings: Settings = {
 };
 
 const NutrArticles: React.FC = () => {
+  const { t } = useTranslation('common');
   // TODO: swap FAKE_ARTICLES for useArticlesQuery() when backend is connected
   // const { data } = useArticlesQuery();
   const articles = FAKE_ARTICLES;
@@ -93,8 +92,8 @@ const NutrArticles: React.FC = () => {
   return (
     <section id="section_1" className="flex min-h-screen flex-col">
       <div className="relative flex w-full flex-1 flex-col items-center justify-center gap-6 bg-myGrey-200 py-10">
-        <h1 className="absolute top-6 bg-gradient-to-r from-[#B3D5F8] to-[#FFFFFF] bg-clip-text pb-[.75em] font-exo text-3xl font-bold text-transparent md:text-5xl lg:text-6xl">
-          Τα άρθρα σου
+        <h1 className="absolute top-6 bg-gradient-to-r from-[#B3D5F8] to-[#FFFFFF] bg-clip-text pb-[.75em] font-exo text-3xl font-bold text-transparent md:text-5xl">
+          {t('nutr.yourArticles')}
         </h1>
         <div onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
           <Slider {...settings}>
@@ -104,7 +103,7 @@ const NutrArticles: React.FC = () => {
                 className="rounded-3xl border-2 border-white p-6 transition duration-500 ease-in hover:bg-myGrey-100"
               >
                 <div className="flex flex-col gap-4 rounded-[10px] bg-transparent text-white hover:text-black">
-                  <p className="flex flex-col gap-2 text-left text-lg font-bold lg:text-lg">
+                  <p className="flex flex-col gap-2 text-left text-base font-bold leading-relaxed">
                     <span>
                       {moment(parseInt(article.createdAt)).format('ll')}
                     </span>
@@ -114,14 +113,14 @@ const NutrArticles: React.FC = () => {
                       }`}
                     ></span>
                   </p>
-                  <h2 className="px-[.3em] text-center text-lg font-bold md:text-xl lg:text-2xl">
+                  <h2 className="px-[.3em] text-center text-base font-bold md:text-lg">
                     {article.title}
                   </h2>
                   <Image
                     src={articleImg}
-                    alt={'Εικόνα άρθρου'}
+                    alt={t('nutr.articleImageAlt')}
                     className="aspect-[5/4] rounded-[10px]"
-                  ></Image>
+                  />
                 </div>
               </div>
             ))}

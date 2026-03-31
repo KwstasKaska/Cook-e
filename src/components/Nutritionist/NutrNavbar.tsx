@@ -1,177 +1,199 @@
-import React, { useEffect, useState } from 'react';
-import Image from 'next/image';
-import logo from '/public/images/logo.png';
+import { useState } from 'react';
+import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { useLogoutMutation, useMeQuery } from '../../generated/graphql';
 import { useApolloClient } from '@apollo/client';
-import useIsAuth from '../../utils/useIsAuth';
+import { useTranslation } from 'next-i18next';
+import LanguageSwitcher from '../Helper/LanguageSwitcher';
 
-const NutrNavbar: React.FC = () => {
-  const [isToggle, setIsToggle] = useState<boolean>(true);
+export default function NutrNavbar() {
+  const { t } = useTranslation('common');
+  const router = useRouter();
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const [logout, { loading: logoutLoading }] = useLogoutMutation();
   const apolloClient = useApolloClient();
-
   const { data, loading } = useMeQuery();
-  let body = null;
-  if (loading) {
-    return body;
-  } else if (data?.me) {
-    body = (
-      <button
-        onClick={() => {
-          logout();
-          apolloClient.resetStore();
-        }}
-        disabled={logoutLoading}
-        className={` ${
-          isToggle ? 'hidden ' : ''
-        } rounded-[1.4rem] border-2  border-myGrey-200 bg-transparent px-4 py-1  text-sm font-bold text-myGrey-200 hover:bg-myRed hover:text-white md:block`}
-      >
-        Αποσύνδεση
-      </button>
-    );
-  }
 
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth >= 767) {
-        setIsToggle(true);
-      } else {
-        return;
-      }
-    };
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  const navLinks = [
+    { label: t('nutrnav.nutr_articles'), sectionId: 'section_1' },
+    { label: t('nutrnav.nutr_calendar'), sectionId: 'section_2' },
+    { label: t('nutrnav.nutr_appointments'), sectionId: 'section_3' },
+    { label: t('nutrnav.nutr_scheduler'), sectionId: 'section_4' },
+  ];
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({
-        behavior: 'smooth',
-      });
-    }
+    if (element) element.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const handleNavbarClick = () => {
-    setIsToggle(!isToggle);
+  const handleLogout = async () => {
+    await logout();
+    await apolloClient.resetStore();
+    router.push('/login');
   };
 
-  const handleLinkClick = (sectionId: string) => {
-    setIsToggle(true);
-    scrollToSection(sectionId);
-  };
+  if (loading) return null;
 
-  useIsAuth();
   return (
-    <div className="">
-      <header
-        className={` ${
-          isToggle ? ' flex w-full  bg-myBlue-100  ' : 'relative '
-        }  `}
+    <nav
+      style={{ backgroundColor: '#B3D5F8' }}
+      className="w-full px-6 py-3 flex items-center justify-between relative z-50"
+    >
+      {/* Logo */}
+      <Link
+        href="/nutritionist"
+        className="flex flex-col leading-tight select-none"
       >
-        <div
-          className={` ${
-            isToggle
-              ? 'flex w-full justify-between py-[1em] md:block md:w-fit'
-              : 'absolute z-[1]  grid w-full grid-flow-col items-start justify-between   pb-[22em] pt-4'
-          } bg-myBlue-100 px-[.4em] `}
-        >
-          <Link href="/" className="cursor-pointer">
-            <Image src={logo} alt={'Cook-e logo'} className=" "></Image>
-          </Link>
+        <span className="text-myGrey-200 font-bold text-2xl tracking-wide">
+          <span className="text-yellow-400">🍪</span>ook-e
+        </span>
+      </Link>
+
+      {/* Desktop nav links */}
+      <div className="hidden md:flex items-center gap-8">
+        {navLinks.map((link) => (
           <button
-            onClick={handleNavbarClick}
-            className="cursor-pointer md:hidden"
+            key={link.sectionId}
+            onClick={() => scrollToSection(link.sectionId)}
+            className="text-sm font-semibold tracking-wide text-myGrey-200 hover:text-myBlue-200 transition-colors duration-150"
           >
-            {isToggle ? (
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="white"
-                className=" h-8 w-8"
-              >
-                <path d="M3 6.75A.75.75 0 013.75 6h16.5a.75.75 0 010 1.5H3.75A.75.75 0 013 6.75zM3 12a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H3.75A.75.75 0 013 12zm0 5.25a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H3.75a.75.75 0 01-.75-.75z" />
-              </svg>
-            ) : (
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="white"
-                className=" h-8 w-8"
-              >
-                <path d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z" />
-              </svg>
-            )}
+            {link.label}
           </button>
-        </div>
+        ))}
+      </div>
 
-        <nav
-          className={` ${
-            isToggle
-              ? 'hidden md:grid md:w-full md:grid-flow-col md:justify-center '
-              : 'absolute z-[2] mx-auto mt-24 w-full'
-          }`}
+      {/* Right actions */}
+      <div className="hidden md:flex items-center gap-4">
+        {/* Settings */}
+        <Link
+          href="/settings"
+          className="p-2 rounded text-myGrey-200 hover:text-myBlue-200 transition-colors duration-150"
+          aria-label={t('nutrnav.nutr_settings')}
         >
-          <ul
-            className={` ${
-              isToggle ? 'flex max-w-[1268px] ' : 'flex flex-col  '
-            } cursor-pointer items-center gap-4 text-sm font-semibold text-myGrey-200 lg:gap-12`}
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-6 h-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={1.8}
           >
-            <li className="">
-              <a onClick={() => handleLinkClick('section_1')}>Άρθρα</a>
-            </li>
-            <li>
-              <a onClick={() => handleLinkClick('section_2')}>Ημερολόγιο</a>
-            </li>
-            <li>
-              <a onClick={() => handleLinkClick('section_3')}>
-                Διαχείριση ραντεβού
-              </a>
-            </li>
-            <li>
-              <a onClick={() => handleLinkClick('section_4')} className="">
-                Προγραμματισμός διατροφών
-              </a>
-            </li>
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+            />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+            />
+          </svg>
+        </Link>
+        <LanguageSwitcher />
 
-            {/* Settings icon */}
-            <li>
-              <Link
-                href="/settings"
-                className="flex items-center justify-center hover:text-myBlue-200 transition-colors"
-                title="Ρυθμίσεις"
+        {/* Logout */}
+        {data?.me && (
+          <button
+            onClick={handleLogout}
+            disabled={logoutLoading}
+            className="ml-2 border border-myGrey-200 text-myGrey-200 text-sm font-semibold px-5 py-1.5 rounded-full hover:bg-myRed hover:border-myRed hover:text-white transition-colors duration-150"
+          >
+            {t('nutrnav.nutr_logout')}
+          </button>
+        )}
+      </div>
+
+      {/* Mobile hamburger */}
+      <button
+        className="md:hidden text-myGrey-200 p-2"
+        onClick={() => setMenuOpen((v) => !v)}
+        aria-label="Menu"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="w-6 h-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          strokeWidth={2}
+        >
+          {menuOpen ? (
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M6 18L18 6M6 6l12 12"
+            />
+          ) : (
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M4 6h16M4 12h16M4 18h16"
+            />
+          )}
+        </svg>
+      </button>
+
+      {/* Mobile dropdown */}
+      {menuOpen && (
+        <div
+          style={{ backgroundColor: '#B3D5F8' }}
+          className="absolute top-full left-0 w-full flex flex-col items-start px-6 py-4 gap-4 md:hidden shadow-lg z-50"
+        >
+          {navLinks.map((link) => (
+            <button
+              key={link.sectionId}
+              onClick={() => {
+                scrollToSection(link.sectionId);
+                setMenuOpen(false);
+              }}
+              className="text-sm font-semibold tracking-wide w-full text-left py-1 text-myGrey-200"
+            >
+              {link.label}
+            </button>
+          ))}
+
+          <div className="flex items-center gap-4 pt-2 border-t border-gray-400 w-full">
+            <LanguageSwitcher />
+            <Link
+              href="/settings"
+              onClick={() => setMenuOpen(false)}
+              className="text-myGrey-200 hover:text-myBlue-200"
+              aria-label={t('nutrnav.nutr_settings')}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="w-6 h-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={1.8}
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={1.8}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
-                  />
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                  />
-                </svg>
-              </Link>
-            </li>
-
-            {body}
-          </ul>
-        </nav>
-      </header>
-    </div>
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+                />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                />
+              </svg>
+            </Link>
+            {data?.me && (
+              <button
+                onClick={handleLogout}
+                disabled={logoutLoading}
+                className="ml-auto border border-myGrey-200 text-myGrey-200 text-sm font-semibold px-5 py-1.5 rounded-full hover:bg-myRed hover:border-myRed hover:text-white transition-colors"
+              >
+                {t('nutrnav.nutr_logout')}
+              </button>
+            )}
+          </div>
+        </div>
+      )}
+    </nav>
   );
-};
-
-export default NutrNavbar;
+}
