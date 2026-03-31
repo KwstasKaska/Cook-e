@@ -7,6 +7,7 @@ import RecipeSummaryModal, {
 } from '../../components/Chef/RecipeSummary';
 import Footer from '../../components/Users/Footer';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useTranslation } from 'next-i18next';
 
 // ─── Types
 interface RecipeCard {
@@ -135,70 +136,78 @@ const Stars = ({
 };
 
 // ─── Rating breakdown panel
-const RatingPanel = ({ onClose }: { onClose: () => void }) => (
-  <div className="rounded-2xl bg-white p-8 shadow-2xl w-full max-w-sm">
-    {/* Back button */}
-    <button
-      onClick={onClose}
-      className="mb-4 flex h-9 w-9 items-center justify-center rounded-full border border-gray-200 text-gray-500 hover:bg-gray-100 transition"
-    >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        strokeWidth={2}
-        stroke="currentColor"
-        className="h-4 w-4"
+const RatingPanel = ({ onClose }: { onClose: () => void }) => {
+  const { t } = useTranslation('common');
+
+  return (
+    <div className="rounded-2xl bg-white p-8 shadow-2xl w-full max-w-sm">
+      {/* Back button */}
+      <button
+        onClick={onClose}
+        className="mb-4 flex h-9 w-9 items-center justify-center rounded-full border border-gray-200 text-gray-500 hover:bg-gray-100 transition"
       >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
-        />
-      </svg>
-    </button>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={2}
+          stroke="currentColor"
+          className="h-4 w-4"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
+          />
+        </svg>
+      </button>
 
-    <h2
-      className="mb-3 text-center text-xl font-bold"
-      style={{ color: '#3F4756' }}
-    >
-      Αξιολόγηση Χρηστών
-    </h2>
+      <h2
+        className="mb-3 text-center text-xl font-bold"
+        style={{ color: '#3F4756' }}
+      >
+        {t('chef.rating.title')}
+      </h2>
 
-    {/* Score pill */}
-    <div className="mb-1 flex justify-center">
-      <div className="flex items-center gap-2 rounded-full border-2 border-gray-200 px-4 py-2">
-        <Stars rating={FAKE_RATING.average} size="md" />
-        <span className="font-bold text-gray-700">
-          {FAKE_RATING.average}/ 5
-        </span>
+      {/* Score pill */}
+      <div className="mb-1 flex justify-center">
+        <div className="flex items-center gap-2 rounded-full border-2 border-gray-200 px-4 py-2">
+          <Stars rating={FAKE_RATING.average} size="md" />
+          <span className="font-bold text-gray-700">
+            {FAKE_RATING.average}/ 5
+          </span>
+        </div>
+      </div>
+      <p className="mb-6 text-center text-sm text-gray-400">
+        {FAKE_RATING.total} {t('chef.rating.reviews')}
+      </p>
+
+      {/* Breakdown bars */}
+      <div className="flex flex-col gap-4">
+        {FAKE_RATING.breakdown.map((row) => (
+          <div key={row.stars} className="flex items-center gap-3">
+            <span className="w-20 text-sm text-gray-600">
+              {row.stars}{' '}
+              {row.stars === 1
+                ? t('chef.rating.stars_singular')
+                : t('chef.rating.stars_plural')}
+            </span>
+            <div className="relative flex-1 h-8 rounded-full bg-gray-100 overflow-hidden">
+              <div
+                className="absolute inset-y-0 left-0 rounded-full transition-all duration-700"
+                style={{ width: `${row.pct}%`, backgroundColor: '#EAB308' }}
+              />
+            </div>
+          </div>
+        ))}
       </div>
     </div>
-    <p className="mb-6 text-center text-sm text-gray-400">
-      {FAKE_RATING.total} Αξιολογήσεις χρηστών
-    </p>
-
-    {/* Breakdown bars */}
-    <div className="flex flex-col gap-4">
-      {FAKE_RATING.breakdown.map((row) => (
-        <div key={row.stars} className="flex items-center gap-3">
-          <span className="w-20 text-sm text-gray-600">
-            {row.stars} {row.stars === 1 ? 'αστέρι' : 'αστέρια'}
-          </span>
-          <div className="relative flex-1 h-8 rounded-full bg-gray-100 overflow-hidden">
-            <div
-              className="absolute inset-y-0 left-0 rounded-full transition-all duration-700"
-              style={{ width: `${row.pct}%`, backgroundColor: '#EAB308' }}
-            />
-          </div>
-        </div>
-      ))}
-    </div>
-  </div>
-);
+  );
+};
 
 // ─── Main page
 export default function ChefIndex() {
+  const { t } = useTranslation('common');
   const [showRatings, setShowRatings] = useState(false);
   const [selectedRecipe, setSelectedRecipe] =
     useState<RecipeSummaryData | null>(null);
@@ -268,36 +277,26 @@ export default function ChefIndex() {
                 className="mb-2 text-2xl italic"
                 style={{ color: '#B3D5F8', fontFamily: 'Georgia, serif' }}
               >
-                Η μαγειρική
+                {t('chef.landing.tagline_pre')}
               </p>
               <div
                 className="rounded-xl px-5 py-4"
                 style={{ backgroundColor: '#B3D5F8', display: 'inline-block' }}
               >
                 <h1
-                  className="text-4xl font-black italic leading-tight"
+                  className="text-4xl font-black italic leading-tight uppercase"
                   style={{ color: '#3F4756', fontFamily: 'Georgia, serif' }}
                 >
-                  ΑΥΘΕΝΤΙΑ
-                  <br />
-                  <span style={{ fontStyle: 'italic' }}>των</span>
-                  <br />
-                  ΣΥΝΤΑΓΩΝ
+                  {t('chef.landing.tagline_bold')}
                 </h1>
               </div>
-              <p
-                className="mt-3 text-2xl italic"
-                style={{ color: '#B3D5F8', fontFamily: 'Georgia, serif' }}
-              >
-                σας.
-              </p>
             </div>
 
             {/* Rating widget */}
             {!showRatings ? (
               <div className="flex flex-col items-center md:items-end">
                 <p className="mb-2 text-sm font-semibold text-white">
-                  Αξιολόγηση Χρηστών
+                  {t('chef.landing.user_rating')}
                 </p>
                 <button
                   onClick={() => setShowRatings(true)}
@@ -310,7 +309,7 @@ export default function ChefIndex() {
                   </span>
                 </button>
                 <p className="mt-1 text-xs text-gray-300">
-                  {FAKE_RATING.total} Αξιολογήσεις χρηστών
+                  {FAKE_RATING.total} {t('chef.landing.user_reviews')}
                 </p>
               </div>
             ) : (
@@ -406,10 +405,10 @@ export default function ChefIndex() {
           <div className="flex justify-center pb-10">
             <Link
               href="/chef/recipes"
-              className="rounded-full px-10 py-3 text-sm font-bold text-white transition hover:opacity-90"
+              className="rounded-full px-10 py-3 text-sm font-bold transition hover:opacity-90"
               style={{ backgroundColor: '#B3D5F8', color: '#3F4756' }}
             >
-              Περισσότερα
+              {t('chef.landing.more')}
             </Link>
           </div>
         </div>

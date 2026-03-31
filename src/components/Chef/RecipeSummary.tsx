@@ -1,8 +1,9 @@
 import React from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { useTranslation } from 'next-i18next';
 
-// ─── Types ────────────────────────────────────────────────────────────────────
+// ─── Types
 export interface RecipeSummaryData {
   id: number;
   title: string;
@@ -19,8 +20,9 @@ interface Props {
   onClose: () => void;
 }
 
-// ─── Component ────────────────────────────────────────────────────────────────
+// ─── Component
 export default function RecipeSummaryModal({ recipe, onClose }: Props) {
+  const { t } = useTranslation('common');
   const router = useRouter();
 
   const handleEdit = () => {
@@ -66,7 +68,7 @@ export default function RecipeSummaryModal({ recipe, onClose }: Props) {
         <div className="p-6">
           {/* Περιγραφή label + text */}
           <h3 className="mb-2 text-lg font-black" style={{ color: '#3F4756' }}>
-            Περιγραφή
+            {t('chef.recipe_modal.description')}
           </h3>
           <p className="mb-5 text-sm leading-relaxed text-gray-600">
             {recipe.description}
@@ -78,21 +80,25 @@ export default function RecipeSummaryModal({ recipe, onClose }: Props) {
             style={{ backgroundColor: '#F5F5F5' }}
           >
             <p className="mb-3 text-sm font-bold" style={{ color: '#3F4756' }}>
-              Περιγραφή
+              {t('chef.recipe_modal.description')}
             </p>
             <div className="flex items-center justify-around text-center">
               <div>
-                <p className="text-xs text-gray-500">Χρόνος</p>
+                <p className="text-xs text-gray-500">
+                  {t('chef.recipe_modal.time')}
+                </p>
                 <p
                   className="text-base font-black"
                   style={{ color: '#3F4756' }}
                 >
-                  {recipe.duration} Λεπτά
+                  {recipe.duration} {t('chef.recipe_modal.minutes')}
                 </p>
               </div>
               <div className="h-8 w-px bg-gray-300" />
               <div>
-                <p className="text-xs text-gray-500">Υλικά</p>
+                <p className="text-xs text-gray-500">
+                  {t('chef.recipe_modal.ingredients_count')}
+                </p>
                 <p
                   className="text-base font-black"
                   style={{ color: '#3F4756' }}
@@ -102,7 +108,9 @@ export default function RecipeSummaryModal({ recipe, onClose }: Props) {
               </div>
               <div className="h-8 w-px bg-gray-300" />
               <div>
-                <p className="text-xs text-gray-500">Θερμίδες</p>
+                <p className="text-xs text-gray-500">
+                  {t('chef.recipe_modal.calories')}
+                </p>
                 <p
                   className="text-base font-black"
                   style={{ color: '#3F4756' }}
@@ -116,7 +124,7 @@ export default function RecipeSummaryModal({ recipe, onClose }: Props) {
           {/* Tags */}
           <div className="mb-6">
             <p className="mb-2 text-sm font-bold" style={{ color: '#3F4756' }}>
-              Tags συνταγής
+              {t('chef.recipe_modal.tags')}
             </p>
             <div className="flex flex-wrap gap-2">
               {recipe.tags.map((tag, i) => (
@@ -137,7 +145,7 @@ export default function RecipeSummaryModal({ recipe, onClose }: Props) {
             className="flex w-full items-center justify-between rounded-2xl px-6 py-4 text-base font-black transition hover:opacity-90"
             style={{ backgroundColor: '#B3D5F8', color: '#3F4756' }}
           >
-            <span>Δείτε ή επεξεργαστείτε την συνταγή</span>
+            <span>{t('chef.recipe_modal.cta')}</span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"

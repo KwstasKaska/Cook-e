@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import ChefNavbar from '../../components/Chef/ChefNavbar';
 import Footer from '../../components/Users/Footer';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useTranslation } from 'next-i18next';
 
 // ─── Types
 interface Ingredient {
@@ -26,7 +27,7 @@ interface FormData {
   prepTime: string;
   cookTime: string;
   restTime: string;
-  difficulty: 'Εύκολο' | 'Μέτριο' | 'Δύσκολο' | '';
+  difficulty: 'easy' | 'medium' | 'hard' | '';
   // Step 3
   mealType: string;
   cuisine: string;
@@ -71,17 +72,28 @@ const LivePreview = ({
   step: number;
   onBack: () => void;
 }) => {
+  const { t } = useTranslation('common');
+
   const totalTime =
     (parseInt(form.prepTime) || 0) +
     (parseInt(form.cookTime) || 0) +
     (parseInt(form.restTime) || 0);
 
-  // Step 1 preview: only show placeholder book
+  const difficultyLabel =
+    form.difficulty === 'easy'
+      ? t('chef.create_recipe.easy')
+      : form.difficulty === 'medium'
+        ? t('chef.create_recipe.medium')
+        : form.difficulty === 'hard'
+          ? t('chef.create_recipe.hard')
+          : '';
+
+  // Step 1 preview: only show placeholder
   if (step === 1 && !form.title) {
     return (
       <div className="flex h-full items-center justify-center">
         <p className="text-sm text-gray-400 italic">
-          Η προεπισκόπηση θα εμφανιστεί εδώ
+          {t('chef.create_recipe.preview_placeholder')}
         </p>
       </div>
     );
@@ -89,7 +101,7 @@ const LivePreview = ({
 
   return (
     <div className="flex h-full flex-col overflow-y-auto">
-      {/* Back button (shown once preview has content) */}
+      {/* Back button */}
       {step > 1 && (
         <button
           onClick={onBack}
@@ -122,7 +134,7 @@ const LivePreview = ({
             <Image src={form.image} alt="hero1" fill className="object-cover" />
           ) : (
             <div className="flex h-full items-center justify-center text-gray-400 text-xs">
-              Φωτογραφία
+              {t('chef.create_recipe.photo_slot')}
             </div>
           )}
         </div>
@@ -131,7 +143,7 @@ const LivePreview = ({
             <Image src={form.image} alt="hero2" fill className="object-cover" />
           ) : (
             <div className="flex h-full items-center justify-center text-gray-400 text-xs">
-              Φωτογραφία
+              {t('chef.create_recipe.photo_slot')}
             </div>
           )}
         </div>
@@ -170,7 +182,7 @@ const LivePreview = ({
       {step >= 4 && form.ingredients.some((i) => i.name) && (
         <div className="mb-2 flex-shrink-0">
           <p className="text-xs font-bold mb-1" style={{ color: '#3F4756' }}>
-            Συστατικά:
+            {t('chef.create_recipe.ingredients_label')}:
           </p>
           <ol className="flex flex-col gap-0.5 list-decimal list-inside">
             {form.ingredients
@@ -191,7 +203,7 @@ const LivePreview = ({
       {step >= 5 && form.steps.some((s) => s.text) && (
         <div className="mb-2 flex-shrink-0">
           <p className="text-xs font-bold mb-1" style={{ color: '#3F4756' }}>
-            Εκτέλεση:
+            {t('chef.create_recipe.execution_label')}:
           </p>
           <div className="flex flex-col gap-1">
             {form.steps
@@ -229,11 +241,11 @@ const LivePreview = ({
               </div>
               <div>
                 <p className="text-xs font-bold text-white">
-                  {form.title || 'Τίτλος συνταγής'}
+                  {form.title || t('chef.create_recipe.recipe_title_preview')}
                 </p>
                 {form.difficulty && (
                   <p className="text-xs text-gray-300">
-                    Βαθμός Δυσκολίας: {form.difficulty}
+                    {t('chef.recipe_detail.difficulty')} {difficultyLabel}
                   </p>
                 )}
                 {form.personalNote && (
@@ -245,7 +257,8 @@ const LivePreview = ({
                   <Stars rating={4.9} />
                   {totalTime > 0 && (
                     <span className="text-xs text-gray-300">
-                      Χρόνος: {totalTime} λεπτά
+                      {t('chef.recipe_detail.time_label')} {totalTime}{' '}
+                      {t('chef.create_recipe.minutes')}
                     </span>
                   )}
                 </div>
@@ -260,31 +273,36 @@ const LivePreview = ({
                 className="text-center text-xs font-bold mb-1"
                 style={{ color: '#3F4756' }}
               >
-                Χρόνος Υλοποίησης: {totalTime}λεπτά
+                {t('chef.recipe_detail.implementation_time')} {totalTime}{' '}
+                {t('chef.create_recipe.minutes')}
               </p>
               {form.prepTime && (
                 <div className="flex justify-between text-xs">
-                  <span className="text-gray-600">Χρόνος Προετοιμασίας:</span>
+                  <span className="text-gray-600">
+                    {t('chef.create_recipe.prep_time')}
+                  </span>
                   <span className="font-semibold" style={{ color: '#377CC3' }}>
-                    {form.prepTime} λεπτά
+                    {form.prepTime} {t('chef.create_recipe.minutes')}
                   </span>
                 </div>
               )}
               {form.cookTime && (
                 <div className="flex justify-between text-xs">
-                  <span className="text-gray-600">Χρόνος Μαγειρέματος:</span>
+                  <span className="text-gray-600">
+                    {t('chef.create_recipe.cook_time')}
+                  </span>
                   <span className="font-semibold" style={{ color: '#377CC3' }}>
-                    {form.cookTime} λεπτά
+                    {form.cookTime} {t('chef.create_recipe.minutes')}
                   </span>
                 </div>
               )}
               {form.restTime && (
                 <div className="flex justify-between text-xs">
                   <span className="text-gray-600">
-                    Χρόνος Ξεκούρασης Φαγητού:
+                    {t('chef.create_recipe.rest_time')}
                   </span>
                   <span className="font-semibold" style={{ color: '#377CC3' }}>
-                    {form.restTime} λεπτά
+                    {form.restTime} {t('chef.create_recipe.minutes')}
                   </span>
                 </div>
               )}
@@ -298,11 +316,13 @@ const LivePreview = ({
                 className="text-center text-xs font-bold mb-1"
                 style={{ color: '#3F4756' }}
               >
-                Είδος φαγητού
+                {t('chef.recipe_detail.food_type')}
               </p>
               {form.mealType && (
                 <div>
-                  <p className="text-xs text-gray-500">Είδος πιάτου</p>
+                  <p className="text-xs text-gray-500">
+                    {t('chef.recipe_detail.dish_type')}
+                  </p>
                   <p
                     className="text-xs font-medium italic border-b pb-0.5 mb-1"
                     style={{ color: '#377CC3', borderColor: '#B3D5F8' }}
@@ -313,7 +333,9 @@ const LivePreview = ({
               )}
               {form.cuisine && (
                 <div>
-                  <p className="text-xs text-gray-500">Κουζίνα</p>
+                  <p className="text-xs text-gray-500">
+                    {t('chef.recipe_detail.cuisine')}
+                  </p>
                   <p
                     className="text-xs font-medium italic border-b pb-0.5 mb-1"
                     style={{ color: '#377CC3', borderColor: '#B3D5F8' }}
@@ -324,7 +346,9 @@ const LivePreview = ({
               )}
               {form.occasion && (
                 <div>
-                  <p className="text-xs text-gray-500">Περίσταση</p>
+                  <p className="text-xs text-gray-500">
+                    {t('chef.recipe_detail.occasion')}
+                  </p>
                   <p
                     className="text-xs font-medium italic"
                     style={{ color: '#377CC3' }}
@@ -341,13 +365,14 @@ const LivePreview = ({
   );
 };
 
-// ─── Input style helpers ──────────────────────────────────────────────────────
+// ─── Input style helpers
 const inputClass =
   'w-full border-b border-gray-300 bg-transparent py-2 text-sm outline-none focus:border-myBlue-200 transition placeholder:text-gray-300';
 const labelClass = 'mb-1 block text-base font-black';
 
-// ─── Main page ─────────────────────────────────────────────────────────────────
+// ─── Main page
 export default function CreateRecipe() {
+  const { t } = useTranslation('common');
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [currentStep, setCurrentStep] = useState(1);
@@ -435,7 +460,45 @@ export default function CreateRecipe() {
     router.push('/chef/recipes');
   };
 
-  // ─── Step forms ─────────────────────────────────────────────────────────────
+  const difficultyOptions: { value: FormData['difficulty']; label: string }[] =
+    [
+      { value: 'easy', label: t('chef.create_recipe.easy') },
+      { value: 'medium', label: t('chef.create_recipe.medium') },
+      { value: 'hard', label: t('chef.create_recipe.hard') },
+    ];
+
+  const timeFields: {
+    label: string;
+    field: 'prepTime' | 'cookTime' | 'restTime';
+  }[] = [
+    { label: t('chef.create_recipe.prep_time'), field: 'prepTime' },
+    { label: t('chef.create_recipe.cook_time'), field: 'cookTime' },
+    { label: t('chef.create_recipe.rest_time'), field: 'restTime' },
+  ];
+
+  const foodTypeFields: {
+    label: string;
+    field: 'mealType' | 'cuisine' | 'occasion';
+    placeholder: string;
+  }[] = [
+    {
+      label: t('chef.create_recipe.dish_type_label'),
+      field: 'mealType',
+      placeholder: t('chef.create_recipe.dish_type_placeholder'),
+    },
+    {
+      label: t('chef.create_recipe.cuisine_label'),
+      field: 'cuisine',
+      placeholder: t('chef.create_recipe.cuisine_placeholder'),
+    },
+    {
+      label: t('chef.create_recipe.occasion_label'),
+      field: 'occasion',
+      placeholder: t('chef.create_recipe.occasion_placeholder'),
+    },
+  ];
+
+  // ─── Step forms
   const renderStep = () => {
     switch (currentStep) {
       case 1:
@@ -445,15 +508,15 @@ export default function CreateRecipe() {
               className="mb-5 text-2xl font-black"
               style={{ color: '#EAB308' }}
             >
-              Βήμα 1ο
+              {t('chef.create_recipe.step1_title')}
             </h2>
 
             <label className={labelClass} style={{ color: '#3F4756' }}>
-              Όνομα συνταγής
+              {t('chef.create_recipe.recipe_name_label')}
             </label>
             <input
               type="text"
-              placeholder="πχ Μακαρόνια με κιμά"
+              placeholder={t('chef.create_recipe.recipe_name_placeholder')}
               value={form.title}
               onChange={(e) => update('title', e.target.value)}
               className={inputClass}
@@ -464,7 +527,7 @@ export default function CreateRecipe() {
               className={`${labelClass} mt-6`}
               style={{ color: '#3F4756' }}
             >
-              Φωτογραφία Συνταγής
+              {t('chef.create_recipe.photo_label')}
             </label>
             <div
               className="mt-2 flex cursor-pointer flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-gray-300 p-10 text-center transition hover:border-gray-400"
@@ -503,10 +566,7 @@ export default function CreateRecipe() {
                     />
                   </svg>
                   <p className="text-sm text-gray-400 leading-relaxed">
-                    Ανεβάστε φωτογραφία
-                    <br />
-                    απο την βιβλιοθήκη σας
-                    <br />ή σύρετε την στο πλαίσιο
+                    {t('chef.create_recipe.photo_upload_hint')}
                   </p>
                 </>
               )}
@@ -528,15 +588,15 @@ export default function CreateRecipe() {
               className="mb-5 text-2xl font-black"
               style={{ color: '#EAB308' }}
             >
-              Βήμα 2ο
+              {t('chef.create_recipe.step2_title')}
             </h2>
 
             <label className={labelClass} style={{ color: '#3F4756' }}>
-              Προσωπικό σχόλιο/tip
+              {t('chef.create_recipe.personal_tip_label')}
             </label>
             <input
               type="text"
-              placeholder="πχ Μακαρόνια με κιμά"
+              placeholder={t('chef.create_recipe.personal_tip_placeholder')}
               value={form.personalNote}
               onChange={(e) => update('personalNote', e.target.value)}
               className={inputClass}
@@ -547,17 +607,10 @@ export default function CreateRecipe() {
               className="mb-3 mt-6 text-base font-black"
               style={{ color: '#3F4756' }}
             >
-              Συνολικός χρόνος υλοποίησης
+              {t('chef.create_recipe.total_time_label')}
             </h3>
             <div className="flex flex-col gap-3">
-              {[
-                { label: 'Χρόνος Προετοιμασίας:', field: 'prepTime' as const },
-                { label: 'Χρόνος Μαγειρέματος:', field: 'cookTime' as const },
-                {
-                  label: 'Χρόνος Ξεκούρασης Φαγητού:',
-                  field: 'restTime' as const,
-                },
-              ].map(({ label, field }) => (
+              {timeFields.map(({ label, field }) => (
                 <div
                   key={field}
                   className="flex items-center justify-between gap-4"
@@ -569,7 +622,7 @@ export default function CreateRecipe() {
                     type="text"
                     value={form[field]}
                     onChange={(e) => update(field, e.target.value)}
-                    placeholder="10 λεπτά"
+                    placeholder={`10 ${t('chef.create_recipe.minutes')}`}
                     className="w-28 border-b border-gray-300 bg-transparent py-1 text-sm outline-none text-right font-semibold"
                     style={{ color: '#EAB308' }}
                   />
@@ -581,21 +634,21 @@ export default function CreateRecipe() {
               className="mb-3 mt-6 text-base font-black"
               style={{ color: '#3F4756' }}
             >
-              Βαθμός δυσκολίας
+              {t('chef.create_recipe.difficulty_label')}
             </h3>
             <div className="flex gap-3">
-              {(['Εύκολο', 'Μέτριο', 'Δύσκολο'] as const).map((d) => (
+              {difficultyOptions.map(({ value, label }) => (
                 <button
-                  key={d}
-                  onClick={() => update('difficulty', d)}
+                  key={value}
+                  onClick={() => update('difficulty', value)}
                   className="rounded-full px-5 py-2 text-sm font-semibold transition"
                   style={{
                     backgroundColor:
-                      form.difficulty === d ? '#EAB308' : '#F5F0D8',
+                      form.difficulty === value ? '#EAB308' : '#F5F0D8',
                     color: '#3F4756',
                   }}
                 >
-                  {d}
+                  {label}
                 </button>
               ))}
             </div>
@@ -609,33 +662,17 @@ export default function CreateRecipe() {
               className="mb-5 text-2xl font-black"
               style={{ color: '#EAB308' }}
             >
-              Βήμα 3ο
+              {t('chef.create_recipe.step3_title')}
             </h2>
 
             <h3
               className="mb-4 text-base font-black"
               style={{ color: '#3F4756' }}
             >
-              Είδος Φαγητού
+              {t('chef.create_recipe.food_type_label')}
             </h3>
 
-            {[
-              {
-                label: 'Είδος πιάτου',
-                field: 'mealType' as const,
-                placeholder: 'Μεσημεριανό',
-              },
-              {
-                label: 'Κουζίνα',
-                field: 'cuisine' as const,
-                placeholder: 'Ιταλική',
-              },
-              {
-                label: 'Περίσταση',
-                field: 'occasion' as const,
-                placeholder: 'Δείπνο με σύντροφο',
-              },
-            ].map(({ label, field, placeholder }) => (
+            {foodTypeFields.map(({ label, field, placeholder }) => (
               <div key={field} className="mb-4">
                 <label
                   className="mb-1 block text-sm font-semibold"
@@ -658,7 +695,7 @@ export default function CreateRecipe() {
               className="mb-3 mt-2 text-base font-black"
               style={{ color: '#3F4756' }}
             >
-              Σύνοψη Συνταγής
+              {t('chef.create_recipe.summary_label')}
             </h3>
             <div className="flex flex-col gap-2">
               {[0, 1, 2].map((i) => (
@@ -667,7 +704,7 @@ export default function CreateRecipe() {
               <textarea
                 value={form.summary}
                 onChange={(e) => update('summary', e.target.value)}
-                placeholder="Γράψτε μια σύντομη σύνοψη..."
+                placeholder={t('chef.create_recipe.summary_placeholder')}
                 rows={3}
                 className="w-full resize-none bg-transparent text-sm outline-none placeholder:text-gray-300"
                 style={{ color: '#3F4756' }}
@@ -683,14 +720,14 @@ export default function CreateRecipe() {
               className="mb-5 text-2xl font-black"
               style={{ color: '#EAB308' }}
             >
-              Βήμα 4ο
+              {t('chef.create_recipe.step4_title')}
             </h2>
 
             <h3
               className="mb-4 text-base font-black"
               style={{ color: '#3F4756' }}
             >
-              Συστατικά
+              {t('chef.create_recipe.ingredients_label')}
             </h3>
 
             <div className="flex flex-col gap-3">
@@ -711,7 +748,7 @@ export default function CreateRecipe() {
                   />
                   <input
                     type="text"
-                    placeholder="Ντομάτα"
+                    placeholder={t('chef.create_recipe.ingredient_placeholder')}
                     value={ing.name}
                     onChange={(e) =>
                       updateIngredient(ing.id, 'name', e.target.value)
@@ -728,7 +765,7 @@ export default function CreateRecipe() {
               className="mt-5 rounded-full border px-5 py-2 text-sm font-semibold transition hover:bg-gray-50"
               style={{ borderColor: '#3F4756', color: '#3F4756' }}
             >
-              Προσθήκη Υλικού
+              {t('chef.create_recipe.add_ingredient')}
             </button>
           </div>
         );
@@ -740,14 +777,14 @@ export default function CreateRecipe() {
               className="mb-5 text-2xl font-black"
               style={{ color: '#EAB308' }}
             >
-              Βήμα 5ο
+              {t('chef.create_recipe.step5_title')}
             </h2>
 
             <h3
               className="mb-4 text-base font-black"
               style={{ color: '#3F4756' }}
             >
-              Εκτέλεση
+              {t('chef.create_recipe.execution_label')}
             </h3>
 
             <div className="flex flex-col gap-4">
@@ -757,12 +794,12 @@ export default function CreateRecipe() {
                     className="mb-1 text-sm font-bold italic"
                     style={{ color: '#3F4756' }}
                   >
-                    Βήμα {i + 1}ο
+                    {t('chef.create_recipe.step_label', { number: i + 1 })}
                   </p>
                   <textarea
                     value={s.text}
                     onChange={(e) => updateStep(s.id, e.target.value)}
-                    placeholder="Περιγράψτε το βήμα..."
+                    placeholder={t('chef.create_recipe.step_placeholder')}
                     rows={3}
                     className="w-full resize-none rounded-xl border-b border-gray-200 bg-gray-50 px-3 py-2 text-sm outline-none placeholder:text-gray-300 focus:border-gray-400"
                     style={{ color: '#3F4756' }}
@@ -776,10 +813,11 @@ export default function CreateRecipe() {
               className="mt-4 rounded-full border px-5 py-2 text-sm font-semibold transition hover:bg-gray-50"
               style={{ borderColor: '#3F4756', color: '#3F4756' }}
             >
-              Προσθήκη Βήματος
+              {t('chef.create_recipe.add_step')}
             </button>
           </div>
         );
+
       default:
         return null;
     }
@@ -798,7 +836,7 @@ export default function CreateRecipe() {
           className="mb-6 text-3xl italic"
           style={{ color: 'white', fontFamily: 'Georgia, serif' }}
         >
-          Δημιουργία Συνταγής
+          {t('chef.create_recipe.page_title')}
         </h1>
 
         {/* Split card wrapper */}
@@ -821,7 +859,7 @@ export default function CreateRecipe() {
                   className="rounded-full border px-5 py-2.5 text-sm font-semibold transition hover:bg-gray-50"
                   style={{ borderColor: '#3F4756', color: '#3F4756' }}
                 >
-                  Προεπισκόπηση
+                  {t('chef.create_recipe.preview_btn')}
                 </button>
                 {currentStep < TOTAL_STEPS ? (
                   <button
@@ -829,7 +867,7 @@ export default function CreateRecipe() {
                     className="flex-1 rounded-full py-2.5 text-sm font-bold text-white transition hover:opacity-90"
                     style={{ backgroundColor: '#3F4756' }}
                   >
-                    Επόμενο
+                    {t('chef.create_recipe.next_btn')}
                   </button>
                 ) : (
                   <button
@@ -837,7 +875,7 @@ export default function CreateRecipe() {
                     className="flex-1 rounded-full py-2.5 text-sm font-bold text-white transition hover:opacity-90"
                     style={{ backgroundColor: '#3F4756' }}
                   >
-                    Ολοκλήρωση
+                    {t('chef.create_recipe.finish_btn')}
                   </button>
                 )}
               </div>

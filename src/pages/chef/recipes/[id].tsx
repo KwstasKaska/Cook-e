@@ -4,8 +4,9 @@ import { useRouter } from 'next/router';
 import ChefNavbar from '../../../components/Chef/ChefNavbar';
 import Footer from '../../../components/Users/Footer';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useTranslation } from 'next-i18next';
 
-// ─── Types ────────────────────────────────────────────────────────────────────
+// ─── Types
 interface RecipeDetail {
   id: number;
   title: string;
@@ -31,7 +32,7 @@ interface RecipeDetail {
   occasion: string;
 }
 
-// ─── Fake data ────────────────────────────────────────────────────────────────
+// ─── Fake data
 const FAKE_RECIPE: RecipeDetail = {
   id: 1,
   title: 'Μακαρόνια με κιμά',
@@ -78,7 +79,7 @@ const FAKE_RECIPE: RecipeDetail = {
   occasion: 'Δείπνο με σύντροφο',
 };
 
-// ─── Stars ────────────────────────────────────────────────────────────────────
+// ─── Stars
 const Stars = ({
   rating,
   size = 'md',
@@ -110,7 +111,7 @@ const Stars = ({
   );
 };
 
-// ─── Editable list ────────────────────────────────────────────────────────────
+// ─── Editable list
 const EditableList = ({
   items,
   onChange,
@@ -174,8 +175,9 @@ const EditableList = ({
   </div>
 );
 
-// ─── Main page ─────────────────────────────────────────────────────────────────
+// ─── Main page
 export default function ChefSingleRecipe() {
+  const { t } = useTranslation('common');
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
   const [form, setForm] = useState<RecipeDetail>({ ...FAKE_RECIPE });
@@ -197,6 +199,24 @@ export default function ChefSingleRecipe() {
     (parseInt(String(form.prepTime)) || 0) +
     (parseInt(String(form.cookTime)) || 0) +
     (parseInt(String(form.restTime)) || 0);
+
+  const difficultyOptions = [
+    t('chef.create_recipe.easy'),
+    t('chef.create_recipe.medium'),
+    t('chef.create_recipe.hard'),
+  ];
+
+  const timeBreakdown = [
+    { label: t('chef.recipe_detail.prep_time'), field: 'prepTime' as const },
+    { label: t('chef.recipe_detail.cook_time'), field: 'cookTime' as const },
+    { label: t('chef.recipe_detail.rest_time'), field: 'restTime' as const },
+  ];
+
+  const foodTypeFields = [
+    { label: t('chef.recipe_detail.dish_type'), field: 'mealType' as const },
+    { label: t('chef.recipe_detail.cuisine'), field: 'cuisine' as const },
+    { label: t('chef.recipe_detail.occasion'), field: 'occasion' as const },
+  ];
 
   return (
     <div
@@ -307,13 +327,13 @@ export default function ChefSingleRecipe() {
                   className="mb-3 text-lg font-black"
                   style={{ color: '#3F4756' }}
                 >
-                  Συστατικά:
+                  {t('chef.recipe_detail.ingredients')}
                 </h3>
                 {isEditing ? (
                   <EditableList
                     items={form.ingredients}
                     onChange={(v) => update('ingredients', v)}
-                    addLabel="Προσθήκη Υλικού"
+                    addLabel={t('chef.create_recipe.add_ingredient')}
                     numbered
                   />
                 ) : (
@@ -333,13 +353,13 @@ export default function ChefSingleRecipe() {
                   className="mb-3 text-lg font-black"
                   style={{ color: '#3F4756' }}
                 >
-                  Σκεύη:
+                  {t('chef.recipe_detail.utensils')}
                 </h3>
                 {isEditing ? (
                   <EditableList
                     items={form.utensils}
                     onChange={(v) => update('utensils', v)}
-                    addLabel="Προσθήκη Σκεύους"
+                    addLabel={t('chef.recipe_detail.add_utensil')}
                     numbered
                   />
                 ) : (
@@ -359,13 +379,13 @@ export default function ChefSingleRecipe() {
                   className="mb-3 text-lg font-black"
                   style={{ color: '#3F4756' }}
                 >
-                  Εκτέλεση:
+                  {t('chef.recipe_detail.execution')}
                 </h3>
                 {isEditing ? (
                   <EditableList
                     items={form.steps}
                     onChange={(v) => update('steps', v)}
-                    addLabel="Προσθήκη Βήματος"
+                    addLabel={t('chef.create_recipe.add_step')}
                   />
                 ) : (
                   <div className="flex flex-col gap-3">
@@ -406,7 +426,7 @@ export default function ChefSingleRecipe() {
                       d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"
                     />
                   </svg>
-                  Επεξεργασία
+                  {t('chef.recipe_detail.edit')}
                 </button>
               ) : (
                 <div className="flex flex-col gap-2">
@@ -429,7 +449,7 @@ export default function ChefSingleRecipe() {
                         d="M4.5 12.75l6 6 9-13.5"
                       />
                     </svg>
-                    Αποθήκευση
+                    {t('chef.recipe_detail.save')}
                   </button>
                   <button
                     onClick={handleCancel}
@@ -450,7 +470,7 @@ export default function ChefSingleRecipe() {
                         d="M6 18L18 6M6 6l12 12"
                       />
                     </svg>
-                    Ακύρωση
+                    {t('chef.recipe_detail.cancel')}
                   </button>
                 </div>
               )}
@@ -484,13 +504,13 @@ export default function ChefSingleRecipe() {
                       onChange={(e) => update('difficulty', e.target.value)}
                       className="mb-2 w-full rounded border border-gray-600 bg-gray-700 px-2 py-1 text-xs text-gray-300 outline-none"
                     >
-                      {['Εύκολο', 'Μέτριο', 'Δύσκολο'].map((d) => (
+                      {difficultyOptions.map((d) => (
                         <option key={d}>{d}</option>
                       ))}
                     </select>
                   ) : (
                     <p className="mb-2 text-xs text-gray-300">
-                      Βαθμός Δυσκολίας: {form.difficulty}
+                      {t('chef.recipe_detail.difficulty')} {form.difficulty}
                     </p>
                   )}
                   <p className="mb-3 text-xs leading-relaxed text-gray-400 line-clamp-3">
@@ -504,7 +524,8 @@ export default function ChefSingleRecipe() {
                       </span>
                     </div>
                     <span className="text-xs text-gray-300">
-                      Χρόνος: {totalTime} λεπτά
+                      {t('chef.recipe_detail.time_label')} {totalTime}{' '}
+                      {t('chef.recipe_detail.minutes')}
                     </span>
                   </div>
                 </div>
@@ -516,23 +537,11 @@ export default function ChefSingleRecipe() {
                   className="mb-3 text-center text-sm font-bold"
                   style={{ color: '#3F4756' }}
                 >
-                  Χρόνος Υλοποίησης: {totalTime}λεπτά
+                  {t('chef.recipe_detail.implementation_time')} {totalTime}{' '}
+                  {t('chef.recipe_detail.minutes')}
                 </h4>
                 <div className="flex flex-col gap-2">
-                  {[
-                    {
-                      label: 'Χρόνος Προετοιμασίας:',
-                      field: 'prepTime' as const,
-                    },
-                    {
-                      label: 'Χρόνος Μαγειρέματος:',
-                      field: 'cookTime' as const,
-                    },
-                    {
-                      label: 'Χρόνος Ξεκούρασης Φαγητού:',
-                      field: 'restTime' as const,
-                    },
-                  ].map(({ label, field }) => (
+                  {timeBreakdown.map(({ label, field }) => (
                     <div
                       key={field}
                       className="flex items-center justify-between gap-2"
@@ -555,7 +564,7 @@ export default function ChefSingleRecipe() {
                           className="flex-shrink-0 text-xs font-semibold"
                           style={{ color: '#377CC3' }}
                         >
-                          {form[field]} λεπτά
+                          {form[field]} {t('chef.recipe_detail.minutes')}
                         </span>
                       )}
                     </div>
@@ -569,14 +578,10 @@ export default function ChefSingleRecipe() {
                   className="mb-3 text-center text-sm font-bold"
                   style={{ color: '#3F4756' }}
                 >
-                  Είδος φαγητού
+                  {t('chef.recipe_detail.food_type')}
                 </h4>
                 <div className="flex flex-col gap-3">
-                  {[
-                    { label: 'Είδος πιάτου', field: 'mealType' as const },
-                    { label: 'Κουζίνα', field: 'cuisine' as const },
-                    { label: 'Περίσταση', field: 'occasion' as const },
-                  ].map(({ label, field }) => (
+                  {foodTypeFields.map(({ label, field }) => (
                     <div key={field}>
                       <p className="text-xs text-gray-500">{label}</p>
                       {isEditing ? (
@@ -619,7 +624,7 @@ export default function ChefSingleRecipe() {
                       d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
                     />
                   </svg>
-                  Διαγραφή Συνταγής
+                  {t('chef.recipe_detail.delete')}
                 </button>
               )}
             </div>

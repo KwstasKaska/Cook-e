@@ -6,6 +6,7 @@ import RecipeSummaryModal, {
 } from '../../components/Chef/RecipeSummary';
 import Footer from '../../components/Users/Footer';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useTranslation } from 'next-i18next';
 
 // ─── Types
 interface Recipe {
@@ -91,87 +92,94 @@ const CompactCard = ({
 }: {
   recipe: Recipe;
   onClick: () => void;
-}) => (
-  <button
-    onClick={onClick}
-    className="flex w-full items-center gap-3 rounded-2xl bg-white p-3 text-left shadow transition hover:shadow-md hover:-translate-y-0.5"
-  >
-    <div className="relative h-14 w-14 flex-shrink-0 overflow-hidden rounded-full">
-      <Image
-        src={recipe.image}
-        alt={recipe.title}
-        fill
-        className="object-cover"
-      />
-    </div>
-    <div className="flex-1 min-w-0">
-      <p className="font-bold text-sm truncate" style={{ color: '#3F4756' }}>
-        {recipe.title}
-      </p>
-      <div className="mt-1 flex items-center gap-3 text-xs text-gray-500">
-        <span>
-          Άτομα{' '}
-          <span className="font-bold text-gray-700">{recipe.persons}</span>
-        </span>
-        <span className="text-gray-300">|</span>
-        <span>
-          Χρονική διάρκεια{' '}
-          <span className="font-bold text-gray-700">{recipe.duration}</span>
-        </span>
+}) => {
+  const { t } = useTranslation('common');
+  return (
+    <button
+      onClick={onClick}
+      className="flex w-full items-center gap-3 rounded-2xl bg-white p-3 text-left shadow transition hover:shadow-md hover:-translate-y-0.5"
+    >
+      <div className="relative h-14 w-14 flex-shrink-0 overflow-hidden rounded-full">
+        <Image
+          src={recipe.image}
+          alt={recipe.title}
+          fill
+          className="object-cover"
+        />
       </div>
-    </div>
-  </button>
-);
+      <div className="flex-1 min-w-0">
+        <p className="font-bold text-sm truncate" style={{ color: '#3F4756' }}>
+          {recipe.title}
+        </p>
+        <div className="mt-1 flex items-center gap-3 text-xs text-gray-500">
+          <span>
+            {t('chef.recipes.servings')}{' '}
+            <span className="font-bold text-gray-700">{recipe.persons}</span>
+          </span>
+          <span className="text-gray-300">|</span>
+          <span>
+            {t('chef.recipes.duration')}{' '}
+            <span className="font-bold text-gray-700">{recipe.duration}</span>
+          </span>
+        </div>
+      </div>
+    </button>
+  );
+};
 
-// ─── Featured (big) card ──────────────────────────────────────────────────────
+// ─── Featured (big) card
 const FeaturedCard = ({
   recipe,
   onClick,
 }: {
   recipe: Recipe;
   onClick: () => void;
-}) => (
-  <button
-    onClick={onClick}
-    className="flex w-full flex-col overflow-hidden rounded-2xl bg-white text-left shadow-lg transition hover:shadow-xl hover:-translate-y-1"
-  >
-    <div className="relative h-52 w-full overflow-hidden">
-      <Image
-        src={recipe.image}
-        alt={recipe.title}
-        fill
-        className="object-cover"
-      />
-    </div>
-    <div className="p-4">
-      <h3 className="text-lg font-bold" style={{ color: '#3F4756' }}>
-        {recipe.title}
-      </h3>
-      <p className="mt-1 text-sm leading-relaxed text-gray-500 line-clamp-4">
-        {recipe.description}
-      </p>
-      <div className="mt-3 flex items-center gap-4 text-sm text-gray-500">
-        <span>
-          Άτομα{' '}
-          <span className="font-bold text-gray-700">{recipe.persons}</span>
-        </span>
-        <span className="text-gray-300">|</span>
-        <span>
-          Χρονική διάρκεια{' '}
-          <span className="font-bold text-gray-700">
-            {recipe.duration} λεπτά
-          </span>
-        </span>
+}) => {
+  const { t } = useTranslation('common');
+  return (
+    <button
+      onClick={onClick}
+      className="flex w-full flex-col overflow-hidden rounded-2xl bg-white text-left shadow-lg transition hover:shadow-xl hover:-translate-y-1"
+    >
+      <div className="relative h-52 w-full overflow-hidden">
+        <Image
+          src={recipe.image}
+          alt={recipe.title}
+          fill
+          className="object-cover"
+        />
       </div>
-    </div>
-  </button>
-);
+      <div className="p-4">
+        <h3 className="text-lg font-bold" style={{ color: '#3F4756' }}>
+          {recipe.title}
+        </h3>
+        <p className="mt-1 text-sm leading-relaxed text-gray-500 line-clamp-4">
+          {recipe.description}
+        </p>
+        <div className="mt-3 flex items-center gap-4 text-sm text-gray-500">
+          <span>
+            {t('chef.recipes.servings')}{' '}
+            <span className="font-bold text-gray-700">{recipe.persons}</span>
+          </span>
+          <span className="text-gray-300">|</span>
+          <span>
+            {t('chef.recipes.duration')}{' '}
+            <span className="font-bold text-gray-700">
+              {recipe.duration} {t('chef.recipes.minutes')}
+            </span>
+          </span>
+        </div>
+      </div>
+    </button>
+  );
+};
 
-// ─── Main page ─────────────────────────────────────────────────────────────────
+// ─── Main page
 export default function ChefRecipes() {
+  const { t } = useTranslation('common');
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [search, setSearch] = useState('');
-  const [sort, setSort] = useState('Νεότερα');
+  const [sort, setSort] = useState('newest');
   const [selectedRecipe, setSelectedRecipe] =
     useState<RecipeSummaryData | null>(null);
 
@@ -275,7 +283,7 @@ export default function ChefRecipes() {
             fontFamily: 'Georgia, serif',
           }}
         >
-          Οι <em>συνταγές μου</em>
+          {t('chef.recipes.page_title')}
         </h1>
 
         {/* Main card */}
@@ -286,12 +294,12 @@ export default function ChefRecipes() {
           {/* Top bar: categories title + search + sort */}
           <div className="mb-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <h2 className="text-2xl font-bold" style={{ color: '#3F4756' }}>
-              Είδη
+              {t('chef.recipes.categories_label')}
             </h2>
             <div className="flex flex-1 items-center gap-3 md:justify-end">
               <input
                 type="text"
-                placeholder="Εύρεση συνταγών..."
+                placeholder={t('chef.recipes.search_placeholder')}
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 className="flex-1 rounded-full border border-gray-200 px-4 py-2 text-sm outline-none focus:border-myBlue-200 md:max-w-xs"
@@ -301,9 +309,9 @@ export default function ChefRecipes() {
                 onChange={(e) => setSort(e.target.value)}
                 className="rounded-full border border-gray-200 px-3 py-2 text-sm outline-none"
               >
-                <option>Νεότερα</option>
-                <option>Παλαιότερα</option>
-                <option>Αλφαβητικά</option>
+                <option value="newest">{t('chef.recipes.sort_newest')}</option>
+                <option value="oldest">{t('chef.recipes.sort_oldest')}</option>
+                <option value="alpha">{t('chef.recipes.sort_alpha')}</option>
               </select>
             </div>
           </div>
@@ -335,7 +343,7 @@ export default function ChefRecipes() {
             <div className="flex-1">
               {filtered.length === 0 ? (
                 <p className="text-center text-gray-400 py-12">
-                  Δεν βρέθηκαν συνταγές.
+                  {t('chef.recipes.empty')}
                 </p>
               ) : (
                 <div className="flex flex-col gap-4 md:flex-row">
@@ -352,13 +360,10 @@ export default function ChefRecipes() {
                   {/* Compact list */}
                   {rest.length > 0 && (
                     <div className="flex flex-col gap-3 md:w-1/2">
-                      {/* First compact: dark bg (highlighted) */}
                       {rest.map((recipe, i) => (
                         <div
                           key={recipe.id}
-                          className={`overflow-hidden rounded-2xl ${
-                            i === 0 ? '' : ''
-                          }`}
+                          className="overflow-hidden rounded-2xl"
                           style={i === 0 ? { backgroundColor: '#3F4756' } : {}}
                         >
                           {i === 0 ? (
@@ -380,14 +385,14 @@ export default function ChefRecipes() {
                                 </p>
                                 <div className="mt-1 flex items-center gap-3 text-xs text-gray-300">
                                   <span>
-                                    Άτομα{' '}
+                                    {t('chef.recipes.servings')}{' '}
                                     <span className="font-bold text-white">
                                       {recipe.persons}
                                     </span>
                                   </span>
                                   <span className="text-gray-500">|</span>
                                   <span>
-                                    Χρονική διάρκεια{' '}
+                                    {t('chef.recipes.duration')}{' '}
                                     <span className="font-bold text-white">
                                       {recipe.duration}
                                     </span>
@@ -407,17 +412,17 @@ export default function ChefRecipes() {
                   )}
                 </div>
               )}
-
-              {/* Περισσότερα */}
-              <div className="mt-8 flex justify-center">
-                <button
-                  className="rounded-full px-10 py-3 text-sm font-bold text-white transition hover:opacity-90"
-                  style={{ backgroundColor: '#3F4756' }}
-                >
-                  Περισσότερα
-                </button>
-              </div>
             </div>
+          </div>
+
+          {/* Περισσότερα */}
+          <div className="mt-8 flex justify-center">
+            <button
+              className="rounded-full px-10 py-3 text-sm font-bold text-white transition hover:opacity-90"
+              style={{ backgroundColor: '#3F4756' }}
+            >
+              {t('chef.recipes.more')}
+            </button>
           </div>
         </div>
       </main>
