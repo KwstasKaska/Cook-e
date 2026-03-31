@@ -2,12 +2,17 @@ import { Formik, Form } from 'formik';
 import React, { useState } from 'react';
 import { useForgotPasswordMutation } from '../generated/graphql';
 import InputField from '../components/InputField';
+import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { GetServerSideProps } from 'next';
 
 const ForgotPassword: React.FC<{}> = ({}) => {
   const [complete, setComplete] = useState(false);
   const [forgotPassword] = useForgotPasswordMutation();
+  const { t } = useTranslation('common');
+
   return (
-    <Formik //this is the children of the wrapper
+    <Formik
       initialValues={{ email: '' }}
       onSubmit={async (values) => {
         await forgotPassword({ variables: values });
@@ -16,10 +21,7 @@ const ForgotPassword: React.FC<{}> = ({}) => {
     >
       {({ isSubmitting }) =>
         complete ? (
-          <div>
-            Αν υπάρχει λογαριασμός με αυτό το email, θα ειδοποιηθείτε μέσω
-            μηνύματος στο email σας.{' '}
-          </div>
+          <div>{t('forgot_password.success')}</div>
         ) : (
           <Form>
             <InputField
@@ -34,13 +36,21 @@ const ForgotPassword: React.FC<{}> = ({}) => {
               disabled={isSubmitting}
               className="mt-[3em] cursor-pointer rounded-[0.56rem] bg-myBlue-200 px-[3em] py-[.5em] text-sm font-bold text-white lg:text-2xl"
             >
-              Ξέχασα τον κωδικό μου
+              {t('forgot_password.submit')}
             </button>
           </Form>
         )
       }
     </Formik>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale ?? 'el', ['common'])),
+    },
+  };
 };
 
 export default ForgotPassword;

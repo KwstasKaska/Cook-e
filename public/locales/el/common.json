@@ -3,7 +3,7 @@
     "home": "Αρχική",
     "recipes": "Συνταγές",
     "nutritionists": "Διατροφολόγοι",
-    "logout": "Έξοδος",
+    "logout": "Αποσύνδεση",
     "cart": "Καλάθι",
     "settings": "Ρυθμίσεις",
     "tagline": "A food journey"
@@ -14,7 +14,7 @@
     "chef_recipes": "Οι συνταγές μου",
     "chef_create": "Δημιουργία συνταγής",
     "settings": "Ρυθμίσεις",
-    "logout": "Έξοδος"
+    "logout": "Αποσύνδεση"
   },
   "nutrnav": {
     "nutr_articles": "Άρθρα",
@@ -166,7 +166,7 @@
     "setContent": "Ορισμός περιεχομένου",
     "setContentPlaceholder": "Όρισε το περιεχόμενο για την ημέρα και το είδος γεύματος που επιθυμείς",
     "nutr_settings": "Ρυθμίσεις",
-    "nutr_logout": "Έξοδος"
+    "nutr_logout": "Αποσύνδεση"
   },
   "chef": {
     "landing": {
@@ -295,5 +295,57 @@
     "terms": "Όροι χρήσης",
     "privacy": "Πολιτική απορρήτου",
     "aboutUs": "Ποιοί είμαστε"
+  },
+  "common": {
+    "read_more": "περισσότερα",
+    "read_less": "λιγότερα"
+  },
+  "register": {
+    "title": "Δημιουργία λογαριασμού",
+    "subtitle": "Μια μαγειρική απόλαυση σε περιμένει! Ολοκλήρωσε την εγγραφή σου",
+    "login_button": "Είσοδος",
+    "username_placeholder": "Ονοματεπώνυμο",
+    "email_placeholder": "Email",
+    "password_placeholder": "Κωδικός πρόσβασης",
+    "role_label": "Ιδιότητα:",
+    "role_user": "Χρήστης",
+    "role_nutritionist": "Διατροφολόγος",
+    "submit": "Δημιουργία λογαριασμού"
+  },
+  "login": {
+    "title": "Καλωσήρθες πίσω!",
+    "subtitle": "Έτοιμος για μαγειρική;",
+    "form_title": "Είσοδος",
+    "username_placeholder": "Διεύθυνση email ή όνομα χρήστη",
+    "password_placeholder": "Κωδικός πρόσβασης",
+    "submit": "Είσοδος",
+    "forgot_password": "Ξέχασες τον κωδικό;",
+    "no_account": "Δεν έχεις ακόμα λογαριασμό;",
+    "create_account": "Δημιούργησε έναν"
+  },
+  "forgot_password": {
+    "success": "Αν υπάρχει λογαριασμός με αυτό το email, θα ειδοποιηθείτε μέσω μηνύματος στο email σας.",
+    "submit": "Ξέχασα τον κωδικό μου"
+  },
+  "general_nav": {
+    "home": "Αρχική",
+    "user": "Χρήστης",
+    "chef": "Mάγειρας",
+    "nutritionist": "Διατροφολόγος"
+  },
+  "index": {
+    "login": "Σύνδεση",
+    "register": "Εγγραφή",
+    "logout": "Αποσύνδεση",
+    "hero_title": "Η μαγειρική σου εμπειρία αλλάζει",
+    "hero_subtitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Condimentum id venenatis a vitae.",
+    "cta": "Ξεκίνησε τώρα",
+    "sample_recipe_title": "Μακαρόνια με κιμά",
+    "sample_recipe_difficulty": "Βαθμός δυσκολίας: Εύκολο",
+    "sample_chef_name": "Κωνσταντίνος Κασκαντιρης",
+    "stat_85": "Των ανθρώπων δεν ξέρει πώς να αξιοποιεί τα υλικά και σκεύη τους",
+    "stat_100": "Συνεργάτες μάγειρες",
+    "stat_50": "Εγκεκριμένοι διατροφολόγοι",
+    "stat_1000": "Συνταγές βάσει των επιλογών σου"
   }
 }

@@ -295,5 +295,57 @@
     "terms": "Terms of use",
     "privacy": "Privacy policy",
     "aboutUs": "Who we are"
+  },
+  "common": {
+    "read_more": "Read more",
+    "read_less": "Read less"
+  },
+  "register": {
+    "title": "Create an account",
+    "subtitle": "A culinary delight awaits you! Complete your registration",
+    "login_button": "Login",
+    "username_placeholder": "Full name",
+    "email_placeholder": "Email",
+    "password_placeholder": "Password",
+    "role_label": "Role:",
+    "role_user": "User",
+    "role_nutritionist": "Nutritionist",
+    "submit": "Create an account"
+  },
+  "login": {
+    "title": "Welcome back!",
+    "subtitle": "Ready to cook?",
+    "form_title": "Sign in",
+    "username_placeholder": "Email address or username",
+    "password_placeholder": "Password",
+    "submit": "Sign in",
+    "forgot_password": "Forgot your password?",
+    "no_account": "Don't have an account yet?",
+    "create_account": "Create one"
+  },
+  "forgot_password": {
+    "success": "If an account exists with this email, you will be notified via email.",
+    "submit": "Forgot my password"
+  },
+  "general_nav": {
+    "home": "Home",
+    "user": "User",
+    "chef": "Chef",
+    "nutritionist": "Nutritionist"
+  },
+  "index": {
+    "login": "Sign in",
+    "register": "Register",
+    "logout": "Sign out",
+    "hero_title": "Your cooking experience is changing",
+    "hero_subtitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Condimentum id venenatis a vitae.",
+    "cta": "Get started",
+    "sample_recipe_title": "Spaghetti bolognese",
+    "sample_recipe_difficulty": "Difficulty: Easy",
+    "sample_chef_name": "Konstantinos Kaskantirhs",
+    "stat_85": "Of people don't know how to make use of their ingredients and utensils",
+    "stat_100": "Partner chefs",
+    "stat_50": "Certified nutritionists",
+    "stat_1000": "Recipes based on your choices"
   }
 }
