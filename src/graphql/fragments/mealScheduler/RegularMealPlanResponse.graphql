@@ -1,0 +1,8 @@
+fragment RegularMealPlanResponse on MealPlanResponse {
+  errors {
+    ...RegualarError
+  }
+  mealScheduler {
+    ...RegularMealScheduler
+  }
+}

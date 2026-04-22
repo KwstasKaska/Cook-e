@@ -1,0 +1,27 @@
+mutation CreateRecipe($data: CreateRecipeInput!) {
+  createRecipe(data: $data) {
+    ...RegularRecipeResponse
+  }
+}
+
+mutation UpdateRecipe($data: UpdateRecipeInput!) {
+  updateRecipe(data: $data) {
+    ...RegularRecipeResponse
+  }
+}
+
+mutation DeleteRecipe($id: Int!) {
+  deleteRecipe(id: $id)
+}
+
+mutation RateChef($chefId: Int!, $score: Int!, $comment: String) {
+  rateChef(chefId: $chefId, score: $score, comment: $comment) {
+    ...RegularChefRating
+  }
+}
+
+mutation RateRecipe($recipeId: Int!, $score: Int!, $comment: String) {
+  rateRecipe(recipeId: $recipeId, score: $score, comment: $comment) {
+    ...RegularRecipeRating
+  }
+}

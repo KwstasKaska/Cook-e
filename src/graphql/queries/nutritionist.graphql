@@ -1,0 +1,13 @@
+query Nutritionist($id: Int!) {
+  nutritionist(id: $id) {
+    id
+    bio
+    phone
+    city
+    user {
+      id
+      username
+      email
+    }
+  }
+}

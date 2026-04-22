@@ -1,0 +1,9 @@
+query MyRecipesByCategory(
+  $category: RecipeCategory!
+  $limit: Int = 10
+  $offset: Int = 0
+) {
+  myRecipesByCategory(category: $category, limit: $limit, offset: $offset) {
+    ...RegularRecipe
+  }
+}

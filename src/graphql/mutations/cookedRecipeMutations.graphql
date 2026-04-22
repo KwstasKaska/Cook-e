@@ -1,0 +1,9 @@
+mutation LogCookedRecipe($recipeId: Int!) {
+  logCookedRecipe(recipeId: $recipeId) {
+    ...RegularCookedRecipe
+  }
+}
+
+mutation DeleteCookLog($id: Int!) {
+  deleteCookLog(id: $id)
+}

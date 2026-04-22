@@ -15,6 +15,31 @@ import createUploadLink from 'apollo-upload-client/createUploadLink.mjs';
 
 let apolloClient: ApolloClient<NormalizedCacheObject> | null = null;
 
+// For true "load more" / infinite scroll — appends incoming pages to existing.
+const appendPaginatedField = (): {
+  keyArgs: false;
+  merge(existing: any[] | undefined, incoming: any[]): any[];
+} => ({
+  keyArgs: false,
+  merge(existing = [], incoming) {
+    return [...existing, ...incoming];
+  },
+});
+
+// For filtered / re-fetchable lists — always replaces, never appends.
+// keyArgs includes all variables so each unique combination gets its own slot.
+const replaceField = (
+  keyArgs: string[] = [],
+): {
+  keyArgs: string[];
+  merge(_existing: any, incoming: any): any;
+} => ({
+  keyArgs,
+  merge(_existing, incoming) {
+    return incoming;
+  },
+});
+
 const createApolloClient = (headers: IncomingHttpHeaders | null = null) => {
   const enhancedFetch = (url: RequestInfo, init: RequestInit) => {
     return fetch(url, {
@@ -41,31 +66,62 @@ const createApolloClient = (headers: IncomingHttpHeaders | null = null) => {
       typePolicies: {
         Query: {
           fields: {
-            // posts: {
-            //   // Don't cache separate results based on
-            //   // any of this field's arguments.
-            //   keyArgs: false,
-            //   // Concatenate the incoming list items with
-            //   // the existing list items.
-            //   merge(
-            //     existing: PaginatedPosts | undefined,
-            //     incoming: PaginatedPosts
-            //   ): PaginatedPosts {
-            //     console.log(existing, incoming);
-            //     return {
-            //       ...incoming,
-            //       posts: [...(existing?.posts || []), ...incoming?.posts],
-            //     };
-            //   },
-            // },
+            // ── Recipes (filtered — replace) ──────────────────────────
+            myRecipes: replaceField(['limit', 'offset']),
+            myRecipesByCategory: replaceField(['category', 'limit', 'offset']),
+            recipes: replaceField(['limit', 'offset']),
+            recipesByCategory: replaceField(['category', 'limit', 'offset']),
+
+            // ── Favorites (filtered — replace) ────────────────────────
+            myFavorites: replaceField(['limit', 'offset']),
+
+            // ── Articles (filtered — replace) ─────────────────────────
+            myArticles: replaceField(['limit', 'offset']),
+            articles: replaceField(['limit', 'offset']),
+            chefArticles: replaceField(['limit', 'offset']),
+            articlesByNutritionist: replaceField([
+              'nutritionistId',
+              'limit',
+              'offset',
+            ]),
+            articlesByChef: replaceField(['chefId', 'limit', 'offset']),
+
+            // ── Ratings (per-entity — replace) ────────────────────────
+            chefRatings: replaceField(['chefId', 'limit', 'offset']),
+            recipeRatings: replaceField(['recipeId', 'limit', 'offset']),
+
+            // ── Cooked recipes (append — grows over time) ─────────────
+            myCookedRecipes: appendPaginatedField(),
+
+            // ── Messaging (append — load older messages) ──────────────
+            myConversations: appendPaginatedField(),
+
+            // ── Appointments (date-filtered — replace) ────────────────
+            getMyAppointments: replaceField(['limit', 'offset']),
+            getAppointmentRequestsForNutritionist: replaceField([
+              'limit',
+              'offset',
+            ]),
+
+            // ── Meal plans (filtered — replace) ───────────────────────
+            getNutritionistMealPlans: replaceField([
+              'userId',
+              'limit',
+              'offset',
+            ]),
+
+            // ── Directory lists (search/filter — replace) ─────────────
+            chefs: replaceField(['limit', 'offset']),
+            nutritionists: replaceField(['limit', 'offset']),
+
+            // ── Cart (single fetch — replace) ─────────────────────────
+            myCart: replaceField([]),
           },
         },
       },
     }),
   });
 };
-
-// type InitialState = NormalizedCacheObject | undefined;
 
 interface IInitializeApollo {
   initialState?: NormalizedCacheObject | null;
@@ -78,30 +134,22 @@ export const initializeApollo = ({
 }: IInitializeApollo = {}) => {
   const _apolloClient = apolloClient ?? createApolloClient(headers);
 
-  // If your page has Next.js data fetching methods that use Apollo Client, the initial state
-  // get hydrated here
   if (initialState) {
-    // Get existing cache, loaded during client side data fetching
     const existingCache = _apolloClient.extract();
 
-    // Merge the existing cache into data passed from getStaticProps/getServerSideProps
     const data = merge(initialState, existingCache, {
-      // combine arrays using object equality (like in sets)
       arrayMerge: (destinationArray, sourceArray) => [
         ...sourceArray,
         ...destinationArray.filter((d) =>
-          sourceArray.every((s) => !isEqual(d, s))
+          sourceArray.every((s) => !isEqual(d, s)),
         ),
       ],
     });
 
-    // Restore the cache with the merged data
     _apolloClient.cache.restore(data);
   }
 
-  // For SSG and SSR always create a new Apollo Client
   if (typeof window === 'undefined') return _apolloClient;
-  // Create the Apollo Client once in the client
   if (!apolloClient) apolloClient = _apolloClient;
 
   return _apolloClient;
@@ -109,7 +157,7 @@ export const initializeApollo = ({
 
 export const addApolloState = (
   client: ApolloClient<NormalizedCacheObject>,
-  pageProps: AppProps['pageProps']
+  pageProps: AppProps['pageProps'],
 ) => {
   if (pageProps?.props) {
     pageProps.props[APOLLO_STATE_PROP_NAME] = client.cache.extract();
@@ -122,7 +170,7 @@ export function useApollo(pageProps: AppProps['pageProps']) {
   const state = pageProps[APOLLO_STATE_PROP_NAME];
   const store = useMemo(
     () => initializeApollo({ initialState: state }),
-    [state]
+    [state],
   );
   return store;
 }

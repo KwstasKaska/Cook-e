@@ -6,19 +6,11 @@ const GeneralNav: React.FC = () => {
 
   return (
     <nav className="text-black">
-      <ul className=" grid  grid-flow-col justify-evenly text-9 font-bold     md:text-sm xl:text-xl">
-        <li className="">
-          <a href="#">{t('general_nav.home')}</a>
-        </li>
-        <li>
-          <a href="#">{t('general_nav.user')}</a>
-        </li>
-        <li>
-          <a href="#">{t('general_nav.chef')}</a>
-        </li>
-        <li>
-          <a href="#">{t('general_nav.nutritionist')}</a>
-        </li>
+      <ul className="grid grid-flow-col justify-evenly text-9 font-bold md:text-sm xl:text-xl">
+        <li>{t('general_nav.home')}</li>
+        <li>{t('general_nav.user')}</li>
+        <li>{t('general_nav.chef')}</li>
+        <li>{t('general_nav.nutritionist')}</li>
       </ul>
     </nav>
   );

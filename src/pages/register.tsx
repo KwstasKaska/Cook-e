@@ -2,7 +2,12 @@ import { NextPage } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import logo from '/public/images/6.png';
-import { MeDocument, MeQuery, useRegisterMutation } from '../generated/graphql';
+import {
+  MeDocument,
+  MeQuery,
+  useRegisterMutation,
+  useMeQuery,
+} from '../generated/graphql';
 import { useRouter } from 'next/router';
 import { toErrorMap } from '../utils/toErrorMap';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
@@ -10,6 +15,7 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { GetServerSideProps } from 'next';
 import LanguageSwitcher from '../components/Helper/LanguageSwitcher';
+import { useEffect } from 'react';
 
 interface MyFormValues {
   username: string;
@@ -18,10 +24,19 @@ interface MyFormValues {
   role: string;
 }
 
-const Register: NextPage = ({}) => {
+const Register: NextPage = () => {
   const router = useRouter();
   const [register] = useRegisterMutation();
   const { t } = useTranslation('common');
+  const { data, loading } = useMeQuery();
+
+  useEffect(() => {
+    if (!loading && data?.me) {
+      router.replace(`/${data.me.role.toLowerCase()}`);
+    }
+  }, [data, loading]);
+
+  if (loading || data?.me) return null;
 
   const initialValues: MyFormValues = {
     username: '',
@@ -62,26 +77,30 @@ const Register: NextPage = ({}) => {
           <Formik
             initialValues={initialValues}
             onSubmit={async (values: MyFormValues, { setErrors }) => {
-              const response = await register({
-                variables: {
-                  options: values,
-                },
-                update: (cache, { data }) => {
-                  cache.writeQuery<MeQuery>({
-                    query: MeDocument,
-                    data: {
-                      __typename: 'Query',
-                      me: data?.register.user,
-                    },
-                  });
-                },
-              });
-              if (response.data?.register.errors) {
-                setErrors(toErrorMap(response.data.register.errors));
-              } else {
-                const userRouter =
-                  response.data?.register.user?.role.toLowerCase();
-                router.push(`/${userRouter}`);
+              try {
+                const response = await register({
+                  variables: { options: values },
+                  update: (cache, { data }) => {
+                    cache.writeQuery<MeQuery>({
+                      query: MeDocument,
+                      data: {
+                        __typename: 'Query',
+                        me: data?.register.user,
+                      },
+                    });
+                  },
+                });
+                if (response.data?.register.errors) {
+                  setErrors(toErrorMap(response.data.register.errors));
+                } else if (response.data?.register.user) {
+                  router.push(
+                    `/${response.data.register.user.role.toLowerCase()}`,
+                  );
+                } else {
+                  setErrors({ username: t('change_password.server_error') });
+                }
+              } catch {
+                setErrors({ username: t('change_password.server_error') });
               }
             }}
           >

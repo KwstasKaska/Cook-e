@@ -1,0 +1,21 @@
+mutation CreateMealScheduler(
+  $userId: Float!
+  $day: DayOfWeek!
+  $mealType: MealType!
+  $comment: String!
+) {
+  createMealScheduler(
+    userId: $userId
+    day: $day
+    mealType: $mealType
+    comment: $comment
+  ) {
+    ...RegularMealPlanResponse
+  }
+}
+
+mutation DeleteMealScheduler($id: Int!) {
+  deleteMealScheduler(id: $id) {
+    ...RegularMealPlanResponse
+  }
+}

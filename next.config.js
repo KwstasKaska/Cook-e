@@ -4,4 +4,21 @@ const { i18n } = require('./next-i18next.config');
 module.exports = {
   reactStrictMode: true,
   i18n,
+  images: {
+    remotePatterns: [
+      {
+        // Local development
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '4000',
+        pathname: '/images/**',
+      },
+      {
+        // Production backend on Render (update with your real subdomain)
+        protocol: 'https',
+        hostname: '*.onrender.com',
+        pathname: '/images/**',
+      },
+    ],
+  },
 };

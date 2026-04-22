@@ -8,6 +8,15 @@
     "settings": "Ρυθμίσεις",
     "tagline": "A food journey"
   },
+  "recipe_category": {
+    "MEAT": "Κρέας",
+    "LEGUMES": "Όσπρια",
+    "SEAFOOD": "Θαλασσινά",
+    "SALADS": "Σαλάτες",
+    "PASTA": "Ζυμαρικά",
+    "APPETIZERS": "Ορεκτικά",
+    "VEGAN": "Vegan"
+  },
   "chefnav": {
     "chef_home": "Αρχική",
     "chef_profile": "Προφίλ",
@@ -36,7 +45,8 @@
     "weeklyRecipesDesc2": "Μάλλον ναι, αφού πολλά απο αυτά τα χρησιμοποίησες το τελευταίο διάστημα.",
     "weeklyRecipesDesc3": "Δοκίμασε τες και πες μας την γνώμη σου!",
     "startCooking": "Ξεκίνα να μαγειρεύεις!",
-    "minutes": "λεπτά"
+    "minutes": "λεπτά",
+    "noCookedYet": "Δεν έχεις μαγειρέψει ακόμα καμία συνταγή."
   },
   "recipes": {
     "title": "Συνταγές",
@@ -52,7 +62,20 @@
     "by": "Από:",
     "next": "Επόμενο",
     "search": "Αναζήτηση",
-    "selectedIngredients": "υλικά επιλεγμένα"
+    "selectedIngredients": "υλικά επιλεγμένα",
+    "noFavourites": "Δεν έχεις αποθηκεύσει συνταγές ακόμα.",
+    "noResults": "Δεν βρέθηκαν συνταγές με τα υλικά σου.",
+    "missingIngredients": "υλικά λείπουν",
+    "rateTitle": "Αξιολόγησε τη συνταγή",
+    "existingRating": "Η αξιολόγησή σου",
+    "ratingSuccess": "Η αξιολόγησή σου αποθηκεύτηκε!",
+    "ratingDeleted": "Η αξιολόγηση διαγράφηκε.",
+    "ratingScoreError": "Επίλεξε από 1 έως 5 αστέρια.",
+    "submitRating": "Υποβολή αξιολόγησης",
+    "ratingCommentPlaceholder": "Πείτε μας τη γνώμη σας...",
+    "errorGeneric": "Κάτι πήγε λάθος. Δοκίμαστε ξανά.",
+    "minIngredientsError": "Παρακαλώ επιλέξτε τουλάχιστον 3 υλικά",
+    "rateChefTitle": "Αξιολόγηστε τον μάγειρα"
   },
   "ingredientCategories": {
     "title": "Συστατικά",
@@ -82,7 +105,10 @@
     "addIngredient": "Προσθήκη υλικού...",
     "items": "αντικείμενα",
     "clearSelected": "Καθαρισμός επιλεγμένων",
-    "emptyCart": "Το καλάθι σου είναι άδειο."
+    "emptyCart": "Το καλάθι σου είναι άδειο.",
+    "updateError": "Σφάλμα κατά την ενημέρωση.",
+    "removeError": "Σφάλμα κατά την αφαίρεση.",
+    "addError": "Σφάλμα κατά την προσθήκη."
   },
   "nutritionists": {
     "searchTitle": "Αναζητήστε τον διατροφολόγο σας:",
@@ -91,7 +117,11 @@
     "showAll": "Όλοι",
     "back": "Πίσω",
     "availableTimes": "Διαθέσιμες ημερομηνίες και ώρες",
-    "bookAppointment": "Προγραμματισμός επίσκεψης"
+    "bookAppointment": "Προγραμματισμός επίσκεψης",
+    "noResults": "Δεν βρέθηκαν διατροφολόγοι.",
+    "noSlots": "Δεν υπάρχουν διαθέσιμες ώρες.",
+    "bookError": "Κάτι πήγε λάθος. Δοκιμάστε ξανά.",
+    "bookSuccess": "Η επίσκεψη προγραμματίστηκε επιτυχώς!"
   },
   "settings": {
     "title": "Ρυθμίσεις",
@@ -166,7 +196,20 @@
     "setContent": "Ορισμός περιεχομένου",
     "setContentPlaceholder": "Όρισε το περιεχόμενο για την ημέρα και το είδος γεύματος που επιθυμείς",
     "nutr_settings": "Ρυθμίσεις",
-    "nutr_logout": "Αποσύνδεση"
+    "nutr_logout": "Αποσύνδεση",
+    "newArticle": "Νέο άρθρο",
+    "noArticlesYet": "Δεν έχετε δημοσιεύσει άρθρα ακόμα.",
+    "create_article": {
+      "label_title": "Τίτλος",
+      "label_text": "Περιεχόμενο",
+      "placeholder_title": "Γράψτε τον τίτλο...",
+      "placeholder_text": "Γράψτε το περιεχόμενο...",
+      "upload_image": "Επιλογή εικόνας",
+      "submit": "Δημοσίευση",
+      "error_title": "Ο τίτλος είναι υποχρεωτικός.",
+      "error_text": "Το περιεχόμενο είναι υποχρεωτικό.",
+      "error_image": "Προσθέστε μια εικόνα."
+    }
   },
   "chef": {
     "landing": {
@@ -174,7 +217,8 @@
       "tagline_bold": "αυθεντία των συνταγών",
       "user_rating": "Αξιολόγηση χρηστών",
       "user_reviews": "αξιολογήσεις χρηστών",
-      "more": "Περισσότερα"
+      "more": "Περισσότερα",
+      "no_recipes": "Δεν έχετε δημιουργήσει ακόμα συνταγές."
     },
     "recipes": {
       "page_title": "Οι συνταγές μου",
@@ -222,23 +266,55 @@
       "cancel": "Ακύρωση",
       "delete": "Διαγραφή συνταγής",
       "add_utensil": "Προσθήκη σκεύους",
-      "time_label": "χρόνος:"
+      "time_label": "χρόνος:",
+      "no_image": "Δεν υπάρχει φωτογραφία",
+      "not_found": "Η συνταγή δεν βρέθηκε.",
+      "no_ratings_yet": "Δεν υπάρχουν αξιολογήσεις ακόμα",
+      "ingredients_edit_note": "Για να αλλάξετε υλικό, διαγράψτε τη γραμμή. Τα νέα υλικά προστίθενται από τη δημιουργία συνταγής.",
+      "placeholder_description": "Περιγραφή συνταγής...",
+      "placeholder_chef_comment": "Σχόλιο ή συμβουλή...",
+      "label_title": "Τίτλος",
+      "macros": "Διατροφικά Στοιχεία",
+      "confirm_delete": "Είστε σίγουρος ότι θέλετε να διαγράψετε αυτή τη συνταγή;",
+      "error_server": "Κάτι πήγε λάθος. Δοκιμάστε ξανά."
     },
+
     "profile": {
       "page_title": "Το προφίλ μου",
       "contact": "Επικοινωνία",
       "user_rating": "Αξιολόγηση χρηστών",
       "user_reviews": "αξιολογήσεις χρηστών",
+      "no_ratings": "Δεν υπάρχουν αξιολογήσεις ακόμα.",
+      "bio_placeholder": "Δεν έχει οριστεί βιογραφικό ακόμα. Μπορείτε να το προσθέσετε από τις Ρυθμίσεις.",
       "recipes": "Συνταγές",
       "followers": "Ακόλουθοι",
       "articles": "Άρθρα",
-      "more": "Περισσότερα"
+      "rating": "Βαθμολογία",
+      "more": "Περισσότερα",
+      "no_articles": "Δεν έχετε γράψει άρθρα ακόμα.",
+      "create_article": "Νέο άρθρο",
+      "article_image_required": "Παρακαλώ επιλέξτε μια εικόνα για το άρθρο.",
+      "article_image_label": "Εικόνα άρθρου",
+      "article_title": "Τίτλος",
+      "article_title_placeholder": "π.χ. Το μυστικό για τέλεια μακαρόνια",
+      "article_text": "Περιεχόμενο",
+      "article_text_placeholder": "Γράψτε το άρθρο σας...",
+      "article_submit": "Δημοσίευση άρθρου"
     },
     "rating": {
       "title": "Αξιολόγηση χρηστών",
       "reviews": "αξιολογήσεις χρηστών",
       "stars_plural": "αστέρια",
       "stars_singular": "αστέρι"
+    },
+    "article": {
+      "not_found": "Το άρθρο δεν βρέθηκε.",
+      "delete_confirm": "Διαγραφή άρθρου",
+      "delete_confirm_text": "Είστε σίγουροι ότι θέλετε να διαγράψετε αυτό το άρθρο; Η ενέργεια δεν μπορεί να αναιρεθεί.",
+      "title_label": "Τίτλος",
+      "text_label": "Περιεχόμενο",
+      "image_label": "Εικόνα άρθρου",
+      "validation_required": "Ο τίτλος και το περιεχόμενο είναι υποχρεωτικά."
     },
     "create_recipe": {
       "page_title": "Δημιουργία συνταγής",
@@ -281,10 +357,33 @@
       "execution_label": "Εκτέλεση",
       "step_placeholder": "περιγράψτε το βήμα...",
       "add_step": "Προσθήκη βήματος",
-      "preview_btn": "Προεπισκόπηση",
+      "preview_btn": "Προηγούμενο",
       "next_btn": "Επόμενο",
-      "finish_btn": "Ολοκλήρωση"
+      "finish_btn": "Ολοκλήρωση",
+      "search_ingredients": "Αναζήτηση υλικών...",
+      "select_ingredient": "Επιλέξτε υλικό",
+      "unit_label": "Μονάδα",
+      "utensils_label": "Εργαλεία Κουζίνας",
+      "saving": "Αποθήκευση...",
+      "error_title": "Εισάγετε τίτλο για την συνταγή σας.",
+      "error_difficulty": "Επιλέξτε επίπεδο δυσκολίας.",
+      "error_prep_time": "Εισάγετε έγκυρο χρόνο προετοιμασίας.",
+      "error_cook_time": "Εισάγετε έγκυρο χρόνο μαγειρέματος.",
+      "error_ingredients": "Προσθέστε τουλάχιστον ένα υλικό.",
+      "error_steps": "Προσθέστε τουλάχιστον ένα βήμα.",
+      "error_server": "Κάτι πήγε λάθος. Δοκιμάστε ξανά.",
+      "macros_label": "Διατροφικά στοιχεία (προαιρετικά)",
+      "macros_hint": "ανά μερίδα",
+      "calories": "Θερμίδες",
+      "protein": "Πρωτεΐνη",
+      "carbs": "Υδατάνθρακες",
+      "fat": "Λίπη"
     }
+  },
+  "change_password": {
+    "token_error": "Αυτός ο σύνδεσμος έχει λήξει.",
+    "token_error_link": "Ζητήστε νέο",
+    "server_error": "Κάτι πήγε λάθος. Δοκιμάστε ξανά."
   },
   "footer": {
     "socialMedia": "Βρείτε μας στα κοινωνικά δίκτυα",
@@ -298,7 +397,15 @@
   },
   "common": {
     "read_more": "περισσότερα",
-    "read_less": "λιγότερα"
+    "read_less": "λιγότερα",
+    "loading": "Φόρτωση...",
+    "no_results": "Δεν βρέθηκαν αποτελέσματα.",
+    "back": "Πίσω",
+    "cancel": "Ακύρωση",
+    "delete": "Διαγραφή",
+    "edit": "Επεξεργασία",
+    "save": "Αποθήκευση",
+    "saving": "Αποθήκευση..."
   },
   "register": {
     "title": "Δημιουργία λογαριασμού",

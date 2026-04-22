@@ -1,0 +1,16 @@
+fragment RegularUserFavorite on UserFavorite {
+  id
+  userId
+  recipeId
+  savedAt
+  recipe {
+    id
+    title_el
+    title_en
+    recipeImage
+    category
+    prepTime
+    cookTime
+    difficulty
+  }
+}

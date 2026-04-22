@@ -1,0 +1,7 @@
+fragment RegularMealScheduler on MealScheduler {
+  id
+  day
+  mealType
+  comment_el
+  comment_en
+}

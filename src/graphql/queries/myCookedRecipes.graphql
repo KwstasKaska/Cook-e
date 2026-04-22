@@ -1,0 +1,5 @@
+query MyCookedRecipes($limit: Int = 3, $offset: Int = 0) {
+  myCookedRecipes(limit: $limit, offset: $offset) {
+    ...RegularCookedRecipe
+  }
+}

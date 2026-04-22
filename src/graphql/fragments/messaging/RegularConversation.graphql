@@ -1,0 +1,7 @@
+fragment RegularConversation on Conversation {
+  id
+  participant1Id
+  participant2Id
+  createdAt
+  updatedAt
+}

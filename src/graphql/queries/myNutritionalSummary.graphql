@@ -1,0 +1,9 @@
+query MyNutritionalSummary {
+  myNutritionalSummary {
+    cookCount
+    totalCalories
+    totalProtein
+    totalCarbs
+    totalFat
+  }
+}

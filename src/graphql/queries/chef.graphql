@@ -1,0 +1,18 @@
+query Chef($id: Int!) {
+  chef(id: $id) {
+    id
+    bio
+    user {
+      id
+      username
+      image
+    }
+    recipes {
+      id
+      title_el
+      title_en
+      recipeImage
+      difficulty
+    }
+  }
+}

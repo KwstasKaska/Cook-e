@@ -1,0 +1,29 @@
+query GetMyAppointments($date: String, $limit: Int = 20, $offset: Int = 0) {
+  getMyAppointments(date: $date, limit: $limit, offset: $offset) {
+    ...RegularAppointment
+  }
+}
+
+query AvailableSlots($nutritionistId: Int!) {
+  availableSlots(nutritionistId: $nutritionistId) {
+    ...RegularAppointment
+  }
+}
+
+query GetAppointmentRequestsForNutritionist(
+  $limit: Int = 20
+  $offset: Int = 0
+) {
+  getAppointmentRequestsForNutritionist(limit: $limit, offset: $offset) {
+    ...RegularAppointmentRequest
+    slot {
+      id
+      date
+      time
+    }
+    client {
+      id
+      username
+    }
+  }
+}

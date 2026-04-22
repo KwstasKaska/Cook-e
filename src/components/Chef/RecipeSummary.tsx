@@ -1,5 +1,4 @@
 import React from 'react';
-import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 
@@ -44,11 +43,10 @@ export default function RecipeSummaryModal({ recipe, onClose }: Props) {
       >
         {/* Hero image + title overlay */}
         <div className="relative h-56 w-full overflow-hidden">
-          <Image
+          <img
             src={recipe.image}
             alt={recipe.title}
-            fill
-            className="object-cover"
+            className="h-full w-full object-cover"
           />
           {/* Title overlay — bottom-left */}
           <div className="absolute bottom-0 left-0 p-4">
@@ -66,7 +64,7 @@ export default function RecipeSummaryModal({ recipe, onClose }: Props) {
 
         {/* Body */}
         <div className="p-6">
-          {/* Περιγραφή label + text */}
+          {/* Description */}
           <h3 className="mb-2 text-lg font-black" style={{ color: '#3F4756' }}>
             {t('chef.recipe_modal.description')}
           </h3>
@@ -121,23 +119,28 @@ export default function RecipeSummaryModal({ recipe, onClose }: Props) {
             </div>
           </div>
 
-          {/* Tags */}
-          <div className="mb-6">
-            <p className="mb-2 text-sm font-bold" style={{ color: '#3F4756' }}>
-              {t('chef.recipe_modal.tags')}
-            </p>
-            <div className="flex flex-wrap gap-2">
-              {recipe.tags.map((tag, i) => (
-                <span
-                  key={i}
-                  className="rounded-full border px-3 py-1 text-xs"
-                  style={{ borderColor: '#3F4756', color: '#3F4756' }}
-                >
-                  {tag}
-                </span>
-              ))}
+          {/* Tags — only rendered when non-empty */}
+          {recipe.tags.length > 0 && (
+            <div className="mb-6">
+              <p
+                className="mb-2 text-sm font-bold"
+                style={{ color: '#3F4756' }}
+              >
+                {t('chef.recipe_modal.tags')}
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {recipe.tags.map((tag, i) => (
+                  <span
+                    key={i}
+                    className="rounded-full border px-3 py-1 text-xs"
+                    style={{ borderColor: '#3F4756', color: '#3F4756' }}
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* CTA button */}
           <button

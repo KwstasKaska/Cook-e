@@ -1,0 +1,9 @@
+mutation RateRecipe($recipeId: Int!, $score: Int!, $comment: String) {
+  rateRecipe(recipeId: $recipeId, score: $score, comment: $comment) {
+    ...RegularRecipeRating
+  }
+}
+
+mutation DeleteRecipeRating($recipeId: Int!) {
+  deleteRecipeRating(recipeId: $recipeId)
+}

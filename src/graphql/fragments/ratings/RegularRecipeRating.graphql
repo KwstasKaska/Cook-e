@@ -1,0 +1,13 @@
+fragment RegularRecipeRating on RecipeRating {
+  id
+  recipeId
+  userId
+  score
+  comment
+  createdAt
+  user {
+    id
+    username
+    image
+  }
+}

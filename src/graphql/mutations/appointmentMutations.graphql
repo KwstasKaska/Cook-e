@@ -1,0 +1,28 @@
+mutation CreateAppointment($data: AddAppointmentInput!) {
+  createAppointment(data: $data) {
+    ...RegularAppointmentResponse
+  }
+}
+
+mutation UpdateAppointment($data: UpdateSlotInput!) {
+  updateAppointment(data: $data) {
+    ...RegularAppointmentResponse
+  }
+}
+
+mutation DeleteAppointment($slotId: Int!) {
+  deleteAppointment(slotId: $slotId)
+}
+
+mutation RequestAppointment($data: AppointmentRequestInput!) {
+  requestAppointment(data: $data) {
+    ...RegularAppointmentRequestResponse
+  }
+}
+
+mutation RespondToAppointmentRequest(
+  $requestId: Float!
+  $status: AppointmentStatus!
+) {
+  respondToAppointmentRequest(requestId: $requestId, status: $status)
+}

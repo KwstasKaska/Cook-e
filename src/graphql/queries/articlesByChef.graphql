@@ -1,0 +1,5 @@
+query ArticlesByChef($chefId: Int!, $limit: Int = 10, $offset: Int = 0) {
+  articlesByChef(chefId: $chefId, limit: $limit, offset: $offset) {
+    ...RegularArticle
+  }
+}

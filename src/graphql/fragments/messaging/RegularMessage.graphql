@@ -1,0 +1,7 @@
+fragment RegularMessage on Message {
+  id
+  conversationId
+  senderId
+  body
+  createdAt
+}

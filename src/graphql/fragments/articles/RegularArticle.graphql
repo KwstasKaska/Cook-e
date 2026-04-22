@@ -1,7 +1,9 @@
 fragment RegularArticle on Article {
   id
-  title
-  text
+  title_el
+  title_en
+  text_el
+  text_en
   image
   creatorId
   createdAt

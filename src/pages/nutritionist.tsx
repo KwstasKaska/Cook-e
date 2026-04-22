@@ -8,46 +8,31 @@ import Image from 'next/image';
 import { DateContext } from '../components/Context';
 import ScrollToTopButton from '../components/Helper/ScrollToTopButton';
 import NutrScheduler from '../components/Nutritionist/NutrScheduler';
-import { MeDocument, MeQuery } from '../generated/graphql';
 import profile from '/public/images/myphoto.jpg';
 import { GetServerSidePropsContext, NextPage } from 'next';
-import { initializeApollo, addApolloState } from '../lib/apolloClient';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
-
-interface NutritionistProps {
-  meData?: MeQuery;
-}
+import { useMeQuery } from '../generated/graphql';
+import useIsNutritionist from '../utils/useIsNutr';
 
 export const getServerSideProps = async (
   context: GetServerSidePropsContext,
 ) => {
-  const client = initializeApollo({ headers: context.req.headers });
-  const { data: meData } = await client.query({ query: MeDocument });
-
-  if (!meData?.me) {
-    return {
-      redirect: {
-        destination: '/login?next=' + encodeURIComponent(context.req.url ?? ''),
-        permanent: false,
-      },
-    };
-  }
-  if (meData.me.role !== 'NUTRITIONIST') {
-    return { redirect: { destination: '/', permanent: false } };
-  }
-
-  return addApolloState(client, {
+  return {
     props: {
-      meData,
       ...(await serverSideTranslations(context.locale!, ['common'])),
     },
-  });
+  };
 };
 
-const Nutritionist: NextPage<NutritionistProps> = ({ meData }) => {
+const Nutritionist: NextPage = () => {
   const { t } = useTranslation('common');
   const [selectedDate, setSelectedDate] = useState<string>('');
+
+  const { loading, isAuthorized } = useIsNutritionist();
+  const { data: meData } = useMeQuery();
+
+  if (loading || !isAuthorized) return null;
 
   return (
     <React.Fragment>

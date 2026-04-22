@@ -4,7 +4,12 @@ import chef from '/public/images/chef.png';
 import logo from '/public/images/5.png';
 import Link from 'next/link';
 import { useRef, useEffect } from 'react';
-import { MeDocument, MeQuery, useLoginMutation } from '../generated/graphql';
+import {
+  MeDocument,
+  MeQuery,
+  useLoginMutation,
+  useMeQuery,
+} from '../generated/graphql';
 import { Form, Formik } from 'formik';
 import { toErrorMap } from '../utils/toErrorMap';
 import { useRouter } from 'next/router';
@@ -19,17 +24,19 @@ interface MyLoginFormValues {
   password: string;
 }
 
-const Login: NextPage = ({}) => {
+const Login: NextPage = () => {
   const div1Ref = useRef<HTMLDivElement>(null);
   const div2Ref = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const [login] = useLoginMutation();
   const { t } = useTranslation('common');
+  const { data, loading } = useMeQuery();
 
-  const initialValues: MyLoginFormValues = {
-    usernameOrEmail: '',
-    password: '',
-  };
+  useEffect(() => {
+    if (!loading && data?.me) {
+      router.replace(`/${data.me.role.toLowerCase()}`);
+    }
+  }, [data, loading]);
 
   useEffect(() => {
     const div1Height = div1Ref.current?.offsetHeight;
@@ -37,6 +44,13 @@ const Login: NextPage = ({}) => {
       div2Ref.current!.style.height = `${div1Height}px`;
     }
   }, []);
+
+  if (loading || data?.me) return null;
+
+  const initialValues: MyLoginFormValues = {
+    usernameOrEmail: '',
+    password: '',
+  };
 
   return (
     <main className="flex min-h-screen w-full items-center justify-center bg-myBeige-100 text-white md:flex-row md:items-stretch md:justify-items-stretch">
@@ -73,7 +87,6 @@ const Login: NextPage = ({}) => {
             className="absolute h-auto max-h-[55px] w-auto max-w-[140px] justify-self-start md:hidden"
             priority
           />
-          {/* Language switcher — top right of the card */}
           <LanguageSwitcher />
 
           <h1 className="mt-[2.5em] font-exo text-xl font-bold md:mt-0 md:text-3xl lg:text-4xl">
@@ -88,28 +101,34 @@ const Login: NextPage = ({}) => {
             initialValues={initialValues}
             onSubmit={async (values: MyLoginFormValues, { setErrors }) => {
               const { usernameOrEmail, password } = values;
-              const response = await login({
-                variables: { usernameOrEmail, password },
-                update: (cache, { data }) => {
-                  cache.writeQuery<MeQuery>({
-                    query: MeDocument,
-                    data: {
-                      __typename: 'Query',
-                      me: data?.login.user,
-                    },
-                  });
-                },
-              });
-              if (response.data?.login.errors) {
-                setErrors(toErrorMap(response.data.login.errors));
-              } else if (response.data?.login.user) {
-                if (typeof router.query.next === 'string') {
-                  router.push(router.query.next);
-                } else {
-                  const userRouter =
-                    response.data.login.user.role.toLowerCase();
-                  router.push(`/${userRouter}`);
+              try {
+                const response = await login({
+                  variables: { usernameOrEmail, password },
+                  update: (cache, { data }) => {
+                    cache.writeQuery<MeQuery>({
+                      query: MeDocument,
+                      data: {
+                        __typename: 'Query',
+                        me: data?.login.user,
+                      },
+                    });
+                  },
+                });
+                if (response.data?.login.errors) {
+                  setErrors(toErrorMap(response.data.login.errors));
+                } else if (response.data?.login.user) {
+                  if (typeof router.query.next === 'string') {
+                    router.push(router.query.next);
+                  } else {
+                    router.push(
+                      `/${response.data.login.user.role.toLowerCase()}`,
+                    );
+                  }
                 }
+              } catch {
+                setErrors({
+                  usernameOrEmail: t('change_password.server_error'),
+                });
               }
             }}
           >

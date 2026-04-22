@@ -1,0 +1,13 @@
+fragment RegularChefRating on ChefRating {
+  id
+  chefId
+  userId
+  score
+  comment
+  createdAt
+  user {
+    id
+    username
+    image
+  }
+}

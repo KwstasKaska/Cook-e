@@ -15,7 +15,7 @@ export default function LanguageSwitcher() {
       onClick={toggleLanguage}
       className="text-white bg-myGrey-200 text-sm font-semibold  transition-colors duration-150 rounded-3xl border-white border-2 p-2 hover:bg-white hover:text-black hover:border-black"
     >
-      {router.locale === 'el' ? 'Change to english' : 'Αλλαγή σε ελληνικά'}
+      {router.locale === 'el' ? 'English' : 'Ελληνικά'}
     </button>
   );
 }

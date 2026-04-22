@@ -1,0 +1,15 @@
+query RecipeAverageRating($recipeId: Int!) {
+  recipeAverageRating(recipeId: $recipeId)
+}
+
+query MyRecipeRating($recipeId: Int!) {
+  myRecipeRating(recipeId: $recipeId) {
+    ...RegularRecipeRating
+  }
+}
+
+query RecipeRatings($recipeId: Int!, $limit: Int = 10, $offset: Int = 0) {
+  recipeRatings(recipeId: $recipeId, limit: $limit, offset: $offset) {
+    ...RegularRecipeRating
+  }
+}

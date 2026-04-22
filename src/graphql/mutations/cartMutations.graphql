@@ -1,0 +1,40 @@
+mutation AddToCart(
+  $ingredientId: Int!
+  $quantity: String
+  $unit: String
+  $note: String
+) {
+  addToCart(
+    ingredientId: $ingredientId
+    quantity: $quantity
+    unit: $unit
+    note: $note
+  ) {
+    ...RegularCartItem
+  }
+}
+
+mutation AddManyToCart($ingredientIds: [Int!]!) {
+  addManyToCart(ingredientIds: $ingredientIds) {
+    ...RegularCartItem
+  }
+}
+
+mutation UpdateCartItem(
+  $id: Int!
+  $quantity: String
+  $unit: String
+  $note: String
+) {
+  updateCartItem(id: $id, quantity: $quantity, unit: $unit, note: $note) {
+    ...RegularCartItem
+  }
+}
+
+mutation RemoveFromCart($id: Int!) {
+  removeFromCart(id: $id)
+}
+
+mutation ClearCart {
+  clearCart
+}

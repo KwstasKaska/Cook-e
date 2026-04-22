@@ -1,0 +1,9 @@
+fragment RegularChefProfile on ChefProfile {
+  id
+  bio
+  user {
+    id
+    username
+    email
+  }
+}

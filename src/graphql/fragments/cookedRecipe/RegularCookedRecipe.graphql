@@ -1,0 +1,17 @@
+fragment RegularCookedRecipe on CookedRecipe {
+  id
+  userId
+  recipeId
+  cookedAt
+  recipe {
+    id
+    title_el
+    title_en
+    recipeImage
+    category
+    prepTime
+    cookTime
+    caloriesTotal
+    difficulty
+  }
+}

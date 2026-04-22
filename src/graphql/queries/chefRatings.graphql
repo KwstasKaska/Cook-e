@@ -1,0 +1,15 @@
+query ChefRatings($chefId: Int!, $limit: Int = 10, $offset: Int = 0) {
+  chefRatings(chefId: $chefId, limit: $limit, offset: $offset) {
+    ...RegularChefRating
+  }
+}
+
+query ChefAverageRating($chefId: Int!) {
+  chefAverageRating(chefId: $chefId)
+}
+
+query MyChefRating($chefId: Int!) {
+  myChefRating(chefId: $chefId) {
+    ...RegularChefRating
+  }
+}

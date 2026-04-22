@@ -1,0 +1,5 @@
+query Article($id: Int!) {
+  article(id: $id) {
+    ...RegularArticle
+  }
+}

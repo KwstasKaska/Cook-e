@@ -1,0 +1,13 @@
+mutation SaveRecipe($recipeId: Int!) {
+  saveRecipe(recipeId: $recipeId) {
+    ...RegularUserFavorite
+  }
+}
+
+mutation UnsaveRecipe($recipeId: Int!) {
+  unsaveRecipe(recipeId: $recipeId)
+}
+
+query IsFavorited($recipeId: Int!) {
+  isFavorited(recipeId: $recipeId)
+}

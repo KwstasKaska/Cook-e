@@ -1,0 +1,8 @@
+fragment RegularAppointmentRequest on AppointmentRequest {
+  id
+  slotId
+  clientId
+  status
+  comment
+  requestedAt
+}

@@ -1,0 +1,5 @@
+query MyFavorites($limit: Int = 10, $offset: Int = 0) {
+  myFavorites(limit: $limit, offset: $offset) {
+    ...RegularUserFavorite
+  }
+}

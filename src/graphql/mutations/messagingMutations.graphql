@@ -1,0 +1,21 @@
+mutation StartConversation($participantId: Int!) {
+  startConversation(participantId: $participantId) {
+    errors {
+      ...RegualarError
+    }
+    conversation {
+      ...RegularConversation
+    }
+  }
+}
+
+mutation SendMessage($conversationId: Int!, $body: String!) {
+  sendMessage(conversationId: $conversationId, body: $body) {
+    errors {
+      ...RegualarError
+    }
+    message {
+      ...RegularMessage
+    }
+  }
+}

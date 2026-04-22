@@ -1,0 +1,5 @@
+query Recipe($id: Int!) {
+  recipe(id: $id) {
+    ...RegularRecipe
+  }
+}

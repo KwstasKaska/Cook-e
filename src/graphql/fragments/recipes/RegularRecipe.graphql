@@ -1,0 +1,46 @@
+fragment RegularRecipe on Recipe {
+  id
+  title_el
+  title_en
+  description_el
+  description_en
+  chefComment_el
+  chefComment_en
+  category
+  recipeImage
+  prepTime
+  cookTime
+  restTime
+  difficulty
+  caloriesTotal
+  protein
+  carbs
+  fat
+  foodEthnicity
+  authorId
+  createdAt
+  updatedAt
+  steps {
+    id
+    body_el
+    body_en
+    recipeID
+  }
+  recipeIngredients {
+    recipeId
+    ingredientId
+    quantity
+    unit
+    ingredient {
+      id
+      name_el
+      name_en
+      caloriesPer100g
+    }
+  }
+  author {
+    user {
+      username
+    }
+  }
+}

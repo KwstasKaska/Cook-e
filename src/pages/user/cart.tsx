@@ -1,27 +1,17 @@
-import React, { useState } from 'react';
-import ScrollToTopButton from '../../components/Helper/ScrollToTopButton';
+import { useState, useCallback } from 'react';
 import Navbar from '../../components/Users/Navbar';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-
-// ── Type
-type CartItem = {
-  id: number;
-  name: string;
-  emoji: string;
-  weightGrams: number;
-  checked: boolean;
-};
-
-// ── Fake data
-const INITIAL_ITEMS: CartItem[] = [
-  { id: 1, name: 'Τομάτες', emoji: '🍅', weightGrams: 300, checked: true },
-  { id: 2, name: 'Κρεμμύδια', emoji: '🧅', weightGrams: 150, checked: false },
-  { id: 3, name: 'Πατάτες', emoji: '🥔', weightGrams: 500, checked: true },
-  { id: 4, name: 'Μπέικον', emoji: '🥓', weightGrams: 200, checked: true },
-  { id: 5, name: 'Παπρίκα', emoji: '🌶️', weightGrams: 100, checked: false },
-  { id: 6, name: 'Τυρί', emoji: '🧀', weightGrams: 200, checked: false },
-];
+import { useRouter } from 'next/router';
+import {
+  useMyCartQuery,
+  useAddToCartMutation,
+  useUpdateCartItemMutation,
+  useRemoveFromCartMutation,
+  useIngredientsQuery,
+} from '../../generated/graphql';
+import ScrollToTopButton from '../../components/Helper/ScrollToTopButton';
+import useIsUser from '../../utils/useIsUser';
 
 export async function getServerSideProps({ locale }: { locale: string }) {
   return {
@@ -33,50 +23,130 @@ export async function getServerSideProps({ locale }: { locale: string }) {
 
 export default function CartPage() {
   const { t } = useTranslation('common');
-  const [items, setItems] = useState<CartItem[]>(INITIAL_ITEMS);
-  const [newItem, setNewItem] = useState('');
+  const { locale } = useRouter();
+  const isEl = locale === 'el';
 
-  const toggle = (id: number) =>
-    setItems((p) =>
-      p.map((i) => (i.id === id ? { ...i, checked: !i.checked } : i)),
-    );
+  // ── Auth guard
+  const { loading: authLoading, isAuthorized } = useIsUser();
+  if (authLoading || !isAuthorized) return null;
 
-  const inc = (id: number) =>
-    setItems((p) =>
-      p.map((i) =>
-        i.id === id ? { ...i, weightGrams: i.weightGrams + 50 } : i,
-      ),
-    );
+  return <CartContent isEl={isEl} t={t} />;
+}
 
-  const dec = (id: number) =>
-    setItems((p) =>
-      p.map((i) =>
-        i.id === id
-          ? { ...i, weightGrams: Math.max(50, i.weightGrams - 50) }
-          : i,
-      ),
-    );
+// Split into inner component so hooks run after auth guard
+function CartContent({
+  isEl,
+  t,
+}: {
+  isEl: boolean;
+  t: ReturnType<typeof useTranslation>['t'];
+}) {
+  // ── State
+  const [checkedIds, setCheckedIds] = useState<Set<number>>(new Set());
+  const [search, setSearch] = useState('');
+  const [showSearch, setShowSearch] = useState(false);
+  const [serverError, setServerError] = useState('');
 
-  const remove = (id: number) => setItems((p) => p.filter((i) => i.id !== id));
+  // ── Queries
+  const { data, loading, refetch } = useMyCartQuery({
+    fetchPolicy: 'network-only',
+  });
+  const { data: ingredientsData } = useIngredientsQuery({ skip: !showSearch });
 
-  const addItem = () => {
-    if (!newItem.trim()) return;
-    setItems((p) => [
-      ...p,
-      {
-        id: Date.now(),
-        name: newItem.trim(),
-        emoji: '🛒',
-        weightGrams: 100,
-        checked: false,
-      },
-    ]);
-    setNewItem('');
-  };
+  // ── Mutations
+  const [addToCart] = useAddToCartMutation();
+  const [updateCartItem] = useUpdateCartItemMutation();
+  const [removeFromCart] = useRemoveFromCartMutation();
 
-  const clearChecked = () => setItems((p) => p.filter((i) => !i.checked));
+  const items = data?.myCart ?? [];
 
-  const checkedCount = items.filter((i) => i.checked).length;
+  // ── Ingredient search results
+  const filteredIngredients =
+    search.trim().length > 0
+      ? (ingredientsData?.ingredients ?? [])
+          .filter((ing) =>
+            (isEl ? ing.name_el : ing.name_en)
+              .toLowerCase()
+              .includes(search.toLowerCase()),
+          )
+          .slice(0, 8)
+      : [];
+
+  // ── Handlers
+  const toggleChecked = (id: number) =>
+    setCheckedIds((prev) => {
+      const next = new Set(prev);
+      next.has(id) ? next.delete(id) : next.add(id);
+      return next;
+    });
+
+  const handleQuantityChange = useCallback(
+    async (
+      id: number,
+      currentQty: string | null | undefined,
+      delta: number,
+    ) => {
+      const current = parseInt(currentQty ?? '100', 10);
+      const next = Math.max(50, current + delta * 50);
+      try {
+        await updateCartItem({
+          variables: { id, quantity: String(next) },
+        });
+        await refetch();
+      } catch {
+        setServerError(t('cart.updateError'));
+      }
+    },
+    [updateCartItem, refetch, t],
+  );
+
+  const handleRemove = useCallback(
+    async (id: number) => {
+      try {
+        await removeFromCart({ variables: { id } });
+        setCheckedIds((prev) => {
+          const next = new Set(prev);
+          next.delete(id);
+          return next;
+        });
+        await refetch();
+      } catch {
+        setServerError(t('cart.removeError'));
+      }
+    },
+    [removeFromCart, refetch, t],
+  );
+
+  const handleClearChecked = useCallback(async () => {
+    try {
+      await Promise.all(
+        [...checkedIds].map((id) => removeFromCart({ variables: { id } })),
+      );
+      setCheckedIds(new Set());
+      await refetch();
+    } catch {
+      setServerError(t('cart.removeError'));
+    }
+  }, [checkedIds, removeFromCart, refetch, t]);
+
+  const handleAddIngredient = useCallback(
+    async (ingredientId: number) => {
+      setServerError('');
+      try {
+        await addToCart({
+          variables: { ingredientId, quantity: '100', unit: 'g' },
+        });
+        setSearch('');
+        setShowSearch(false);
+        await refetch();
+      } catch {
+        setServerError(t('cart.addError'));
+      }
+    },
+    [addToCart, refetch, t],
+  );
+
+  const checkedCount = checkedIds.size;
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#3F4756' }}>
@@ -100,26 +170,68 @@ export default function CartPage() {
             {t('cart.subtitle')}
           </p>
 
+          {/* Server error */}
+          {serverError && (
+            <p className="mb-4 text-center text-sm font-semibold text-red-500">
+              {serverError}
+            </p>
+          )}
+
           {/* Add item */}
-          <div className="flex gap-2 mb-6">
-            <input
-              type="text"
-              value={newItem}
-              onChange={(e) => setNewItem(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter' && addItem()}
-              placeholder={t('cart.addIngredient')}
-              className="flex-1 rounded-xl border-2 border-gray-200 px-4 py-2 text-sm text-gray-700 placeholder-gray-400 focus:border-myBlue-200 focus:outline-none"
-            />
-            <button
-              onClick={addItem}
-              className="rounded-xl px-4 py-2 text-sm font-bold text-white transition hover:scale-105"
-              style={{ backgroundColor: '#377CC3' }}
-            >
-              +
-            </button>
+          <div className="mb-6 relative">
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={search}
+                onChange={(e) => {
+                  setSearch(e.target.value);
+                  setShowSearch(true);
+                }}
+                onFocus={() => setShowSearch(true)}
+                placeholder={t('cart.addIngredient')}
+                className="flex-1 rounded-xl border-2 border-gray-200 px-4 py-2 text-sm text-gray-700 placeholder-gray-400 focus:border-myBlue-200 focus:outline-none"
+              />
+              <button
+                onClick={() => {
+                  setSearch('');
+                  setShowSearch(false);
+                }}
+                className="rounded-xl px-4 py-2 text-sm font-bold text-white transition hover:scale-105"
+                style={{ backgroundColor: '#377CC3' }}
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Ingredient dropdown */}
+            {showSearch && filteredIngredients.length > 0 && (
+              <div className="absolute left-0 right-0 top-full mt-1 z-20 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden">
+                {filteredIngredients.map((ing) => (
+                  <button
+                    key={ing.id}
+                    onClick={() => handleAddIngredient(ing.id)}
+                    className="w-full flex items-center justify-between px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition border-b border-gray-50 last:border-0"
+                  >
+                    <span className="font-medium">
+                      {isEl ? ing.name_el : ing.name_en}
+                    </span>
+                    {ing.caloriesPer100g && (
+                      <span className="text-xs text-gray-400">
+                        {ing.caloriesPer100g} kcal/100g
+                      </span>
+                    )}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
-          {items.length === 0 ? (
+          {/* Loading */}
+          {loading ? (
+            <div className="flex justify-center py-16">
+              <div className="h-8 w-8 animate-spin rounded-full border-4 border-myBlue-200 border-t-transparent" />
+            </div>
+          ) : items.length === 0 ? (
             <div className="rounded-2xl border-2 border-dashed border-gray-200 p-10 text-center bg-white">
               <p className="text-gray-500">{t('cart.emptyCart')}</p>
             </div>
@@ -127,125 +239,136 @@ export default function CartPage() {
             <>
               {/* 2-column grid */}
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                {items.map((item) => (
-                  <div
-                    key={item.id}
-                    className="flex items-center gap-3 rounded-2xl border-2 px-3 py-3 bg-white transition"
-                    style={{
-                      borderColor: item.checked ? '#B3D5F8' : '#EAEAEA',
-                      backgroundColor: item.checked
-                        ? 'rgba(179,213,248,0.15)'
-                        : 'white',
-                    }}
-                  >
-                    {/* Checkbox */}
-                    <button
-                      onClick={() => toggle(item.id)}
-                      className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded border-2 transition"
+                {items.map((item) => {
+                  const isChecked = checkedIds.has(item.id);
+                  const name = isEl
+                    ? item.ingredient?.name_el ?? String(item.ingredientId)
+                    : item.ingredient?.name_en ?? String(item.ingredientId);
+                  const qty = parseInt(item.quantity ?? '100', 10);
+
+                  return (
+                    <div
+                      key={item.id}
+                      className="flex items-center gap-3 rounded-2xl border-2 px-3 py-3 bg-white transition"
                       style={{
-                        borderColor: item.checked ? '#377CC3' : '#3F4756',
-                        backgroundColor: item.checked
-                          ? '#377CC3'
-                          : 'transparent',
+                        borderColor: isChecked ? '#B3D5F8' : '#EAEAEA',
+                        backgroundColor: isChecked
+                          ? 'rgba(179,213,248,0.15)'
+                          : 'white',
                       }}
                     >
-                      {item.checked && (
-                        <svg
-                          viewBox="0 0 16 16"
-                          fill="none"
-                          className="h-3 w-3"
-                        >
-                          <path
-                            d="M3 8l3.5 3.5L13 4"
-                            stroke="white"
-                            strokeWidth="2.5"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
-                      )}
-                    </button>
-
-                    {/* Emoji */}
-                    <div
-                      className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full text-xl"
-                      style={{ backgroundColor: '#EAEAEA' }}
-                    >
-                      {item.emoji}
-                    </div>
-
-                    {/* Name + weight */}
-                    <div className="flex-1 min-w-0">
-                      <p
-                        className="truncate text-sm font-bold md:text-base"
+                      {/* Checkbox */}
+                      <button
+                        onClick={() => toggleChecked(item.id)}
+                        className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded border-2 transition"
                         style={{
-                          color: item.checked ? '#9CA3AF' : '#3F4756',
-                          textDecoration: item.checked
-                            ? 'line-through'
-                            : 'none',
+                          borderColor: isChecked ? '#377CC3' : '#3F4756',
+                          backgroundColor: isChecked
+                            ? '#377CC3'
+                            : 'transparent',
                         }}
                       >
-                        {item.name}
-                      </p>
-                      <div className="mt-1 flex items-center gap-1">
-                        <button
-                          onClick={() => dec(item.id)}
-                          className="flex h-5 w-5 items-center justify-center rounded-full text-xs font-bold transition hover:text-white"
-                          style={{
-                            backgroundColor: '#EAEAEA',
-                            color: '#3F4756',
-                          }}
-                          onMouseEnter={(e) =>
-                            (e.currentTarget.style.backgroundColor = '#ED5B5B')
-                          }
-                          onMouseLeave={(e) =>
-                            (e.currentTarget.style.backgroundColor = '#EAEAEA')
-                          }
-                        >
-                          −
-                        </button>
-                        <span className="min-w-[3.5em] text-center text-xs text-gray-500">
-                          {item.weightGrams}g
-                        </span>
-                        <button
-                          onClick={() => inc(item.id)}
-                          className="flex h-5 w-5 items-center justify-center rounded-full text-xs font-bold transition hover:text-white"
-                          style={{
-                            backgroundColor: '#EAEAEA',
-                            color: '#3F4756',
-                          }}
-                          onMouseEnter={(e) =>
-                            (e.currentTarget.style.backgroundColor = '#377CC3')
-                          }
-                          onMouseLeave={(e) =>
-                            (e.currentTarget.style.backgroundColor = '#EAEAEA')
-                          }
-                        >
-                          +
-                        </button>
-                      </div>
-                    </div>
+                        {isChecked && (
+                          <svg
+                            viewBox="0 0 16 16"
+                            fill="none"
+                            className="h-3 w-3"
+                          >
+                            <path
+                              d="M3 8l3.5 3.5L13 4"
+                              stroke="white"
+                              strokeWidth="2.5"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                          </svg>
+                        )}
+                      </button>
 
-                    {/* Remove */}
-                    <button
-                      onClick={() => remove(item.id)}
-                      className="flex-shrink-0 text-gray-300 transition hover:text-red-400"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                        className="h-4 w-4"
+                      {/* Name + quantity */}
+                      <div className="flex-1 min-w-0">
+                        <p
+                          className="truncate text-sm font-bold md:text-base"
+                          style={{
+                            color: isChecked ? '#9CA3AF' : '#3F4756',
+                            textDecoration: isChecked ? 'line-through' : 'none',
+                          }}
+                        >
+                          {name}
+                        </p>
+                        <div className="mt-1 flex items-center gap-1">
+                          <button
+                            onClick={() =>
+                              handleQuantityChange(item.id, item.quantity, -1)
+                            }
+                            className="flex h-5 w-5 items-center justify-center rounded-full text-xs font-bold transition hover:text-white"
+                            style={{
+                              backgroundColor: '#EAEAEA',
+                              color: '#3F4756',
+                            }}
+                            onMouseEnter={(e) =>
+                              (e.currentTarget.style.backgroundColor =
+                                '#ED5B5B')
+                            }
+                            onMouseLeave={(e) =>
+                              (e.currentTarget.style.backgroundColor =
+                                '#EAEAEA')
+                            }
+                          >
+                            −
+                          </button>
+                          <span className="min-w-[3.5em] text-center text-xs text-gray-500">
+                            {qty}g
+                          </span>
+                          <button
+                            onClick={() =>
+                              handleQuantityChange(item.id, item.quantity, 1)
+                            }
+                            className="flex h-5 w-5 items-center justify-center rounded-full text-xs font-bold transition hover:text-white"
+                            style={{
+                              backgroundColor: '#EAEAEA',
+                              color: '#3F4756',
+                            }}
+                            onMouseEnter={(e) =>
+                              (e.currentTarget.style.backgroundColor =
+                                '#377CC3')
+                            }
+                            onMouseLeave={(e) =>
+                              (e.currentTarget.style.backgroundColor =
+                                '#EAEAEA')
+                            }
+                          >
+                            +
+                          </button>
+                        </div>
+                        {item.note && (
+                          <p className="mt-1 text-xs text-gray-400 truncate">
+                            {item.note}
+                          </p>
+                        )}
+                      </div>
+
+                      {/* Remove */}
+                      <button
+                        onClick={() => handleRemove(item.id)}
+                        className="flex-shrink-0 text-gray-300 transition hover:text-red-400"
                       >
-                        <path
-                          fillRule="evenodd"
-                          d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                    </button>
-                  </div>
-                ))}
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                          fill="currentColor"
+                          className="h-4 w-4"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+                  );
+                })}
               </div>
 
               {/* Footer */}
@@ -257,7 +380,7 @@ export default function CartPage() {
                   {checkedCount}/{items.length} {t('cart.items')}
                 </p>
                 <button
-                  onClick={clearChecked}
+                  onClick={handleClearChecked}
                   disabled={checkedCount === 0}
                   className="rounded-full border-2 px-5 py-2 text-sm font-bold transition"
                   style={{

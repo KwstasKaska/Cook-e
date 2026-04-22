@@ -1,0 +1,13 @@
+query MyNutritionistProfile {
+  myNutritionistProfile {
+    id
+    bio
+    phone
+    city
+    user {
+      id
+      username
+      email
+    }
+  }
+}

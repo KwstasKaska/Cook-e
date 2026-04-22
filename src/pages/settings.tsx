@@ -2,15 +2,22 @@ import { useState } from 'react';
 import Navbar from '../components/Users/Navbar';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import {
+  useUpdateUserMutation,
+  useUpdateChefProfileMutation,
+  useUpdateNutritionistProfileMutation,
+  useMyChefProfileQuery,
+  useMyNutritionistProfileQuery,
+} from '../generated/graphql';
+import useIsAuth from '../utils/useIsAuth';
 
 // ─── Types
-type Role = 'user' | 'chef' | 'nutritionist';
+type Role = 'CHEF' | 'USER' | 'NUTRITIONIST';
 
 type TabKey =
   | 'personal'
   | 'security'
   | 'notifications'
-  | 'payments'
   | 'chef-profile'
   | 'nutritionist-profile';
 
@@ -21,46 +28,36 @@ type Tab = {
   roles: Role[];
 };
 
-// Fake data
-const FAKE_USER = {
-  name: 'Κωνσταντίνος Κασκαντίρης',
-  email: 'kostas@example.com',
-  phone: '+30 210 0000000',
-  city: 'Αθήνα',
-  avatar: 'https://randomuser.me/api/portraits/men/32.jpg',
-  role: 'chef' as Role,
-};
-
 const TABS: Tab[] = [
   {
     key: 'personal',
     labelKey: 'settings.personalInfo',
     icon: '👤',
-    roles: ['user', 'chef', 'nutritionist'],
+    roles: ['USER', 'CHEF', 'NUTRITIONIST'],
   },
   {
     key: 'security',
     labelKey: 'settings.security',
     icon: '🔒',
-    roles: ['user', 'chef', 'nutritionist'],
+    roles: ['USER', 'CHEF', 'NUTRITIONIST'],
   },
   {
     key: 'notifications',
     labelKey: 'settings.notifications',
     icon: '🔔',
-    roles: ['user', 'chef', 'nutritionist'],
+    roles: ['USER', 'CHEF', 'NUTRITIONIST'],
   },
   {
     key: 'chef-profile',
     labelKey: 'settings.chefProfile',
     icon: '👨‍🍳',
-    roles: ['chef'],
+    roles: ['CHEF'],
   },
   {
     key: 'nutritionist-profile',
     labelKey: 'settings.nutritionistProfile',
     icon: '🥗',
-    roles: ['nutritionist'],
+    roles: ['NUTRITIONIST'],
   },
 ];
 
@@ -72,7 +69,8 @@ export async function getServerSideProps({ locale }: { locale: string }) {
   };
 }
 
-// ─── Shared components
+// ─── Shared sub-components
+
 function FieldGroup({
   title,
   children,
@@ -96,13 +94,17 @@ function FieldGroup({
 function Field({
   label,
   type = 'text',
-  defaultValue,
+  value,
+  onChange,
   placeholder,
+  error,
 }: {
   label: string;
   type?: string;
-  defaultValue?: string;
+  value?: string;
+  onChange?: (v: string) => void;
   placeholder?: string;
+  error?: string | null;
 }) {
   return (
     <div>
@@ -111,9 +113,51 @@ function Field({
       </label>
       <input
         type={type}
-        defaultValue={defaultValue}
+        value={value ?? ''}
         placeholder={placeholder}
+        onChange={(e) => onChange?.(e.target.value)}
         className="w-full rounded-xl border-2 px-4 py-2.5 text-sm focus:outline-none transition"
+        style={{ borderColor: error ? '#ED5B5B' : '#EAEAEA', color: '#3F4756' }}
+        onFocus={(e) => {
+          if (!error) e.currentTarget.style.borderColor = '#377CC3';
+        }}
+        onBlur={(e) => {
+          if (!error) e.currentTarget.style.borderColor = '#EAEAEA';
+        }}
+      />
+      {error && (
+        <p className="mt-1 text-xs" style={{ color: '#ED5B5B' }}>
+          {error}
+        </p>
+      )}
+    </div>
+  );
+}
+
+function TextArea({
+  label,
+  value,
+  onChange,
+  placeholder,
+  rows = 4,
+}: {
+  label: string;
+  value?: string;
+  onChange?: (v: string) => void;
+  placeholder?: string;
+  rows?: number;
+}) {
+  return (
+    <div>
+      <label className="block text-xs font-semibold text-gray-500 mb-1">
+        {label}
+      </label>
+      <textarea
+        rows={rows}
+        value={value ?? ''}
+        placeholder={placeholder}
+        onChange={(e) => onChange?.(e.target.value)}
+        className="w-full rounded-xl border-2 px-4 py-2.5 text-sm resize-none focus:outline-none transition"
         style={{ borderColor: '#EAEAEA', color: '#3F4756' }}
         onFocus={(e) => (e.currentTarget.style.borderColor = '#377CC3')}
         onBlur={(e) => (e.currentTarget.style.borderColor = '#EAEAEA')}
@@ -159,113 +203,193 @@ function Toggle({
   );
 }
 
-function SaveButton({ onClick }: { onClick?: () => void }) {
+function SaveButton({
+  onClick,
+  loading,
+}: {
+  onClick?: () => void;
+  loading?: boolean;
+}) {
   const { t } = useTranslation('common');
   return (
     <div className="mt-8 flex justify-end">
       <button
         onClick={onClick}
-        className="px-8 py-2.5 rounded-full text-sm font-bold text-white transition hover:opacity-90 hover:scale-105"
+        disabled={loading}
+        className="px-8 py-2.5 rounded-full text-sm font-bold text-white transition hover:opacity-90 hover:scale-105 disabled:opacity-60 disabled:cursor-not-allowed"
         style={{ backgroundColor: '#377CC3' }}
       >
-        {t('settings.save')}
+        {loading ? '...' : t('settings.save')}
       </button>
     </div>
   );
 }
 
+function ServerError({ message }: { message: string | null }) {
+  if (!message) return null;
+  return (
+    <p className="mt-3 text-sm text-center" style={{ color: '#ED5B5B' }}>
+      {message}
+    </p>
+  );
+}
+
+function SuccessBanner({ message }: { message: string | null }) {
+  if (!message) return null;
+  return (
+    <p className="mt-3 text-sm text-center" style={{ color: '#377CC3' }}>
+      {message}
+    </p>
+  );
+}
+
 // ─── Tab panels
-function PersonalTab({ user }: { user: typeof FAKE_USER }) {
+
+function PersonalTab({ username, email }: { username: string; email: string }) {
   const { t } = useTranslation('common');
+  const [usernameVal, setUsernameVal] = useState(username);
+  const [emailVal, setEmailVal] = useState(email);
+  const [phoneVal, setPhoneVal] = useState('');
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+  const [serverError, setServerError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
+  const [updateUser, { loading }] = useUpdateUserMutation();
+
+  const handleSave = async () => {
+    setFieldErrors({});
+    setServerError(null);
+    setSuccess(null);
+
+    if (!usernameVal.trim()) {
+      setFieldErrors((p) => ({
+        ...p,
+        username: t('settings.usernameRequired'),
+      }));
+      return;
+    }
+    if (!emailVal.trim()) {
+      setFieldErrors((p) => ({ ...p, email: t('settings.emailRequired') }));
+      return;
+    }
+
+    try {
+      const result = await updateUser({
+        variables: {
+          data: {
+            username: usernameVal,
+            email: emailVal,
+            phoneNumber: phoneVal || undefined,
+          },
+        },
+      });
+
+      if (result.data?.updateUser.errors) {
+        const errs: Record<string, string> = {};
+        for (const e of result.data.updateUser.errors) {
+          errs[e.field] = e.message;
+        }
+        setFieldErrors(errs);
+        return;
+      }
+
+      setSuccess(t('settings.saveSuccess'));
+    } catch {
+      setServerError(t('settings.saveError'));
+    }
+  };
 
   return (
     <div>
-      <div
-        className="flex items-center gap-5 mb-8 pb-8 border-b"
-        style={{ borderColor: '#EAEAEA' }}
-      >
-        <div className="relative">
-          <img
-            src={user.avatar}
-            alt={user.name}
-            className="w-20 h-20 rounded-full object-cover border-4 border-white shadow-md"
-          />
-          <button
-            className="absolute bottom-0 right-0 w-7 h-7 rounded-full flex items-center justify-center text-white shadow"
-            style={{ backgroundColor: '#377CC3' }}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="w-3.5 h-3.5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2.5}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M15.232 5.232l3.536 3.536M9 13l6.586-6.586a2 2 0 112.828 2.828L11.828 15.828a2 2 0 01-1.414.586H9v-2a2 2 0 01.586-1.414z"
-              />
-            </svg>
-          </button>
-        </div>
-        <div>
-          <p className="font-bold text-lg" style={{ color: '#3F4756' }}>
-            {user.name}
-          </p>
-          <p className="text-sm text-gray-400">{user.email}</p>
-          <span
-            className="inline-block mt-1 text-xs font-semibold px-2.5 py-0.5 rounded-full"
-            style={{ backgroundColor: '#B3D5F8', color: '#3F4756' }}
-          >
-            {user.role === 'chef'
-              ? 'Chef'
-              : user.role === 'nutritionist'
-                ? 'Διατροφολόγος'
-                : 'Χρήστης'}
-          </span>
-        </div>
-      </div>
-
       <FieldGroup title={t('settings.basicInfo')}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <Field label={t('settings.fullName')} defaultValue={user.name} />
-          <Field label="Email" type="email" defaultValue={user.email} />
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <Field
-            label={t('settings.phone')}
-            type="tel"
-            defaultValue={user.phone}
+            label={t('settings.fullName')}
+            value={usernameVal}
+            onChange={setUsernameVal}
+            error={fieldErrors.username}
           />
-          <Field label={t('settings.city')} defaultValue={user.city} />
-        </div>
-      </FieldGroup>
-
-      <FieldGroup title={t('settings.aboutMe')}>
-        <div>
-          <label className="block text-xs font-semibold text-gray-500 mb-1">
-            {t('settings.bio')}
-          </label>
-          <textarea
-            rows={4}
-            placeholder={t('settings.bioPlaceholder')}
-            className="w-full rounded-xl border-2 px-4 py-2.5 text-sm resize-none focus:outline-none transition"
-            style={{ borderColor: '#EAEAEA', color: '#3F4756' }}
-            onFocus={(e) => (e.currentTarget.style.borderColor = '#377CC3')}
-            onBlur={(e) => (e.currentTarget.style.borderColor = '#EAEAEA')}
+          <Field
+            label="Email"
+            type="email"
+            value={emailVal}
+            onChange={setEmailVal}
+            error={fieldErrors.email}
           />
         </div>
+        <Field
+          label={t('settings.phone')}
+          type="tel"
+          value={phoneVal}
+          onChange={setPhoneVal}
+          placeholder="+30 210 0000000"
+        />
       </FieldGroup>
-
-      <SaveButton />
+      <ServerError message={serverError} />
+      <SuccessBanner message={success} />
+      <SaveButton onClick={handleSave} loading={loading} />
     </div>
   );
 }
 
 function SecurityTab() {
   const { t } = useTranslation('common');
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+  const [serverError, setServerError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
+  const [updateUser, { loading }] = useUpdateUserMutation();
+
+  const handleSave = async () => {
+    setFieldErrors({});
+    setServerError(null);
+    setSuccess(null);
+
+    if (!currentPassword) {
+      setFieldErrors((p) => ({
+        ...p,
+        currentPassword: t('settings.currentPasswordRequired'),
+      }));
+      return;
+    }
+    if (!newPassword) {
+      setFieldErrors((p) => ({
+        ...p,
+        newPassword: t('settings.newPasswordRequired'),
+      }));
+      return;
+    }
+    if (newPassword !== confirmPassword) {
+      setFieldErrors((p) => ({
+        ...p,
+        confirmPassword: t('settings.passwordMismatch'),
+      }));
+      return;
+    }
+
+    try {
+      const result = await updateUser({
+        variables: { data: { currentPassword, newPassword } },
+      });
+
+      if (result.data?.updateUser.errors) {
+        const errs: Record<string, string> = {};
+        for (const e of result.data.updateUser.errors) {
+          errs[e.field] = e.message;
+        }
+        setFieldErrors(errs);
+        return;
+      }
+
+      setCurrentPassword('');
+      setNewPassword('');
+      setConfirmPassword('');
+      setSuccess(t('settings.saveSuccess'));
+    } catch {
+      setServerError(t('settings.saveError'));
+    }
+  };
 
   return (
     <div>
@@ -273,27 +397,37 @@ function SecurityTab() {
         <Field
           label={t('settings.currentPassword')}
           type="password"
+          value={currentPassword}
+          onChange={setCurrentPassword}
           placeholder="••••••••"
+          error={fieldErrors.currentPassword}
         />
         <Field
           label={t('settings.newPassword')}
           type="password"
+          value={newPassword}
+          onChange={setNewPassword}
           placeholder="••••••••"
+          error={fieldErrors.newPassword}
         />
         <Field
           label={t('settings.confirmPassword')}
           type="password"
+          value={confirmPassword}
+          onChange={setConfirmPassword}
           placeholder="••••••••"
+          error={fieldErrors.confirmPassword}
         />
       </FieldGroup>
-      <SaveButton />
+      <ServerError message={serverError} />
+      <SuccessBanner message={success} />
+      <SaveButton onClick={handleSave} loading={loading} />
     </div>
   );
 }
 
 function NotificationsTab() {
   const { t } = useTranslation('common');
-
   return (
     <div>
       <FieldGroup title={t('settings.emailNotifications')}>
@@ -315,65 +449,118 @@ function NotificationsTab() {
 
 function ChefProfileTab() {
   const { t } = useTranslation('common');
+  const { data } = useMyChefProfileQuery();
+  const [bio, setBio] = useState(data?.myChefProfile?.bio ?? '');
+  const [serverError, setServerError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
+  const [updateChefProfile, { loading }] = useUpdateChefProfileMutation();
+
+  const handleSave = async () => {
+    setServerError(null);
+    setSuccess(null);
+    try {
+      const result = await updateChefProfile({
+        variables: { data: { bio } },
+      });
+      if (!result.data?.updateChefProfile) {
+        setServerError(t('settings.saveError'));
+        return;
+      }
+      setSuccess(t('settings.saveSuccess'));
+    } catch {
+      setServerError(t('settings.saveError'));
+    }
+  };
 
   return (
     <div>
       <FieldGroup title={t('settings.chefPublicProfile')}>
-        <Field
-          label={t('settings.professionalTitle')}
-          placeholder={t('settings.professionalTitlePlaceholder')}
+        <TextArea
+          label={t('settings.chefBio')}
+          value={bio}
+          onChange={setBio}
+          placeholder={t('settings.chefBioPlaceholder')}
         />
-        <div>
-          <label className="block text-xs font-semibold text-gray-500 mb-1">
-            {t('settings.chefBio')}
-          </label>
-          <textarea
-            rows={4}
-            placeholder={t('settings.chefBioPlaceholder')}
-            className="w-full rounded-xl border-2 px-4 py-2.5 text-sm resize-none focus:outline-none transition"
-            style={{ borderColor: '#EAEAEA', color: '#3F4756' }}
-            onFocus={(e) => (e.currentTarget.style.borderColor = '#377CC3')}
-            onBlur={(e) => (e.currentTarget.style.borderColor = '#EAEAEA')}
-          />
-        </div>
       </FieldGroup>
-
-      <FieldGroup title={t('settings.socialMedia')}>
-        <Field label={t('settings.website')} placeholder="https://..." />
-      </FieldGroup>
-
-      <SaveButton />
+      <ServerError message={serverError} />
+      <SuccessBanner message={success} />
+      <SaveButton onClick={handleSave} loading={loading} />
     </div>
   );
 }
 
 function NutritionistProfileTab() {
   const { t } = useTranslation('common');
+  const { data } = useMyNutritionistProfileQuery();
+  const profile = data?.myNutritionistProfile;
+  const [bio, setBio] = useState(profile?.bio ?? '');
+  const [phone, setPhone] = useState(profile?.phone ?? '');
+  const [city, setCity] = useState(profile?.city ?? '');
+  const [serverError, setServerError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
+  const [updateNutritionistProfile, { loading }] =
+    useUpdateNutritionistProfileMutation();
+
+  const handleSave = async () => {
+    setServerError(null);
+    setSuccess(null);
+    try {
+      const result = await updateNutritionistProfile({
+        variables: { data: { bio, phone, city } },
+      });
+      if (!result.data?.updateNutritionistProfile) {
+        setServerError(t('settings.saveError'));
+        return;
+      }
+      setSuccess(t('settings.saveSuccess'));
+    } catch {
+      setServerError(t('settings.saveError'));
+    }
+  };
 
   return (
     <div>
       <FieldGroup title={t('settings.professionalDetails')}>
-        <Field
-          label={t('settings.degreeTitle')}
-          placeholder="π.χ. MSc Κλινική Διατροφολογία"
+        <TextArea
+          label={t('settings.bio')}
+          value={bio}
+          onChange={setBio}
+          placeholder={t('settings.bioPlaceholder')}
         />
-        <Field label={t('settings.licenseNumber')} placeholder="π.χ. 12345" />
         <Field
-          label={t('settings.specialization')}
-          placeholder="π.χ. Αθλητική διατροφή"
+          label={t('settings.phone')}
+          type="tel"
+          value={phone}
+          onChange={setPhone}
+          placeholder="+30 210 0000000"
+        />
+        <Field
+          label={t('settings.city')}
+          value={city}
+          onChange={setCity}
+          placeholder="π.χ. Αθήνα"
         />
       </FieldGroup>
-      <SaveButton />
+      <ServerError message={serverError} />
+      <SuccessBanner message={success} />
+      <SaveButton onClick={handleSave} loading={loading} />
     </div>
   );
 }
 
-// ─── Page
+// ─── Page — all hooks called unconditionally at the top
+
 export default function SettingsPage() {
   const { t } = useTranslation('common');
-  const role = FAKE_USER.role;
-  const visibleTabs = TABS.filter((tab) => tab.roles.includes(role));
+  const { loading: authLoading, isAuthorized, me } = useIsAuth();
   const [activeTab, setActiveTab] = useState<TabKey>('personal');
+
+  // All hooks above this line — no early returns before hooks
+
+  if (authLoading || !isAuthorized || !me) return null;
+
+  const role = me.role as Role;
+  const visibleTabs = TABS.filter((tab) => tab.roles.includes(role));
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#3F4756' }}>
@@ -430,7 +617,9 @@ export default function SettingsPage() {
 
             {/* Main panel */}
             <main className="flex-1 bg-white rounded-2xl shadow-md p-6 md:p-8 min-w-0">
-              {activeTab === 'personal' && <PersonalTab user={FAKE_USER} />}
+              {activeTab === 'personal' && (
+                <PersonalTab username={me.username} email={me.email} />
+              )}
               {activeTab === 'security' && <SecurityTab />}
               {activeTab === 'notifications' && <NotificationsTab />}
               {activeTab === 'chef-profile' && <ChefProfileTab />}

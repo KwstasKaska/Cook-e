@@ -29,7 +29,7 @@ export default function NutrNavbar() {
 
   const handleLogout = async () => {
     await logout();
-    await apolloClient.resetStore();
+    await apolloClient.clearStore();
     router.push('/login');
   };
 

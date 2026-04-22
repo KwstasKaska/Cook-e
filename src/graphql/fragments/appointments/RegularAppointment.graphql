@@ -1,0 +1,7 @@
+fragment RegularAppointment on Appointment {
+  id
+  date
+  time
+  isAvailable
+  nutritionistId
+}

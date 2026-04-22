@@ -1,0 +1,8 @@
+fragment RegularRecipeResponse on RecipeResponse {
+  errors {
+    ...RegualarError
+  }
+  recipe {
+    ...RegularRecipe
+  }
+}

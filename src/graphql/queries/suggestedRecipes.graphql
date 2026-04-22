@@ -1,0 +1,26 @@
+query SuggestedRecipes(
+  $ingredientIds: [Int!]!
+  $utensilIds: [Int!]
+  $maxMissing: Int
+) {
+  suggestedRecipes(
+    ingredientIds: $ingredientIds
+    utensilIds: $utensilIds
+    maxMissing: $maxMissing
+  ) {
+    recipe {
+      ...RegularRecipe
+    }
+    missingCount
+    missingIngredients {
+      id
+      name_el
+      name_en
+    }
+    missingUtensils {
+      id
+      name_el
+      name_en
+    }
+  }
+}

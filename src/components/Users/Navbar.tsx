@@ -3,11 +3,16 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { useTranslation } from 'next-i18next';
 import LanguageSwitcher from '../Helper/LanguageSwitcher';
+import { useLogoutMutation } from '../../generated/graphql';
+import { useApolloClient } from '@apollo/client';
 
 export default function Navbar() {
   const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
   const { t } = useTranslation('common');
+
+  const [logout] = useLogoutMutation();
+  const apolloClient = useApolloClient();
 
   const navLinks = [
     { label: t('nav.home'), href: '/user' },
@@ -15,10 +20,11 @@ export default function Navbar() {
     { label: t('nav.nutritionists'), href: '/user/nutritionists' },
   ];
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await logout();
+    await apolloClient.clearStore();
     router.push('/login');
   };
-
   return (
     <nav
       style={{ backgroundColor: '#3F4756' }}
@@ -84,8 +90,6 @@ export default function Navbar() {
 
         {/* Language switcher */}
 
-        <LanguageSwitcher />
-
         {/* Settings */}
         <Link
           href="/settings"
@@ -116,6 +120,7 @@ export default function Navbar() {
             />
           </svg>
         </Link>
+        <LanguageSwitcher />
 
         {/* Logout */}
         <button

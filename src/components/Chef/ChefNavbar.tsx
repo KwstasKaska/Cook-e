@@ -3,11 +3,15 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import LanguageSwitcher from '../Helper/LanguageSwitcher';
+import { useLogoutMutation } from '../../generated/graphql';
+import { useApolloClient } from '@apollo/client';
 
 const ChefNavbar = () => {
   const router = useRouter();
   const { t } = useTranslation('common');
   const [menuOpen, setMenuOpen] = useState(false);
+  const [logout] = useLogoutMutation();
+  const apolloClient = useApolloClient();
 
   const navLinks = [
     { href: '/chef', label: t('chefnav.chef_home') },
@@ -16,11 +20,11 @@ const ChefNavbar = () => {
     { href: '/chef/create-recipe', label: t('chefnav.chef_create') },
   ];
 
-  const handleLogout = () => {
-    // TODO: Apollo resetStore + redirect
+  const handleLogout = async () => {
+    await logout();
+    await apolloClient.clearStore();
     router.push('/login');
   };
-
   return (
     <nav
       className="w-full px-6 py-3 flex items-center justify-between relative z-50"

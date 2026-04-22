@@ -1,0 +1,23 @@
+query Ingredients {
+  ingredients {
+    id
+    name_el
+    name_en
+    caloriesPer100g
+    category {
+      id
+      name_el
+      name_en
+    }
+  }
+}
+
+query Utensils {
+  utensils {
+    id
+    name_el
+    name_en
+    category_el
+    category_en
+  }
+}

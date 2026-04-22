@@ -1,0 +1,5 @@
+query MyRecipes($limit: Int = 10, $offset: Int = 0) {
+  myRecipes(limit: $limit, offset: $offset) {
+    ...RegularRecipe
+  }
+}

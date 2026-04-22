@@ -1,0 +1,9 @@
+query MyArticles($limit: Int = 20, $offset: Int = 0) {
+  myArticles(limit: $limit, offset: $offset) {
+    id
+    title_el
+    title_en
+    image
+    createdAt
+  }
+}
