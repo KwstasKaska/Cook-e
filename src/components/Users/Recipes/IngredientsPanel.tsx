@@ -39,30 +39,32 @@ export default function IngredientsPanel({
       <div className="mb-5 flex flex-col gap-2 border-b border-gray-100 pb-5">
         {totalTime > 0 && (
           <div
-            className="flex items-center gap-3 text-sm"
+            className="flex items-center gap-2 text-sm"
             style={{ color: '#3F4756' }}
           >
-            <span className="text-lg">⏱</span>
-            <span>
-              {totalTime} {t('landing.minutes')}
+            <span className="font-semibold">
+              {t('chef.recipe_card.minutes')}:
             </span>
+            <span>{totalTime}</span>
           </div>
         )}
         {caloriesTotal != null && (
           <div
-            className="flex items-center gap-3 text-sm"
+            className="flex items-center gap-2 text-sm"
             style={{ color: '#3F4756' }}
           >
-            <span className="text-lg">🔥</span>
-            <span>{Math.round(caloriesTotal)} kcal</span>
+            <span className="font-semibold">Kcal:</span>
+            <span>{Math.round(caloriesTotal)}</span>
           </div>
         )}
         {difficulty && (
           <div
-            className="flex items-center gap-3 text-sm"
+            className="flex items-center gap-2 text-sm"
             style={{ color: '#3F4756' }}
           >
-            <span className="text-lg">👨‍🍳</span>
+            <span className="font-semibold">
+              {t('chef.recipe_card.difficulty')}
+            </span>
             <span>{difficulty}</span>
           </div>
         )}

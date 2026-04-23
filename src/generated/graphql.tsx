@@ -564,6 +564,7 @@ export type Query = {
   recipes: Array<Recipe>;
   recipesByCategory: Array<Recipe>;
   suggestedRecipes: Array<RecipeSuggestion>;
+  topRatedRecipes: Array<Recipe>;
   utensils: Array<Utensil>;
 };
 
@@ -754,6 +755,11 @@ export type QuerySuggestedRecipesArgs = {
   ingredientIds: Array<Scalars['Int']['input']>;
   maxMissing?: Scalars['Int']['input'];
   utensilIds?: Array<Scalars['Int']['input']>;
+};
+
+
+export type QueryTopRatedRecipesArgs = {
+  limit?: Scalars['Int']['input'];
 };
 
 export type Recipe = {
@@ -1016,6 +1022,8 @@ export type RegularMessageFragment = { __typename?: 'Message', id: number, conve
 export type RegularChefRatingFragment = { __typename?: 'ChefRating', id: number, chefId: number, userId: number, score: number, comment?: string | null, createdAt: string, user?: { __typename?: 'User', id: number, username: string, image?: string | null } | null };
 
 export type RegularRecipeRatingFragment = { __typename?: 'RecipeRating', id: number, recipeId: number, userId: number, score: number, comment?: string | null, createdAt: string, user?: { __typename?: 'User', id: number, username: string, image?: string | null } | null };
+
+export type TopRatedRecipeFragment = { __typename?: 'Recipe', id: number, title_el: string, title_en: string, recipeImage?: string | null, caloriesTotal?: number | null, prepTime: number, cookTime: number, difficulty: Difficulty, category?: RecipeCategory | null };
 
 export type RegularRecipeFragment = { __typename?: 'Recipe', id: number, title_el: string, title_en: string, description_el?: string | null, description_en?: string | null, chefComment_el?: string | null, chefComment_en?: string | null, category?: RecipeCategory | null, recipeImage?: string | null, prepTime: number, cookTime: number, restTime?: number | null, difficulty: Difficulty, caloriesTotal?: number | null, protein?: number | null, carbs?: number | null, fat?: number | null, foodEthnicity?: string | null, authorId: number, createdAt: string, updatedAt: string, steps?: Array<{ __typename?: 'Step', id: number, body_el: string, body_en: string, recipeID: number }> | null, recipeIngredients?: Array<{ __typename?: 'RecipeIngredient', recipeId: number, ingredientId: number, quantity: string, unit: string, ingredient?: { __typename?: 'Ingredient', id: number, name_el: string, name_en: string, caloriesPer100g?: number | null } | null }> | null, author?: { __typename?: 'ChefProfile', user: { __typename?: 'User', username: string } } | null };
 
@@ -1307,6 +1315,13 @@ export type MyMealPlanQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type MyMealPlanQuery = { __typename?: 'Query', myMealPlan: Array<{ __typename?: 'MealScheduler', id: number, day: DayOfWeek, mealType: MealType, comment_el: string, comment_en: string, nutritionist: { __typename?: 'NutritionistProfile', user?: { __typename?: 'User', username: string } | null } }> };
+
+export type TopRatedRecipesQueryVariables = Exact<{
+  limit?: InputMaybe<Scalars['Int']['input']>;
+}>;
+
+
+export type TopRatedRecipesQuery = { __typename?: 'Query', topRatedRecipes: Array<{ __typename?: 'Recipe', id: number, title_el: string, title_en: string, recipeImage?: string | null, caloriesTotal?: number | null, prepTime: number, cookTime: number, difficulty: Difficulty, category?: RecipeCategory | null }> };
 
 export type GetMyAppointmentsQueryVariables = Exact<{
   date?: InputMaybe<Scalars['String']['input']>;
@@ -1812,6 +1827,19 @@ export const RegularRecipeRatingFragmentDoc = gql`
     username
     image
   }
+}
+    `;
+export const TopRatedRecipeFragmentDoc = gql`
+    fragment TopRatedRecipe on Recipe {
+  id
+  title_el
+  title_en
+  recipeImage
+  caloriesTotal
+  prepTime
+  cookTime
+  difficulty
+  category
 }
     `;
 export const RegularRecipeFragmentDoc = gql`
@@ -3198,6 +3226,46 @@ export type MyMealPlanQueryHookResult = ReturnType<typeof useMyMealPlanQuery>;
 export type MyMealPlanLazyQueryHookResult = ReturnType<typeof useMyMealPlanLazyQuery>;
 export type MyMealPlanSuspenseQueryHookResult = ReturnType<typeof useMyMealPlanSuspenseQuery>;
 export type MyMealPlanQueryResult = Apollo.QueryResult<MyMealPlanQuery, MyMealPlanQueryVariables>;
+export const TopRatedRecipesDocument = gql`
+    query TopRatedRecipes($limit: Int) {
+  topRatedRecipes(limit: $limit) {
+    ...TopRatedRecipe
+  }
+}
+    ${TopRatedRecipeFragmentDoc}`;
+
+/**
+ * __useTopRatedRecipesQuery__
+ *
+ * To run a query within a React component, call `useTopRatedRecipesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useTopRatedRecipesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useTopRatedRecipesQuery({
+ *   variables: {
+ *      limit: // value for 'limit'
+ *   },
+ * });
+ */
+export function useTopRatedRecipesQuery(baseOptions?: Apollo.QueryHookOptions<TopRatedRecipesQuery, TopRatedRecipesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<TopRatedRecipesQuery, TopRatedRecipesQueryVariables>(TopRatedRecipesDocument, options);
+      }
+export function useTopRatedRecipesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<TopRatedRecipesQuery, TopRatedRecipesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<TopRatedRecipesQuery, TopRatedRecipesQueryVariables>(TopRatedRecipesDocument, options);
+        }
+export function useTopRatedRecipesSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<TopRatedRecipesQuery, TopRatedRecipesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<TopRatedRecipesQuery, TopRatedRecipesQueryVariables>(TopRatedRecipesDocument, options);
+        }
+export type TopRatedRecipesQueryHookResult = ReturnType<typeof useTopRatedRecipesQuery>;
+export type TopRatedRecipesLazyQueryHookResult = ReturnType<typeof useTopRatedRecipesLazyQuery>;
+export type TopRatedRecipesSuspenseQueryHookResult = ReturnType<typeof useTopRatedRecipesSuspenseQuery>;
+export type TopRatedRecipesQueryResult = Apollo.QueryResult<TopRatedRecipesQuery, TopRatedRecipesQueryVariables>;
 export const GetMyAppointmentsDocument = gql`
     query GetMyAppointments($date: String, $limit: Int = 20, $offset: Int = 0) {
   getMyAppointments(date: $date, limit: $limit, offset: $offset) {

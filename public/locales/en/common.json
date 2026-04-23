@@ -37,7 +37,10 @@
     "weeklyRecipesDesc3": "Give them a try and let us know what you think!",
     "startCooking": "Start cooking!",
     "minutes": "minutes",
-    "noCookedYet": "You haven't cooked any recipes yet."
+    "noCookedYet": "You haven't cooked any recipes yet.",
+    "noRatingsTitle": "No ratings this week",
+    "noRatingsDesc": "The community hasn't rated any recipes in the last 7 days. Try a recipe and leave your review!",
+    "noRatingsCta": "Browse recipes"
   },
   "day": {
     "MONDAY": "Monday",

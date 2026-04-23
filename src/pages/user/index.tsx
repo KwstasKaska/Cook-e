@@ -3,10 +3,10 @@ import Navbar from '../../components/Users/Navbar';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 import {
   useMyNutritionalSummaryQuery,
-  useMyCookedRecipesQuery,
-  useMyFavoritesQuery,
+  useTopRatedRecipesQuery,
 } from '../../generated/graphql';
 import useIsUser from '../../utils/useIsUser';
 
@@ -21,70 +21,8 @@ export async function getServerSideProps({ locale }: { locale: string }) {
 export default function UserHomePage() {
   const { loading: authLoading, isAuthorized } = useIsUser();
   if (authLoading || !isAuthorized) return null;
-
   return <HomeContent />;
 }
-
-// ── Shared recipe shape for fanned cards
-type FannedRecipeEntry = {
-  id: number;
-  recipe: {
-    id: number;
-    title_el: string;
-    title_en: string;
-    recipeImage?: string | null;
-    caloriesTotal?: number | null;
-    prepTime?: number | null;
-    cookTime?: number | null;
-    difficulty?: string | null;
-    category?: string | null;
-  } | null;
-};
-
-const PLACEHOLDER_RECIPES: FannedRecipeEntry[] = [
-  {
-    id: -1,
-    recipe: {
-      id: -1,
-      title_el: '—',
-      title_en: '—',
-      recipeImage: null,
-      caloriesTotal: null,
-      prepTime: null,
-      cookTime: null,
-      difficulty: null,
-      category: null,
-    },
-  },
-  {
-    id: -2,
-    recipe: {
-      id: -2,
-      title_el: '—',
-      title_en: '—',
-      recipeImage: null,
-      caloriesTotal: null,
-      prepTime: null,
-      cookTime: null,
-      difficulty: null,
-      category: null,
-    },
-  },
-  {
-    id: -3,
-    recipe: {
-      id: -3,
-      title_el: '—',
-      title_en: '—',
-      recipeImage: null,
-      caloriesTotal: null,
-      prepTime: null,
-      cookTime: null,
-      difficulty: null,
-      category: null,
-    },
-  },
-];
 
 function HomeContent() {
   const { t } = useTranslation('common');
@@ -95,27 +33,15 @@ function HomeContent() {
   const { data: summaryData, loading: summaryLoading } =
     useMyNutritionalSummaryQuery({ fetchPolicy: 'network-only' });
 
-  const { data: cookedData, loading: cookedLoading } = useMyCookedRecipesQuery({
-    variables: { limit: 3, offset: 0 },
-    fetchPolicy: 'network-only',
-  });
-
-  const { data: favData, loading: favLoading } = useMyFavoritesQuery({
-    variables: { limit: 4, offset: 0 },
-    fetchPolicy: 'network-only',
-  });
+  const { data: topRatedData, loading: topRatedLoading } =
+    useTopRatedRecipesQuery({
+      variables: { limit: 3 },
+      fetchPolicy: 'network-only',
+    });
 
   const summary = summaryData?.myNutritionalSummary;
-  const cookedRecipes = (cookedData?.myCookedRecipes ?? []).filter(
-    (c) => c.recipe,
-  ) as FannedRecipeEntry[];
-  const favorites = favData?.myFavorites ?? [];
+  const topRecipes = topRatedData?.topRatedRecipes ?? [];
 
-  const isPlaceholder = !cookedLoading && cookedRecipes.length === 0;
-  const displayRecipes =
-    cookedRecipes.length > 0 ? cookedRecipes : PLACEHOLDER_RECIPES;
-
-  // ── Donut data
   const totalMacroG =
     (summary?.totalFat ?? 0) +
     (summary?.totalProtein ?? 0) +
@@ -156,13 +82,13 @@ function HomeContent() {
     pctSum > 0 ? macros.map((m) => ({ ...m, pct: m.pct / pctSum })) : macros;
 
   const handleNext = () =>
-    setActiveCard((prev) => (prev + 1) % Math.max(cookedRecipes.length, 1));
+    setActiveCard((prev) => (prev + 1) % Math.max(topRecipes.length, 1));
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#3F4756' }}>
       <Navbar />
 
-      <div className="relative overflow-hidden">
+      <div className="relative overflow-x-hidden">
         <div
           className="absolute bottom-0 left-0 w-full bg-white"
           style={{
@@ -174,7 +100,6 @@ function HomeContent() {
         {/* ── Top section: donut + title */}
         <div className="relative z-10 mx-auto max-w-6xl px-6 pb-0 pt-10">
           <div className="grid grid-cols-1 items-center gap-8 md:grid-cols-2">
-            {/* Donut card */}
             <div className="mx-auto flex max-w-md items-center gap-6 rounded-2xl bg-white p-6 shadow-lg md:mx-0">
               {summaryLoading ? (
                 <div className="flex h-40 w-full items-center justify-center">
@@ -211,7 +136,6 @@ function HomeContent() {
               )}
             </div>
 
-            {/* Title */}
             <div className="text-white">
               <h1
                 className="mb-4 text-4xl font-bold italic md:text-5xl"
@@ -226,10 +150,9 @@ function HomeContent() {
           </div>
         </div>
 
-        {/* ── Bottom section: weekly recipes */}
-        <div className="relative z-10 mx-auto max-w-6xl px-6 pb-16 pt-12">
+        {/* ── Bottom section: top rated recipes */}
+        <div className="relative z-10 mx-auto max-w-6xl px-6 pb-32 pt-12">
           <div className="grid grid-cols-1 items-end gap-8 md:grid-cols-2">
-            {/* Left: text + favorites strip */}
             <div>
               <h2 className="mb-4 text-2xl font-bold text-white md:text-gray-800">
                 {t('landing.weeklyRecipesTitle')}
@@ -239,40 +162,33 @@ function HomeContent() {
                 <p>{t('landing.weeklyRecipesDesc2')}</p>
                 <p>{t('landing.weeklyRecipesDesc3')}</p>
               </div>
-
-              {!favLoading && favorites.length > 0 && (
-                <div className="mt-6 flex flex-wrap gap-2">
-                  {favorites.map((fav) => {
-                    const title = isEl
-                      ? fav.recipe?.title_el
-                      : fav.recipe?.title_en;
-                    if (!title) return null;
-                    return (
-                      <span
-                        key={fav.id}
-                        className="rounded-full px-3 py-1 text-xs font-semibold"
-                        style={{ backgroundColor: '#B3D5F8', color: '#3F4756' }}
-                      >
-                        {title}
-                      </span>
-                    );
-                  })}
-                </div>
-              )}
             </div>
 
-            {/* Right: fanned cards — always rendered */}
-            {cookedLoading ? (
+            {topRatedLoading ? (
               <div className="flex justify-center py-16">
                 <div className="h-8 w-8 animate-spin rounded-full border-4 border-myBlue-200 border-t-transparent" />
               </div>
+            ) : topRecipes.length === 0 ? (
+              <div className="flex flex-col items-center justify-center gap-4 rounded-2xl bg-white px-8 py-12 text-center shadow-lg">
+                <p className="text-sm font-semibold text-gray-700">
+                  {t('landing.noRatingsTitle')}
+                </p>
+                <p className="max-w-xs text-xs text-gray-400">
+                  {t('landing.noRatingsDesc')}
+                </p>
+                <Link
+                  href="/recipes"
+                  className="mt-2 rounded-xl border-2 border-gray-800 px-5 py-2 text-sm font-bold text-gray-800 transition-colors hover:bg-gray-800 hover:text-white"
+                >
+                  {t('landing.noRatingsCta')}
+                </Link>
+              </div>
             ) : (
               <FannedCards
-                recipes={displayRecipes}
+                recipes={topRecipes}
                 activeIndex={activeCard}
                 onNext={handleNext}
                 isEl={isEl}
-                isPlaceholder={isPlaceholder}
                 t={t}
               />
             )}
@@ -347,21 +263,30 @@ function DonutChart({
 
 // ── Fanned cards
 const CARD_COLORS = ['#EAB308', '#86EFAC', '#B3D5F8'];
-const PLACEHOLDER_COLOR = '#E5E7EB';
+
+type TopRecipe = {
+  id: number;
+  title_el: string;
+  title_en: string;
+  recipeImage?: string | null;
+  caloriesTotal?: number | null;
+  prepTime?: number | null;
+  cookTime?: number | null;
+  difficulty?: string | null;
+  category?: string | null;
+};
 
 function FannedCards({
   recipes,
   activeIndex,
   onNext,
   isEl,
-  isPlaceholder,
   t,
 }: {
-  recipes: FannedRecipeEntry[];
+  recipes: TopRecipe[];
   activeIndex: number;
   onNext: () => void;
   isEl: boolean;
-  isPlaceholder: boolean;
   t: ReturnType<typeof useTranslation>['t'];
 }) {
   const count = recipes.length;
@@ -375,32 +300,29 @@ function FannedCards({
       : count === 2
         ? [(activeIndex + 1) % 2, activeIndex % 2, activeIndex % 2]
         : [
-            (activeIndex + 0) % count,
+            activeIndex % count,
             (activeIndex + 1) % count,
             (activeIndex + 2) % count,
           ];
 
   return (
     <div className="flex flex-col items-center gap-4 md:flex-row md:justify-center">
-      <div className="relative w-full max-w-[260px]" style={{ height: 380 }}>
+      <div className="relative w-full max-w-[260px]" style={{ height: 420 }}>
         {indices.map((recipeIdx, stackPos) => {
-          const entry = recipes[recipeIdx];
-          const recipe = entry?.recipe;
+          const recipe = recipes[recipeIdx];
           if (!recipe) return null;
 
           const isFront = stackPos === 2;
-          const bgColor = isPlaceholder
-            ? PLACEHOLDER_COLOR
-            : CARD_COLORS[recipeIdx % CARD_COLORS.length];
+          const bgColor = CARD_COLORS[recipeIdx % CARD_COLORS.length];
           const title = isEl ? recipe.title_el : recipe.title_en;
           const totalTime = (recipe.prepTime ?? 0) + (recipe.cookTime ?? 0);
 
           return (
             <div
-              key={`${entry.id}-${stackPos}`}
-              className="absolute rounded-2xl shadow-xl overflow-visible"
+              key={`${recipe.id}-${stackPos}`}
+              className="absolute overflow-visible rounded-2xl shadow-xl"
               style={{
-                width: 'calc(100% - 0px)',
+                width: '100%',
                 bottom: 0,
                 left: xOffsets[stackPos],
                 transform: `rotate(${rotations[stackPos]}deg) translateY(${yOffsets[stackPos]})`,
@@ -409,7 +331,7 @@ function FannedCards({
                 transition: 'all 0.4s ease',
               }}
             >
-              {/* Image / placeholder circle */}
+              {/* Image or blank circle */}
               <div
                 className="relative flex justify-center"
                 style={{ marginTop: -40 }}
@@ -421,20 +343,12 @@ function FannedCards({
                     className="h-28 w-28 rounded-full border-4 border-white object-cover shadow-md"
                   />
                 ) : (
-                  <div
-                    className="h-28 w-28 rounded-full border-4 border-white shadow-md flex items-center justify-center text-3xl"
-                    style={{
-                      backgroundColor: isPlaceholder ? '#F3F4F6' : '#EAEAEA',
-                    }}
-                  >
-                    {isPlaceholder ? '' : '🍽️'}
-                  </div>
+                  <div className="h-28 w-28 rounded-full border-4 border-white bg-gray-100 shadow-md" />
                 )}
               </div>
 
               <div className="px-4 pb-4 pt-2">
-                {/* Difficulty badge — real recipes only */}
-                {isFront && !isPlaceholder && recipe.difficulty && (
+                {isFront && recipe.difficulty && (
                   <div className="mb-1 flex justify-end">
                     <span className="rounded-full bg-white px-3 py-0.5 text-xs font-semibold text-gray-700">
                       {recipe.difficulty}
@@ -442,19 +356,14 @@ function FannedCards({
                   </div>
                 )}
 
-                {/* Title */}
                 <h3
-                  className="mb-1 text-sm font-bold leading-tight"
-                  style={{
-                    minHeight: 36,
-                    color: isPlaceholder ? '#9CA3AF' : '#1F2937',
-                  }}
+                  className="mb-1 text-sm font-bold leading-tight text-gray-900"
+                  style={{ minHeight: 36 }}
                 >
-                  {isPlaceholder ? '' : title}
+                  {title}
                 </h3>
 
-                {/* Front card — real */}
-                {isFront && !isPlaceholder && (
+                {isFront && (
                   <>
                     <div className="mb-3 flex items-center justify-between border-t border-white/60 pt-2 text-xs font-semibold text-gray-700">
                       {totalTime > 0 && (
@@ -473,25 +382,20 @@ function FannedCards({
                         </span>
                       )}
                     </div>
-                    <button className="w-full rounded-xl border-2 border-gray-800 py-2 text-sm font-bold text-gray-800 transition-colors duration-150 hover:bg-gray-800 hover:text-white">
+                    <Link
+                      href={`/user/recipes/${recipe.id}`}
+                      className="block w-full rounded-xl border-2 border-gray-800 py-2 text-center text-sm font-bold text-gray-800 transition-colors duration-150 hover:bg-gray-800 hover:text-white"
+                    >
                       {t('landing.startCooking')}
-                    </button>
+                    </Link>
                   </>
                 )}
 
-                {/* Front card — placeholder message */}
-                {isFront && isPlaceholder && (
-                  <p className="mt-4 text-center text-xs text-gray-400">
-                    {t('landing.noCookedYet')}
-                  </p>
-                )}
-
-                {/* Back cards — real */}
-                {!isFront && !isPlaceholder && (
+                {!isFront && (
                   <div className="mt-2">
-                    <button className="w-full rounded-xl border border-gray-700 py-1.5 text-xs font-semibold text-gray-700">
+                    <span className="block w-full rounded-xl border border-gray-700 py-1.5 text-center text-xs font-semibold text-gray-700">
                       {t('landing.startCooking')}…
-                    </button>
+                    </span>
                   </div>
                 )}
               </div>
@@ -500,8 +404,7 @@ function FannedCards({
         })}
       </div>
 
-      {/* Next button — real recipes with more than 1 only */}
-      {!isPlaceholder && count > 1 && (
+      {count > 1 && (
         <button
           onClick={onNext}
           className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full border-2 border-gray-700 text-gray-700 transition-colors duration-150 hover:bg-gray-700 hover:text-white"
