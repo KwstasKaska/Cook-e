@@ -1,0 +1,8 @@
+fragment RegularChefProfileResponse on ChefProfileResponse {
+  errors {
+    ...RegualarError
+  }
+  chefProfile {
+    ...RegularChefProfile
+  }
+}

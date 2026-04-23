@@ -3,6 +3,8 @@ import Navbar from '../../components/Users/Navbar';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useRouter } from 'next/router';
+import { format } from 'date-fns';
+import { el, enUS } from 'date-fns/locale';
 import {
   useNutritionistsQuery,
   useAvailableSlotsQuery,
@@ -10,7 +12,8 @@ import {
 } from '../../generated/graphql';
 import useIsUser from '../../utils/useIsUser';
 
-// ── Types
+// ── Types ─────────────────────────────────────────────────────────────────────
+
 type SelectedNutritionist = {
   id: number;
   username: string;
@@ -20,6 +23,16 @@ type SelectedNutritionist = {
   city?: string | null;
 };
 
+// ── Helper ────────────────────────────────────────────────────────────────────
+
+// Slot dates are stored as ISO (YYYY-MM-DD) — format for display only
+const toDisplay = (isoDate: string, locale: Locale): string => {
+  const [year, month, day] = isoDate.split('-').map(Number);
+  return format(new Date(year, month - 1, day), 'dd MMMM yyyy', { locale });
+};
+
+// ── getServerSideProps ────────────────────────────────────────────────────────
+
 export async function getServerSideProps({ locale }: { locale: string }) {
   return {
     props: {
@@ -28,12 +41,15 @@ export async function getServerSideProps({ locale }: { locale: string }) {
   };
 }
 
+// ── Page root ─────────────────────────────────────────────────────────────────
+
 export default function NutritionistsPage() {
   const { loading: authLoading, isAuthorized } = useIsUser();
   if (authLoading || !isAuthorized) return null;
-
   return <NutritionistsContent />;
 }
+
+// ── Content router ────────────────────────────────────────────────────────────
 
 function NutritionistsContent() {
   const [selected, setSelected] = useState<SelectedNutritionist | null>(null);
@@ -41,11 +57,11 @@ function NutritionistsContent() {
   if (selected) {
     return <ProfileView nutr={selected} onBack={() => setSelected(null)} />;
   }
-
   return <ListView onSelect={setSelected} />;
 }
 
-// ── List view
+// ── List view ─────────────────────────────────────────────────────────────────
+
 function ListView({
   onSelect,
 }: {
@@ -60,7 +76,6 @@ function ListView({
   });
 
   const nutritionists = data?.nutritionists ?? [];
-
   const filtered = nutritionists.filter((n) =>
     (n.user?.username ?? '').toLowerCase().includes(search.toLowerCase()),
   );
@@ -99,7 +114,7 @@ function ListView({
                 </span>
               </div>
               {filtered.length === 0 ? (
-                <div className="py-12 text-center text-gray-400 text-sm">
+                <div className="py-12 text-center text-sm text-gray-400">
                   {t('nutritionists.noResults')}
                 </div>
               ) : (
@@ -132,7 +147,8 @@ function ListView({
   );
 }
 
-// ── Nutritionist card
+// ── Nutritionist card ─────────────────────────────────────────────────────────
+
 function NutrCard({
   id,
   username,
@@ -170,7 +186,8 @@ function NutrCard({
   );
 }
 
-// ── Profile view
+// ── Profile view ──────────────────────────────────────────────────────────────
+
 function ProfileView({
   nutr,
   onBack,
@@ -178,9 +195,10 @@ function ProfileView({
   nutr: SelectedNutritionist;
   onBack: () => void;
 }) {
-  const { t } = useTranslation('common');
+  const { t, i18n } = useTranslation('common');
   const { locale } = useRouter();
   const isEl = locale === 'el';
+  const dateFnsLocale = i18n.language === 'el' ? el : enUS;
 
   const [monthIndex, setMonthIndex] = useState(new Date().getMonth());
   const [selectedSlotId, setSelectedSlotId] = useState<number | null>(null);
@@ -197,14 +215,13 @@ function ProfileView({
 
   const availableSlots = slotsData?.availableSlots ?? [];
 
-  // ── Filter slots by selected month and reset selection on change
+  // Slots are stored as ISO (YYYY-MM-DD) — parse natively, no locale tricks needed
   const visibleSlots = availableSlots.filter((slot) => {
     if (!slot.date) return false;
     const slotDate = new Date(slot.date);
     return !isNaN(slotDate.getTime()) && slotDate.getMonth() === monthIndex;
   });
 
-  // ── Locale-aware month name — no hardcoded array needed
   const monthName = new Date(2026, monthIndex).toLocaleString(
     isEl ? 'el-GR' : 'en-US',
     { month: 'long' },
@@ -227,6 +244,11 @@ function ProfileView({
         setServerError(t('nutritionists.bookError'));
         return;
       }
+      const gqlErrors = (result.data?.requestAppointment as any)?.errors;
+      if (gqlErrors?.length) {
+        setServerError(gqlErrors[0].message);
+        return;
+      }
       setSuccessMsg(t('nutritionists.bookSuccess'));
       setSelectedSlotId(null);
     } catch {
@@ -246,7 +268,7 @@ function ProfileView({
           }}
         />
         <div className="relative z-10 mx-auto max-w-4xl px-6 pb-20 pt-10">
-          {/* Back */}
+          {/* Back button */}
           <button
             onClick={onBack}
             className="mb-6 flex items-center gap-1 text-sm text-gray-300 transition-colors hover:text-white"
@@ -282,7 +304,7 @@ function ProfileView({
                   href={`tel:${nutr.phone}`}
                   className="flex h-12 w-12 items-center justify-center rounded-full shadow-md"
                   style={{ backgroundColor: '#377CC3' }}
-                  aria-label="Κλήση"
+                  aria-label="Call"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -304,7 +326,7 @@ function ProfileView({
                 href={`mailto:${nutr.email}`}
                 className="flex h-12 w-12 items-center justify-center rounded-full shadow-md"
                 style={{ backgroundColor: '#377CC3' }}
-                aria-label="Αποστολή email"
+                aria-label="Send email"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -325,9 +347,8 @@ function ProfileView({
           </div>
 
           {nutr.city && (
-            <p className="mb-2 text-sm text-gray-300">📍 {nutr.city}</p>
+            <p className="mb-2 text-sm text-gray-300">{nutr.city}</p>
           )}
-
           {nutr.bio && (
             <p className="mb-10 max-w-xl text-sm leading-relaxed text-gray-300">
               {nutr.bio}
@@ -343,7 +364,7 @@ function ProfileView({
             </div>
 
             {/* Month selector */}
-            <div className="mb-6 flex items-center gap-4 self-start">
+            <div className="mb-6 flex items-center gap-4 self-start bg-myRed">
               <button
                 onClick={() => handleMonthChange(-1)}
                 disabled={monthIndex === 0}
@@ -364,7 +385,7 @@ function ProfileView({
                   />
                 </svg>
               </button>
-              <span className="text-base font-semibold text-white capitalize">
+              <span className="text-base font-semibold capitalize text-white">
                 {monthName}
               </span>
               <button
@@ -415,14 +436,13 @@ function ProfileView({
                         color: '#3F4756',
                       }}
                     >
-                      {slot.date} {slot.time}
+                      {toDisplay(slot.date, dateFnsLocale)} {slot.time}
                     </button>
                   );
                 })}
               </div>
             )}
 
-            {/* Feedback */}
             {serverError && (
               <p className="mb-3 text-sm font-semibold text-red-400">
                 {serverError}

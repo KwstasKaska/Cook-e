@@ -1,13 +1,5 @@
 mutation UpdateNutritionistProfile($data: UpdateNutritionistProfileInput!) {
   updateNutritionistProfile(data: $data) {
-    id
-    bio
-    phone
-    city
-    user {
-      id
-      username
-      email
-    }
+    ...RegularNutritionistProfileResponse
   }
 }

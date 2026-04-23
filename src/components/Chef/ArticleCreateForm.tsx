@@ -8,10 +8,7 @@ interface ArticleCreateFormProps {
   onClose: () => void;
 }
 
-export default function ArticleCreateForm({
-  chefUserId,
-  onClose,
-}: ArticleCreateFormProps) {
+export default function ArticleCreateForm({ onClose }: ArticleCreateFormProps) {
   const { t } = useTranslation('common');
 
   const [title, setTitle] = useState('');

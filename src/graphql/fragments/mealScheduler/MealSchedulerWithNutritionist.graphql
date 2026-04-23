@@ -1,0 +1,12 @@
+fragment MealSchedulerWithNutritionist on MealScheduler {
+  id
+  day
+  mealType
+  comment_el
+  comment_en
+  nutritionist {
+    user {
+      username
+    }
+  }
+}

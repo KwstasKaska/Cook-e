@@ -1,0 +1,16 @@
+fragment RegularNutritionistProfileResponse on NutritionistProfileResponse {
+  errors {
+    ...RegualarError
+  }
+  nutritionistProfile {
+    id
+    bio
+    phone
+    city
+    user {
+      id
+      username
+      email
+    }
+  }
+}

@@ -1,5 +1,4 @@
 import { createContext } from 'react';
-import { Appointment } from './Nutritionist/CalendarC';
 import { CellInfo } from './Nutritionist/NutrScheduler';
 
 export const DateContext = createContext<{
@@ -10,14 +9,6 @@ export const DateContext = createContext<{
   setSelectedDate: () => {},
 });
 
-export const ClientsContextType = createContext<{
-  clients: Appointment[];
-  setClients: React.Dispatch<React.SetStateAction<Appointment[]>>;
-}>({
-  clients: [],
-  setClients: () => {},
-});
-
 export const TableContextType = createContext<{
   selectedDay: string;
   setSelectedDay: (day: string) => void;
@@ -25,6 +16,8 @@ export const TableContextType = createContext<{
   setSelectedField: (field: string) => void;
   cellInfo: CellInfo;
   setCellInfo: (cellInfo: CellInfo) => void;
+  selectedUserId: number | null;
+  setSelectedUserId: (id: number | null) => void;
 }>({
   selectedDay: '',
   setSelectedDay: () => {},
@@ -32,4 +25,6 @@ export const TableContextType = createContext<{
   setSelectedField: () => {},
   cellInfo: {},
   setCellInfo: () => {},
+  selectedUserId: null,
+  setSelectedUserId: () => {},
 });

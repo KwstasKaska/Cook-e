@@ -1,5 +1,5 @@
 mutation UpdateChefProfile($data: UpdateChefProfileInput!) {
   updateChefProfile(data: $data) {
-    ...RegularChefProfile
+    ...RegularChefProfileResponse
   }
 }

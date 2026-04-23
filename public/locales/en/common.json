@@ -39,6 +39,22 @@
     "minutes": "minutes",
     "noCookedYet": "You haven't cooked any recipes yet."
   },
+  "day": {
+    "MONDAY": "Monday",
+    "TUESDAY": "Tuesday",
+    "WEDNESDAY": "Wednesday",
+    "THURSDAY": "Thursday",
+    "FRIDAY": "Friday",
+    "SATURDAY": "Saturday",
+    "SUNDAY": "Sunday"
+  },
+  "meal": {
+    "BREAKFAST": "Breakfast",
+    "SNAK": "Snack",
+    "LUNCK": "Lunch",
+    "AFTERNOON": "Afternoon snack",
+    "DINNER": "Dinner"
+  },
   "recipe_category": {
     "MEAT": "Meat",
     "LEGUMES": "Legumes",
@@ -127,7 +143,6 @@
     "title": "Settings",
     "personalInfo": "Personal info",
     "security": "Security",
-    "notifications": "Notifications",
     "chefProfile": "Chef profile",
     "deleteAccount": "Delete account",
     "save": "Save",
@@ -150,15 +165,24 @@
     "socialMedia": "Social media",
     "website": "Website",
     "nutritionistProfile": "Professional profile",
-    "emailNotifications": "Email notifications",
-    "newRecipes": "New recipes",
-    "newRecipesDesc": "Get notified when chefs you follow publish new recipes.",
-    "appointmentReminders": "Appointment reminders",
-    "appointmentRemindersDesc": "Receive an email before each appointment with a nutritionist.",
     "professionalDetails": "Professional details",
     "degreeTitle": "Degree title",
     "licenseNumber": "License number",
-    "specialization": "Specialization"
+    "specialization": "Specialization",
+    "saveSuccess": "Changes saved successfully.",
+    "saveError": "Something went wrong. Please try again.",
+    "usernameRequired": "Username is required.",
+    "emailRequired": "Email is required.",
+    "currentPasswordRequired": "Current password is required.",
+    "newPasswordRequired": "New password is required.",
+    "confirmPasswordRequired": "Confirm password is required.",
+    "passwordMismatch": "Passwords do not match.",
+    "passwordTooShort": "Password must be longer than 4 characters.",
+    "passwordNeedsUppercase": "Password must contain at least one uppercase letter.",
+    "passwordNeedsSpecial": "Password must contain at least one special character.",
+    "mealPlan": "My Meal Plan",
+    "mealPlanBy": "Nutrition plan prepared by",
+    "noMealPlan": "No meal plan has been assigned yet."
   },
   "nutr": {
     "welcome": "Welcome",
@@ -209,7 +233,16 @@
       "error_title": "Title is required.",
       "error_text": "Content is required.",
       "error_image": "Please add an image."
-    }
+    },
+    "selectUserFirst": "Please select a user first.",
+    "selectDayFirst": "Please select a day first.",
+    "selectMealFirst": "Please select a meal type first.",
+    "setContentFirst": "Please write the meal content first.",
+    "selectDateFirst": "Please select a date first.",
+    "selectTimeFirst": "Please select a time.",
+    "serverError": "Something went wrong. Please try again.",
+    "booked": "Booked",
+    "respondError": "Could not process your response. Please try again."
   },
   "chef": {
     "landing": {
@@ -315,7 +348,6 @@
       "image_label": "Article image",
       "validation_required": "Title and content are required."
     },
-
     "create_recipe": {
       "page_title": "Create recipe",
       "step_label": "step {{number}}",

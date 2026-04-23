@@ -5,66 +5,62 @@ import weeklyPlanner from '/public/images/weeklyplanner.jpg';
 import mealsPlanner from '/public/images/meals.jpg';
 import personPlanner from '/public/images/person-planner.jpg';
 import contentPlanner from '/public/images/meal-planner.jpg';
-import { randomFields } from '../NutrScheduler';
-import { daysOfWeek } from '../NutrScheduler';
+import { randomFields, daysOfWeek } from '../NutrScheduler';
 import { TableContextType } from '../../Context';
+import { DayOfWeek, MealType } from '../../../generated/graphql';
 
-interface AccordionProps {}
+interface AccordionProps {
+  acceptedClients: { id: number; username: string }[];
+}
 
-const Accordion: React.FC<AccordionProps> = ({}) => {
+const Accordion: React.FC<AccordionProps> = ({ acceptedClients }) => {
   const { t } = useTranslation('common');
   const { selectedDay, setSelectedDay } = useContext(TableContextType);
   const { selectedField, setSelectedField } = useContext(TableContextType);
   const { cellInfo, setCellInfo } = useContext(TableContextType);
+  const { selectedUserId, setSelectedUserId } = useContext(TableContextType);
 
-  const handleDayChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    event.preventDefault();
-    setSelectedDay(event.target.value);
+  const handleUserChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    e.preventDefault();
+    const val = e.target.value;
+    setSelectedUserId(val ? Number(val) : null);
   };
 
-  const handleFieldChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    event.preventDefault();
-    setSelectedField(event.target.value);
+  const handleDayChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    e.preventDefault();
+    setSelectedDay(e.target.value as DayOfWeek);
   };
 
-  const handleCellInfoChange = (
-    event: React.ChangeEvent<HTMLTextAreaElement>,
-  ) => {
-    event.preventDefault();
+  const handleFieldChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    e.preventDefault();
+    setSelectedField(e.target.value as MealType);
+  };
+
+  const handleCellInfoChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    e.preventDefault();
     setCellInfo({
       ...cellInfo,
-      [`${selectedDay}-${selectedField}`]: event.target.value,
+      [`${selectedDay}-${selectedField}`]: e.target.value,
     });
   };
 
-  const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     const activePanel = (e.target as HTMLElement).closest(
       '[data-name="accordion-panel"]',
     );
+    if (!activePanel) return;
 
-    if (!activePanel) {
-      return;
-    }
-    const buttons = activePanel.parentElement?.querySelectorAll('button');
-    const contents = activePanel.parentElement?.querySelectorAll(
-      '[data-content="accordion-content"]',
-    );
+    activePanel.parentElement
+      ?.querySelectorAll('button')
+      .forEach((b) => b.setAttribute('aria-expanded', 'false'));
+    activePanel.parentElement
+      ?.querySelectorAll('[data-content="accordion-content"]')
+      .forEach((c) => c.setAttribute('aria-hidden', 'true'));
 
-    buttons?.forEach((button) => {
-      button.setAttribute('aria-expanded', 'false');
-    });
-
-    contents?.forEach((content) => {
-      content.setAttribute('aria-hidden', 'true');
-    });
-
-    const clickedButton = activePanel.querySelector('button');
-    clickedButton?.setAttribute('aria-expanded', 'true');
-
-    const toggleContent = activePanel.querySelector(
-      '[data-content="accordion-content"]',
-    );
-    toggleContent?.setAttribute('aria-hidden', 'false');
+    activePanel.querySelector('button')?.setAttribute('aria-expanded', 'true');
+    activePanel
+      .querySelector('[data-content="accordion-content"]')
+      ?.setAttribute('aria-hidden', 'false');
   };
 
   return (
@@ -84,7 +80,7 @@ const Accordion: React.FC<AccordionProps> = ({}) => {
               aria-expanded="true"
               className="flex flex-row-reverse items-center gap-4"
             >
-              <span id="panel1-title" className="text-2xl font-bold text-white">
+              <span className="text-2xl font-bold text-white">
                 {t('nutr.selectUser')}
               </span>
               <svg
@@ -95,7 +91,6 @@ const Accordion: React.FC<AccordionProps> = ({}) => {
                 stroke="currentColor"
                 className="w-12 rounded-full bg-myBlue-100 p-3"
                 aria-hidden="true"
-                xlinkHref="#orismos"
               >
                 <path
                   strokeLinecap="round"
@@ -118,13 +113,20 @@ const Accordion: React.FC<AccordionProps> = ({}) => {
                 className="rounded-2xl bg-myGrey-100 capitalize text-myGrey-200 text-base md:text-lg"
                 name="person"
                 id="person"
+                value={selectedUserId ?? ''}
+                onChange={handleUserChange}
               >
                 <option value="">{t('nutr.selectUser')}</option>
+                {acceptedClients.map((c) => (
+                  <option key={c.id} value={c.id}>
+                    {c.username}
+                  </option>
+                ))}
               </select>
             </section>
             <Image
               src={personPlanner}
-              alt={''}
+              alt=""
               priority
               className="absolute inset-0 -z-[1] h-full w-full object-cover transition-[filter] duration-500"
             />
@@ -139,10 +141,10 @@ const Accordion: React.FC<AccordionProps> = ({}) => {
           <h2 id="panel2-heading">
             <button
               aria-controls="panel2-content"
-              className="flex flex-row-reverse items-center gap-4"
               aria-expanded="false"
+              className="flex flex-row-reverse items-center gap-4"
             >
-              <span id="panel2-title" className="text-2xl font-bold text-white">
+              <span className="text-2xl font-bold text-white">
                 {t('nutr.selectDay')}
               </span>
               <svg
@@ -152,7 +154,6 @@ const Accordion: React.FC<AccordionProps> = ({}) => {
                 strokeWidth="1.5"
                 stroke="currentColor"
                 className="w-12 rounded-full bg-myBlue-100 p-3"
-                xlinkHref="#day"
               >
                 <path
                   strokeLinecap="round"
@@ -181,14 +182,14 @@ const Accordion: React.FC<AccordionProps> = ({}) => {
                 <option value="">{t('nutr.selectDay')}</option>
                 {daysOfWeek.map((day) => (
                   <option key={day} value={day}>
-                    {day}
+                    {t(`day.${day}`)}
                   </option>
                 ))}
               </select>
             </section>
             <Image
               src={weeklyPlanner}
-              alt={''}
+              alt=""
               priority
               className="absolute inset-0 -z-[1] h-full w-full object-cover transition-[filter] duration-500"
             />
@@ -206,7 +207,7 @@ const Accordion: React.FC<AccordionProps> = ({}) => {
               aria-controls="panel3-content"
               className="flex flex-row-reverse items-center gap-4"
             >
-              <span id="panel3-title" className="text-2xl font-bold text-white">
+              <span className="text-2xl font-bold text-white">
                 {t('nutr.selectMeal')}
               </span>
               <svg
@@ -216,7 +217,6 @@ const Accordion: React.FC<AccordionProps> = ({}) => {
                 strokeWidth="1.5"
                 stroke="currentColor"
                 className="w-12 rounded-full bg-myBlue-100 p-3"
-                xlinkHref="#meal"
               >
                 <path
                   strokeLinecap="round"
@@ -245,14 +245,14 @@ const Accordion: React.FC<AccordionProps> = ({}) => {
                 <option value="">{t('nutr.selectMeal')}</option>
                 {randomFields.map((field) => (
                   <option key={field} value={field}>
-                    {field}
+                    {t(`meal.${field}`)}
                   </option>
                 ))}
               </select>
             </section>
             <Image
               src={mealsPlanner}
-              alt={''}
+              alt=""
               priority
               className="absolute inset-0 -z-[1] h-full w-full object-cover object-top transition-[filter] duration-500"
             />
@@ -270,7 +270,7 @@ const Accordion: React.FC<AccordionProps> = ({}) => {
               aria-controls="panel4-content"
               className="flex flex-row-reverse items-center gap-4"
             >
-              <span id="panel4-title" className="text-2xl font-bold text-white">
+              <span className="text-2xl font-bold text-white">
                 {t('nutr.setContent')}
               </span>
               <svg
@@ -280,7 +280,6 @@ const Accordion: React.FC<AccordionProps> = ({}) => {
                 strokeWidth="1.5"
                 stroke="currentColor"
                 className="w-12 rounded-full bg-myBlue-100 p-3"
-                xlinkHref="#content"
               >
                 <path
                   strokeLinecap="round"
@@ -303,14 +302,14 @@ const Accordion: React.FC<AccordionProps> = ({}) => {
                 className="h-[10em] resize-none rounded-2xl border-2 bg-myGrey-100 text-base text-myGrey-200 md:text-lg"
                 name="cell-info"
                 id="cell-info"
-                value={cellInfo[`${selectedDay}-${selectedField}`] || ''}
+                value={cellInfo[`${selectedDay}-${selectedField}`] ?? ''}
                 onChange={handleCellInfoChange}
                 placeholder={t('nutr.setContentPlaceholder')}
               />
             </section>
             <Image
               src={contentPlanner}
-              alt={''}
+              alt=""
               priority
               className="absolute inset-0 -z-[1] h-full w-full object-cover transition-[filter] duration-500"
             />

@@ -102,6 +102,12 @@ export type ChefProfile = {
   user: User;
 };
 
+export type ChefProfileResponse = {
+  __typename?: 'ChefProfileResponse';
+  chefProfile?: Maybe<ChefProfile>;
+  errors?: Maybe<Array<FieldError>>;
+};
+
 export type ChefRating = {
   __typename?: 'ChefRating';
   chefId: Scalars['Int']['output'];
@@ -240,7 +246,6 @@ export type MessageResponse = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  UpdateMealSchedulerInput?: Maybe<MealPlanResponse>;
   addManyToCart: Array<ShoppingCart>;
   addToCart: ShoppingCart;
   changePassword: UserResponse;
@@ -275,16 +280,12 @@ export type Mutation = {
   updateAppointmentRequest?: Maybe<AppointmentRequestResponse>;
   updateArticle: ArticleResponse;
   updateCartItem: ShoppingCart;
-  updateChefProfile?: Maybe<ChefProfile>;
-  updateNutritionistProfile?: Maybe<NutritionistProfile>;
+  updateChefProfile: ChefProfileResponse;
+  updateMealScheduler?: Maybe<MealPlanResponse>;
+  updateNutritionistProfile: NutritionistProfileResponse;
   updateRecipe: RecipeResponse;
   updateUser: UserResponse;
   updateUserImage: Scalars['Boolean']['output'];
-};
-
-
-export type MutationUpdateMealSchedulerInputArgs = {
-  data: UpdateMealSchedulerInput;
 };
 
 
@@ -472,6 +473,11 @@ export type MutationUpdateChefProfileArgs = {
 };
 
 
+export type MutationUpdateMealSchedulerArgs = {
+  data: UpdateMealSchedulerInput;
+};
+
+
 export type MutationUpdateNutritionistProfileArgs = {
   data: UpdateNutritionistProfileInput;
 };
@@ -509,6 +515,12 @@ export type NutritionistProfile = {
   user?: Maybe<User>;
 };
 
+export type NutritionistProfileResponse = {
+  __typename?: 'NutritionistProfileResponse';
+  errors?: Maybe<Array<FieldError>>;
+  nutritionistProfile?: Maybe<NutritionistProfile>;
+};
+
 export type Query = {
   __typename?: 'Query';
   article?: Maybe<Article>;
@@ -537,6 +549,7 @@ export type Query = {
   myConversations: Array<Conversation>;
   myCookedRecipes: Array<CookedRecipe>;
   myFavorites: Array<UserFavorite>;
+  myMealPlan: Array<MealScheduler>;
   myNutritionPlans: Array<MealScheduler>;
   myNutritionalSummary: NutritionalSummary;
   myNutritionistProfile?: Maybe<NutritionistProfile>;
@@ -962,7 +975,11 @@ export type Utensil = {
 
 export type RegularChefProfileFragment = { __typename?: 'ChefProfile', id: number, bio?: string | null, user: { __typename?: 'User', id: number, username: string, email: string } };
 
+export type RegularChefProfileResponseFragment = { __typename?: 'ChefProfileResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, chefProfile?: { __typename?: 'ChefProfile', id: number, bio?: string | null, user: { __typename?: 'User', id: number, username: string, email: string } } | null };
+
 export type RegualarErrorFragment = { __typename?: 'FieldError', field: string, message: string };
+
+export type RegularNutritionistProfileResponseFragment = { __typename?: 'NutritionistProfileResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, nutritionistProfile?: { __typename?: 'NutritionistProfile', id: number, bio?: string | null, phone?: string | null, city?: string | null, user?: { __typename?: 'User', id: number, username: string, email: string } | null } | null };
 
 export type RegularUserFragment = { __typename?: 'User', id: number, username: string, email: string, role: UserRole };
 
@@ -985,6 +1002,8 @@ export type RegularCartItemFragment = { __typename?: 'ShoppingCart', id: number,
 export type RegularCookedRecipeFragment = { __typename?: 'CookedRecipe', id: number, userId: number, recipeId: number, cookedAt: string, recipe?: { __typename?: 'Recipe', id: number, title_el: string, title_en: string, recipeImage?: string | null, category?: RecipeCategory | null, prepTime: number, cookTime: number, caloriesTotal?: number | null, difficulty: Difficulty } | null };
 
 export type RegularUserFavoriteFragment = { __typename?: 'UserFavorite', id: number, userId: number, recipeId: number, savedAt: string, recipe?: { __typename?: 'Recipe', id: number, title_el: string, title_en: string, recipeImage?: string | null, category?: RecipeCategory | null, prepTime: number, cookTime: number, difficulty: Difficulty } | null };
+
+export type MealSchedulerWithNutritionistFragment = { __typename?: 'MealScheduler', id: number, day: DayOfWeek, mealType: MealType, comment_el: string, comment_en: string, nutritionist: { __typename?: 'NutritionistProfile', user?: { __typename?: 'User', username: string } | null } };
 
 export type RegularMealPlanResponseFragment = { __typename?: 'MealPlanResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, mealScheduler?: { __typename?: 'MealScheduler', id: number, day: DayOfWeek, mealType: MealType, comment_el: string, comment_en: string } | null };
 
@@ -1260,14 +1279,14 @@ export type UpdateChefProfileMutationVariables = Exact<{
 }>;
 
 
-export type UpdateChefProfileMutation = { __typename?: 'Mutation', updateChefProfile?: { __typename?: 'ChefProfile', id: number, bio?: string | null, user: { __typename?: 'User', id: number, username: string, email: string } } | null };
+export type UpdateChefProfileMutation = { __typename?: 'Mutation', updateChefProfile: { __typename?: 'ChefProfileResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, chefProfile?: { __typename?: 'ChefProfile', id: number, bio?: string | null, user: { __typename?: 'User', id: number, username: string, email: string } } | null } };
 
 export type UpdateNutritionistProfileMutationVariables = Exact<{
   data: UpdateNutritionistProfileInput;
 }>;
 
 
-export type UpdateNutritionistProfileMutation = { __typename?: 'Mutation', updateNutritionistProfile?: { __typename?: 'NutritionistProfile', id: number, bio?: string | null, phone?: string | null, city?: string | null, user?: { __typename?: 'User', id: number, username: string, email: string } | null } | null };
+export type UpdateNutritionistProfileMutation = { __typename?: 'Mutation', updateNutritionistProfile: { __typename?: 'NutritionistProfileResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, nutritionistProfile?: { __typename?: 'NutritionistProfile', id: number, bio?: string | null, phone?: string | null, city?: string | null, user?: { __typename?: 'User', id: number, username: string, email: string } | null } | null } };
 
 export type UpdateUserMutationVariables = Exact<{
   data: UpdateUserInput;
@@ -1283,6 +1302,11 @@ export type MyArticlesQueryVariables = Exact<{
 
 
 export type MyArticlesQuery = { __typename?: 'Query', myArticles: Array<{ __typename?: 'Article', id: number, title_el: string, title_en: string, image: string, createdAt: string }> };
+
+export type MyMealPlanQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MyMealPlanQuery = { __typename?: 'Query', myMealPlan: Array<{ __typename?: 'MealScheduler', id: number, day: DayOfWeek, mealType: MealType, comment_el: string, comment_en: string, nutritionist: { __typename?: 'NutritionistProfile', user?: { __typename?: 'User', username: string } | null } }> };
 
 export type GetMyAppointmentsQueryVariables = Exact<{
   date?: InputMaybe<Scalars['String']['input']>;
@@ -1524,6 +1548,12 @@ export type SuggestedRecipesQueryVariables = Exact<{
 
 export type SuggestedRecipesQuery = { __typename?: 'Query', suggestedRecipes: Array<{ __typename?: 'RecipeSuggestion', missingCount: number, recipe: { __typename?: 'Recipe', id: number, title_el: string, title_en: string, description_el?: string | null, description_en?: string | null, chefComment_el?: string | null, chefComment_en?: string | null, category?: RecipeCategory | null, recipeImage?: string | null, prepTime: number, cookTime: number, restTime?: number | null, difficulty: Difficulty, caloriesTotal?: number | null, protein?: number | null, carbs?: number | null, fat?: number | null, foodEthnicity?: string | null, authorId: number, createdAt: string, updatedAt: string, steps?: Array<{ __typename?: 'Step', id: number, body_el: string, body_en: string, recipeID: number }> | null, recipeIngredients?: Array<{ __typename?: 'RecipeIngredient', recipeId: number, ingredientId: number, quantity: string, unit: string, ingredient?: { __typename?: 'Ingredient', id: number, name_el: string, name_en: string, caloriesPer100g?: number | null } | null }> | null, author?: { __typename?: 'ChefProfile', user: { __typename?: 'User', username: string } } | null }, missingIngredients: Array<{ __typename?: 'Ingredient', id: number, name_el: string, name_en: string }>, missingUtensils: Array<{ __typename?: 'Utensil', id: number, name_el: string, name_en: string }> }> };
 
+export const RegualarErrorFragmentDoc = gql`
+    fragment RegualarError on FieldError {
+  field
+  message
+}
+    `;
 export const RegularChefProfileFragmentDoc = gql`
     fragment RegularChefProfile on ChefProfile {
   id
@@ -1535,12 +1565,35 @@ export const RegularChefProfileFragmentDoc = gql`
   }
 }
     `;
-export const RegualarErrorFragmentDoc = gql`
-    fragment RegualarError on FieldError {
-  field
-  message
+export const RegularChefProfileResponseFragmentDoc = gql`
+    fragment RegularChefProfileResponse on ChefProfileResponse {
+  errors {
+    ...RegualarError
+  }
+  chefProfile {
+    ...RegularChefProfile
+  }
 }
-    `;
+    ${RegualarErrorFragmentDoc}
+${RegularChefProfileFragmentDoc}`;
+export const RegularNutritionistProfileResponseFragmentDoc = gql`
+    fragment RegularNutritionistProfileResponse on NutritionistProfileResponse {
+  errors {
+    ...RegualarError
+  }
+  nutritionistProfile {
+    id
+    bio
+    phone
+    city
+    user {
+      id
+      username
+      email
+    }
+  }
+}
+    ${RegualarErrorFragmentDoc}`;
 export const RegularUserFragmentDoc = gql`
     fragment RegularUser on User {
   id
@@ -1676,6 +1729,20 @@ export const RegularUserFavoriteFragmentDoc = gql`
     prepTime
     cookTime
     difficulty
+  }
+}
+    `;
+export const MealSchedulerWithNutritionistFragmentDoc = gql`
+    fragment MealSchedulerWithNutritionist on MealScheduler {
+  id
+  day
+  mealType
+  comment_el
+  comment_en
+  nutritionist {
+    user {
+      username
+    }
   }
 }
     `;
@@ -2951,10 +3018,10 @@ export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutatio
 export const UpdateChefProfileDocument = gql`
     mutation UpdateChefProfile($data: UpdateChefProfileInput!) {
   updateChefProfile(data: $data) {
-    ...RegularChefProfile
+    ...RegularChefProfileResponse
   }
 }
-    ${RegularChefProfileFragmentDoc}`;
+    ${RegularChefProfileResponseFragmentDoc}`;
 export type UpdateChefProfileMutationFn = Apollo.MutationFunction<UpdateChefProfileMutation, UpdateChefProfileMutationVariables>;
 
 /**
@@ -2984,18 +3051,10 @@ export type UpdateChefProfileMutationOptions = Apollo.BaseMutationOptions<Update
 export const UpdateNutritionistProfileDocument = gql`
     mutation UpdateNutritionistProfile($data: UpdateNutritionistProfileInput!) {
   updateNutritionistProfile(data: $data) {
-    id
-    bio
-    phone
-    city
-    user {
-      id
-      username
-      email
-    }
+    ...RegularNutritionistProfileResponse
   }
 }
-    `;
+    ${RegularNutritionistProfileResponseFragmentDoc}`;
 export type UpdateNutritionistProfileMutationFn = Apollo.MutationFunction<UpdateNutritionistProfileMutation, UpdateNutritionistProfileMutationVariables>;
 
 /**
@@ -3100,6 +3159,45 @@ export type MyArticlesQueryHookResult = ReturnType<typeof useMyArticlesQuery>;
 export type MyArticlesLazyQueryHookResult = ReturnType<typeof useMyArticlesLazyQuery>;
 export type MyArticlesSuspenseQueryHookResult = ReturnType<typeof useMyArticlesSuspenseQuery>;
 export type MyArticlesQueryResult = Apollo.QueryResult<MyArticlesQuery, MyArticlesQueryVariables>;
+export const MyMealPlanDocument = gql`
+    query MyMealPlan {
+  myMealPlan {
+    ...MealSchedulerWithNutritionist
+  }
+}
+    ${MealSchedulerWithNutritionistFragmentDoc}`;
+
+/**
+ * __useMyMealPlanQuery__
+ *
+ * To run a query within a React component, call `useMyMealPlanQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMyMealPlanQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMyMealPlanQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useMyMealPlanQuery(baseOptions?: Apollo.QueryHookOptions<MyMealPlanQuery, MyMealPlanQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<MyMealPlanQuery, MyMealPlanQueryVariables>(MyMealPlanDocument, options);
+      }
+export function useMyMealPlanLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MyMealPlanQuery, MyMealPlanQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<MyMealPlanQuery, MyMealPlanQueryVariables>(MyMealPlanDocument, options);
+        }
+export function useMyMealPlanSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<MyMealPlanQuery, MyMealPlanQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<MyMealPlanQuery, MyMealPlanQueryVariables>(MyMealPlanDocument, options);
+        }
+export type MyMealPlanQueryHookResult = ReturnType<typeof useMyMealPlanQuery>;
+export type MyMealPlanLazyQueryHookResult = ReturnType<typeof useMyMealPlanLazyQuery>;
+export type MyMealPlanSuspenseQueryHookResult = ReturnType<typeof useMyMealPlanSuspenseQuery>;
+export type MyMealPlanQueryResult = Apollo.QueryResult<MyMealPlanQuery, MyMealPlanQueryVariables>;
 export const GetMyAppointmentsDocument = gql`
     query GetMyAppointments($date: String, $limit: Int = 20, $offset: Int = 0) {
   getMyAppointments(date: $date, limit: $limit, offset: $offset) {

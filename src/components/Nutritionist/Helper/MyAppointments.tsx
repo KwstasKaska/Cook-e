@@ -1,9 +1,25 @@
 import React, { useContext, useState } from 'react';
 import { useTranslation } from 'next-i18next';
+import { format } from 'date-fns';
+import { el, enUS } from 'date-fns/locale';
 import { DateContext } from '../../Context';
-import { Appointment, fakeAppointments } from '../CalendarC';
-import profile from '/public/images/myphoto.jpg';
-import Image from 'next/image';
+import {
+  useGetAppointmentRequestsForNutritionistQuery,
+  AppointmentStatus,
+} from '../../../generated/graphql';
+
+// ── Helper ────────────────────────────────────────────────────────────────────
+
+const toDisplay = (isoDate: string, locale: Locale): string => {
+  const [year, month, day] = isoDate.split('-').map(Number);
+  return format(new Date(year, month - 1, day), 'dd MMMM yyyy', { locale });
+};
+
+// ── Types ─────────────────────────────────────────────────────────────────────
+
+interface GroupedAppointments {
+  [isoDate: string]: { clientUsername: string; time: string }[];
+}
 
 interface MyAppointmentsProps {
   customClassName: string;
@@ -14,9 +30,7 @@ interface MyAppointmentsProps {
   emptyAppointments: string;
 }
 
-interface GroupedAppointments {
-  [date: string]: Appointment[];
-}
+// ── Component ─────────────────────────────────────────────────────────────────
 
 const MyAppointments: React.FC<MyAppointmentsProps> = ({
   customClassName,
@@ -26,73 +40,65 @@ const MyAppointments: React.FC<MyAppointmentsProps> = ({
   marginCustom,
   emptyAppointments,
 }) => {
-  const { t } = useTranslation('common');
+  const { t, i18n } = useTranslation('common');
+  const { selectedDate } = useContext(DateContext);
   const [start, setStart] = useState<number>(0);
   const [end, setEnd] = useState<number>(3);
-  const { selectedDate } = useContext(DateContext);
 
-  const groupedAppointments: GroupedAppointments = {};
+  const dateFnsLocale = i18n.language === 'el' ? el : enUS;
 
-  fakeAppointments.forEach((appointment) => {
-    const date = appointment.date;
-
-    if (!groupedAppointments[date]) {
-      groupedAppointments[date] = [appointment];
-    } else {
-      groupedAppointments[date].push(appointment);
-    }
+  const { data } = useGetAppointmentRequestsForNutritionistQuery({
+    fetchPolicy: 'cache-and-network',
   });
 
-  const handleLoadMore = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-  ) => {
+  // Group accepted requests by ISO date
+  const groupedAppointments: GroupedAppointments = {};
+  (data?.getAppointmentRequestsForNutritionist ?? [])
+    .filter((r) => r.status === AppointmentStatus.Accepted)
+    .forEach((r) => {
+      const date = r.slot?.date ?? '';
+      if (!date) return;
+      if (!groupedAppointments[date]) groupedAppointments[date] = [];
+      groupedAppointments[date].push({
+        clientUsername: r.client?.username ?? '',
+        time: r.slot?.time ?? '',
+      });
+    });
+
+  const sortedDates = Object.keys(groupedAppointments).sort(
+    (a, b) => new Date(a).getTime() - new Date(b).getTime(),
+  );
+
+  // selectedDate is ISO — direct comparison
+  const hasAppointmentsForDate = sortedDates.includes(selectedDate);
+
+  const handleLoadMore = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setStart(start + 3);
     setEnd(end + 3);
   };
 
-  const handleBack = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const handleBack = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setStart(Math.max(start - 3, 0));
     setEnd(Math.max(end - 3, 3));
   };
 
-  const sortedDates: string[] = Object.keys(groupedAppointments).sort(
-    (a, b) => {
-      return new Date(a).getTime() - new Date(b).getTime();
-    },
-  );
-
-  const counterDate: number[] = Object.keys(groupedAppointments).map(
-    (date: string): number => {
-      if (date === selectedDate) {
-        return 1;
-      }
-      return 0;
-    },
-  );
-
-  const checkIfTrue: number = counterDate.reduce(
-    (total: number, currVal: number): number => total + currVal,
-    0,
-  );
-
   return (
-    <div className="">
-      {checkIfTrue >= 1 ? (
+    <div>
+      {hasAppointmentsForDate ? (
         sortedDates.map(
           (date, index) =>
             date === selectedDate && (
               <div key={`${date}_${index}`} className={customClassName}>
-                <div className="">
+                <div>
                   <h2
                     className={`relative z-[2] w-full pb-6 text-center text-2xl font-bold text-${textColor}`}
                   >
-                    {date.replace(/-/g, '  ')}
+                    {toDisplay(date, dateFnsLocale)}
                   </h2>
-
                   <span className={customDateClassName}>
-                    <span className="absolute -top-[5.2em] left-3 z-[1] block h-[5em] w-[16em] -skew-y-3 bg-myBlue-200"></span>
+                    <span className="absolute -top-[5.2em] left-3 z-[1] block h-[5em] w-[16em] -skew-y-3 bg-myBlue-200" />
                   </span>
                   <div
                     className={
@@ -101,23 +107,22 @@ const MyAppointments: React.FC<MyAppointmentsProps> = ({
                         : 'min-h-[20em] rounded-2xl border-2 border-black bg-black bg-opacity-80'
                     }
                   >
-                    <ul className={`${marginCustom}`}>
+                    <ul className={marginCustom}>
                       {groupedAppointments[date]
                         .slice(start, end)
-                        .map((appointment, appointmentIndex) => (
+                        .map((appt, apptIndex) => (
                           <li
-                            key={`${date}_${index}_${appointmentIndex}`}
+                            key={`${date}_${index}_${apptIndex}`}
                             className="mx-auto my-3 flex max-w-xs flex-row items-center gap-3 rounded-lg border-2 border-black bg-white text-base font-bold leading-4 hover:scale-110 hover:bg-myBlue-200 hover:text-white hover:shadow-3xl hover:transition hover:duration-500"
                           >
-                            <Image
-                              src={profile}
-                              alt={t('nutr.profileImageAlt')}
-                              className="max-h-10 max-w-[2.5em] rounded-full object-cover object-top"
-                            />
-                            <div className="grow">{appointment.fullname}</div>
-                            <span className="shrink-0">{appointment.time}</span>
+                            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-myGrey-100 text-base font-bold text-myGrey-200">
+                              {appt.clientUsername.charAt(0).toUpperCase()}
+                            </div>
+                            <div className="grow">{appt.clientUsername}</div>
+                            <span className="shrink-0 pr-2">{appt.time}</span>
                           </li>
                         ))}
+
                       <div className="mx-2 flex flex-row gap-2">
                         {start > 0 && (
                           <button
@@ -131,7 +136,7 @@ const MyAppointments: React.FC<MyAppointmentsProps> = ({
                           showAttrs && (
                             <button
                               onClick={handleLoadMore}
-                              className="my-5 w-full rounded-md border-2 border-black bg-white py-1 font-bold text-black hover:bg-myBlue-100 hover:font-bold hover:text-black hover:shadow-3xl"
+                              className="my-5 w-full rounded-md border-2 border-black bg-white py-1 font-bold text-black hover:bg-myBlue-100 hover:shadow-3xl"
                             >
                               {t('nutr.loadMore')}
                             </button>
@@ -150,9 +155,9 @@ const MyAppointments: React.FC<MyAppointmentsProps> = ({
           <div className="absolute z-[5] px-4 py-8 text-center text-base font-bold leading-relaxed md:text-lg">
             {t('nutr.noAppointmentsFor')} <br />
             <span className="relative inline-block">
-              <span className="absolute -left-10 top-3 z-[6] block h-[3em] w-[12em] -skew-y-3 bg-myRed"></span>
+              <span className="absolute -left-10 top-3 z-[6] block h-[3em] w-[12em] -skew-y-3 bg-myRed" />
               <span className="relative top-6 z-[10] text-white">
-                {selectedDate}
+                {selectedDate ? toDisplay(selectedDate, dateFnsLocale) : ''}
               </span>
             </span>
           </div>
