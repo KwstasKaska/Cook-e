@@ -255,7 +255,7 @@ function DonutChart({
         {cookCount}
       </text>
       <text x={cx} y={cy + 14} textAnchor="middle" fontSize="11" fill="#6B7280">
-        {t('landing.days')}
+        {t('landing.cookCount')}
       </text>
     </svg>
   );

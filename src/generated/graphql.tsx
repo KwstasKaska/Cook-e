@@ -124,7 +124,10 @@ export type Conversation = {
   __typename?: 'Conversation';
   createdAt: Scalars['String']['output'];
   id: Scalars['Int']['output'];
+  messages: Array<Message>;
+  participant1: User;
   participant1Id: Scalars['Int']['output'];
+  participant2: User;
   participant2Id: Scalars['Int']['output'];
   updatedAt: Scalars['String']['output'];
 };
@@ -235,6 +238,7 @@ export type Message = {
   conversationId: Scalars['Int']['output'];
   createdAt: Scalars['String']['output'];
   id: Scalars['Int']['output'];
+  sender: User;
   senderId: Scalars['Int']['output'];
 };
 
@@ -1015,6 +1019,10 @@ export type RegularMealPlanResponseFragment = { __typename?: 'MealPlanResponse',
 
 export type RegularMealSchedulerFragment = { __typename?: 'MealScheduler', id: number, day: DayOfWeek, mealType: MealType, comment_el: string, comment_en: string };
 
+export type ConversationWithParticipantsFragment = { __typename?: 'Conversation', id: number, participant1Id: number, participant2Id: number, createdAt: string, updatedAt: string, participant1: { __typename?: 'User', id: number, username: string, image?: string | null }, participant2: { __typename?: 'User', id: number, username: string, image?: string | null } };
+
+export type ConversationWithMessagesFragment = { __typename?: 'Conversation', id: number, participant1Id: number, participant2Id: number, createdAt: string, updatedAt: string, messages: Array<{ __typename?: 'Message', id: number, conversationId: number, senderId: number, body: string, createdAt: string, sender: { __typename?: 'User', id: number, username: string } }>, participant1: { __typename?: 'User', id: number, username: string, image?: string | null }, participant2: { __typename?: 'User', id: number, username: string, image?: string | null } };
+
 export type RegularConversationFragment = { __typename?: 'Conversation', id: number, participant1Id: number, participant2Id: number, createdAt: string, updatedAt: string };
 
 export type RegularMessageFragment = { __typename?: 'Message', id: number, conversationId: number, senderId: number, body: string, createdAt: string };
@@ -1253,21 +1261,6 @@ export type DeleteMealSchedulerMutationVariables = Exact<{
 
 export type DeleteMealSchedulerMutation = { __typename?: 'Mutation', deleteMealScheduler: { __typename?: 'MealPlanResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, mealScheduler?: { __typename?: 'MealScheduler', id: number, day: DayOfWeek, mealType: MealType, comment_el: string, comment_en: string } | null } };
 
-export type StartConversationMutationVariables = Exact<{
-  participantId: Scalars['Int']['input'];
-}>;
-
-
-export type StartConversationMutation = { __typename?: 'Mutation', startConversation: { __typename?: 'ConversationResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, conversation?: { __typename?: 'Conversation', id: number, participant1Id: number, participant2Id: number, createdAt: string, updatedAt: string } | null } };
-
-export type SendMessageMutationVariables = Exact<{
-  conversationId: Scalars['Int']['input'];
-  body: Scalars['String']['input'];
-}>;
-
-
-export type SendMessageMutation = { __typename?: 'Mutation', sendMessage: { __typename?: 'MessageResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, message?: { __typename?: 'Message', id: number, conversationId: number, senderId: number, body: string, createdAt: string } | null } };
-
 export type DeleteRecipeRatingMutationVariables = Exact<{
   recipeId: Scalars['Int']['input'];
 }>;
@@ -1281,6 +1274,21 @@ export type RegisterMutationVariables = Exact<{
 
 
 export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'UserResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, user?: { __typename?: 'User', id: number, username: string, email: string, role: UserRole } | null } };
+
+export type SendMessageMutationVariables = Exact<{
+  conversationId: Scalars['Int']['input'];
+  body: Scalars['String']['input'];
+}>;
+
+
+export type SendMessageMutation = { __typename?: 'Mutation', sendMessage: { __typename?: 'MessageResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, message?: { __typename?: 'Message', id: number, conversationId: number, senderId: number, body: string, createdAt: string, sender: { __typename?: 'User', id: number, username: string } } | null } };
+
+export type StartConversationMutationVariables = Exact<{
+  participantId: Scalars['Int']['input'];
+}>;
+
+
+export type StartConversationMutation = { __typename?: 'Mutation', startConversation: { __typename?: 'ConversationResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, conversation?: { __typename?: 'Conversation', id: number, participant1Id: number, participant2Id: number, createdAt: string, updatedAt: string, participant1: { __typename?: 'User', id: number, username: string, image?: string | null }, participant2: { __typename?: 'User', id: number, username: string, image?: string | null } } | null } };
 
 export type UpdateChefProfileMutationVariables = Exact<{
   data: UpdateChefProfileInput;
@@ -1315,13 +1323,6 @@ export type MyMealPlanQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type MyMealPlanQuery = { __typename?: 'Query', myMealPlan: Array<{ __typename?: 'MealScheduler', id: number, day: DayOfWeek, mealType: MealType, comment_el: string, comment_en: string, nutritionist: { __typename?: 'NutritionistProfile', user?: { __typename?: 'User', username: string } | null } }> };
-
-export type TopRatedRecipesQueryVariables = Exact<{
-  limit?: InputMaybe<Scalars['Int']['input']>;
-}>;
-
-
-export type TopRatedRecipesQuery = { __typename?: 'Query', topRatedRecipes: Array<{ __typename?: 'Recipe', id: number, title_el: string, title_en: string, recipeImage?: string | null, caloriesTotal?: number | null, prepTime: number, cookTime: number, difficulty: Difficulty, category?: RecipeCategory | null }> };
 
 export type GetMyAppointmentsQueryVariables = Exact<{
   date?: InputMaybe<Scalars['String']['input']>;
@@ -1406,7 +1407,7 @@ export type ConversationQueryVariables = Exact<{
 }>;
 
 
-export type ConversationQuery = { __typename?: 'Query', conversation?: { __typename?: 'Conversation', id: number, participant1Id: number, participant2Id: number, createdAt: string, updatedAt: string } | null };
+export type ConversationQuery = { __typename?: 'Query', conversation?: { __typename?: 'Conversation', id: number, participant1Id: number, participant2Id: number, createdAt: string, updatedAt: string, messages: Array<{ __typename?: 'Message', id: number, conversationId: number, senderId: number, body: string, createdAt: string, sender: { __typename?: 'User', id: number, username: string } }>, participant1: { __typename?: 'User', id: number, username: string, image?: string | null }, participant2: { __typename?: 'User', id: number, username: string, image?: string | null } } | null };
 
 export type IngredientsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1447,7 +1448,7 @@ export type MyConversationsQueryVariables = Exact<{
 }>;
 
 
-export type MyConversationsQuery = { __typename?: 'Query', myConversations: Array<{ __typename?: 'Conversation', id: number, participant1Id: number, participant2Id: number, createdAt: string, updatedAt: string }> };
+export type MyConversationsQuery = { __typename?: 'Query', myConversations: Array<{ __typename?: 'Conversation', id: number, participant1Id: number, participant2Id: number, createdAt: string, updatedAt: string, participant1: { __typename?: 'User', id: number, username: string, image?: string | null }, participant2: { __typename?: 'User', id: number, username: string, image?: string | null } }> };
 
 export type MyCookedRecipesQueryVariables = Exact<{
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -1562,6 +1563,13 @@ export type SuggestedRecipesQueryVariables = Exact<{
 
 
 export type SuggestedRecipesQuery = { __typename?: 'Query', suggestedRecipes: Array<{ __typename?: 'RecipeSuggestion', missingCount: number, recipe: { __typename?: 'Recipe', id: number, title_el: string, title_en: string, description_el?: string | null, description_en?: string | null, chefComment_el?: string | null, chefComment_en?: string | null, category?: RecipeCategory | null, recipeImage?: string | null, prepTime: number, cookTime: number, restTime?: number | null, difficulty: Difficulty, caloriesTotal?: number | null, protein?: number | null, carbs?: number | null, fat?: number | null, foodEthnicity?: string | null, authorId: number, createdAt: string, updatedAt: string, steps?: Array<{ __typename?: 'Step', id: number, body_el: string, body_en: string, recipeID: number }> | null, recipeIngredients?: Array<{ __typename?: 'RecipeIngredient', recipeId: number, ingredientId: number, quantity: string, unit: string, ingredient?: { __typename?: 'Ingredient', id: number, name_el: string, name_en: string, caloriesPer100g?: number | null } | null }> | null, author?: { __typename?: 'ChefProfile', user: { __typename?: 'User', username: string } } | null }, missingIngredients: Array<{ __typename?: 'Ingredient', id: number, name_el: string, name_en: string }>, missingUtensils: Array<{ __typename?: 'Utensil', id: number, name_el: string, name_en: string }> }> };
+
+export type TopRatedRecipesQueryVariables = Exact<{
+  limit?: InputMaybe<Scalars['Int']['input']>;
+}>;
+
+
+export type TopRatedRecipesQuery = { __typename?: 'Query', topRatedRecipes: Array<{ __typename?: 'Recipe', id: number, title_el: string, title_en: string, recipeImage?: string | null, caloriesTotal?: number | null, prepTime: number, cookTime: number, difficulty: Difficulty, category?: RecipeCategory | null }> };
 
 export const RegualarErrorFragmentDoc = gql`
     fragment RegualarError on FieldError {
@@ -1790,6 +1798,21 @@ export const RegularConversationFragmentDoc = gql`
   updatedAt
 }
     `;
+export const ConversationWithParticipantsFragmentDoc = gql`
+    fragment ConversationWithParticipants on Conversation {
+  ...RegularConversation
+  participant1 {
+    id
+    username
+    image
+  }
+  participant2 {
+    id
+    username
+    image
+  }
+}
+    ${RegularConversationFragmentDoc}`;
 export const RegularMessageFragmentDoc = gql`
     fragment RegularMessage on Message {
   id
@@ -1799,6 +1822,19 @@ export const RegularMessageFragmentDoc = gql`
   createdAt
 }
     `;
+export const ConversationWithMessagesFragmentDoc = gql`
+    fragment ConversationWithMessages on Conversation {
+  ...ConversationWithParticipants
+  messages {
+    ...RegularMessage
+    sender {
+      id
+      username
+    }
+  }
+}
+    ${ConversationWithParticipantsFragmentDoc}
+${RegularMessageFragmentDoc}`;
 export const RegularChefRatingFragmentDoc = gql`
     fragment RegularChefRating on ChefRating {
   id
@@ -2900,85 +2936,6 @@ export function useDeleteMealSchedulerMutation(baseOptions?: Apollo.MutationHook
 export type DeleteMealSchedulerMutationHookResult = ReturnType<typeof useDeleteMealSchedulerMutation>;
 export type DeleteMealSchedulerMutationResult = Apollo.MutationResult<DeleteMealSchedulerMutation>;
 export type DeleteMealSchedulerMutationOptions = Apollo.BaseMutationOptions<DeleteMealSchedulerMutation, DeleteMealSchedulerMutationVariables>;
-export const StartConversationDocument = gql`
-    mutation StartConversation($participantId: Int!) {
-  startConversation(participantId: $participantId) {
-    errors {
-      ...RegualarError
-    }
-    conversation {
-      ...RegularConversation
-    }
-  }
-}
-    ${RegualarErrorFragmentDoc}
-${RegularConversationFragmentDoc}`;
-export type StartConversationMutationFn = Apollo.MutationFunction<StartConversationMutation, StartConversationMutationVariables>;
-
-/**
- * __useStartConversationMutation__
- *
- * To run a mutation, you first call `useStartConversationMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useStartConversationMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [startConversationMutation, { data, loading, error }] = useStartConversationMutation({
- *   variables: {
- *      participantId: // value for 'participantId'
- *   },
- * });
- */
-export function useStartConversationMutation(baseOptions?: Apollo.MutationHookOptions<StartConversationMutation, StartConversationMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<StartConversationMutation, StartConversationMutationVariables>(StartConversationDocument, options);
-      }
-export type StartConversationMutationHookResult = ReturnType<typeof useStartConversationMutation>;
-export type StartConversationMutationResult = Apollo.MutationResult<StartConversationMutation>;
-export type StartConversationMutationOptions = Apollo.BaseMutationOptions<StartConversationMutation, StartConversationMutationVariables>;
-export const SendMessageDocument = gql`
-    mutation SendMessage($conversationId: Int!, $body: String!) {
-  sendMessage(conversationId: $conversationId, body: $body) {
-    errors {
-      ...RegualarError
-    }
-    message {
-      ...RegularMessage
-    }
-  }
-}
-    ${RegualarErrorFragmentDoc}
-${RegularMessageFragmentDoc}`;
-export type SendMessageMutationFn = Apollo.MutationFunction<SendMessageMutation, SendMessageMutationVariables>;
-
-/**
- * __useSendMessageMutation__
- *
- * To run a mutation, you first call `useSendMessageMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useSendMessageMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [sendMessageMutation, { data, loading, error }] = useSendMessageMutation({
- *   variables: {
- *      conversationId: // value for 'conversationId'
- *      body: // value for 'body'
- *   },
- * });
- */
-export function useSendMessageMutation(baseOptions?: Apollo.MutationHookOptions<SendMessageMutation, SendMessageMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<SendMessageMutation, SendMessageMutationVariables>(SendMessageDocument, options);
-      }
-export type SendMessageMutationHookResult = ReturnType<typeof useSendMessageMutation>;
-export type SendMessageMutationResult = Apollo.MutationResult<SendMessageMutation>;
-export type SendMessageMutationOptions = Apollo.BaseMutationOptions<SendMessageMutation, SendMessageMutationVariables>;
 export const DeleteRecipeRatingDocument = gql`
     mutation DeleteRecipeRating($recipeId: Int!) {
   deleteRecipeRating(recipeId: $recipeId)
@@ -3043,6 +3000,89 @@ export function useRegisterMutation(baseOptions?: Apollo.MutationHookOptions<Reg
 export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
 export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
+export const SendMessageDocument = gql`
+    mutation SendMessage($conversationId: Int!, $body: String!) {
+  sendMessage(conversationId: $conversationId, body: $body) {
+    errors {
+      ...RegualarError
+    }
+    message {
+      ...RegularMessage
+      sender {
+        id
+        username
+      }
+    }
+  }
+}
+    ${RegualarErrorFragmentDoc}
+${RegularMessageFragmentDoc}`;
+export type SendMessageMutationFn = Apollo.MutationFunction<SendMessageMutation, SendMessageMutationVariables>;
+
+/**
+ * __useSendMessageMutation__
+ *
+ * To run a mutation, you first call `useSendMessageMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSendMessageMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [sendMessageMutation, { data, loading, error }] = useSendMessageMutation({
+ *   variables: {
+ *      conversationId: // value for 'conversationId'
+ *      body: // value for 'body'
+ *   },
+ * });
+ */
+export function useSendMessageMutation(baseOptions?: Apollo.MutationHookOptions<SendMessageMutation, SendMessageMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<SendMessageMutation, SendMessageMutationVariables>(SendMessageDocument, options);
+      }
+export type SendMessageMutationHookResult = ReturnType<typeof useSendMessageMutation>;
+export type SendMessageMutationResult = Apollo.MutationResult<SendMessageMutation>;
+export type SendMessageMutationOptions = Apollo.BaseMutationOptions<SendMessageMutation, SendMessageMutationVariables>;
+export const StartConversationDocument = gql`
+    mutation StartConversation($participantId: Int!) {
+  startConversation(participantId: $participantId) {
+    errors {
+      ...RegualarError
+    }
+    conversation {
+      ...ConversationWithParticipants
+    }
+  }
+}
+    ${RegualarErrorFragmentDoc}
+${ConversationWithParticipantsFragmentDoc}`;
+export type StartConversationMutationFn = Apollo.MutationFunction<StartConversationMutation, StartConversationMutationVariables>;
+
+/**
+ * __useStartConversationMutation__
+ *
+ * To run a mutation, you first call `useStartConversationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useStartConversationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [startConversationMutation, { data, loading, error }] = useStartConversationMutation({
+ *   variables: {
+ *      participantId: // value for 'participantId'
+ *   },
+ * });
+ */
+export function useStartConversationMutation(baseOptions?: Apollo.MutationHookOptions<StartConversationMutation, StartConversationMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<StartConversationMutation, StartConversationMutationVariables>(StartConversationDocument, options);
+      }
+export type StartConversationMutationHookResult = ReturnType<typeof useStartConversationMutation>;
+export type StartConversationMutationResult = Apollo.MutationResult<StartConversationMutation>;
+export type StartConversationMutationOptions = Apollo.BaseMutationOptions<StartConversationMutation, StartConversationMutationVariables>;
 export const UpdateChefProfileDocument = gql`
     mutation UpdateChefProfile($data: UpdateChefProfileInput!) {
   updateChefProfile(data: $data) {
@@ -3226,46 +3266,6 @@ export type MyMealPlanQueryHookResult = ReturnType<typeof useMyMealPlanQuery>;
 export type MyMealPlanLazyQueryHookResult = ReturnType<typeof useMyMealPlanLazyQuery>;
 export type MyMealPlanSuspenseQueryHookResult = ReturnType<typeof useMyMealPlanSuspenseQuery>;
 export type MyMealPlanQueryResult = Apollo.QueryResult<MyMealPlanQuery, MyMealPlanQueryVariables>;
-export const TopRatedRecipesDocument = gql`
-    query TopRatedRecipes($limit: Int) {
-  topRatedRecipes(limit: $limit) {
-    ...TopRatedRecipe
-  }
-}
-    ${TopRatedRecipeFragmentDoc}`;
-
-/**
- * __useTopRatedRecipesQuery__
- *
- * To run a query within a React component, call `useTopRatedRecipesQuery` and pass it any options that fit your needs.
- * When your component renders, `useTopRatedRecipesQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useTopRatedRecipesQuery({
- *   variables: {
- *      limit: // value for 'limit'
- *   },
- * });
- */
-export function useTopRatedRecipesQuery(baseOptions?: Apollo.QueryHookOptions<TopRatedRecipesQuery, TopRatedRecipesQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<TopRatedRecipesQuery, TopRatedRecipesQueryVariables>(TopRatedRecipesDocument, options);
-      }
-export function useTopRatedRecipesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<TopRatedRecipesQuery, TopRatedRecipesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<TopRatedRecipesQuery, TopRatedRecipesQueryVariables>(TopRatedRecipesDocument, options);
-        }
-export function useTopRatedRecipesSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<TopRatedRecipesQuery, TopRatedRecipesQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<TopRatedRecipesQuery, TopRatedRecipesQueryVariables>(TopRatedRecipesDocument, options);
-        }
-export type TopRatedRecipesQueryHookResult = ReturnType<typeof useTopRatedRecipesQuery>;
-export type TopRatedRecipesLazyQueryHookResult = ReturnType<typeof useTopRatedRecipesLazyQuery>;
-export type TopRatedRecipesSuspenseQueryHookResult = ReturnType<typeof useTopRatedRecipesSuspenseQuery>;
-export type TopRatedRecipesQueryResult = Apollo.QueryResult<TopRatedRecipesQuery, TopRatedRecipesQueryVariables>;
 export const GetMyAppointmentsDocument = gql`
     query GetMyAppointments($date: String, $limit: Int = 20, $offset: Int = 0) {
   getMyAppointments(date: $date, limit: $limit, offset: $offset) {
@@ -3697,10 +3697,10 @@ export type MyChefRatingQueryResult = Apollo.QueryResult<MyChefRatingQuery, MyCh
 export const ConversationDocument = gql`
     query Conversation($id: Int!) {
   conversation(id: $id) {
-    ...RegularConversation
+    ...ConversationWithMessages
   }
 }
-    ${RegularConversationFragmentDoc}`;
+    ${ConversationWithMessagesFragmentDoc}`;
 
 /**
  * __useConversationQuery__
@@ -3985,10 +3985,10 @@ export type MyChefProfileQueryResult = Apollo.QueryResult<MyChefProfileQuery, My
 export const MyConversationsDocument = gql`
     query MyConversations($limit: Int = 20, $offset: Int = 0) {
   myConversations(limit: $limit, offset: $offset) {
-    ...RegularConversation
+    ...ConversationWithParticipants
   }
 }
-    ${RegularConversationFragmentDoc}`;
+    ${ConversationWithParticipantsFragmentDoc}`;
 
 /**
  * __useMyConversationsQuery__
@@ -4677,3 +4677,43 @@ export type SuggestedRecipesQueryHookResult = ReturnType<typeof useSuggestedReci
 export type SuggestedRecipesLazyQueryHookResult = ReturnType<typeof useSuggestedRecipesLazyQuery>;
 export type SuggestedRecipesSuspenseQueryHookResult = ReturnType<typeof useSuggestedRecipesSuspenseQuery>;
 export type SuggestedRecipesQueryResult = Apollo.QueryResult<SuggestedRecipesQuery, SuggestedRecipesQueryVariables>;
+export const TopRatedRecipesDocument = gql`
+    query TopRatedRecipes($limit: Int) {
+  topRatedRecipes(limit: $limit) {
+    ...TopRatedRecipe
+  }
+}
+    ${TopRatedRecipeFragmentDoc}`;
+
+/**
+ * __useTopRatedRecipesQuery__
+ *
+ * To run a query within a React component, call `useTopRatedRecipesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useTopRatedRecipesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useTopRatedRecipesQuery({
+ *   variables: {
+ *      limit: // value for 'limit'
+ *   },
+ * });
+ */
+export function useTopRatedRecipesQuery(baseOptions?: Apollo.QueryHookOptions<TopRatedRecipesQuery, TopRatedRecipesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<TopRatedRecipesQuery, TopRatedRecipesQueryVariables>(TopRatedRecipesDocument, options);
+      }
+export function useTopRatedRecipesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<TopRatedRecipesQuery, TopRatedRecipesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<TopRatedRecipesQuery, TopRatedRecipesQueryVariables>(TopRatedRecipesDocument, options);
+        }
+export function useTopRatedRecipesSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<TopRatedRecipesQuery, TopRatedRecipesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<TopRatedRecipesQuery, TopRatedRecipesQueryVariables>(TopRatedRecipesDocument, options);
+        }
+export type TopRatedRecipesQueryHookResult = ReturnType<typeof useTopRatedRecipesQuery>;
+export type TopRatedRecipesLazyQueryHookResult = ReturnType<typeof useTopRatedRecipesLazyQuery>;
+export type TopRatedRecipesSuspenseQueryHookResult = ReturnType<typeof useTopRatedRecipesSuspenseQuery>;
+export type TopRatedRecipesQueryResult = Apollo.QueryResult<TopRatedRecipesQuery, TopRatedRecipesQueryVariables>;

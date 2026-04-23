@@ -1,0 +1,24 @@
+fragment ConversationWithParticipants on Conversation {
+  ...RegularConversation
+  participant1 {
+    id
+    username
+    image
+  }
+  participant2 {
+    id
+    username
+    image
+  }
+}
+
+fragment ConversationWithMessages on Conversation {
+  ...ConversationWithParticipants
+  messages {
+    ...RegularMessage
+    sender {
+      id
+      username
+    }
+  }
+}

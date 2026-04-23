@@ -30,7 +30,7 @@
     "fat": "Fat",
     "protein": "Protein",
     "carbs": "Carbohydrates",
-    "days": "days",
+    "cookCount": "times",
     "weeklyRecipesTitle": "This week's recipes",
     "weeklyRecipesDesc1": "The ingredients of today's recipes are what made them get recommended. Do you recognize them?",
     "weeklyRecipesDesc2": "Probably yes, since you've used many of them recently.",
@@ -53,8 +53,8 @@
   },
   "meal": {
     "BREAKFAST": "Breakfast",
-    "SNAK": "Snack",
-    "LUNCK": "Lunch",
+    "SNACK": "Snack",
+    "LUNCH": "Lunch",
     "AFTERNOON": "Afternoon snack",
     "DINNER": "Dinner"
   },
@@ -94,7 +94,9 @@
     "ratingCommentPlaceholder": "Tell us what you think...",
     "errorGeneric": "Something went wrong. Please try again.",
     "minIngredientsError": "Please select at least 3 ingredients",
-    "rateChefTitle": "Rate this chef"
+    "rateChefTitle": "Rate this chef",
+    "logCooked": "I cooked this!",
+    "difficulty": "Difficulty"
   },
   "ingredientCategories": {
     "title": "Ingredients",

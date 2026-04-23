@@ -1,0 +1,10 @@
+mutation StartConversation($participantId: Int!) {
+  startConversation(participantId: $participantId) {
+    errors {
+      ...RegualarError
+    }
+    conversation {
+      ...ConversationWithParticipants
+    }
+  }
+}

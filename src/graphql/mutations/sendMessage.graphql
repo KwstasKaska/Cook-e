@@ -1,14 +1,3 @@
-mutation StartConversation($participantId: Int!) {
-  startConversation(participantId: $participantId) {
-    errors {
-      ...RegualarError
-    }
-    conversation {
-      ...RegularConversation
-    }
-  }
-}
-
 mutation SendMessage($conversationId: Int!, $body: String!) {
   sendMessage(conversationId: $conversationId, body: $body) {
     errors {
@@ -16,6 +5,10 @@ mutation SendMessage($conversationId: Int!, $body: String!) {
     }
     message {
       ...RegularMessage
+      sender {
+        id
+        username
+      }
     }
   }
 }

@@ -1,5 +1,5 @@
 query Conversation($id: Int!) {
   conversation(id: $id) {
-    ...RegularConversation
+    ...ConversationWithMessages
   }
 }
