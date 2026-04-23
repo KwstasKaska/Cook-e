@@ -19,6 +19,7 @@ import {
   useAddToCartMutation,
   useRateRecipeMutation,
   useDeleteRecipeRatingMutation,
+  useLogCookedRecipeMutation,
 } from '../../../generated/graphql';
 import useIsUser from '../../../utils/useIsUser';
 
@@ -35,7 +36,6 @@ export async function getServerSideProps({ locale }: { locale: string }) {
 export default function RecipeDetailPage() {
   const { loading: authLoading, isAuthorized } = useIsUser();
   if (authLoading || !isAuthorized) return null;
-
   return <RecipeDetailContent />;
 }
 
@@ -57,6 +57,7 @@ function RecipeDetailContent() {
   const [ratingError, setRatingError] = useState('');
   const [ratingSuccess, setRatingSuccess] = useState('');
   const [serverError, setServerError] = useState('');
+  const [cookedSuccess, setCookedSuccess] = useState(false);
   const stepsRef = useRef<HTMLDivElement>(null);
   const [scrollProgress, setScrollProgress] = useState(0);
 
@@ -99,6 +100,7 @@ function RecipeDetailContent() {
   const [addToCart] = useAddToCartMutation();
   const [rateRecipe, { loading: rating }] = useRateRecipeMutation();
   const [deleteRecipeRating] = useDeleteRecipeRatingMutation();
+  const [logCookedRecipe, { loading: logging }] = useLogCookedRecipeMutation();
 
   const recipe = recipeData?.recipe;
   const avgRating = avgData?.recipeAverageRating ?? 0;
@@ -212,6 +214,17 @@ function RecipeDetailContent() {
       await refetchMyRating();
     } catch {
       setRatingError(t('recipes.errorGeneric'));
+    }
+  };
+
+  const handleLogCooked = async () => {
+    setServerError('');
+    try {
+      await logCookedRecipe({ variables: { recipeId } });
+      setCookedSuccess(true);
+      setTimeout(() => setCookedSuccess(false), 2000);
+    } catch {
+      setServerError(t('recipes.errorGeneric'));
     }
   };
 
@@ -493,6 +506,30 @@ function RecipeDetailContent() {
                     className="h-5 w-5"
                   >
                     <path d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z" />
+                  </svg>
+                </button>
+
+                {/* Log cooked — feeds the nutritional summary donut */}
+                <button
+                  onClick={handleLogCooked}
+                  disabled={logging}
+                  className="flex h-10 w-10 items-center justify-center rounded-full transition"
+                  style={{ color: cookedSuccess ? '#86EFAC' : '#9CA3AF' }}
+                  title={t('recipes.logCooked')}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="h-5 w-5"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
                   </svg>
                 </button>
               </div>
