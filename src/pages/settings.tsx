@@ -9,7 +9,7 @@ import ChefProfileTab from '../components/Settings/ChefProfileTab';
 import NutritionistProfileTab from '../components/Settings/NutritionistProfileTab';
 import MealPlanTab from '../components/Settings/MealPlanTab';
 
-// ─── Types ────────────────────────────────────────────────────────────────────
+//Types για τα tabs και για τον διαχωρισμό ρόλων
 type Role = 'CHEF' | 'USER' | 'NUTRITIONIST';
 
 type TabKey =
@@ -90,7 +90,6 @@ export default function SettingsPage() {
           </h1>
 
           <div className="flex flex-col md:flex-row gap-6 items-start">
-            {/* Sidebar */}
             <aside className="w-full md:w-56 flex-shrink-0">
               <div className="bg-white rounded-2xl shadow-md overflow-hidden">
                 {visibleTabs.map((tab) => {
@@ -117,13 +116,11 @@ export default function SettingsPage() {
                   className="w-full flex items-center gap-3 px-4 py-3.5 text-sm font-semibold text-left transition-colors hover:bg-red-50"
                   style={{ color: '#ED5B5B' }}
                 >
-                  <span className="text-base">🗑️</span>
                   <span>{t('settings.deleteAccount')}</span>
                 </button>
               </div>
             </aside>
-
-            {/* Main panel */}
+            {/* Κύριο μέρος με διαχωρισμό παραθύρων για τον εκάστοτε ρόλο */}
             <main className="flex-1 bg-white rounded-2xl shadow-md p-6 md:p-8 min-w-0">
               {activeTab === 'personal' && (
                 <PersonalTab username={me.username} email={me.email} />

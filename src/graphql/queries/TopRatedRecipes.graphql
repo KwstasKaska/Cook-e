@@ -1,0 +1,5 @@
+query TopRatedRecipes($limit: Int) {
+  topRatedRecipes(limit: $limit) {
+    ...TopRatedRecipe
+  }
+}

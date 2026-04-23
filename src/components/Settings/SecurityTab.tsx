@@ -53,7 +53,7 @@ export default function SecurityTab() {
       return;
     }
 
-    // ── Strength checks — mirror backend rules, runs before the round trip
+    // έλεγχοι για την σωστή αντιμετώπιση αλλαγής κωδικού
     if (newPassword.length <= 4) {
       setFieldErrors((p) => ({
         ...p,

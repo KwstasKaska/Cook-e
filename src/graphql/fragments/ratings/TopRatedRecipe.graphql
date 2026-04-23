@@ -1,0 +1,11 @@
+fragment TopRatedRecipe on Recipe {
+  id
+  title_el
+  title_en
+  recipeImage
+  caloriesTotal
+  prepTime
+  cookTime
+  difficulty
+  category
+}
