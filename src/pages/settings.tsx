@@ -8,6 +8,8 @@ import SecurityTab from '../components/Settings/SecurityTab';
 import ChefProfileTab from '../components/Settings/ChefProfileTab';
 import NutritionistProfileTab from '../components/Settings/NutritionistProfileTab';
 import MealPlanTab from '../components/Settings/MealPlanTab';
+import ChefNavbar from '../components/Chef/ChefNavbar';
+import NutrNavbar from '../components/Nutritionist/NutrNavbar';
 
 type Role = 'CHEF' | 'USER' | 'NUTRITIONIST';
 
@@ -65,6 +67,12 @@ export default function SettingsPage() {
   const { loading: authLoading, isAuthorized, me } = useIsAuth();
   const [activeTab, setActiveTab] = useState<TabKey>('personal');
 
+  const renderNavbar = () => {
+    if (role === 'CHEF') return <ChefNavbar />;
+    if (role === 'NUTRITIONIST') return <NutrNavbar />;
+    return <Navbar />;
+  };
+
   if (authLoading || !isAuthorized || !me) return null;
 
   const role = me.role.toUpperCase() as Role;
@@ -77,7 +85,7 @@ export default function SettingsPage() {
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#3F4756' }}>
-      <Navbar />
+      {renderNavbar()}
 
       <div className="relative overflow-hidden min-h-screen">
         <div

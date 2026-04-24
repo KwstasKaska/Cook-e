@@ -18,7 +18,6 @@ export default function NutritionistProfileTab() {
   const { data } = useMyNutritionistProfileQuery();
   const profile = data?.myNutritionistProfile;
   const [bio, setBio] = useState(profile?.bio ?? '');
-  const [phone, setPhone] = useState(profile?.phone ?? '');
   const [city, setCity] = useState(profile?.city ?? '');
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [serverError, setServerError] = useState<string | null>(null);
@@ -33,7 +32,7 @@ export default function NutritionistProfileTab() {
 
     try {
       const result = await updateNutritionistProfile({
-        variables: { data: { bio, phone, city } },
+        variables: { data: { bio, city } },
       });
 
       if (result.data?.updateNutritionistProfile.errors) {
@@ -61,14 +60,7 @@ export default function NutritionistProfileTab() {
           placeholder={t('settings.bioPlaceholder')}
           error={fieldErrors.bio}
         />
-        <Field
-          label={t('settings.phone')}
-          type="tel"
-          value={phone}
-          onChange={setPhone}
-          placeholder="+30 210 0000000"
-          error={fieldErrors.phone}
-        />
+
         <Field
           label={t('settings.city')}
           value={city}
