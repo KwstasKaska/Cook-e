@@ -24,8 +24,6 @@ const NutrArticles: React.FC = () => {
 
   const articles = data?.myArticles ?? [];
 
-  // react-slick crashes/vanishes when infinite=true and article count < slidesToShow.
-  // Cap slidesToShow to actual count and disable infinite when not enough slides.
   const desktopShow = Math.min(3, articles.length);
   const tabletShow = Math.min(2, articles.length);
   const mobileShow = Math.min(1, articles.length);
@@ -68,33 +66,11 @@ const NutrArticles: React.FC = () => {
 
   return (
     <section id="section_1" className="flex min-h-screen flex-col">
-      <div className="relative flex w-full flex-1 flex-col items-center justify-center gap-6 bg-myGrey-200 py-10">
-        <h1 className="absolute top-6 bg-gradient-to-r from-[#B3D5F8] to-[#FFFFFF] bg-clip-text pb-[.75em] font-exo text-3xl font-bold text-transparent md:text-5xl">
+      <div className="flex w-full flex-1 flex-col items-center justify-center gap-8 bg-myGrey-200 py-10">
+        {/* Title — centered at top */}
+        <h1 className="bg-gradient-to-r from-[#B3D5F8] to-[#FFFFFF] bg-clip-text font-exo text-3xl font-bold text-transparent md:text-5xl">
           {t('nutr.yourArticles')}
         </h1>
-
-        {/* Create article button */}
-        <Link
-          href="/nutritionist/create-article"
-          className="absolute top-8 right-8 flex items-center gap-1.5 rounded-full px-4 py-1.5 text-xs font-bold transition hover:opacity-90"
-          style={{ backgroundColor: '#EAB308', color: '#3F4756' }}
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={2.5}
-            stroke="currentColor"
-            className="h-3.5 w-3.5"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M12 4.5v15m7.5-7.5h-15"
-            />
-          </svg>
-          {t('nutr.newArticle')}
-        </Link>
 
         {loading && (
           <p className="text-white">{t('common.loading') ?? 'Loading...'}</p>
@@ -104,6 +80,7 @@ const NutrArticles: React.FC = () => {
           <p className="text-white">{t('nutr.noArticlesYet')}</p>
         )}
 
+        {/* Slider */}
         {!loading && articles.length > 0 && (
           <div
             onMouseEnter={() => setIsHovered(true)}
@@ -155,6 +132,29 @@ const NutrArticles: React.FC = () => {
             </Slider>
           </div>
         )}
+
+        {/* New article button — centered below slider */}
+        <Link
+          href="/nutritionist/create-article"
+          className="flex items-center gap-1.5 rounded-full px-6 py-2 text-sm font-bold transition hover:opacity-90"
+          style={{ backgroundColor: '#EAB308', color: '#3F4756' }}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={2.5}
+            stroke="currentColor"
+            className="h-4 w-4"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M12 4.5v15m7.5-7.5h-15"
+            />
+          </svg>
+          {t('nutr.newArticle')}
+        </Link>
       </div>
     </section>
   );
