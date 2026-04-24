@@ -8,7 +8,6 @@ import Image from 'next/image';
 import { DateContext } from '../components/Context';
 import ScrollToTopButton from '../components/Helper/ScrollToTopButton';
 import NutrScheduler from '../components/Nutritionist/NutrScheduler';
-import profile from '/public/images/myphoto.jpg';
 import { GetServerSidePropsContext, NextPage } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
@@ -40,11 +39,15 @@ const Nutritionist: NextPage = () => {
       <main className="relative">
         {/* Welcome header */}
         <div className="grid grid-flow-col-dense justify-start pt-10 pb-6 pl-5 md:pl-20 xl:pl-32 gap-x-4">
-          <Image
-            src={profile}
-            alt={'profile'}
-            className="row-span-2 max-h-14 max-w-[3.5rem] justify-self-end rounded-full object-cover object-top md:max-h-20 md:max-w-[5rem] xl:max-h-28 xl:max-w-[7rem]"
-          />
+          {meData?.me?.image && (
+            <Image
+              src={meData.me.image}
+              alt={'profile'}
+              width={112}
+              height={112}
+              className="row-span-2 max-h-14 max-w-[3.5rem] justify-self-end rounded-full object-cover object-top md:max-h-20 md:max-w-[5rem] xl:max-h-28 xl:max-w-[7rem]"
+            />
+          )}
           <h1 className="text-2xl font-bold md:text-4xl">
             {t('nutr.welcome')}, <br /> Dr. {meData?.me?.username}
           </h1>
