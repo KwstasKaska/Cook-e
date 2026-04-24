@@ -70,7 +70,7 @@ const RecipeCard = ({
 // ─── Page
 
 const Index: NextPage = () => {
-  const [isHovered, setIsHovered] = useState<boolean>(false);
+  const [isHovered] = useState<boolean>(false);
   const [logout, { loading: logoutLoading }] = useLogoutMutation();
   const apolloClient = useApolloClient();
   const { t, i18n } = useTranslation('common');
