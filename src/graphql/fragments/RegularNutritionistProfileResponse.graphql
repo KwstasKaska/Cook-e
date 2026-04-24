@@ -11,6 +11,7 @@ fragment RegularNutritionistProfileResponse on NutritionistProfileResponse {
       id
       username
       email
+      image
     }
   }
 }

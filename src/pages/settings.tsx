@@ -78,7 +78,6 @@ export default function SettingsPage() {
   const role = me.role.toUpperCase() as Role;
   const visibleTabs = TABS.filter((tab) => tab.roles.includes(role));
 
-  // Label for the live region that announces which tab panel is shown
   const activeTabLabel = t(
     visibleTabs.find((tab) => tab.key === activeTab)?.labelKey ?? '',
   );
@@ -148,7 +147,6 @@ export default function SettingsPage() {
 
             <main
               className="flex-1 min-w-0"
-              // aria-live announces the active section label when tab changes
               aria-live="polite"
               aria-label={activeTabLabel}
             >
@@ -160,7 +158,11 @@ export default function SettingsPage() {
                   tabIndex={0}
                   className="bg-white rounded-2xl shadow-md p-6 md:p-8 focus:outline-none"
                 >
-                  <PersonalTab username={me.username} email={me.email} />
+                  <PersonalTab
+                    username={me.username}
+                    email={me.email}
+                    image={me.image}
+                  />
                 </section>
               )}
               {activeTab === 'security' && (

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
 import ChefNavbar from '../../../components/Chef/ChefNavbar';
 import Footer from '../../../components/Users/Footer';
@@ -14,6 +14,7 @@ import {
 } from '../../../generated/graphql';
 import useIsChef from '../../../utils/useIsChef';
 import { pick } from '../../../utils/pick';
+import { uploadToCloudinary } from '../../../utils/uploadToCloudinary';
 
 import {
   EditForm,
@@ -119,11 +120,14 @@ export default function ChefSingleRecipe() {
   const lang = i18n.language as 'el' | 'en';
   const router = useRouter();
   const id = router.isReady ? Number(router.query.id) : null;
+  const imageInputRef = useRef<HTMLInputElement>(null);
 
   const [isEditing, setIsEditing] = useState(false);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [serverError, setServerError] = useState('');
   const [editForm, setEditForm] = useState<EditForm | null>(null);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   const { data, loading } = useQuery(RECIPE_DETAIL_QUERY, {
     variables: { id },
@@ -136,18 +140,31 @@ export default function ChefSingleRecipe() {
 
   const recipe = data?.recipe;
 
-  if (authLoading || !isAuthorized) return null;
+  // ✅ Mutation hooks above the early return
+  const [updateRecipe, { loading: saving }] = useUpdateRecipeMutation();
+  const [deleteRecipe, { loading: deleting }] = useDeleteRecipeMutation();
 
+  // Syncs editForm on initial load and language changes.
+  // Does NOT run after a manual save — handleSave rebuilds from the mutation
+  // response directly to avoid a race with any background refetch.
   useEffect(() => {
     if (!recipe) return;
     setEditForm(buildEditForm(recipe, lang));
   }, [recipe, lang]);
 
-  const [updateRecipe, { loading: saving }] = useUpdateRecipeMutation();
-  const [deleteRecipe, { loading: deleting }] = useDeleteRecipeMutation();
+  // ✅ Early return after all hooks
+  if (authLoading || !isAuthorized) return null;
 
   const update = (field: keyof EditForm, value: unknown) =>
     setEditForm((prev) => (prev ? { ...prev, [field]: value } : prev));
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setImageFile(file);
+      setImagePreview(URL.createObjectURL(file));
+    }
+  };
 
   // ── Save ───────────────────────────────────────────────────────────────────
   const handleSave = async () => {
@@ -160,7 +177,6 @@ export default function ChefSingleRecipe() {
     );
     const validSteps = editForm.steps.filter((s) => s.body.trim());
 
-    // ── Client-side validation ─────────────────────────────────────────────
     const errs: Record<string, string> = {};
     if (validIngredients.length < 1)
       errs.ingredients = t('chef.create_recipe.error_ingredients');
@@ -175,6 +191,13 @@ export default function ChefSingleRecipe() {
     }
 
     try {
+      let recipeImageUrl: string | undefined;
+      if (imageFile) {
+        recipeImageUrl = await uploadToCloudinary(imageFile);
+      } else if (editForm.recipeImage) {
+        recipeImageUrl = editForm.recipeImage;
+      }
+
       const res = await updateRecipe({
         variables: {
           data: {
@@ -186,6 +209,7 @@ export default function ChefSingleRecipe() {
             ...(editForm.chefComment.trim() && {
               chefComment: editForm.chefComment.trim(),
             }),
+            ...(recipeImageUrl && { recipeImage: recipeImageUrl }),
             ...(editForm.difficulty && {
               difficulty: editForm.difficulty as Difficulty,
             }),
@@ -212,12 +236,11 @@ export default function ChefSingleRecipe() {
             steps: validSteps.map((s) => ({ body: s.body.trim() })),
           },
         },
-        refetchQueries: [
-          { query: RECIPE_DETAIL_QUERY, variables: { id: recipe.id } },
-        ],
+        // ✅ No refetchQueries — we rebuild from the mutation response below
       });
 
       const result = res.data?.updateRecipe;
+
       if (result?.errors?.length) {
         const mapped: Record<string, string> = {};
         result.errors.forEach((e: { field: string; message: string }) => {
@@ -226,6 +249,14 @@ export default function ChefSingleRecipe() {
         setFieldErrors(mapped);
         return;
       }
+
+      // ✅ Rebuild editForm from the mutation response, not a refetch
+      if (result?.recipe) {
+        setEditForm(buildEditForm(result.recipe, lang));
+      }
+
+      setImageFile(null);
+      setImagePreview(null);
       setIsEditing(false);
     } catch {
       setServerError(t('chef.recipe_detail.error_server'));
@@ -247,6 +278,8 @@ export default function ChefSingleRecipe() {
   const handleCancel = () => {
     setFieldErrors({});
     setServerError('');
+    setImageFile(null);
+    setImagePreview(null);
     if (recipe) setEditForm(buildEditForm(recipe, lang));
     setIsEditing(false);
   };
@@ -302,6 +335,8 @@ export default function ChefSingleRecipe() {
     },
   ];
 
+  const displayImage = imagePreview ?? recipe.recipeImage;
+
   return (
     <div
       className="flex min-h-screen flex-col"
@@ -312,11 +347,29 @@ export default function ChefSingleRecipe() {
       <main className="flex flex-1 flex-col items-center px-4 py-8 md:px-8">
         <div className="w-full max-w-3xl overflow-hidden rounded-2xl bg-white shadow-2xl">
           <RecipeHeroImage
-            recipeImage={recipe.recipeImage}
+            recipeImage={displayImage}
             title_el={recipe.title_el}
             title_en={recipe.title_en}
             lang={lang}
           />
+
+          {isEditing && (
+            <div className="px-6 pt-4">
+              <label
+                className="mb-1 block text-sm font-bold"
+                style={{ color: '#3F4756' }}
+              >
+                {t('chef.recipe_detail.label_image')}
+              </label>
+              <input
+                ref={imageInputRef}
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+                className="text-sm text-gray-600"
+              />
+            </div>
+          )}
 
           <div className="flex flex-col gap-6 p-6 md:flex-row md:p-8">
             {/* LEFT column */}
@@ -394,12 +447,10 @@ export default function ChefSingleRecipe() {
                 onUpdate={update}
               />
 
-              {/* Steps error */}
               {fieldErrors.steps && (
                 <p className="mt-2 text-xs text-red-500">{fieldErrors.steps}</p>
               )}
 
-              {/* Time errors */}
               {(fieldErrors.prepTime || fieldErrors.cookTime) && (
                 <p className="mt-2 text-xs text-red-500">
                   {fieldErrors.prepTime || fieldErrors.cookTime}

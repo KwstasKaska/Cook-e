@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
 
-import articleImg from '/public/images/articleImg.jpg';
 import Slider from 'react-slick';
 import { Settings } from '../Helper/SliderSettings';
 import { useMyArticlesQuery } from '../../generated/graphql';
@@ -112,19 +110,11 @@ const NutrArticles: React.FC = () => {
                       <h2 className="px-[.3em] text-center text-base font-bold md:text-lg">
                         {title}
                       </h2>
-                      {imageSrc ? (
-                        <img
-                          src={imageSrc}
-                          alt={t('nutr.articleImageAlt')}
-                          className="aspect-[5/4] rounded-[10px] object-cover"
-                        />
-                      ) : (
-                        <Image
-                          src={articleImg}
-                          alt={t('nutr.articleImageAlt')}
-                          className="aspect-[5/4] rounded-[10px]"
-                        />
-                      )}
+                      <img
+                        src={imageSrc}
+                        alt={t('nutr.articleImageAlt')}
+                        className="aspect-[5/4] rounded-[10px] object-cover"
+                      />
                     </div>
                   </Link>
                 );

@@ -19,7 +19,11 @@ export default function RecipeCompactCard({
 }: Props) {
   const { t } = useTranslation('common');
   const title = pick(recipe.title_el, recipe.title_en, lang);
-  const duration = totalDuration(recipe);
+  const duration = totalDuration(
+    recipe.prepTime,
+    recipe.cookTime,
+    recipe.restTime,
+  );
 
   return (
     <div

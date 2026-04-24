@@ -157,6 +157,8 @@
     "city": "City",
     "aboutMe": "About me",
     "bio": "Bio",
+    "profilePicture": "Profile picture",
+    "changePhoto": "Change photo",
     "bioPlaceholder": "Tell us a little about yourself...",
     "changePassword": "Change password",
     "currentPassword": "Current password",

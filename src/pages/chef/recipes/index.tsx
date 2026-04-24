@@ -31,7 +31,7 @@ function toSummaryData(recipe: Recipe, lang: string): RecipeSummaryData {
       recipe.description_en ?? '',
       lang,
     ),
-    duration: totalDuration(recipe),
+    duration: totalDuration(recipe.prepTime, recipe.cookTime, recipe.restTime),
     ingredientsCount: recipe.recipeIngredients?.length ?? 0,
     calories: recipe.caloriesTotal ?? 0,
     tags: [],
@@ -40,8 +40,6 @@ function toSummaryData(recipe: Recipe, lang: string): RecipeSummaryData {
 
 export default function ChefRecipes() {
   const { loading: authLoading, isAuthorized } = useIsChef();
-  if (authLoading || !isAuthorized) return null;
-
   const { t } = useTranslation('common');
   const { locale } = useRouter();
   const lang = locale ?? 'el';
@@ -107,6 +105,9 @@ export default function ChefRecipes() {
 
     return result;
   }, [rawRecipes, search, sort, lang]);
+
+  // Auth guard — after all hooks
+  if (authLoading || !isAuthorized) return null;
 
   const featured = filtered[0] ?? null;
   const rest = filtered.slice(1);

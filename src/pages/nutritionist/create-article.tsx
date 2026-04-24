@@ -8,6 +8,7 @@ import NutrNavbar from '../../components/Nutritionist/NutrNavbar';
 import Footer from '../../components/Users/Footer';
 import useIsNutr from '../../utils/useIsNutr';
 import { useCreateArticleMutation } from '../../generated/graphql';
+import { uploadToCloudinary } from '../../utils/uploadToCloudinary';
 
 const CreateArticle: NextPage = () => {
   const { t } = useTranslation('common');
@@ -49,19 +50,24 @@ const CreateArticle: NextPage = () => {
       return;
     }
 
-    const response = await createArticle({
-      variables: {
-        data: { title: title.trim(), text: text.trim() },
-        picture,
-      },
-    });
+    try {
+      const imageUrl = await uploadToCloudinary(picture);
 
-    if (response.data?.createArticle.errors) {
-      setError(response.data.createArticle.errors[0].message);
-      return;
+      const response = await createArticle({
+        variables: {
+          data: { title: title.trim(), text: text.trim(), image: imageUrl },
+        },
+      });
+
+      if (response.data?.createArticle.errors) {
+        setError(response.data.createArticle.errors[0].message);
+        return;
+      }
+
+      router.push('/nutritionist');
+    } catch {
+      setError(t('nutr.create_article.error_upload'));
     }
-
-    router.push('/nutritionist');
   };
 
   return (

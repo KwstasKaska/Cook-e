@@ -18,7 +18,11 @@ export default function RecipeFeaturedCard({ recipe, lang, onClick }: Props) {
     recipe.description_en ?? '',
     lang,
   );
-  const duration = totalDuration(recipe);
+  const duration = totalDuration(
+    recipe.prepTime,
+    recipe.cookTime,
+    recipe.restTime,
+  );
 
   return (
     <button

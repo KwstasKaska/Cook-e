@@ -5,21 +5,13 @@ import ChefNavbar from '../../components/Chef/ChefNavbar';
 import RecipeSummaryModal, {
   RecipeSummaryData,
 } from '../../components/Chef/RecipeSummary';
-import Stars from '../../components/Helper/Stars';
-import RatingModal from '../../components/Chef/RatingModal';
+
 import Footer from '../../components/Users/Footer';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
-import {
-  useMyRecipesQuery,
-  useMyChefProfileQuery,
-  useChefAverageRatingQuery,
-  useChefRatingsQuery,
-} from '../../generated/graphql';
+import { useMyRecipesQuery } from '../../generated/graphql';
 import { pick } from '../../utils/pick';
 import useIsChef from '../../utils/useIsChef';
-
-type StarKey = 1 | 2 | 3 | 4 | 5;
 
 const BG_COLORS = ['#B3D5F8', '#FEF9C3', '#FCE4EC', '#DCFCE7'];
 const ROTATIONS = [-15, -5, 5, 15];
@@ -30,46 +22,17 @@ export default function ChefIndex() {
   const lang = i18n.language;
   const { loading: authLoading, isAuthorized } = useIsChef();
 
-  const [showRatings, setShowRatings] = useState(false);
   const [selectedRecipe, setSelectedRecipe] =
     useState<RecipeSummaryData | null>(null);
-
-  const { data: profileData } = useMyChefProfileQuery();
-  const chefId = profileData?.myChefProfile?.id;
 
   const { data: recipesData, loading: recipesLoading } = useMyRecipesQuery({
     variables: { limit: 4, offset: 0 },
     fetchPolicy: 'network-only',
   });
 
-  const { data: avgData } = useChefAverageRatingQuery({
-    variables: { chefId: chefId! },
-    skip: !chefId,
-  });
-
-  const { data: ratingsData } = useChefRatingsQuery({
-    variables: { chefId: chefId!, limit: 50, offset: 0 },
-    skip: !chefId,
-  });
-
   if (authLoading || !isAuthorized) return null;
 
   const fanRecipes = recipesData?.myRecipes ?? [];
-  const averageRating = avgData?.chefAverageRating ?? 0;
-  const ratings = ratingsData?.chefRatings ?? [];
-  const totalRatings = ratings.length;
-
-  const ratingCounts: Record<StarKey, number> = {
-    1: 0,
-    2: 0,
-    3: 0,
-    4: 0,
-    5: 0,
-  };
-  for (const r of ratings) {
-    const score = r.score as StarKey;
-    if (score >= 1 && score <= 5) ratingCounts[score]++;
-  }
 
   const openModal = (recipe: (typeof fanRecipes)[0]) => {
     setSelectedRecipe({
@@ -147,37 +110,6 @@ export default function ChefIndex() {
                 </h1>
               </div>
             </div>
-
-            {/* Rating widget */}
-            {averageRating > 0 &&
-              (!showRatings ? (
-                <div className="flex flex-col items-center md:items-end">
-                  <p className="mb-2 text-sm font-semibold text-white">
-                    {t('chef.landing.user_rating')}
-                  </p>
-                  <button
-                    onClick={() => setShowRatings(true)}
-                    className="flex items-center gap-2 rounded-full px-4 py-2 transition hover:opacity-90"
-                    style={{ backgroundColor: '#B3D5F8' }}
-                  >
-                    <Stars rating={averageRating} size="md" />
-                    <span className="font-bold" style={{ color: '#3F4756' }}>
-                      {averageRating.toFixed(1)}/ 5
-                    </span>
-                  </button>
-                  <p className="mt-1 text-xs text-gray-300">
-                    {totalRatings} {t('chef.landing.user_reviews')}
-                  </p>
-                </div>
-              ) : (
-                <RatingModal
-                  onClose={() => setShowRatings(false)}
-                  average={averageRating}
-                  total={totalRatings}
-                  counts={ratingCounts}
-                  overlay={false}
-                />
-              ))}
           </div>
 
           {/* Fanned cards */}

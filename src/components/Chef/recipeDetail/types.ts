@@ -20,6 +20,7 @@ export interface EditForm {
   title: string;
   description: string;
   chefComment: string;
+  recipeImage: string;
   difficulty: Difficulty | '';
   prepTime: string;
   cookTime: string;
@@ -94,6 +95,7 @@ export function buildEditForm(recipe: any, lang: string): EditForm {
       recipe.chefComment_en ?? '',
       lang,
     ),
+    recipeImage: recipe.recipeImage ?? '',
     difficulty: recipe.difficulty ?? '',
     prepTime: String(recipe.prepTime ?? ''),
     cookTime: String(recipe.cookTime ?? ''),

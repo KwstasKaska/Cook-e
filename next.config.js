@@ -14,10 +14,16 @@ module.exports = {
         pathname: '/images/**',
       },
       {
-        // Production backend on Render (update with your real subdomain)
+        // Production backend on Render
         protocol: 'https',
         hostname: '*.onrender.com',
         pathname: '/images/**',
+      },
+      {
+        // Cloudinary
+        protocol: 'https',
+        hostname: 'res.cloudinary.com',
+        pathname: '/**',
       },
     ],
   },

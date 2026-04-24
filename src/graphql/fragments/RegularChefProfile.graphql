@@ -5,5 +5,6 @@ fragment RegularChefProfile on ChefProfile {
     id
     username
     email
+    image
   }
 }

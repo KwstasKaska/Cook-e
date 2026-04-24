@@ -24,6 +24,7 @@ query GetAppointmentRequestsForNutritionist(
     client {
       id
       username
+      image
     }
   }
 }

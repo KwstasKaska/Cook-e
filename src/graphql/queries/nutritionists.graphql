@@ -8,6 +8,7 @@ query Nutritionists($limit: Int = 10, $offset: Int = 0) {
       id
       username
       email
+      image
     }
   }
 }

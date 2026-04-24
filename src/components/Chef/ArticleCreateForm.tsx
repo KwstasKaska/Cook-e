@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'next-i18next';
 import { useCreateArticleMutation } from '../../generated/graphql';
+import { uploadToCloudinary } from '../../utils/uploadToCloudinary';
 
 interface ArticleCreateFormProps {
-  /** The chef's user.id — used to evict the correct Apollo cache field */
   chefUserId: number;
   onClose: () => void;
 }
@@ -27,16 +27,23 @@ export default function ArticleCreateForm({ onClose }: ArticleCreateFormProps) {
       setError(t('chef.profile.article_image_required'));
       return;
     }
-    await createArticle({
-      variables: {
-        data: { title: title.trim(), text: text.trim() },
-        picture: image,
-      },
-      update: (cache) => {
-        cache.evict({ fieldName: 'articlesByChef' });
-      },
-    });
-    onClose();
+
+    try {
+      const imageUrl = await uploadToCloudinary(image);
+
+      await createArticle({
+        variables: {
+          data: { title: title.trim(), text: text.trim(), image: imageUrl },
+        },
+        update: (cache) => {
+          cache.evict({ fieldName: 'articlesByChef' });
+        },
+      });
+
+      onClose();
+    } catch {
+      setError(t('nutr.create_article.error_upload'));
+    }
   };
 
   const handleCancel = () => {

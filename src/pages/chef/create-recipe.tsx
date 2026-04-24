@@ -15,6 +15,7 @@ import {
   FormData,
   IngredientRow,
 } from '../../components/Chef/createRecipe/types';
+import { uploadToCloudinary } from '../../utils/uploadToCloudinary';
 
 import LivePreview from '../../components/Chef/createRecipe/livePreview';
 import StepFive from '../../components/Chef/createRecipe/stepFive';
@@ -36,6 +37,9 @@ export default function CreateRecipe() {
 
   const [serverError, setServerError] = useState('');
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+
+  // imageFile holds the actual File for upload; form.image holds the blob preview URL
+  const [imageFile, setImageFile] = useState<File | null>(null);
 
   const [form, setForm] = useState<FormData>({
     title: '',
@@ -83,13 +87,19 @@ export default function CreateRecipe() {
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) update('image', URL.createObjectURL(file));
+    if (file) {
+      setImageFile(file);
+      update('image', URL.createObjectURL(file)); // blob URL for live preview only
+    }
   };
 
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
     const file = e.dataTransfer.files?.[0];
-    if (file) update('image', URL.createObjectURL(file));
+    if (file) {
+      setImageFile(file);
+      update('image', URL.createObjectURL(file)); // blob URL for live preview only
+    }
   };
 
   // ── Ingredient helpers ─────────────────────────────────────────────────────
@@ -174,6 +184,12 @@ export default function CreateRecipe() {
     }
 
     try {
+      // Upload image to Cloudinary first, before firing the mutation
+      let recipeImageUrl: string | undefined;
+      if (imageFile) {
+        recipeImageUrl = await uploadToCloudinary(imageFile);
+      }
+
       const res = await createRecipe({
         variables: {
           data: {
@@ -191,7 +207,7 @@ export default function CreateRecipe() {
             ...(form.summary.trim() && { description: form.summary.trim() }),
             ...(form.category && { category: form.category as RecipeCategory }),
             ...(form.cuisine.trim() && { foodEthnicity: form.cuisine.trim() }),
-            ...(form.image && { recipeImage: form.image }),
+            ...(recipeImageUrl && { recipeImage: recipeImageUrl }),
             ...(selectedUtensilIds.length > 0 && {
               utensilIds: selectedUtensilIds,
             }),

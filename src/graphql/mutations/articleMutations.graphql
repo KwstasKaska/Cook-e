@@ -1,9 +1,8 @@
-mutation UpdateArticle($data: UpdateArticleInput!, $picture: Upload) {
-  updateArticle(data: $data, picture: $picture) {
+mutation UpdateArticle($data: UpdateArticleInput!) {
+  updateArticle(data: $data) {
     ...RegularArticleResponse
   }
 }
-
 mutation DeleteArticle($id: Int!) {
   deleteArticle(id: $id)
 }

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'next-i18next';
 import {
   useUpdateChefProfileMutation,
@@ -15,11 +15,18 @@ import {
 export default function ChefProfileTab() {
   const { t } = useTranslation('common');
   const { data } = useMyChefProfileQuery();
-  const [bio, setBio] = useState(data?.myChefProfile?.bio ?? '');
+  const [bio, setBio] = useState('');
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [serverError, setServerError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [updateChefProfile, { loading }] = useUpdateChefProfileMutation();
+
+  // Sync bio once the query resolves
+  useEffect(() => {
+    if (data?.myChefProfile?.bio) {
+      setBio(data.myChefProfile.bio);
+    }
+  }, [data]);
 
   const handleSave = async () => {
     setFieldErrors({});

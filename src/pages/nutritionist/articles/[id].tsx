@@ -12,6 +12,7 @@ import {
 } from '../../../generated/graphql';
 import useIsNutr from '../../../utils/useIsNutr';
 import { pick } from '../../../utils/pick';
+import { uploadToCloudinary } from '../../../utils/uploadToCloudinary';
 
 // ─── Delete confirm modal ─────────────────────────────────────────────────────
 const DeleteModal = ({
@@ -70,7 +71,8 @@ export default function NutrArticleDetail() {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [editTitle, setEditTitle] = useState('');
   const [editText, setEditText] = useState('');
-  const [editImage, setEditImage] = useState<File | null>(null);
+  const [editImageFile, setEditImageFile] = useState<File | null>(null);
+  const [editImagePreview, setEditImagePreview] = useState<string | null>(null);
   const [editError, setEditError] = useState('');
 
   const { data, loading } = useArticleQuery({
@@ -87,7 +89,8 @@ export default function NutrArticleDetail() {
   const [updateArticle, { loading: updateLoading }] = useUpdateArticleMutation({
     onCompleted: () => {
       setIsEditing(false);
-      setEditImage(null);
+      setEditImageFile(null);
+      setEditImagePreview(null);
       setEditError('');
     },
     onError: (err) => setEditError(err.message),
@@ -100,22 +103,42 @@ export default function NutrArticleDetail() {
 
   const article = data?.article;
 
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] ?? null;
+    setEditImageFile(file);
+    setEditImagePreview(file ? URL.createObjectURL(file) : null);
+  };
+
   const handleUpdate = async () => {
     if (!id) return;
     if (!editTitle.trim() || !editText.trim()) {
       setEditError(t('chef.article.validation_required'));
       return;
     }
-    await updateArticle({
-      variables: {
-        data: { id, title: editTitle.trim(), text: editText.trim() },
-        picture: editImage ?? undefined,
-      },
-      update: (cache) => {
-        cache.evict({ fieldName: 'myArticles' });
-        cache.evict({ fieldName: 'article' });
-      },
-    });
+
+    try {
+      let imageUrl: string | undefined;
+      if (editImageFile) {
+        imageUrl = await uploadToCloudinary(editImageFile);
+      }
+
+      await updateArticle({
+        variables: {
+          data: {
+            id,
+            title: editTitle.trim(),
+            text: editText.trim(),
+            ...(imageUrl && { image: imageUrl }),
+          },
+        },
+        update: (cache) => {
+          cache.evict({ fieldName: 'myArticles' });
+          cache.evict({ fieldName: 'article' });
+        },
+      });
+    } catch {
+      setEditError(t('nutr.create_article.error_upload'));
+    }
   };
 
   const handleDelete = async () => {
@@ -155,6 +178,8 @@ export default function NutrArticleDetail() {
       </div>
     );
   }
+
+  const heroSrc = editImagePreview ?? article.image ?? '/images/articleImg.jpg';
 
   return (
     <div
@@ -204,16 +229,11 @@ export default function NutrArticleDetail() {
             {/* Hero image */}
             <div className="relative h-56 w-full">
               <Image
-                src={
-                  editImage
-                    ? URL.createObjectURL(editImage)
-                    : article.image ?? '/images/articleImg.jpg'
-                }
+                src={heroSrc}
                 alt={pick(article.title_el, article.title_en, lang)}
                 fill
                 className="object-cover"
               />
-              {/* Edit / Delete buttons */}
               {!isEditing && (
                 <div className="absolute top-3 right-3 flex gap-2">
                   <button
@@ -308,14 +328,12 @@ export default function NutrArticleDetail() {
                     <input
                       type="file"
                       accept="image/*"
-                      onChange={(e) =>
-                        setEditImage(e.target.files?.[0] ?? null)
-                      }
+                      onChange={handleImageChange}
                       className="text-sm"
                     />
-                    {editImage && (
+                    {editImageFile && (
                       <p className="mt-1 text-xs text-gray-500">
-                        {editImage.name}
+                        {editImageFile.name}
                       </p>
                     )}
                   </div>
@@ -338,7 +356,8 @@ export default function NutrArticleDetail() {
                         setIsEditing(false);
                         setEditTitle(article.title_el ?? '');
                         setEditText(article.text_el ?? '');
-                        setEditImage(null);
+                        setEditImageFile(null);
+                        setEditImagePreview(null);
                         setEditError('');
                       }}
                       className="rounded-full border border-gray-400 px-8 py-2.5 text-sm font-semibold transition hover:bg-gray-100"

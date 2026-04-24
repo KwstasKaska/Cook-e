@@ -28,7 +28,7 @@ export default function ChefProfile() {
   const [showRatingModal, setShowRatingModal] = useState(false);
   const [showCreateForm, setShowCreateForm] = useState(false);
 
-  // ── Data fetching
+  // ── Data fetching ──────────────────────────────────────────────────────────
   const { data: profileData, loading: profileLoading } =
     useMyChefProfileQuery();
   const chefProfile = profileData?.myChefProfile;
@@ -66,7 +66,6 @@ export default function ChefProfile() {
   const articles = articlesData?.articlesByChef ?? [];
   const recipesCount = recipesData?.myRecipes?.length ?? 0;
 
-  // ── Compute per-star counts from real rating data
   const ratingCounts: Record<StarKey, number> = {
     1: 0,
     2: 0,
@@ -129,7 +128,7 @@ export default function ChefProfile() {
           className="w-full max-w-3xl rounded-2xl p-6 md:p-8"
           style={{ backgroundColor: '#E9DEC5' }}
         >
-          {/* ── Top row: contact | avatar | rating ── */}
+          {/* ── Top row: contact | avatar | rating ───────────────────────── */}
           <div className="flex flex-col items-center gap-6 md:flex-row md:items-start">
             {/* Contact */}
             <div className="flex-1">
@@ -164,15 +163,25 @@ export default function ChefProfile() {
             {/* Avatar */}
             <div className="flex-1 flex flex-col items-center">
               <div
-                className="h-24 w-24 overflow-hidden rounded-full border-4 shadow-lg flex items-center justify-center"
+                className="h-24 w-24 overflow-hidden rounded-full border-4 shadow-lg"
                 style={{ borderColor: '#3F4756', backgroundColor: '#B3D5F8' }}
               >
-                <span
-                  className="text-2xl font-bold"
-                  style={{ color: '#3F4756' }}
-                >
-                  {chefProfile?.user?.username?.[0]?.toUpperCase() ?? '?'}
-                </span>
+                {chefProfile?.user?.image ? (
+                  <img
+                    src={chefProfile.user.image}
+                    alt={chefProfile.user.username ?? ''}
+                    className="h-full w-full object-cover"
+                  />
+                ) : (
+                  <div className="flex h-full w-full items-center justify-center">
+                    <span
+                      className="text-2xl font-bold"
+                      style={{ color: '#3F4756' }}
+                    >
+                      {chefProfile?.user?.username?.[0]?.toUpperCase() ?? '?'}
+                    </span>
+                  </div>
+                )}
               </div>
               <p
                 className="mt-2 text-lg font-bold"
@@ -216,8 +225,7 @@ export default function ChefProfile() {
             </div>
           </div>
 
-          {/* ── Bio ── */}
-          {/* NOTE: requires a `bio` column on User/ChefProfile — wire up when ready */}
+          {/* ── Bio ───────────────────────────────────────────────────────── */}
           <div
             className="mt-6 rounded-xl px-5 py-4"
             style={{ backgroundColor: '#D6C9A8' }}
@@ -228,12 +236,21 @@ export default function ChefProfile() {
             >
               {t('settings.bio')}
             </p>
-            <p className="text-sm leading-relaxed text-gray-500 italic">
-              {t('chef.profile.bio_placeholder')}
-            </p>
+            {chefProfile?.bio ? (
+              <p
+                className="text-sm leading-relaxed"
+                style={{ color: '#3F4756' }}
+              >
+                {chefProfile.bio}
+              </p>
+            ) : (
+              <p className="text-sm italic text-gray-500">
+                {t('chef.profile.bio_placeholder')}
+              </p>
+            )}
           </div>
 
-          {/* ── Stats ── */}
+          {/* ── Stats ─────────────────────────────────────────────────────── */}
           <div className="mt-6 flex items-center justify-center divide-x divide-gray-400">
             {stats.map((stat) => (
               <div key={stat.label} className="flex flex-col items-center px-8">
@@ -248,7 +265,7 @@ export default function ChefProfile() {
             ))}
           </div>
 
-          {/* ── Articles ── */}
+          {/* ── Articles ──────────────────────────────────────────────────── */}
           <div className="mt-8 mb-3 flex items-center justify-between">
             <h3 className="text-sm font-semibold" style={{ color: '#3F4756' }}>
               {t('chef.profile.articles')}

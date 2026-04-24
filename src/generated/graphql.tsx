@@ -15,7 +15,6 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean; }
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
-  Upload: { input: any; output: any; }
 };
 
 export type AddAppointmentInput = {
@@ -289,7 +288,6 @@ export type Mutation = {
   updateNutritionistProfile: NutritionistProfileResponse;
   updateRecipe: RecipeResponse;
   updateUser: UserResponse;
-  updateUserImage: Scalars['Boolean']['output'];
 };
 
 
@@ -319,7 +317,6 @@ export type MutationCreateAppointmentArgs = {
 
 export type MutationCreateArticleArgs = {
   data: AddArticleInput;
-  picture: Scalars['Upload']['input'];
 };
 
 
@@ -460,7 +457,6 @@ export type MutationUpdateAppointmentRequestArgs = {
 
 export type MutationUpdateArticleArgs = {
   data: UpdateArticleInput;
-  picture?: InputMaybe<Scalars['Upload']['input']>;
 };
 
 
@@ -494,11 +490,6 @@ export type MutationUpdateRecipeArgs = {
 
 export type MutationUpdateUserArgs = {
   data: UpdateUserInput;
-};
-
-
-export type MutationUpdateUserImageArgs = {
-  picture: Scalars['Upload']['input'];
 };
 
 export type NutritionalSummary = {
@@ -936,6 +927,7 @@ export type UpdateSlotInput = {
 export type UpdateUserInput = {
   currentPassword?: InputMaybe<Scalars['String']['input']>;
   email?: InputMaybe<Scalars['String']['input']>;
+  image?: InputMaybe<Scalars['String']['input']>;
   newPassword?: InputMaybe<Scalars['String']['input']>;
   phoneNumber?: InputMaybe<Scalars['String']['input']>;
   username?: InputMaybe<Scalars['String']['input']>;
@@ -983,13 +975,13 @@ export type Utensil = {
   name_en: Scalars['String']['output'];
 };
 
-export type RegularChefProfileFragment = { __typename?: 'ChefProfile', id: number, bio?: string | null, user: { __typename?: 'User', id: number, username: string, email: string } };
+export type RegularChefProfileFragment = { __typename?: 'ChefProfile', id: number, bio?: string | null, user: { __typename?: 'User', id: number, username: string, email: string, image?: string | null } };
 
-export type RegularChefProfileResponseFragment = { __typename?: 'ChefProfileResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, chefProfile?: { __typename?: 'ChefProfile', id: number, bio?: string | null, user: { __typename?: 'User', id: number, username: string, email: string } } | null };
+export type RegularChefProfileResponseFragment = { __typename?: 'ChefProfileResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, chefProfile?: { __typename?: 'ChefProfile', id: number, bio?: string | null, user: { __typename?: 'User', id: number, username: string, email: string, image?: string | null } } | null };
 
 export type RegualarErrorFragment = { __typename?: 'FieldError', field: string, message: string };
 
-export type RegularNutritionistProfileResponseFragment = { __typename?: 'NutritionistProfileResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, nutritionistProfile?: { __typename?: 'NutritionistProfile', id: number, bio?: string | null, phone?: string | null, city?: string | null, user?: { __typename?: 'User', id: number, username: string, email: string } | null } | null };
+export type RegularNutritionistProfileResponseFragment = { __typename?: 'NutritionistProfileResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, nutritionistProfile?: { __typename?: 'NutritionistProfile', id: number, bio?: string | null, phone?: string | null, city?: string | null, user?: { __typename?: 'User', id: number, username: string, email: string, image?: string | null } | null } | null };
 
 export type RegularUserFragment = { __typename?: 'User', id: number, username: string, email: string, role: UserRole, image?: string | null };
 
@@ -997,9 +989,9 @@ export type RegularUserResponseFragment = { __typename?: 'UserResponse', errors?
 
 export type RegularAppointmentFragment = { __typename?: 'Appointment', id: number, date: string, time: string, isAvailable: boolean, nutritionistId: number };
 
-export type RegularAppointmentRequestFragment = { __typename?: 'AppointmentRequest', id: number, slotId: number, clientId: number, status: AppointmentStatus, comment?: string | null, requestedAt: string, slot?: { __typename?: 'Appointment', id: number, date: string, time: string, isAvailable: boolean, nutritionistId: number } | null, client?: { __typename?: 'User', id: number, username: string } | null };
+export type RegularAppointmentRequestFragment = { __typename?: 'AppointmentRequest', id: number, slotId: number, clientId: number, status: AppointmentStatus, comment?: string | null, requestedAt: string, slot?: { __typename?: 'Appointment', id: number, date: string, time: string, isAvailable: boolean, nutritionistId: number } | null, client?: { __typename?: 'User', id: number, username: string, image?: string | null } | null };
 
-export type RegularAppointmentRequestResponseFragment = { __typename?: 'AppointmentRequestResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, appointmentRequest?: { __typename?: 'AppointmentRequest', id: number, slotId: number, clientId: number, status: AppointmentStatus, comment?: string | null, requestedAt: string, slot?: { __typename?: 'Appointment', id: number, date: string, time: string, isAvailable: boolean, nutritionistId: number } | null, client?: { __typename?: 'User', id: number, username: string } | null } | null };
+export type RegularAppointmentRequestResponseFragment = { __typename?: 'AppointmentRequestResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, appointmentRequest?: { __typename?: 'AppointmentRequest', id: number, slotId: number, clientId: number, status: AppointmentStatus, comment?: string | null, requestedAt: string, slot?: { __typename?: 'Appointment', id: number, date: string, time: string, isAvailable: boolean, nutritionistId: number } | null, client?: { __typename?: 'User', id: number, username: string, image?: string | null } | null } | null };
 
 export type RegularAppointmentResponseFragment = { __typename?: 'AppointmentResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, slot?: { __typename?: 'Appointment', id: number, date: string, time: string, isAvailable: boolean, nutritionistId: number } | null };
 
@@ -1063,7 +1055,7 @@ export type RequestAppointmentMutationVariables = Exact<{
 }>;
 
 
-export type RequestAppointmentMutation = { __typename?: 'Mutation', requestAppointment: { __typename?: 'AppointmentRequestResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, appointmentRequest?: { __typename?: 'AppointmentRequest', id: number, slotId: number, clientId: number, status: AppointmentStatus, comment?: string | null, requestedAt: string, slot?: { __typename?: 'Appointment', id: number, date: string, time: string, isAvailable: boolean, nutritionistId: number } | null, client?: { __typename?: 'User', id: number, username: string } | null } | null } };
+export type RequestAppointmentMutation = { __typename?: 'Mutation', requestAppointment: { __typename?: 'AppointmentRequestResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, appointmentRequest?: { __typename?: 'AppointmentRequest', id: number, slotId: number, clientId: number, status: AppointmentStatus, comment?: string | null, requestedAt: string, slot?: { __typename?: 'Appointment', id: number, date: string, time: string, isAvailable: boolean, nutritionistId: number } | null, client?: { __typename?: 'User', id: number, username: string, image?: string | null } | null } | null } };
 
 export type RespondToAppointmentRequestMutationVariables = Exact<{
   requestId: Scalars['Float']['input'];
@@ -1075,7 +1067,6 @@ export type RespondToAppointmentRequestMutation = { __typename?: 'Mutation', res
 
 export type UpdateArticleMutationVariables = Exact<{
   data: UpdateArticleInput;
-  picture?: InputMaybe<Scalars['Upload']['input']>;
 }>;
 
 
@@ -1196,7 +1187,6 @@ export type DeleteCookLogMutationVariables = Exact<{
 export type DeleteCookLogMutation = { __typename?: 'Mutation', deleteCookLog: boolean };
 
 export type CreateArticleMutationVariables = Exact<{
-  picture: Scalars['Upload']['input'];
   data: AddArticleInput;
 }>;
 
@@ -1295,14 +1285,14 @@ export type UpdateChefProfileMutationVariables = Exact<{
 }>;
 
 
-export type UpdateChefProfileMutation = { __typename?: 'Mutation', updateChefProfile: { __typename?: 'ChefProfileResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, chefProfile?: { __typename?: 'ChefProfile', id: number, bio?: string | null, user: { __typename?: 'User', id: number, username: string, email: string } } | null } };
+export type UpdateChefProfileMutation = { __typename?: 'Mutation', updateChefProfile: { __typename?: 'ChefProfileResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, chefProfile?: { __typename?: 'ChefProfile', id: number, bio?: string | null, user: { __typename?: 'User', id: number, username: string, email: string, image?: string | null } } | null } };
 
 export type UpdateNutritionistProfileMutationVariables = Exact<{
   data: UpdateNutritionistProfileInput;
 }>;
 
 
-export type UpdateNutritionistProfileMutation = { __typename?: 'Mutation', updateNutritionistProfile: { __typename?: 'NutritionistProfileResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, nutritionistProfile?: { __typename?: 'NutritionistProfile', id: number, bio?: string | null, phone?: string | null, city?: string | null, user?: { __typename?: 'User', id: number, username: string, email: string } | null } | null } };
+export type UpdateNutritionistProfileMutation = { __typename?: 'Mutation', updateNutritionistProfile: { __typename?: 'NutritionistProfileResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, nutritionistProfile?: { __typename?: 'NutritionistProfile', id: number, bio?: string | null, phone?: string | null, city?: string | null, user?: { __typename?: 'User', id: number, username: string, email: string, image?: string | null } | null } | null } };
 
 export type UpdateUserMutationVariables = Exact<{
   data: UpdateUserInput;
@@ -1346,7 +1336,7 @@ export type GetAppointmentRequestsForNutritionistQueryVariables = Exact<{
 }>;
 
 
-export type GetAppointmentRequestsForNutritionistQuery = { __typename?: 'Query', getAppointmentRequestsForNutritionist: Array<{ __typename?: 'AppointmentRequest', id: number, slotId: number, clientId: number, status: AppointmentStatus, comment?: string | null, requestedAt: string, slot?: { __typename?: 'Appointment', id: number, date: string, time: string, isAvailable: boolean, nutritionistId: number } | null, client?: { __typename?: 'User', id: number, username: string } | null }> };
+export type GetAppointmentRequestsForNutritionistQuery = { __typename?: 'Query', getAppointmentRequestsForNutritionist: Array<{ __typename?: 'AppointmentRequest', id: number, slotId: number, clientId: number, status: AppointmentStatus, comment?: string | null, requestedAt: string, slot?: { __typename?: 'Appointment', id: number, date: string, time: string, isAvailable: boolean, nutritionistId: number } | null, client?: { __typename?: 'User', id: number, username: string, image?: string | null } | null }> };
 
 export type MyAppointmentRequestsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1445,7 +1435,7 @@ export type MyCartQuery = { __typename?: 'Query', myCart: Array<{ __typename?: '
 export type MyChefProfileQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MyChefProfileQuery = { __typename?: 'Query', myChefProfile?: { __typename?: 'ChefProfile', id: number, bio?: string | null, user: { __typename?: 'User', id: number, username: string, email: string } } | null };
+export type MyChefProfileQuery = { __typename?: 'Query', myChefProfile?: { __typename?: 'ChefProfile', id: number, bio?: string | null, user: { __typename?: 'User', id: number, username: string, email: string, image?: string | null } } | null };
 
 export type MyConversationsQueryVariables = Exact<{
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -1503,7 +1493,7 @@ export type NutritionistQueryVariables = Exact<{
 }>;
 
 
-export type NutritionistQuery = { __typename?: 'Query', nutritionist?: { __typename?: 'NutritionistProfile', id: number, bio?: string | null, phone?: string | null, city?: string | null, user?: { __typename?: 'User', id: number, username: string, email: string } | null } | null };
+export type NutritionistQuery = { __typename?: 'Query', nutritionist?: { __typename?: 'NutritionistProfile', id: number, bio?: string | null, phone?: string | null, city?: string | null, user?: { __typename?: 'User', id: number, username: string, email: string, image?: string | null } | null } | null };
 
 export type NutritionistsQueryVariables = Exact<{
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -1511,7 +1501,7 @@ export type NutritionistsQueryVariables = Exact<{
 }>;
 
 
-export type NutritionistsQuery = { __typename?: 'Query', nutritionists: Array<{ __typename?: 'NutritionistProfile', id: number, bio?: string | null, phone?: string | null, city?: string | null, user?: { __typename?: 'User', id: number, username: string, email: string } | null }> };
+export type NutritionistsQuery = { __typename?: 'Query', nutritionists: Array<{ __typename?: 'NutritionistProfile', id: number, bio?: string | null, phone?: string | null, city?: string | null, user?: { __typename?: 'User', id: number, username: string, email: string, image?: string | null } | null }> };
 
 export type RecipeQueryVariables = Exact<{
   id: Scalars['Int']['input'];
@@ -1590,6 +1580,7 @@ export const RegularChefProfileFragmentDoc = gql`
     id
     username
     email
+    image
   }
 }
     `;
@@ -1618,6 +1609,7 @@ export const RegularNutritionistProfileResponseFragmentDoc = gql`
       id
       username
       email
+      image
     }
   }
 }
@@ -1665,6 +1657,7 @@ export const RegularAppointmentRequestFragmentDoc = gql`
   client {
     id
     username
+    image
   }
 }
     ${RegularAppointmentFragmentDoc}`;
@@ -2113,8 +2106,8 @@ export type RespondToAppointmentRequestMutationHookResult = ReturnType<typeof us
 export type RespondToAppointmentRequestMutationResult = Apollo.MutationResult<RespondToAppointmentRequestMutation>;
 export type RespondToAppointmentRequestMutationOptions = Apollo.BaseMutationOptions<RespondToAppointmentRequestMutation, RespondToAppointmentRequestMutationVariables>;
 export const UpdateArticleDocument = gql`
-    mutation UpdateArticle($data: UpdateArticleInput!, $picture: Upload) {
-  updateArticle(data: $data, picture: $picture) {
+    mutation UpdateArticle($data: UpdateArticleInput!) {
+  updateArticle(data: $data) {
     ...RegularArticleResponse
   }
 }
@@ -2135,7 +2128,6 @@ export type UpdateArticleMutationFn = Apollo.MutationFunction<UpdateArticleMutat
  * const [updateArticleMutation, { data, loading, error }] = useUpdateArticleMutation({
  *   variables: {
  *      data: // value for 'data'
- *      picture: // value for 'picture'
  *   },
  * });
  */
@@ -2645,8 +2637,8 @@ export type DeleteCookLogMutationHookResult = ReturnType<typeof useDeleteCookLog
 export type DeleteCookLogMutationResult = Apollo.MutationResult<DeleteCookLogMutation>;
 export type DeleteCookLogMutationOptions = Apollo.BaseMutationOptions<DeleteCookLogMutation, DeleteCookLogMutationVariables>;
 export const CreateArticleDocument = gql`
-    mutation CreateArticle($picture: Upload!, $data: AddArticleInput!) {
-  createArticle(picture: $picture, data: $data) {
+    mutation CreateArticle($data: AddArticleInput!) {
+  createArticle(data: $data) {
     ...RegularArticleResponse
   }
 }
@@ -2666,7 +2658,6 @@ export type CreateArticleMutationFn = Apollo.MutationFunction<CreateArticleMutat
  * @example
  * const [createArticleMutation, { data, loading, error }] = useCreateArticleMutation({
  *   variables: {
- *      picture: // value for 'picture'
  *      data: // value for 'data'
  *   },
  * });
@@ -3373,6 +3364,7 @@ export const GetAppointmentRequestsForNutritionistDocument = gql`
     client {
       id
       username
+      image
     }
   }
 }
@@ -4346,6 +4338,7 @@ export const NutritionistDocument = gql`
       id
       username
       email
+      image
     }
   }
 }
@@ -4394,6 +4387,7 @@ export const NutritionistsDocument = gql`
       id
       username
       email
+      image
     }
   }
 }

@@ -16,12 +16,13 @@ import { useChatContext } from '../../components/Chat/ChatContext';
 
 type SelectedNutritionist = {
   id: number;
-  userId: number; // User.id — needed for startConversation
+  userId: number;
   username: string;
   email: string;
   bio?: string | null;
   phone?: string | null;
   city?: string | null;
+  image?: string | null;
 };
 
 const toDisplay = (isoDate: string, locale: Locale): string => {
@@ -127,6 +128,7 @@ function ListView({
                       id={nutr.id}
                       username={nutr.user?.username ?? '—'}
                       city={nutr.city}
+                      image={nutr.user?.image ?? null}
                       onClick={() =>
                         onSelect({
                           id: nutr.id,
@@ -136,6 +138,7 @@ function ListView({
                           bio: nutr.bio,
                           phone: nutr.phone,
                           city: nutr.city,
+                          image: nutr.user?.image ?? null,
                         })
                       }
                     />
@@ -153,10 +156,12 @@ function ListView({
 function NutrCard({
   username,
   city,
+  image,
   onClick,
 }: {
   id: number;
   username: string;
+  image?: string | null;
   city?: string | null;
   onClick: () => void;
 }) {
@@ -167,6 +172,7 @@ function NutrCard({
     >
       <div className="absolute -top-8 left-1/2 -translate-x-1/2">
         <img
+          src={image ?? undefined}
           alt={username}
           className="h-16 w-16 rounded-full border-4 border-white object-cover shadow"
         />
@@ -181,7 +187,7 @@ function NutrCard({
   );
 }
 
-// ── Profile view ──────────────────────────────────────────────────────────────
+// ── Profile view
 
 function ProfileView({
   nutr,
