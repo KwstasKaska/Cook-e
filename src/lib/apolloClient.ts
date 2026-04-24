@@ -53,7 +53,7 @@ const createApolloClient = (headers: IncomingHttpHeaders | null = null) => {
   };
 
   const httpLink = createUploadLink({
-    uri: 'http://localhost:4000/graphql',
+    uri: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/graphql',
     credentials: 'include',
     fetch: enhancedFetch as any,
     headers: { 'Apollo-Require-Preflight': 'true' },
