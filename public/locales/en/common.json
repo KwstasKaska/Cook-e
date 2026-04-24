@@ -185,7 +185,7 @@
     "passwordTooShort": "Password must be longer than 4 characters.",
     "passwordNeedsUppercase": "Password must contain at least one uppercase letter.",
     "passwordNeedsSpecial": "Password must contain at least one special character.",
-    "mealPlan": "My Meal Plan",
+    "mealPlan": "My meal Plan",
     "mealPlanBy": "Nutrition plan prepared by",
     "noMealPlan": "No meal plan has been assigned yet."
   },

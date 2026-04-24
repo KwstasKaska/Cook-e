@@ -9,13 +9,14 @@ import {
   useNutritionistsQuery,
   useAvailableSlotsQuery,
   useRequestAppointmentMutation,
+  useMyAppointmentRequestsQuery,
 } from '../../generated/graphql';
 import useIsUser from '../../utils/useIsUser';
-
-// ── Types ─────────────────────────────────────────────────────────────────────
+import { useChatContext } from '../../components/Chat/ChatContext';
 
 type SelectedNutritionist = {
   id: number;
+  userId: number; // User.id — needed for startConversation
   username: string;
   email: string;
   bio?: string | null;
@@ -23,15 +24,10 @@ type SelectedNutritionist = {
   city?: string | null;
 };
 
-// ── Helper ────────────────────────────────────────────────────────────────────
-
-// Slot dates are stored as ISO (YYYY-MM-DD) — format for display only
 const toDisplay = (isoDate: string, locale: Locale): string => {
   const [year, month, day] = isoDate.split('-').map(Number);
   return format(new Date(year, month - 1, day), 'dd MMMM yyyy', { locale });
 };
-
-// ── getServerSideProps ────────────────────────────────────────────────────────
 
 export async function getServerSideProps({ locale }: { locale: string }) {
   return {
@@ -41,26 +37,32 @@ export async function getServerSideProps({ locale }: { locale: string }) {
   };
 }
 
-// ── Page root ─────────────────────────────────────────────────────────────────
-
 export default function NutritionistsPage() {
   const { loading: authLoading, isAuthorized } = useIsUser();
   if (authLoading || !isAuthorized) return null;
   return <NutritionistsContent />;
 }
 
-// ── Content router ────────────────────────────────────────────────────────────
-
 function NutritionistsContent() {
   const [selected, setSelected] = useState<SelectedNutritionist | null>(null);
 
+  const { data: requestsData } = useMyAppointmentRequestsQuery({
+    fetchPolicy: 'network-only',
+  });
+
+  const myRequests = requestsData?.myAppointmentRequests ?? [];
+
   if (selected) {
-    return <ProfileView nutr={selected} onBack={() => setSelected(null)} />;
+    return (
+      <ProfileView
+        nutr={selected}
+        myRequests={myRequests}
+        onBack={() => setSelected(null)}
+      />
+    );
   }
   return <ListView onSelect={setSelected} />;
 }
-
-// ── List view ─────────────────────────────────────────────────────────────────
 
 function ListView({
   onSelect,
@@ -128,6 +130,7 @@ function ListView({
                       onClick={() =>
                         onSelect({
                           id: nutr.id,
+                          userId: nutr.user?.id ?? 0,
                           username: nutr.user?.username ?? '—',
                           email: nutr.user?.email ?? '',
                           bio: nutr.bio,
@@ -147,10 +150,7 @@ function ListView({
   );
 }
 
-// ── Nutritionist card ─────────────────────────────────────────────────────────
-
 function NutrCard({
-  id,
   username,
   city,
   onClick,
@@ -160,10 +160,6 @@ function NutrCard({
   city?: string | null;
   onClick: () => void;
 }) {
-  const avatarUrl = `https://randomuser.me/api/portraits/men/${
-    30 + (id % 20)
-  }.jpg`;
-
   return (
     <div
       className="relative cursor-pointer rounded-2xl border-2 border-black px-4 pb-4 pt-10 shadow-sm transition-transform duration-200 hover:scale-105"
@@ -171,7 +167,6 @@ function NutrCard({
     >
       <div className="absolute -top-8 left-1/2 -translate-x-1/2">
         <img
-          src={avatarUrl}
           alt={username}
           className="h-16 w-16 rounded-full border-4 border-white object-cover shadow"
         />
@@ -190,15 +185,22 @@ function NutrCard({
 
 function ProfileView({
   nutr,
+  myRequests,
   onBack,
 }: {
   nutr: SelectedNutritionist;
+  myRequests: Array<{
+    id: number;
+    status: string;
+    slot?: { id: number; nutritionistId: number } | null;
+  }>;
   onBack: () => void;
 }) {
   const { t, i18n } = useTranslation('common');
   const { locale } = useRouter();
   const isEl = locale === 'el';
   const dateFnsLocale = i18n.language === 'el' ? el : enUS;
+  const { openConversation } = useChatContext();
 
   const [monthIndex, setMonthIndex] = useState(new Date().getMonth());
   const [selectedSlotId, setSelectedSlotId] = useState<number | null>(null);
@@ -215,7 +217,6 @@ function ProfileView({
 
   const availableSlots = slotsData?.availableSlots ?? [];
 
-  // Slots are stored as ISO (YYYY-MM-DD) — parse natively, no locale tricks needed
   const visibleSlots = availableSlots.filter((slot) => {
     if (!slot.date) return false;
     const slotDate = new Date(slot.date);
@@ -225,6 +226,11 @@ function ProfileView({
   const monthName = new Date(2026, monthIndex).toLocaleString(
     isEl ? 'el-GR' : 'en-US',
     { month: 'long' },
+  );
+
+  // ── Accepted-appointment gate
+  const hasAcceptedAppointment = myRequests.some(
+    (req) => req.status === 'ACCEPTED' && req.slot?.nutritionistId === nutr.id,
   );
 
   const handleMonthChange = (delta: number) => {
@@ -343,6 +349,34 @@ function ProfileView({
                   />
                 </svg>
               </a>
+
+              {/* ── Message button ────────────────────────────────────────────
+                  Visible only when the user has an accepted appointment
+                  with this specific nutritionist.
+              ──────────────────────────────────────────────────────────────── */}
+              {hasAcceptedAppointment && (
+                <button
+                  onClick={() => openConversation(nutr.userId)}
+                  className="flex h-12 w-12 items-center justify-center rounded-full shadow-md transition-opacity hover:opacity-90"
+                  style={{ backgroundColor: '#377CC3' }}
+                  aria-label="Send message"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5 text-white"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M8 10h.01M12 10h.01M16 10h.01M21 16c0 1.1-.9 2-2 2H7l-4 4V6a2 2 0 012-2h14a2 2 0 012 2v10z"
+                    />
+                  </svg>
+                </button>
+              )}
             </div>
           </div>
 

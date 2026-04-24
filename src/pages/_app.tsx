@@ -9,6 +9,7 @@ import { useApollo } from '../lib/apolloClient';
 import { appWithTranslation } from 'next-i18next';
 import { useMeQuery } from '../generated/graphql';
 import ChatWidget from '../components/Chat/ChatWidget';
+import { ChatContextProvider } from '../components/Chat/ChatContext';
 
 function Inner({ Component, pageProps }: AppProps) {
   const { data } = useMeQuery();
@@ -28,7 +29,9 @@ function MyApp(props: AppProps) {
 
   return (
     <ApolloProvider client={apolloClient}>
-      <Inner {...props} />
+      <ChatContextProvider>
+        <Inner {...props} />
+      </ChatContextProvider>
     </ApolloProvider>
   );
 }

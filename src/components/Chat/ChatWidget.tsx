@@ -4,9 +4,11 @@ import {
   useMyConversationsQuery,
   useConversationQuery,
   useSendMessageMutation,
+  useStartConversationMutation,
 } from '../../generated/graphql';
+import { useChatContext } from './ChatContext';
 
-// ── Types ──────────────────────────────────────────────────────────────────
+// ── Types
 
 interface ChatWidgetProps {
   currentUserId: number;
@@ -14,18 +16,23 @@ interface ChatWidgetProps {
 
 type View = 'closed' | 'inbox' | 'thread';
 
-// ── Component ──────────────────────────────────────────────────────────────
+// ── Component
 
 export default function ChatWidget({ currentUserId }: ChatWidgetProps) {
   const { t } = useTranslation('common');
+  const { pendingUserId, clearPending } = useChatContext();
 
   const [view, setView] = useState<View>('closed');
   const [activeConvoId, setActiveConvoId] = useState<number | null>(null);
   const [body, setBody] = useState('');
   const [sendError, setSendError] = useState('');
+  const [startError, setStartError] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // ── Queries ───────────────────────────────────────────────────────────────
+  // Guard: prevents the effect from firing twice for the same pendingUserId
+  const pendingFiredRef = useRef(false);
+
+  // ── Queries
 
   const { data: inboxData, loading: inboxLoading } = useMyConversationsQuery({
     variables: { limit: 20, offset: 0 },
@@ -41,17 +48,66 @@ export default function ChatWidget({ currentUserId }: ChatWidgetProps) {
     fetchPolicy: 'network-only',
   });
 
-  // ── Mutations ─────────────────────────────────────────────────────────────
+  // ── Mutations
 
   const [sendMessage, { loading: sending }] = useSendMessageMutation();
+  const [startConversation, { loading: starting }] =
+    useStartConversationMutation();
 
-  // ── Effects ───────────────────────────────────────────────────────────────
+  // ── Effects
 
+  // Scroll to bottom when thread updates
   useEffect(() => {
     if (view === 'thread') {
       messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     }
   }, [threadData, view]);
+
+  // Handle openConversation(userId) calls from anywhere in the app
+  useEffect(() => {
+    if (pendingUserId === null) {
+      pendingFiredRef.current = false;
+      return;
+    }
+    console.log(
+      'effect fired, pendingUserId:',
+      pendingUserId,
+      'alreadyFired:',
+      pendingFiredRef.current,
+    );
+    if (pendingFiredRef.current) return;
+    pendingFiredRef.current = true;
+    async function initConversation() {
+      setStartError('');
+      try {
+        const result = await startConversation({
+          variables: { participantId: pendingUserId! },
+        });
+        clearPending();
+
+        if (result.data?.startConversation?.errors?.length) {
+          setStartError(result.data.startConversation.errors[0].message);
+          setView('inbox');
+          return;
+        }
+
+        const convo = result.data?.startConversation?.conversation;
+        if (convo) {
+          setActiveConvoId(convo.id);
+          setView('thread');
+          setSendError('');
+          setBody('');
+        }
+      } catch {
+        clearPending();
+        setStartError('Κάτι πήγε λάθος. Δοκιμάστε ξανά.');
+        setView('inbox');
+      }
+    }
+
+    initConversation();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pendingUserId]);
 
   // ── Helpers ───────────────────────────────────────────────────────────────
 
@@ -70,6 +126,7 @@ export default function ChatWidget({ currentUserId }: ChatWidgetProps) {
     setActiveConvoId(convoId);
     setView('thread');
     setSendError('');
+    setStartError('');
     setBody('');
   }
 
@@ -100,7 +157,7 @@ export default function ChatWidget({ currentUserId }: ChatWidgetProps) {
 
   // ── FAB ───────────────────────────────────────────────────────────────────
 
-  if (view === 'closed') {
+  if (view === 'closed' && pendingUserId === null) {
     return (
       <button
         onClick={() => setView('inbox')}
@@ -164,11 +221,16 @@ export default function ChatWidget({ currentUserId }: ChatWidgetProps) {
               ? t('messages', 'Messages')
               : thread
                 ? getOtherParticipant(thread).username
-                : '...'}
+                : starting
+                  ? '...'
+                  : t('messages', 'Messages')}
           </span>
         </div>
         <button
-          onClick={() => setView('closed')}
+          onClick={() => {
+            setView('closed');
+            clearPending();
+          }}
           className="hover:opacity-70"
           aria-label="Close"
         >
@@ -192,14 +254,21 @@ export default function ChatWidget({ currentUserId }: ChatWidgetProps) {
       {/* Inbox */}
       {view === 'inbox' && (
         <div className="flex-1 overflow-y-auto divide-y divide-gray-100">
+          {startError && (
+            <p className="text-xs text-red-500 text-center px-3 py-2">
+              {startError}
+            </p>
+          )}
           {inboxLoading && (
             <p className="text-xs text-gray-400 text-center py-6">Loading...</p>
           )}
-          {!inboxLoading && !inboxData?.myConversations?.length && (
-            <p className="text-xs text-gray-400 text-center py-6">
-              {t('no_conversations', 'No conversations yet.')}
-            </p>
-          )}
+          {!inboxLoading &&
+            !inboxData?.myConversations?.length &&
+            !startError && (
+              <p className="text-xs text-gray-400 text-center py-6">
+                {t('no_conversations', 'No conversations yet.')}
+              </p>
+            )}
           {inboxData?.myConversations?.map((convo) => {
             const other = getOtherParticipant(convo);
             return (
@@ -230,8 +299,15 @@ export default function ChatWidget({ currentUserId }: ChatWidgetProps) {
         </div>
       )}
 
+      {/* Thread — loading state while startConversation is in flight */}
+      {view === 'thread' && starting && (
+        <div className="flex-1 flex items-center justify-center">
+          <p className="text-xs text-gray-400">Άνοιγμα συνομιλίας...</p>
+        </div>
+      )}
+
       {/* Thread */}
-      {view === 'thread' && (
+      {view === 'thread' && !starting && (
         <>
           <div className="flex-1 overflow-y-auto px-3 py-2 space-y-2">
             {threadLoading && (

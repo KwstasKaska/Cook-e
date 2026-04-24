@@ -5,4 +5,11 @@ fragment RegularAppointmentRequest on AppointmentRequest {
   status
   comment
   requestedAt
+  slot {
+    ...RegularAppointment
+  }
+  client {
+    id
+    username
+  }
 }

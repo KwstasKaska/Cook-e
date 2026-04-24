@@ -18,6 +18,7 @@ import {
   useDeleteChefRatingMutation,
 } from '../../../generated/graphql';
 import useIsUser from '../../../utils/useIsUser';
+import { useChatContext } from '../../../components/Chat/ChatContext';
 
 export async function getServerSideProps({ locale }: { locale: string }) {
   return {
@@ -40,6 +41,7 @@ function ChefProfileContent() {
   const { id } = router.query;
   const chefId = parseInt(id as string, 10);
   const isEl = router.locale === 'el';
+  const { openConversation } = useChatContext();
 
   // ── Rating form state
   const [ratingScore, setRatingScore] = useState(0);
@@ -198,7 +200,7 @@ function ChefProfileContent() {
             <div className="grid grid-cols-1 gap-10 md:grid-cols-[1fr_340px] md:items-start">
               {/* ── LEFT: chef info */}
               <div className="flex flex-col gap-6">
-                {/* Avatar + name */}
+                {/* Avatar + name + message button */}
                 <div className="flex items-center gap-5">
                   {chef.user?.image ? (
                     <img
@@ -214,7 +216,7 @@ function ChefProfileContent() {
                       {chef.user?.username?.[0]?.toUpperCase() ?? '?'}
                     </div>
                   )}
-                  <div>
+                  <div className="flex flex-col gap-2">
                     <h1
                       className="text-3xl font-bold italic text-white md:text-4xl"
                       style={{ fontFamily: 'Georgia, serif' }}
@@ -222,12 +224,34 @@ function ChefProfileContent() {
                       {chef.user?.username}
                     </h1>
                     {avgRating > 0 && (
-                      <div className="mt-2">
-                        <StarRow
-                          rating={avgRating}
-                          ratingCount={reviews.length}
-                        />
-                      </div>
+                      <StarRow
+                        rating={avgRating}
+                        ratingCount={reviews.length}
+                      />
+                    )}
+                    {/* ── Message button — any user can message a chef */}
+                    {chef.user?.id && (
+                      <button
+                        onClick={() => openConversation(chef.user!.id)}
+                        className="flex w-fit items-center gap-2 rounded-full px-4 py-1.5 text-sm font-semibold text-white shadow transition-opacity hover:opacity-90"
+                        style={{ backgroundColor: '#377CC3' }}
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-4 w-4"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          strokeWidth={2}
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M8 10h.01M12 10h.01M16 10h.01M21 16c0 1.1-.9 2-2 2H7l-4 4V6a2 2 0 012-2h14a2 2 0 012 2v10z"
+                          />
+                        </svg>
+                        {t('send_message', 'Send message')}
+                      </button>
                     )}
                   </div>
                 </div>

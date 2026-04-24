@@ -59,7 +59,6 @@ export default function ChefIndex() {
   const ratings = ratingsData?.chefRatings ?? [];
   const totalRatings = ratings.length;
 
-  // ── Compute per-star counts from real data
   const ratingCounts: Record<StarKey, number> = {
     1: 0,
     2: 0,

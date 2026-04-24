@@ -997,9 +997,9 @@ export type RegularUserResponseFragment = { __typename?: 'UserResponse', errors?
 
 export type RegularAppointmentFragment = { __typename?: 'Appointment', id: number, date: string, time: string, isAvailable: boolean, nutritionistId: number };
 
-export type RegularAppointmentRequestFragment = { __typename?: 'AppointmentRequest', id: number, slotId: number, clientId: number, status: AppointmentStatus, comment?: string | null, requestedAt: string };
+export type RegularAppointmentRequestFragment = { __typename?: 'AppointmentRequest', id: number, slotId: number, clientId: number, status: AppointmentStatus, comment?: string | null, requestedAt: string, slot?: { __typename?: 'Appointment', id: number, date: string, time: string, isAvailable: boolean, nutritionistId: number } | null, client?: { __typename?: 'User', id: number, username: string } | null };
 
-export type RegularAppointmentRequestResponseFragment = { __typename?: 'AppointmentRequestResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, appointmentRequest?: { __typename?: 'AppointmentRequest', id: number, slotId: number, clientId: number, status: AppointmentStatus, comment?: string | null, requestedAt: string } | null };
+export type RegularAppointmentRequestResponseFragment = { __typename?: 'AppointmentRequestResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, appointmentRequest?: { __typename?: 'AppointmentRequest', id: number, slotId: number, clientId: number, status: AppointmentStatus, comment?: string | null, requestedAt: string, slot?: { __typename?: 'Appointment', id: number, date: string, time: string, isAvailable: boolean, nutritionistId: number } | null, client?: { __typename?: 'User', id: number, username: string } | null } | null };
 
 export type RegularAppointmentResponseFragment = { __typename?: 'AppointmentResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, slot?: { __typename?: 'Appointment', id: number, date: string, time: string, isAvailable: boolean, nutritionistId: number } | null };
 
@@ -1063,7 +1063,7 @@ export type RequestAppointmentMutationVariables = Exact<{
 }>;
 
 
-export type RequestAppointmentMutation = { __typename?: 'Mutation', requestAppointment: { __typename?: 'AppointmentRequestResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, appointmentRequest?: { __typename?: 'AppointmentRequest', id: number, slotId: number, clientId: number, status: AppointmentStatus, comment?: string | null, requestedAt: string } | null } };
+export type RequestAppointmentMutation = { __typename?: 'Mutation', requestAppointment: { __typename?: 'AppointmentRequestResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, appointmentRequest?: { __typename?: 'AppointmentRequest', id: number, slotId: number, clientId: number, status: AppointmentStatus, comment?: string | null, requestedAt: string, slot?: { __typename?: 'Appointment', id: number, date: string, time: string, isAvailable: boolean, nutritionistId: number } | null, client?: { __typename?: 'User', id: number, username: string } | null } | null } };
 
 export type RespondToAppointmentRequestMutationVariables = Exact<{
   requestId: Scalars['Float']['input'];
@@ -1346,7 +1346,12 @@ export type GetAppointmentRequestsForNutritionistQueryVariables = Exact<{
 }>;
 
 
-export type GetAppointmentRequestsForNutritionistQuery = { __typename?: 'Query', getAppointmentRequestsForNutritionist: Array<{ __typename?: 'AppointmentRequest', id: number, slotId: number, clientId: number, status: AppointmentStatus, comment?: string | null, requestedAt: string, slot?: { __typename?: 'Appointment', id: number, date: string, time: string } | null, client?: { __typename?: 'User', id: number, username: string } | null }> };
+export type GetAppointmentRequestsForNutritionistQuery = { __typename?: 'Query', getAppointmentRequestsForNutritionist: Array<{ __typename?: 'AppointmentRequest', id: number, slotId: number, clientId: number, status: AppointmentStatus, comment?: string | null, requestedAt: string, slot?: { __typename?: 'Appointment', id: number, date: string, time: string, isAvailable: boolean, nutritionistId: number } | null, client?: { __typename?: 'User', id: number, username: string } | null }> };
+
+export type MyAppointmentRequestsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MyAppointmentRequestsQuery = { __typename?: 'Query', myAppointmentRequests: Array<{ __typename?: 'AppointmentRequest', id: number, status: AppointmentStatus, slot?: { __typename?: 'Appointment', id: number, nutritionistId: number } | null }> };
 
 export type ArticleQueryVariables = Exact<{
   id: Scalars['Int']['input'];
@@ -1636,6 +1641,15 @@ export const RegularUserResponseFragmentDoc = gql`
 }
     ${RegualarErrorFragmentDoc}
 ${RegularUserFragmentDoc}`;
+export const RegularAppointmentFragmentDoc = gql`
+    fragment RegularAppointment on Appointment {
+  id
+  date
+  time
+  isAvailable
+  nutritionistId
+}
+    `;
 export const RegularAppointmentRequestFragmentDoc = gql`
     fragment RegularAppointmentRequest on AppointmentRequest {
   id
@@ -1644,8 +1658,15 @@ export const RegularAppointmentRequestFragmentDoc = gql`
   status
   comment
   requestedAt
+  slot {
+    ...RegularAppointment
+  }
+  client {
+    id
+    username
+  }
 }
-    `;
+    ${RegularAppointmentFragmentDoc}`;
 export const RegularAppointmentRequestResponseFragmentDoc = gql`
     fragment RegularAppointmentRequestResponse on AppointmentRequestResponse {
   errors {
@@ -1657,15 +1678,6 @@ export const RegularAppointmentRequestResponseFragmentDoc = gql`
 }
     ${RegualarErrorFragmentDoc}
 ${RegularAppointmentRequestFragmentDoc}`;
-export const RegularAppointmentFragmentDoc = gql`
-    fragment RegularAppointment on Appointment {
-  id
-  date
-  time
-  isAvailable
-  nutritionistId
-}
-    `;
 export const RegularAppointmentResponseFragmentDoc = gql`
     fragment RegularAppointmentResponse on AppointmentResponse {
   errors {
@@ -3398,6 +3410,50 @@ export type GetAppointmentRequestsForNutritionistQueryHookResult = ReturnType<ty
 export type GetAppointmentRequestsForNutritionistLazyQueryHookResult = ReturnType<typeof useGetAppointmentRequestsForNutritionistLazyQuery>;
 export type GetAppointmentRequestsForNutritionistSuspenseQueryHookResult = ReturnType<typeof useGetAppointmentRequestsForNutritionistSuspenseQuery>;
 export type GetAppointmentRequestsForNutritionistQueryResult = Apollo.QueryResult<GetAppointmentRequestsForNutritionistQuery, GetAppointmentRequestsForNutritionistQueryVariables>;
+export const MyAppointmentRequestsDocument = gql`
+    query MyAppointmentRequests {
+  myAppointmentRequests {
+    id
+    status
+    slot {
+      id
+      nutritionistId
+    }
+  }
+}
+    `;
+
+/**
+ * __useMyAppointmentRequestsQuery__
+ *
+ * To run a query within a React component, call `useMyAppointmentRequestsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMyAppointmentRequestsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMyAppointmentRequestsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useMyAppointmentRequestsQuery(baseOptions?: Apollo.QueryHookOptions<MyAppointmentRequestsQuery, MyAppointmentRequestsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<MyAppointmentRequestsQuery, MyAppointmentRequestsQueryVariables>(MyAppointmentRequestsDocument, options);
+      }
+export function useMyAppointmentRequestsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MyAppointmentRequestsQuery, MyAppointmentRequestsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<MyAppointmentRequestsQuery, MyAppointmentRequestsQueryVariables>(MyAppointmentRequestsDocument, options);
+        }
+export function useMyAppointmentRequestsSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<MyAppointmentRequestsQuery, MyAppointmentRequestsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<MyAppointmentRequestsQuery, MyAppointmentRequestsQueryVariables>(MyAppointmentRequestsDocument, options);
+        }
+export type MyAppointmentRequestsQueryHookResult = ReturnType<typeof useMyAppointmentRequestsQuery>;
+export type MyAppointmentRequestsLazyQueryHookResult = ReturnType<typeof useMyAppointmentRequestsLazyQuery>;
+export type MyAppointmentRequestsSuspenseQueryHookResult = ReturnType<typeof useMyAppointmentRequestsSuspenseQuery>;
+export type MyAppointmentRequestsQueryResult = Apollo.QueryResult<MyAppointmentRequestsQuery, MyAppointmentRequestsQueryVariables>;
 export const ArticleDocument = gql`
     query Article($id: Int!) {
   article(id: $id) {

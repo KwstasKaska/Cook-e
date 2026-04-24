@@ -27,3 +27,14 @@ query GetAppointmentRequestsForNutritionist(
     }
   }
 }
+
+query MyAppointmentRequests {
+  myAppointmentRequests {
+    id
+    status
+    slot {
+      id
+      nutritionistId
+    }
+  }
+}

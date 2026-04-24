@@ -86,7 +86,7 @@ const MealPlanTab: React.FC = () => {
                 className="px-4 py-2.5 font-semibold text-sm text-white"
                 style={{ backgroundColor: '#377CC3' }}
               >
-                {t(`nutr.day.${day}`)}
+                {t(`day.${day}`)}
               </div>
 
               {/* Meal rows — in canonical order */}
@@ -106,7 +106,7 @@ const MealPlanTab: React.FC = () => {
                         className="mt-0.5 min-w-[7rem] text-xs font-semibold uppercase tracking-wide"
                         style={{ color: '#377CC3' }}
                       >
-                        {t(`nutr.meal.${mealType}`)}
+                        {t(`meal.${mealType}`)}
                       </span>
                       <p className="text-sm text-gray-700 leading-relaxed">
                         {comment}

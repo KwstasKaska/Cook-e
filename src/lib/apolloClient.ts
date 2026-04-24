@@ -94,7 +94,8 @@ const createApolloClient = (headers: IncomingHttpHeaders | null = null) => {
             myCookedRecipes: appendPaginatedField(),
 
             // ── Messaging (append — load older messages) ──────────────
-            myConversations: appendPaginatedField(),
+            // ── Messaging (replace — inbox always shows current state) ──────────────
+            myConversations: replaceField(['limit', 'offset']),
 
             // ── Appointments (date-filtered — replace) ────────────────
             getMyAppointments: replaceField(['limit', 'offset']),
