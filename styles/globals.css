@@ -71,3 +71,12 @@
     transition: filter 500ms;
   }
 }
+
+/* Για να τοποθετήσω το accesibility κάτω αριστερά */
+.editorim-sidebox-open {
+  bottom: 16px !important;
+  right: auto !important;
+  top: auto !important;
+  left: 16px !important;
+  position: fixed !important;
+}
