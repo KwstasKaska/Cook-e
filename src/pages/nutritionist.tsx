@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import NutrNavbar from '../components/Nutritionist/NutrNavbar';
-import Footer from '../components/Users/Footer';
 import CalendarC from '../components/Nutritionist/CalendarC';
 import NutrAppointments from '../components/Nutritionist/NutrAppointments';
 import NutrArticles from '../components/Nutritionist/NutrArticles';
@@ -81,7 +80,6 @@ const Nutritionist: NextPage = () => {
 
         <ScrollToTopButton />
       </main>
-      <Footer />
     </React.Fragment>
   );
 };

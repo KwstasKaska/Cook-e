@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
 import ChefNavbar from '../../../components/Chef/ChefNavbar';
-import Footer from '../../../components/Users/Footer';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
 import { gql, useQuery } from '@apollo/client';
@@ -312,7 +311,6 @@ export default function ChefSingleRecipe() {
             {loading ? t('common.loading') : t('chef.recipe_detail.not_found')}
           </p>
         </main>
-        <Footer />
       </div>
     );
   }
@@ -511,8 +509,6 @@ export default function ChefSingleRecipe() {
           </div>
         </div>
       </main>
-
-      <Footer />
     </div>
   );
 }

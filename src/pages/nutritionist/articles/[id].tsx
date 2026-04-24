@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import NutrNavbar from '../../../components/Nutritionist/NutrNavbar';
-import Footer from '../../../components/Users/Footer';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
 import {
@@ -159,7 +158,6 @@ export default function NutrArticleDetail() {
       >
         <NutrNavbar />
         <p className="text-white opacity-60 mt-20">{t('common.loading')}</p>
-        <Footer />
       </div>
     );
   }
@@ -174,7 +172,6 @@ export default function NutrArticleDetail() {
         <p className="text-white opacity-60 mt-20">
           {t('chef.article.not_found')}
         </p>
-        <Footer />
       </div>
     );
   }
@@ -393,8 +390,6 @@ export default function NutrArticleDetail() {
           </div>
         </div>
       </main>
-
-      <Footer />
     </div>
   );
 }

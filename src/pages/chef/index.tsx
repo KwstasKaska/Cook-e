@@ -6,7 +6,6 @@ import RecipeSummaryModal, {
   RecipeSummaryData,
 } from '../../components/Chef/RecipeSummary';
 
-import Footer from '../../components/Users/Footer';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
 import { useMyRecipesQuery } from '../../generated/graphql';
@@ -224,8 +223,6 @@ export default function ChefIndex() {
           </div>
         </div>
       </main>
-
-      <Footer />
     </div>
   );
 }

@@ -1,7 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { useRouter } from 'next/router';
 import ChefNavbar from '../../components/Chef/ChefNavbar';
-import Footer from '../../components/Users/Footer';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
 import {
@@ -410,8 +409,6 @@ export default function CreateRecipe() {
           ))}
         </div>
       </main>
-
-      <Footer />
     </div>
   );
 }

@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import ChefNavbar from '../../components/Chef/ChefNavbar';
-import Footer from '../../components/Users/Footer';
 import Stars from '../../components/Helper/Stars';
 import RatingModal from '../../components/Chef/RatingModal';
 import ArticleCreateForm from '../../components/Chef/ArticleCreateForm';
@@ -91,7 +90,6 @@ export default function ChefProfile() {
       >
         <ChefNavbar />
         <p className="text-white opacity-60 mt-20">{t('common.loading')}</p>
-        <Footer />
       </div>
     );
   }
@@ -357,8 +355,6 @@ export default function ChefProfile() {
           )}
         </div>
       </main>
-
-      <Footer />
     </div>
   );
 }

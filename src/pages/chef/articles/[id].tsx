@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import ChefNavbar from '../../../components/Chef/ChefNavbar';
-import Footer from '../../../components/Users/Footer';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
 import {
@@ -161,7 +160,6 @@ export default function ArticleDetail() {
       >
         <ChefNavbar />
         <p className="text-white opacity-60 mt-20">{t('common.loading')}</p>
-        <Footer />
       </div>
     );
   }
@@ -176,7 +174,6 @@ export default function ArticleDetail() {
         <p className="text-white opacity-60 mt-20">
           {t('chef.article.not_found')}
         </p>
-        <Footer />
       </div>
     );
   }
@@ -397,8 +394,6 @@ export default function ArticleDetail() {
           </div>
         </div>
       </main>
-
-      <Footer />
     </div>
   );
 }

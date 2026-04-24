@@ -94,7 +94,6 @@ export default function PersonalTab({
 
   return (
     <div>
-      {/* ── Profile picture ─────────────────────────────────────── */}
       <FieldGroup title={t('settings.profilePicture')}>
         <div className="flex items-center gap-5">
           {/* Avatar preview */}

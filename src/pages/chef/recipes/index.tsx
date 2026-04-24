@@ -7,7 +7,6 @@ import RecipeFeaturedCard from '../../../components/Chef/RecipeFeaturedCard';
 import RecipeCompactCard from '../../../components/Chef/RecipeCompactCard';
 import RecipeCategoryFilter from '../../../components/Chef/RecipeCategoryFilter';
 import RecipeSearchBar from '../../../components/Chef/RecipeSearchBar';
-import Footer from '../../../components/Users/Footer';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
@@ -266,8 +265,6 @@ export default function ChefRecipes() {
           </div>
         </div>
       </main>
-
-      <Footer />
     </div>
   );
 }
