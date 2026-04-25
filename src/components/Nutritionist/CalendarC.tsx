@@ -86,11 +86,6 @@ const CalendarC: React.FC = () => {
     setValue(new Date());
   };
 
-  const handleApply = () => {
-    if (!(value instanceof Date)) return;
-    setSelectedDate(toISO(value));
-  };
-
   const handleSet = () => setIsShowCalendar((prev) => !prev);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -177,12 +172,6 @@ const CalendarC: React.FC = () => {
             onClick={handleCancel}
           >
             {t('nutr.cancel')}
-          </button>
-          <button
-            className="rounded-lg bg-myGrey-200 py-2 px-7 text-white hover:scale-110 hover:bg-myBlue-200"
-            onClick={handleApply}
-          >
-            {t('nutr.apply')}
           </button>
         </div>
         <div className="mx-auto my-8 max-w-[16em] rounded-lg border-2 border-black bg-myGrey-100 hover:scale-110 hover:border-myBlue-200 hover:bg-myBlue-200 hover:text-white hover:transition hover:duration-300 hover:ease-in">
