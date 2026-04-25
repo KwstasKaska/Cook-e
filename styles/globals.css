@@ -18,11 +18,11 @@
   }
 
   .customImg {
-    background-image: url('../public/images/mainImage.png');
+    background-image: url('/images/mainImage.png');
   }
 
   .chefImg {
-    background-image: url('../public/images/mainImageOriginal.png');
+    background-image: url('/images/mainImageOriginal.png');
   }
 
   th,
