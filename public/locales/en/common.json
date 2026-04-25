@@ -6,7 +6,8 @@
     "logout": "Logout",
     "cart": "Cart",
     "settings": "Settings",
-    "tagline": "A food journey"
+    "tagline": "A food journey",
+    "messages": "Messages"
   },
   "chefnav": {
     "chef_home": "Home",
@@ -14,14 +15,16 @@
     "chef_recipes": "My recipes",
     "chef_create": "Create recipe",
     "settings": "Settings",
-    "logout": "Logout"
+    "logout": "Logout",
+    "messages": "Messages"
   },
   "nutrnav": {
     "nutr_articles": "Articles",
     "nutr_calendar": "Calendar",
     "nutr_appointments": "Appointment management",
     "nutr_scheduler": "Nutrition planning",
-    "nutr_logout": "Logout"
+    "nutr_logout": "Logout",
+    "nutr_messages": "Messages"
   },
   "landing": {
     "nutritionTitle": "Nutritional info",
@@ -96,7 +99,8 @@
     "minIngredientsError": "Please select at least 3 ingredients",
     "rateChefTitle": "Rate this chef",
     "logCooked": "I cooked this!",
-    "difficulty": "Difficulty"
+    "difficulty": "Difficulty",
+    "favourites_more": "Load more"
   },
   "ingredientCategories": {
     "title": "Ingredients",

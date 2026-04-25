@@ -94,18 +94,19 @@ const MyAppointments: React.FC<MyAppointmentsProps> = ({
           (date, index) =>
             date === selectedDate && (
               <div key={`${date}_${index}`} className={customClassName}>
-                {/* Date header — lives inside the rounded card, no skew banner */}
+                {/* Date header */}
                 <h2
                   className={`relative z-[2] w-full pb-6 pt-2 text-center text-2xl font-bold text-${textColor}`}
                 >
                   {toDisplay(date, dateFnsLocale)}
                 </h2>
 
+                {/* ── Fix: min-h-fit instead of min-h-[20em] so no empty space */}
                 <div
                   className={
                     showAttrs
                       ? ''
-                      : 'min-h-[20em] rounded-2xl border-2 border-black bg-black bg-opacity-80'
+                      : 'min-h-fit rounded-2xl border-2 border-black bg-black bg-opacity-80'
                   }
                 >
                   <ul className={marginCustom}>
@@ -144,7 +145,7 @@ const MyAppointments: React.FC<MyAppointmentsProps> = ({
                           {t('nutr.back')}
                         </button>
                       )}
-                      {end < groupedAppointments[date].length && showAttrs && (
+                      {end < groupedAppointments[date].length && (
                         <button
                           onClick={handleLoadMore}
                           className="my-5 w-full rounded-md border-2 border-black bg-white py-1 font-bold text-black hover:bg-myBlue-100 hover:shadow-3xl"

@@ -23,6 +23,8 @@ import {
 } from '../../../generated/graphql';
 import useIsUser from '../../../utils/useIsUser';
 
+const RATINGS_LIMIT = 10;
+
 type DetailTab = 'ingredients' | 'reviews' | 'rate';
 
 export async function getServerSideProps({ locale }: { locale: string }) {
@@ -65,21 +67,28 @@ function RecipeDetailContent() {
     skip: isNaN(recipeId),
     fetchPolicy: 'network-only',
   });
+
   const { data: avgData } = useRecipeAverageRatingQuery({
     variables: { recipeId },
     skip: isNaN(recipeId),
   });
+
   const {
     data: ratingsData,
     loading: ratingsLoading,
     refetch: refetchRatings,
+    fetchMore: fetchMoreRatings,
+    networkStatus: ratingsNetworkStatus,
   } = useRecipeRatingsQuery({
-    variables: { recipeId, limit: 10, offset: 0 },
+    variables: { recipeId, limit: RATINGS_LIMIT, offset: 0 },
     skip: isNaN(recipeId),
     fetchPolicy: 'network-only',
+    notifyOnNetworkStatusChange: true,
   });
+
   const { data: myRatingData, refetch: refetchMyRating } =
     useMyRecipeRatingQuery({ variables: { recipeId }, skip: isNaN(recipeId) });
+
   const { data: favData, refetch: refetchFav } = useIsFavoritedQuery({
     variables: { recipeId },
     skip: isNaN(recipeId),
@@ -94,13 +103,17 @@ function RecipeDetailContent() {
 
   const recipe = recipeData?.recipe;
   const avgRating = avgData?.recipeAverageRating ?? 0;
-  const ratingCount = ratingsData?.recipeRatings?.length ?? 0;
+  const reviews = ratingsData?.recipeRatings ?? [];
   const isFavorited = favData?.isFavorited ?? false;
   const myRating = myRatingData?.myRecipeRating ?? null;
   const title = isEl ? recipe?.title_el : recipe?.title_en;
   const steps = [...(recipe?.steps ?? [])].sort((a, b) => a.id - b.id);
   const ingredients = recipe?.recipeIngredients ?? [];
   const totalTime = (recipe?.prepTime ?? 0) + (recipe?.cookTime ?? 0);
+
+  const fetchingMoreRatings = ratingsNetworkStatus === 3;
+  const hasMoreReviews =
+    reviews.length > 0 && reviews.length % RATINGS_LIMIT === 0;
 
   const handleScroll = () => {
     if (!stepsRef.current) return;
@@ -216,6 +229,12 @@ function RecipeDetailContent() {
     }
   };
 
+  const handleLoadMoreRatings = () => {
+    fetchMoreRatings({
+      variables: { recipeId, limit: RATINGS_LIMIT, offset: reviews.length },
+    });
+  };
+
   if (recipeLoading) {
     return (
       <div
@@ -246,14 +265,8 @@ function RecipeDetailContent() {
       <Navbar />
       <main className="flex-1">
         <div className="mx-auto max-w-6xl px-4 py-10 md:px-8 md:py-16">
-          {/*
-            Grid:
-            - mobile: 1 column, right panel stacks below
-            - md tablet: 1fr + 260px (narrow enough to not overflow at 768px)
-            - lg desktop: 1fr + 360px (full comfortable width)
-          */}
           <div className="grid grid-cols-1 gap-8 md:grid-cols-[1fr_260px] lg:grid-cols-[1fr_360px] md:items-start">
-            {/* ── LEFT — min-w-0 prevents grid blowout */}
+            {/* ── LEFT */}
             <div className="flex min-w-0 flex-col gap-6">
               <button
                 onClick={() => router.back()}
@@ -310,7 +323,7 @@ function RecipeDetailContent() {
               </div>
 
               {avgRating > 0 && (
-                <StarRow rating={avgRating} ratingCount={ratingCount} />
+                <StarRow rating={avgRating} ratingCount={reviews.length} />
               )}
 
               {(isEl ? recipe.chefComment_el : recipe.chefComment_en) && (
@@ -399,7 +412,7 @@ function RecipeDetailContent() {
               )}
             </div>
 
-            {/* ── RIGHT panel — min-w-0 + overflow-hidden prevents blowout */}
+            {/* ── RIGHT panel */}
             <div className="min-w-0 overflow-hidden rounded-2xl bg-white shadow-xl md:sticky md:top-6">
               {activeTab === 'ingredients' && (
                 <IngredientsPanel
@@ -416,8 +429,11 @@ function RecipeDetailContent() {
               )}
               {activeTab === 'reviews' && (
                 <ReviewsPanel
-                  reviews={ratingsData?.recipeRatings ?? []}
-                  loading={ratingsLoading}
+                  reviews={reviews}
+                  loading={ratingsLoading && !fetchingMoreRatings}
+                  hasMore={hasMoreReviews}
+                  loadingMore={fetchingMoreRatings}
+                  onLoadMore={handleLoadMoreRatings}
                 />
               )}
               {activeTab === 'rate' && (

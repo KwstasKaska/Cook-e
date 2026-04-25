@@ -16,13 +16,21 @@ import createUploadLink from 'apollo-upload-client/createUploadLink.mjs';
 let apolloClient: ApolloClient<NormalizedCacheObject> | null = null;
 
 // For true "load more" / infinite scroll — appends incoming pages to existing.
+// Resets when offset is 0 (fresh navigation), deduplicates by __ref.
 const appendPaginatedField = (): {
   keyArgs: false;
-  merge(existing: any[] | undefined, incoming: any[]): any[];
+  merge(existing: any[] | undefined, incoming: any[], options: any): any[];
 } => ({
   keyArgs: false,
-  merge(existing = [], incoming) {
-    return [...existing, ...incoming];
+  merge(existing = [], incoming, { args }) {
+    // Fresh fetch (offset 0 or no args) — reset instead of append
+    if (!args || !args.offset || args.offset === 0) {
+      return incoming;
+    }
+    // Load more — append, deduplicate by __ref
+    const existingRefs = new Set(existing.map((e: any) => e.__ref));
+    const newItems = incoming.filter((i: any) => !existingRefs.has(i.__ref));
+    return [...existing, ...newItems];
   },
 });
 
@@ -66,56 +74,58 @@ const createApolloClient = (headers: IncomingHttpHeaders | null = null) => {
       typePolicies: {
         Query: {
           fields: {
-            // ── Recipes (filtered — replace)
-            myRecipes: replaceField(['limit', 'offset']),
+            // ── Recipes ───────────────────────────────────────────────
+            // append: load more accumulates results
+            myRecipes: appendPaginatedField(),
+            recipes: appendPaginatedField(),
+            recipesByChef: appendPaginatedField(),
+            // replace: filter/category change resets the list
             myRecipesByCategory: replaceField(['category', 'limit', 'offset']),
-            recipes: replaceField(['limit', 'offset']),
             recipesByCategory: replaceField(['category', 'limit', 'offset']),
 
-            // ── Favorites (filtered — replace)
-            myFavorites: replaceField(['limit', 'offset']),
+            // ── Favorites ─────────────────────────────────────────────
+            myFavorites: appendPaginatedField(),
 
-            // ── Articles (filtered — replace)
-            myArticles: replaceField(['limit', 'offset']),
-            articles: replaceField(['limit', 'offset']),
-            chefArticles: replaceField(['limit', 'offset']),
-            articlesByNutritionist: replaceField([
-              'nutritionistId',
-              'limit',
-              'offset',
-            ]),
-            articlesByChef: replaceField(['chefId', 'limit', 'offset']),
+            // ── Articles ──────────────────────────────────────────────
+            myArticles: appendPaginatedField(),
+            articles: appendPaginatedField(),
+            chefArticles: appendPaginatedField(),
+            articlesByNutritionist: appendPaginatedField(),
+            articlesByChef: appendPaginatedField(),
 
-            // ── Ratings (per-entity — replace)
-            chefRatings: replaceField(['chefId', 'limit', 'offset']),
-            recipeRatings: replaceField(['recipeId', 'limit', 'offset']),
+            // ── Ratings ───────────────────────────────────────────────
+            chefRatings: appendPaginatedField(),
+            recipeRatings: appendPaginatedField(),
 
-            // ── Cooked recipes (append — grows over time)
+            // ── Cooked recipes ────────────────────────────────────────
             myCookedRecipes: appendPaginatedField(),
 
-            // ── Messaging (append — load older messages) ──────────────
-            // ── Messaging (replace — inbox always shows current state) ──────────────
+            // ── Directory lists ───────────────────────────────────────
+            chefs: appendPaginatedField(),
+            nutritionists: appendPaginatedField(),
+
+            // ── Messaging ─────────────────────────────────────────────
+            // replace: inbox always shows current state
             myConversations: replaceField(['limit', 'offset']),
 
-            // ── Appointments (date-filtered — replace) ────────────────
+            // ── Appointments ──────────────────────────────────────────
+            // replace: date-filtered, always show current state
             getMyAppointments: replaceField(['limit', 'offset']),
             getAppointmentRequestsForNutritionist: replaceField([
               'limit',
               'offset',
             ]),
 
-            // ── Meal plans (filtered — replace) ───────────────────────
+            // ── Meal plans ────────────────────────────────────────────
+            // replace: user-filtered
             getNutritionistMealPlans: replaceField([
               'userId',
               'limit',
               'offset',
             ]),
 
-            // ── Directory lists (search/filter — replace) ─────────────
-            chefs: replaceField(['limit', 'offset']),
-            nutritionists: replaceField(['limit', 'offset']),
-
-            // ── Cart (single fetch — replace) ─────────────────────────
+            // ── Cart ──────────────────────────────────────────────────
+            // replace: single fetch, always current state
             myCart: replaceField([]),
           },
         },

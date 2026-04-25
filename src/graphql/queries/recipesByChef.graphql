@@ -1,0 +1,5 @@
+query RecipesByChef($chefId: Int!, $limit: Int = 6, $offset: Int = 0) {
+  recipesByChef(chefId: $chefId, limit: $limit, offset: $offset) {
+    ...RegularRecipe
+  }
+}

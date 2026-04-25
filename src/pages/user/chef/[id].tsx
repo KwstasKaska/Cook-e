@@ -16,9 +16,13 @@ import {
   useMyChefRatingQuery,
   useRateChefMutation,
   useDeleteChefRatingMutation,
+  useRecipesByChefQuery,
 } from '../../../generated/graphql';
 import useIsUser from '../../../utils/useIsUser';
 import { useChatContext } from '../../../components/Chat/ChatContext';
+
+const RECIPES_LIMIT = 6;
+const RATINGS_LIMIT = 10;
 
 export async function getServerSideProps({ locale }: { locale: string }) {
   return {
@@ -65,10 +69,13 @@ function ChefProfileContent() {
     data: ratingsData,
     loading: ratingsLoading,
     refetch: refetchRatings,
+    fetchMore: fetchMoreRatings,
+    networkStatus: ratingsNetworkStatus,
   } = useChefRatingsQuery({
-    variables: { chefId, limit: 10, offset: 0 },
+    variables: { chefId, limit: RATINGS_LIMIT, offset: 0 },
     skip: isNaN(chefId),
     fetchPolicy: 'network-only',
+    notifyOnNetworkStatusChange: true,
   });
 
   const { data: myRatingData, refetch: refetchMyRating } = useMyChefRatingQuery(
@@ -78,14 +85,37 @@ function ChefProfileContent() {
     },
   );
 
+  const chef = chefData?.chef;
+
+  // ── Recipes — real fetchMore, chefId = ChefProfile.id = authorId on Recipe
+  const {
+    data: recipesData,
+    loading: recipesLoading,
+    fetchMore: fetchMoreRecipes,
+    networkStatus: recipesNetworkStatus,
+  } = useRecipesByChefQuery({
+    variables: { chefId, limit: RECIPES_LIMIT, offset: 0 },
+    skip: isNaN(chefId),
+    fetchPolicy: 'network-only',
+    notifyOnNetworkStatusChange: true,
+  });
+
   // ── Mutations
   const [rateChef, { loading: submitting }] = useRateChefMutation();
   const [deleteChefRating] = useDeleteChefRatingMutation();
 
-  const chef = chefData?.chef;
   const avgRating = avgData?.chefAverageRating ?? 0;
   const reviews = ratingsData?.chefRatings ?? [];
   const myRating = myRatingData?.myChefRating ?? null;
+  const recipes = recipesData?.recipesByChef ?? [];
+
+  const fetchingMoreRecipes = recipesNetworkStatus === 3;
+  const fetchingMoreRatings = ratingsNetworkStatus === 3;
+
+  const hasMoreRecipes =
+    recipes.length > 0 && recipes.length % RECIPES_LIMIT === 0;
+  const hasMoreReviews =
+    reviews.length > 0 && reviews.length % RATINGS_LIMIT === 0;
 
   // ── Handlers
   const handleRate = useCallback(async () => {
@@ -135,6 +165,18 @@ function ChefProfileContent() {
       setRatingError(t('recipes.errorGeneric'));
     }
   }, [deleteChefRating, chefId, refetchRatings, refetchMyRating, t]);
+
+  const handleLoadMoreRecipes = () => {
+    fetchMoreRecipes({
+      variables: { chefId, limit: RECIPES_LIMIT, offset: recipes.length },
+    });
+  };
+
+  const handleLoadMoreRatings = () => {
+    fetchMoreRatings({
+      variables: { chefId, limit: RATINGS_LIMIT, offset: reviews.length },
+    });
+  };
 
   if (chefLoading) {
     return (
@@ -198,7 +240,7 @@ function ChefProfileContent() {
             </button>
 
             <div className="grid grid-cols-1 gap-10 md:grid-cols-[1fr_340px] md:items-start">
-              {/* ── LEFT: chef info */}
+              {/* ── LEFT: chef info + recipes */}
               <div className="flex flex-col gap-6">
                 {/* Avatar + name + message button */}
                 <div className="flex items-center gap-5">
@@ -229,7 +271,6 @@ function ChefProfileContent() {
                         ratingCount={reviews.length}
                       />
                     )}
-                    {/* ── Message button — any user can message a chef */}
                     {chef.user?.id && (
                       <button
                         onClick={() => openConversation(chef.user!.id)}
@@ -263,50 +304,90 @@ function ChefProfileContent() {
                   </p>
                 )}
 
-                {/* Recipes list */}
-                {(chef.recipes ?? []).length > 0 && (
-                  <div>
-                    <h2 className="mb-4 text-xl font-bold text-white">
-                      {t('chef.profile.recipes')}
-                    </h2>
-                    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                      {(chef.recipes ?? []).map((recipe) => {
-                        const title = isEl ? recipe.title_el : recipe.title_en;
-                        return (
-                          <div
-                            key={recipe.id}
-                            onClick={() =>
-                              router.push(`/user/recipes/${recipe.id}`)
-                            }
-                            className="flex items-center gap-3 rounded-xl bg-white/10 px-4 py-3 cursor-pointer hover:bg-white/20 transition"
-                          >
-                            {recipe.recipeImage ? (
-                              <img
-                                src={recipe.recipeImage}
-                                alt={title}
-                                className="h-10 w-10 rounded-full object-cover flex-shrink-0"
-                              />
-                            ) : (
-                              <div className="h-10 w-10 rounded-full bg-white/20 flex-shrink-0 flex items-center justify-center text-lg">
-                                🍽️
-                              </div>
-                            )}
-                            <div className="flex-1 min-w-0">
-                              <p className="truncate text-sm font-bold text-white">
-                                {title}
-                              </p>
-                              {recipe.difficulty && (
-                                <p className="text-xs text-gray-400">
-                                  {recipe.difficulty}
-                                </p>
-                              )}
-                            </div>
-                          </div>
-                        );
-                      })}
+                {/* ── Recipes grid */}
+                <div>
+                  <h2 className="flex justify-center mb-4 text-xl font-bold text-black">
+                    {t('chef.profile.recipes')}
+                  </h2>
+
+                  {recipesLoading && !fetchingMoreRecipes ? (
+                    <div className="flex justify-center py-8">
+                      <div className="h-8 w-8 animate-spin rounded-full border-4 border-myBlue-200 border-t-transparent" />
                     </div>
-                  </div>
-                )}
+                  ) : recipes.length === 0 ? (
+                    <p className="text-sm text-gray-400">
+                      {t('chef.profile.no_recipes', 'No recipes yet.')}
+                    </p>
+                  ) : (
+                    <>
+                      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                        {recipes.map((recipe) => {
+                          const title = isEl
+                            ? recipe.title_el
+                            : recipe.title_en;
+                          return (
+                            <div
+                              key={recipe.id}
+                              onClick={() =>
+                                router.push(`/user/recipes/${recipe.id}`)
+                              }
+                              className="cursor-pointer rounded-2xl overflow-hidden shadow-lg transition hover:scale-[1.02] hover:shadow-xl"
+                              style={{ backgroundColor: '#E9DEC5' }}
+                            >
+                              <div className="relative h-36 w-full overflow-hidden">
+                                {recipe.recipeImage ? (
+                                  <img
+                                    src={recipe.recipeImage}
+                                    alt={title}
+                                    className="h-full w-full object-cover"
+                                  />
+                                ) : (
+                                  <div
+                                    className="h-full w-full flex items-center justify-center text-4xl"
+                                    style={{ backgroundColor: '#B3D5F8' }}
+                                  >
+                                    🍽️
+                                  </div>
+                                )}
+                              </div>
+                              <div className="px-4 py-3">
+                                <p
+                                  className="font-bold text-sm leading-tight truncate"
+                                  style={{ color: '#3F4756' }}
+                                >
+                                  {title}
+                                </p>
+                                {recipe.difficulty && (
+                                  <p className="mt-1 text-xs text-gray-500 uppercase tracking-wide">
+                                    {recipe.difficulty}
+                                  </p>
+                                )}
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+
+                      {hasMoreRecipes && (
+                        <div className="mt-6 flex justify-center">
+                          <button
+                            onClick={handleLoadMoreRecipes}
+                            disabled={fetchingMoreRecipes}
+                            className="rounded-full px-8 py-2 text-sm font-bold transition hover:opacity-90 disabled:opacity-50"
+                            style={{
+                              backgroundColor: '#B3D5F8',
+                              color: '#3F4756',
+                            }}
+                          >
+                            {fetchingMoreRecipes
+                              ? t('common.loading')
+                              : t('chef.profile.more')}
+                          </button>
+                        </div>
+                      )}
+                    </>
+                  )}
+                </div>
               </div>
 
               {/* ── RIGHT: reviews + rate form */}
@@ -378,7 +459,7 @@ function ChefProfileContent() {
                     {t('chef.rating.title')}
                   </h3>
 
-                  {ratingsLoading ? (
+                  {ratingsLoading && !fetchingMoreRatings ? (
                     <div className="flex justify-center py-6">
                       <div className="h-6 w-6 animate-spin rounded-full border-4 border-myBlue-200 border-t-transparent" />
                     </div>
@@ -387,10 +468,7 @@ function ChefProfileContent() {
                       {t('chef.recipe_detail.no_ratings_yet')}
                     </p>
                   ) : (
-                    <div
-                      className="flex flex-col gap-4"
-                      style={{ maxHeight: 360, overflowY: 'auto' }}
-                    >
+                    <div className="flex flex-col gap-4">
                       {reviews.map((review) => (
                         <div
                           key={review.id}
@@ -429,6 +507,22 @@ function ChefProfileContent() {
                           )}
                         </div>
                       ))}
+
+                      {hasMoreReviews && (
+                        <button
+                          onClick={handleLoadMoreRatings}
+                          disabled={fetchingMoreRatings}
+                          className="mt-2 w-full rounded-xl py-1.5 text-xs font-bold transition hover:opacity-90 disabled:opacity-50"
+                          style={{
+                            backgroundColor: '#B3D5F8',
+                            color: '#3F4756',
+                          }}
+                        >
+                          {fetchingMoreRatings
+                            ? t('common.loading')
+                            : t('chef.profile.more')}
+                        </button>
+                      )}
                     </div>
                   )}
                 </div>

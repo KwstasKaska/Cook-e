@@ -14,9 +14,15 @@ type Review = {
 export default function ReviewsPanel({
   reviews,
   loading,
+  hasMore,
+  loadingMore,
+  onLoadMore,
 }: {
   reviews: Review[];
   loading: boolean;
+  hasMore?: boolean;
+  loadingMore?: boolean;
+  onLoadMore?: () => void;
 }) {
   const { t } = useTranslation('common');
 
@@ -35,10 +41,7 @@ export default function ReviewsPanel({
           {t('chef.recipe_detail.no_ratings_yet')}
         </p>
       ) : (
-        <div
-          className="flex flex-col gap-5"
-          style={{ maxHeight: 420, overflowY: 'auto' }}
-        >
+        <div className="flex flex-col gap-5">
           {reviews.map((review) => (
             <div
               key={review.id}
@@ -73,6 +76,17 @@ export default function ReviewsPanel({
               )}
             </div>
           ))}
+
+          {hasMore && onLoadMore && (
+            <button
+              onClick={onLoadMore}
+              disabled={loadingMore}
+              className="mt-2 w-full rounded-xl py-1.5 text-xs font-bold transition hover:opacity-90 disabled:opacity-50"
+              style={{ backgroundColor: '#B3D5F8', color: '#3F4756' }}
+            >
+              {loadingMore ? t('common.loading') : t('chef.profile.more')}
+            </button>
+          )}
         </div>
       )}
     </div>

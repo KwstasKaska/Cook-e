@@ -100,7 +100,7 @@ function HomeContent() {
         {/* ── Top section: donut + title */}
         <div className="relative z-10 mx-auto max-w-6xl px-6 pb-0 pt-10">
           <div className="grid grid-cols-1 items-center gap-8 md:grid-cols-2">
-            <div className="mx-auto flex max-w-md flex-col items-center gap-4 rounded-2xl bg-white p-6 shadow-lg sm:flex-row sm:gap-6 md:mx-0">
+            <div className="mx-auto flex max-w-md flex-col sm:flex-row items-center gap-4 rounded-2xl bg-white p-6 shadow-lg sm:gap-6 md:mx-0">
               {summaryLoading ? (
                 <div className="flex h-40 w-full items-center justify-center">
                   <div className="h-8 w-8 animate-spin rounded-full border-4 border-myBlue-200 border-t-transparent" />

@@ -19,6 +19,9 @@ type FavRecipe = {
 export default function HomeStep({
   favorites,
   favLoading,
+  hasMoreFavorites,
+  loadingMoreFavorites,
+  onLoadMoreFavorites,
   onStartPicker,
   onUnsave,
   onSelectRecipe,
@@ -26,6 +29,9 @@ export default function HomeStep({
 }: {
   favorites: FavRecipe[];
   favLoading: boolean;
+  hasMoreFavorites?: boolean;
+  loadingMoreFavorites?: boolean;
+  onLoadMoreFavorites?: () => void;
   onStartPicker: () => void;
   onUnsave: (recipeId: number) => void;
   onSelectRecipe: (id: number) => void;
@@ -52,83 +58,100 @@ export default function HomeStep({
             </h2>
           </div>
 
-          {favLoading ? (
+          {favLoading && !loadingMoreFavorites ? (
             <div className="flex justify-center py-8">
               <div className="h-6 w-6 animate-spin rounded-full border-4 border-myBlue-200 border-t-transparent" />
             </div>
           ) : favorites.length === 0 ? (
             <p className="text-gray-400 text-sm">{t('recipes.noFavourites')}</p>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              {favorites.map((fav) => {
-                const recipe = fav.recipe;
-                if (!recipe) return null;
-                const title = isEl ? recipe.title_el : recipe.title_en;
-                const totalTime =
-                  (recipe.prepTime ?? 0) + (recipe.cookTime ?? 0);
-                return (
-                  <div
-                    key={fav.id}
-                    onClick={() => onSelectRecipe(recipe.id)}
-                    className="bg-white rounded-2xl shadow-md overflow-hidden hover:scale-105 transition-transform duration-200 cursor-pointer"
-                  >
-                    <div className="relative h-32 w-full">
-                      {recipe.recipeImage ? (
-                        <img
-                          src={recipe.recipeImage}
-                          alt={title}
-                          className="w-full h-full object-cover"
-                        />
-                      ) : (
-                        <div
-                          className="w-full h-full flex items-center justify-center text-3xl"
-                          style={{ backgroundColor: '#EAEAEA' }}
-                        >
-                          🍽️
-                        </div>
-                      )}
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          onUnsave(recipe.id);
-                        }}
-                        className="absolute top-2 right-2 w-7 h-7 rounded-full bg-white/80 flex items-center justify-center hover:bg-white transition"
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="w-4 h-4 text-yellow-400"
-                          fill="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z" />
-                        </svg>
-                      </button>
-                    </div>
-                    <div className="p-3">
-                      {recipe.category && (
-                        <span
-                          className="text-xs font-semibold px-2 py-0.5 rounded-full mb-2 inline-block"
-                          style={{
-                            backgroundColor: '#B3D5F8',
-                            color: '#3F4756',
+            <>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                {favorites.map((fav) => {
+                  const recipe = fav.recipe;
+                  if (!recipe) return null;
+                  const title = isEl ? recipe.title_el : recipe.title_en;
+                  const totalTime =
+                    (recipe.prepTime ?? 0) + (recipe.cookTime ?? 0);
+                  return (
+                    <div
+                      key={fav.id}
+                      onClick={() => onSelectRecipe(recipe.id)}
+                      className="bg-white rounded-2xl shadow-md overflow-hidden hover:scale-105 transition-transform duration-200 cursor-pointer"
+                    >
+                      <div className="relative h-32 w-full">
+                        {recipe.recipeImage ? (
+                          <img
+                            src={recipe.recipeImage}
+                            alt={title}
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <div
+                            className="w-full h-full flex items-center justify-center text-3xl"
+                            style={{ backgroundColor: '#EAEAEA' }}
+                          >
+                            🍽️
+                          </div>
+                        )}
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            onUnsave(recipe.id);
                           }}
+                          className="absolute top-2 right-2 w-7 h-7 rounded-full bg-white/80 flex items-center justify-center hover:bg-white transition"
                         >
-                          {recipe.category}
-                        </span>
-                      )}
-                      <h3 className="text-sm font-bold text-gray-800 leading-tight mb-2">
-                        {title}
-                      </h3>
-                      {totalTime > 0 && (
-                        <span className="text-xs text-gray-400">
-                          {totalTime} {t('landing.minutes')}
-                        </span>
-                      )}
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="w-4 h-4 text-yellow-400"
+                            fill="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z" />
+                          </svg>
+                        </button>
+                      </div>
+                      <div className="p-3">
+                        {recipe.category && (
+                          <span
+                            className="text-xs font-semibold px-2 py-0.5 rounded-full mb-2 inline-block"
+                            style={{
+                              backgroundColor: '#B3D5F8',
+                              color: '#3F4756',
+                            }}
+                          >
+                            {recipe.category}
+                          </span>
+                        )}
+                        <h3 className="text-sm font-bold text-gray-800 leading-tight mb-2">
+                          {title}
+                        </h3>
+                        {totalTime > 0 && (
+                          <span className="text-xs text-gray-400">
+                            {totalTime} {t('landing.minutes')}
+                          </span>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
-            </div>
+                  );
+                })}
+              </div>
+
+              {hasMoreFavorites && onLoadMoreFavorites && (
+                <div className="mt-6 flex justify-center">
+                  <button
+                    onClick={onLoadMoreFavorites}
+                    disabled={loadingMoreFavorites}
+                    className="rounded-full px-8 py-2 text-sm font-bold transition hover:opacity-90 disabled:opacity-50"
+                    style={{ backgroundColor: '#B3D5F8', color: '#3F4756' }}
+                  >
+                    {loadingMoreFavorites
+                      ? t('common.loading')
+                      : t('recipes.favourites_more', 'Load more')}
+                  </button>
+                </div>
+              )}
+            </>
           )}
         </div>
 

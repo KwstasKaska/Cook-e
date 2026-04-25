@@ -6,7 +6,8 @@
     "logout": "Αποσύνδεση",
     "cart": "Καλάθι",
     "settings": "Ρυθμίσεις",
-    "tagline": "A food journey"
+    "tagline": "A food journey",
+    "messages": "Μηνύματα"
   },
   "recipe_category": {
     "MEAT": "Κρέας",
@@ -23,14 +24,16 @@
     "chef_recipes": "Οι συνταγές μου",
     "chef_create": "Δημιουργία συνταγής",
     "settings": "Ρυθμίσεις",
-    "logout": "Αποσύνδεση"
+    "logout": "Αποσύνδεση",
+    "messages": "Μηνύματα"
   },
   "nutrnav": {
     "nutr_articles": "Άρθρα",
     "nutr_calendar": "Ημερολόγιο",
     "nutr_appointments": "Διαχείριση ραντεβού",
     "nutr_scheduler": "Προγραμματισμός διατροφών",
-    "nutr_logout": "Αποσύνδεση"
+    "nutr_logout": "Αποσύνδεση",
+    "nutr_messages": "Μηνύματα"
   },
   "day": {
     "MONDAY": "Δευτέρα",
@@ -96,7 +99,8 @@
     "minIngredientsError": "Παρακαλώ επιλέξτε τουλάχιστον 3 υλικά",
     "rateChefTitle": "Αξιολόγηστε τον μάγειρα",
     "logCooked": "Το μαγείρεψα!",
-    "difficulty": "Δυσκολία"
+    "difficulty": "Δυσκολία",
+    "favourites_more": "Φόρτωση περισσότερων"
   },
   "ingredientCategories": {
     "title": "Συστατικά",

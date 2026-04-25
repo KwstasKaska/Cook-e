@@ -558,6 +558,7 @@ export type Query = {
   recipeRatings: Array<RecipeRating>;
   recipes: Array<Recipe>;
   recipesByCategory: Array<Recipe>;
+  recipesByChef: Array<Recipe>;
   suggestedRecipes: Array<RecipeSuggestion>;
   topRatedRecipes: Array<Recipe>;
   utensils: Array<Utensil>;
@@ -741,6 +742,13 @@ export type QueryRecipesArgs = {
 
 export type QueryRecipesByCategoryArgs = {
   category: RecipeCategory;
+  limit?: Scalars['Int']['input'];
+  offset?: Scalars['Int']['input'];
+};
+
+
+export type QueryRecipesByChefArgs = {
+  chefId: Scalars['Int']['input'];
   limit?: Scalars['Int']['input'];
   offset?: Scalars['Int']['input'];
 };
@@ -1549,6 +1557,15 @@ export type RecipesByCategoryQueryVariables = Exact<{
 
 
 export type RecipesByCategoryQuery = { __typename?: 'Query', recipesByCategory: Array<{ __typename?: 'Recipe', id: number, title_el: string, title_en: string, description_el?: string | null, description_en?: string | null, chefComment_el?: string | null, chefComment_en?: string | null, category?: RecipeCategory | null, recipeImage?: string | null, prepTime: number, cookTime: number, restTime?: number | null, difficulty: Difficulty, caloriesTotal?: number | null, protein?: number | null, carbs?: number | null, fat?: number | null, foodEthnicity?: string | null, authorId: number, createdAt: string, updatedAt: string, steps?: Array<{ __typename?: 'Step', id: number, body_el: string, body_en: string, recipeID: number }> | null, recipeIngredients?: Array<{ __typename?: 'RecipeIngredient', recipeId: number, ingredientId: number, quantity: string, unit: string, ingredient?: { __typename?: 'Ingredient', id: number, name_el: string, name_en: string, caloriesPer100g?: number | null } | null }> | null, author?: { __typename?: 'ChefProfile', user: { __typename?: 'User', username: string } } | null }> };
+
+export type RecipesByChefQueryVariables = Exact<{
+  chefId: Scalars['Int']['input'];
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+}>;
+
+
+export type RecipesByChefQuery = { __typename?: 'Query', recipesByChef: Array<{ __typename?: 'Recipe', id: number, title_el: string, title_en: string, description_el?: string | null, description_en?: string | null, chefComment_el?: string | null, chefComment_en?: string | null, category?: RecipeCategory | null, recipeImage?: string | null, prepTime: number, cookTime: number, restTime?: number | null, difficulty: Difficulty, caloriesTotal?: number | null, protein?: number | null, carbs?: number | null, fat?: number | null, foodEthnicity?: string | null, authorId: number, createdAt: string, updatedAt: string, steps?: Array<{ __typename?: 'Step', id: number, body_el: string, body_en: string, recipeID: number }> | null, recipeIngredients?: Array<{ __typename?: 'RecipeIngredient', recipeId: number, ingredientId: number, quantity: string, unit: string, ingredient?: { __typename?: 'Ingredient', id: number, name_el: string, name_en: string, caloriesPer100g?: number | null } | null }> | null, author?: { __typename?: 'ChefProfile', user: { __typename?: 'User', username: string } } | null }> };
 
 export type SuggestedRecipesQueryVariables = Exact<{
   ingredientIds: Array<Scalars['Int']['input']> | Scalars['Int']['input'];
@@ -4669,6 +4686,48 @@ export type RecipesByCategoryQueryHookResult = ReturnType<typeof useRecipesByCat
 export type RecipesByCategoryLazyQueryHookResult = ReturnType<typeof useRecipesByCategoryLazyQuery>;
 export type RecipesByCategorySuspenseQueryHookResult = ReturnType<typeof useRecipesByCategorySuspenseQuery>;
 export type RecipesByCategoryQueryResult = Apollo.QueryResult<RecipesByCategoryQuery, RecipesByCategoryQueryVariables>;
+export const RecipesByChefDocument = gql`
+    query RecipesByChef($chefId: Int!, $limit: Int = 6, $offset: Int = 0) {
+  recipesByChef(chefId: $chefId, limit: $limit, offset: $offset) {
+    ...RegularRecipe
+  }
+}
+    ${RegularRecipeFragmentDoc}`;
+
+/**
+ * __useRecipesByChefQuery__
+ *
+ * To run a query within a React component, call `useRecipesByChefQuery` and pass it any options that fit your needs.
+ * When your component renders, `useRecipesByChefQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useRecipesByChefQuery({
+ *   variables: {
+ *      chefId: // value for 'chefId'
+ *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
+ *   },
+ * });
+ */
+export function useRecipesByChefQuery(baseOptions: Apollo.QueryHookOptions<RecipesByChefQuery, RecipesByChefQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<RecipesByChefQuery, RecipesByChefQueryVariables>(RecipesByChefDocument, options);
+      }
+export function useRecipesByChefLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<RecipesByChefQuery, RecipesByChefQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<RecipesByChefQuery, RecipesByChefQueryVariables>(RecipesByChefDocument, options);
+        }
+export function useRecipesByChefSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<RecipesByChefQuery, RecipesByChefQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<RecipesByChefQuery, RecipesByChefQueryVariables>(RecipesByChefDocument, options);
+        }
+export type RecipesByChefQueryHookResult = ReturnType<typeof useRecipesByChefQuery>;
+export type RecipesByChefLazyQueryHookResult = ReturnType<typeof useRecipesByChefLazyQuery>;
+export type RecipesByChefSuspenseQueryHookResult = ReturnType<typeof useRecipesByChefSuspenseQuery>;
+export type RecipesByChefQueryResult = Apollo.QueryResult<RecipesByChefQuery, RecipesByChefQueryVariables>;
 export const SuggestedRecipesDocument = gql`
     query SuggestedRecipes($ingredientIds: [Int!]!, $utensilIds: [Int!], $maxMissing: Int) {
   suggestedRecipes(

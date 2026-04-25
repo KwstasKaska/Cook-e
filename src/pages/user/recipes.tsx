@@ -17,6 +17,8 @@ import useIsUser from '../../utils/useIsUser';
 
 type Step = 'home' | 'ingredients' | 'utensils' | 'results';
 
+const FAVORITES_LIMIT = 8;
+
 export async function getServerSideProps({ locale }: { locale: string }) {
   return {
     props: {
@@ -54,9 +56,12 @@ function RecipesContent() {
     data: favData,
     loading: favLoading,
     refetch: refetchFavs,
+    fetchMore: fetchMoreFavs,
+    networkStatus: favNetworkStatus,
   } = useMyFavoritesQuery({
-    variables: { limit: 8, offset: 0 },
+    variables: { limit: FAVORITES_LIMIT, offset: 0 },
     fetchPolicy: 'network-only',
+    notifyOnNetworkStatusChange: true,
   });
 
   const { data: suggestedData, loading: suggestedLoading } =
@@ -77,6 +82,10 @@ function RecipesContent() {
   const allUtensils = utensilsData?.utensils ?? [];
   const favorites = favData?.myFavorites ?? [];
   const suggestions = suggestedData?.suggestedRecipes ?? [];
+
+  const loadingMoreFavorites = favNetworkStatus === 3;
+  const hasMoreFavorites =
+    favorites.length > 0 && favorites.length % FAVORITES_LIMIT === 0;
 
   const ingredientsByCategory = useMemo(() => {
     const map = new Map<string, typeof allIngredients>();
@@ -114,6 +123,12 @@ function RecipesContent() {
     await refetchFavs();
   };
 
+  const handleLoadMoreFavorites = () => {
+    fetchMoreFavs({
+      variables: { limit: FAVORITES_LIMIT, offset: favorites.length },
+    });
+  };
+
   const goToDetail = (id: number) => router.push(`/user/recipes/${id}`);
 
   return (
@@ -123,7 +138,10 @@ function RecipesContent() {
       {step === 'home' && (
         <HomeStep
           favorites={favorites}
-          favLoading={favLoading}
+          favLoading={favLoading && !loadingMoreFavorites}
+          hasMoreFavorites={hasMoreFavorites}
+          loadingMoreFavorites={loadingMoreFavorites}
+          onLoadMoreFavorites={handleLoadMoreFavorites}
           onStartPicker={() => setStep('ingredients')}
           onUnsave={handleUnsave}
           onSelectRecipe={goToDetail}
