@@ -31,7 +31,6 @@ export function ChatContextProvider({
   const [pendingUserId, setPendingUserId] = useState<number | null>(null);
 
   const openConversation = useCallback((userId: number) => {
-    console.log('openConversation called with:', userId);
     setPendingUserId(userId);
   }, []);
 

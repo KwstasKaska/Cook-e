@@ -69,12 +69,7 @@ export default function ChatWidget({ currentUserId }: ChatWidgetProps) {
       pendingFiredRef.current = false;
       return;
     }
-    console.log(
-      'effect fired, pendingUserId:',
-      pendingUserId,
-      'alreadyFired:',
-      pendingFiredRef.current,
-    );
+
     if (pendingFiredRef.current) return;
     pendingFiredRef.current = true;
     async function initConversation() {
