@@ -72,43 +72,47 @@ const NutrScheduler: React.FC = () => {
       setFieldError(t('nutr.selectUserFirst'));
       return;
     }
-    if (!selectedDay) {
-      setFieldError(t('nutr.selectDayFirst'));
-      return;
-    }
-    if (!selectedField) {
-      setFieldError(t('nutr.selectMealFirst'));
-      return;
-    }
-    const comment = cellInfo[`${selectedDay}-${selectedField}`] ?? '';
-    if (!comment.trim()) {
+
+    // Collect every filled cell in the table
+    const filledCells = Object.entries(cellInfo).filter(
+      ([, comment]) => comment.trim() !== '',
+    );
+
+    if (filledCells.length === 0) {
       setFieldError(t('nutr.setContentFirst'));
       return;
     }
 
-    try {
-      const result = await createMealScheduler({
-        variables: {
-          userId: selectedUserId,
-          day: selectedDay,
-          mealType: selectedField,
-          comment,
-        },
-      });
+    let hadError = false;
 
-      if (result.data?.createMealScheduler.errors?.length) {
-        setFieldError(result.data.createMealScheduler.errors[0].message);
-        return;
+    for (const [key, comment] of filledCells) {
+      const [day, mealType] = key.split('-') as [DayOfWeek, MealType];
+
+      try {
+        const result = await createMealScheduler({
+          variables: {
+            userId: selectedUserId,
+            day,
+            mealType,
+            comment,
+          },
+        });
+
+        if (result.data?.createMealScheduler.errors?.length) {
+          setFieldError(result.data.createMealScheduler.errors[0].message);
+          hadError = true;
+          break;
+        }
+      } catch {
+        setServerError(t('nutr.serverError'));
+        hadError = true;
+        break;
       }
+    }
 
-      // Clear the submitted cell
-      setCellInfo((prev) => {
-        const next = { ...prev };
-        delete next[`${selectedDay}-${selectedField}`];
-        return next;
-      });
-    } catch {
-      setServerError(t('nutr.serverError'));
+    if (!hadError) {
+      // Clear all submitted cells on full success
+      setCellInfo({});
     }
   };
 
