@@ -249,7 +249,8 @@
     "selectTimeFirst": "Please select a time.",
     "serverError": "Something went wrong. Please try again.",
     "booked": "Booked",
-    "respondError": "Could not process your response. Please try again."
+    "respondError": "Could not process your response. Please try again.",
+    "messagePatients": "Message your patients"
   },
   "chef": {
     "landing": {

@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { NextPage } from 'next';
-import chef from '/public/images/chef.png';
-import logo from '/public/images/5.png';
+import chef from '../../public/images/chef.png';
+import logo from '../../public/images/5.png';
 import Link from 'next/link';
 import { useRef, useEffect } from 'react';
 import {

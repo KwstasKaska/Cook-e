@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react';
+import Image from 'next/image';
 import { useTranslation } from 'next-i18next';
 import { format } from 'date-fns';
 import { el, enUS } from 'date-fns/locale';
@@ -18,12 +19,15 @@ const toDisplay = (isoDate: string, locale: Locale): string => {
 // ── Types ─────────────────────────────────────────────────────────────────────
 
 interface GroupedAppointments {
-  [isoDate: string]: { clientUsername: string; time: string }[];
+  [isoDate: string]: {
+    clientUsername: string;
+    clientImage?: string | null;
+    time: string;
+  }[];
 }
 
 interface MyAppointmentsProps {
   customClassName: string;
-  customDateClassName: string;
   textColor: string;
   showAttrs: boolean;
   marginCustom: string;
@@ -34,7 +38,6 @@ interface MyAppointmentsProps {
 
 const MyAppointments: React.FC<MyAppointmentsProps> = ({
   customClassName,
-  customDateClassName,
   textColor,
   showAttrs,
   marginCustom,
@@ -61,6 +64,7 @@ const MyAppointments: React.FC<MyAppointmentsProps> = ({
       if (!groupedAppointments[date]) groupedAppointments[date] = [];
       groupedAppointments[date].push({
         clientUsername: r.client?.username ?? '',
+        clientImage: r.client?.image,
         time: r.slot?.time ?? '',
       });
     });
@@ -69,7 +73,6 @@ const MyAppointments: React.FC<MyAppointmentsProps> = ({
     (a, b) => new Date(a).getTime() - new Date(b).getTime(),
   );
 
-  // selectedDate is ISO — direct comparison
   const hasAppointmentsForDate = sortedDates.includes(selectedDate);
 
   const handleLoadMore = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -91,59 +94,66 @@ const MyAppointments: React.FC<MyAppointmentsProps> = ({
           (date, index) =>
             date === selectedDate && (
               <div key={`${date}_${index}`} className={customClassName}>
-                <div>
-                  <h2
-                    className={`relative z-[2] w-full pb-6 text-center text-2xl font-bold text-${textColor}`}
-                  >
-                    {toDisplay(date, dateFnsLocale)}
-                  </h2>
-                  <span className={customDateClassName}>
-                    <span className="absolute -top-[5.2em] left-3 z-[1] block h-[5em] w-[16em] -skew-y-3 bg-myBlue-200" />
-                  </span>
-                  <div
-                    className={
-                      showAttrs
-                        ? ''
-                        : 'min-h-[20em] rounded-2xl border-2 border-black bg-black bg-opacity-80'
-                    }
-                  >
-                    <ul className={marginCustom}>
-                      {groupedAppointments[date]
-                        .slice(start, end)
-                        .map((appt, apptIndex) => (
-                          <li
-                            key={`${date}_${index}_${apptIndex}`}
-                            className="mx-auto my-3 flex max-w-xs flex-row items-center gap-3 rounded-lg border-2 border-black bg-white text-base font-bold leading-4 hover:scale-110 hover:bg-myBlue-200 hover:text-white hover:shadow-3xl hover:transition hover:duration-500"
-                          >
+                {/* Date header — lives inside the rounded card, no skew banner */}
+                <h2
+                  className={`relative z-[2] w-full pb-6 pt-2 text-center text-2xl font-bold text-${textColor}`}
+                >
+                  {toDisplay(date, dateFnsLocale)}
+                </h2>
+
+                <div
+                  className={
+                    showAttrs
+                      ? ''
+                      : 'min-h-[20em] rounded-2xl border-2 border-black bg-black bg-opacity-80'
+                  }
+                >
+                  <ul className={marginCustom}>
+                    {groupedAppointments[date]
+                      .slice(start, end)
+                      .map((appt, apptIndex) => (
+                        <li
+                          key={`${date}_${index}_${apptIndex}`}
+                          className="mx-auto my-3 flex max-w-xs flex-row items-center gap-3 rounded-lg border-2 border-black bg-white text-base font-bold leading-4 hover:scale-110 hover:bg-myBlue-200 hover:text-white hover:shadow-3xl hover:transition hover:duration-500"
+                        >
+                          {appt.clientImage ? (
+                            <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full">
+                              <Image
+                                src={appt.clientImage}
+                                alt={appt.clientUsername}
+                                fill
+                                className="object-cover"
+                              />
+                            </div>
+                          ) : (
                             <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-myGrey-100 text-base font-bold text-myGrey-200">
                               {appt.clientUsername.charAt(0).toUpperCase()}
                             </div>
-                            <div className="grow">{appt.clientUsername}</div>
-                            <span className="shrink-0 pr-2">{appt.time}</span>
-                          </li>
-                        ))}
-
-                      <div className="mx-2 flex flex-row gap-2">
-                        {start > 0 && (
-                          <button
-                            onClick={handleBack}
-                            className="my-5 w-full rounded-md bg-black py-1 text-white hover:shadow-3xl"
-                          >
-                            {t('nutr.back')}
-                          </button>
-                        )}
-                        {end < groupedAppointments[date].length &&
-                          showAttrs && (
-                            <button
-                              onClick={handleLoadMore}
-                              className="my-5 w-full rounded-md border-2 border-black bg-white py-1 font-bold text-black hover:bg-myBlue-100 hover:shadow-3xl"
-                            >
-                              {t('nutr.loadMore')}
-                            </button>
                           )}
-                      </div>
-                    </ul>
-                  </div>
+                          <div className="grow">{appt.clientUsername}</div>
+                          <span className="shrink-0 pr-2">{appt.time}</span>
+                        </li>
+                      ))}
+
+                    <div className="mx-2 flex flex-row gap-2">
+                      {start > 0 && (
+                        <button
+                          onClick={handleBack}
+                          className="my-5 w-full rounded-md bg-black py-1 text-white hover:shadow-3xl"
+                        >
+                          {t('nutr.back')}
+                        </button>
+                      )}
+                      {end < groupedAppointments[date].length && showAttrs && (
+                        <button
+                          onClick={handleLoadMore}
+                          className="my-5 w-full rounded-md border-2 border-black bg-white py-1 font-bold text-black hover:bg-myBlue-100 hover:shadow-3xl"
+                        >
+                          {t('nutr.loadMore')}
+                        </button>
+                      )}
+                    </div>
+                  </ul>
                 </div>
               </div>
             ),

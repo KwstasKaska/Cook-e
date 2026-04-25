@@ -1,7 +1,7 @@
 import { NextPage } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
-import logo from '/public/images/6.png';
+import logo from '../../public/images/6.png';
 import {
   MeDocument,
   MeQuery,

@@ -3,7 +3,6 @@ import { useTranslation } from 'next-i18next';
 
 import coffee from '/public/images/coffee.jpg';
 import MyAppointments from './Helper/MyAppointments';
-import { useEffect, useState } from 'react';
 import { useGetAppointmentRequestsForNutritionistQuery } from '../../generated/graphql';
 import { useChatContext } from '../Chat/ChatContext';
 
@@ -13,30 +12,11 @@ const NutrAppointments: React.FC<NutrAppointmentsProps> = ({}) => {
   const { t } = useTranslation('common');
   const { openConversation } = useChatContext();
 
-  const [showBackground, setShowBackground] = useState<boolean>(
-    typeof window !== 'undefined' ? window.innerWidth < 1279 : true,
-  );
-
-  useEffect(() => {
-    function handleResize() {
-      if (window.innerWidth >= 1279) {
-        setShowBackground(false);
-      } else {
-        setShowBackground(true);
-      }
-    }
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  // Fetch all requests; derive unique accepted clients from them
   const { data: requestsData } = useGetAppointmentRequestsForNutritionistQuery({
     variables: { limit: 100, offset: 0 },
     fetchPolicy: 'network-only',
   });
 
-  // Deduplicate: one entry per accepted client (by User.id)
   const acceptedClients = Object.values(
     (requestsData?.getAppointmentRequestsForNutritionist ?? [])
       .filter((req) => req.status === 'ACCEPTED' && req.client)
@@ -52,51 +32,42 @@ const NutrAppointments: React.FC<NutrAppointmentsProps> = ({}) => {
   return (
     <section
       id="section_3"
-      className="flex min-h-screen w-full flex-col bg-myGrey-200"
+      className="flex min-h-screen w-full flex-col items-center bg-myGrey-200"
     >
       <h1 className="relative z-[2] pt-6 text-center text-2xl font-bold text-white hover:text-myRed md:text-4xl">
         {t('nutr.todayAppointments')}
       </h1>
-      <div className="flex flex-1 items-center justify-center lg:justify-evenly lg:gap-24">
-        <MyAppointments
-          customClassName={`relative w-[19em] rounded-2xl ${
-            showBackground ? ' bg-white shadow-2xl' : ' bg-transparent'
-          } px-4 transition duration-500 hover:scale-110 md:scale-110 md:hover:scale-125 xl:scale-125 xl:hover:scale-[1.4]`}
-          customDateClassName={'absolute'}
-          textColor="white"
-          showAttrs={true}
-          marginCustom={''}
-          emptyAppointments=""
-        />
-        <div className="relative">
-          <div className="hidden xl:absolute xl:-left-44 xl:bottom-0 xl:block xl:py-10">
-            <MyAppointments
-              customClassName={
-                'relative w-[19em] rounded-[2em] pt-4 min-h-[30em] bg-white shadow-2xl px-4 xl:bg-myGrey-100 transition duration-500 border-4 border-black'
-              }
-              customDateClassName={'hidden'}
-              textColor="black"
-              showAttrs={false}
-              marginCustom={'py-20'}
-              emptyAppointments="hidden"
-            />
-          </div>
+
+      <div className="relative flex flex-1 items-center justify-center py-10">
+        {/* Coffee image — hidden on mobile, shown lg+ */}
+        <div className="hidden lg:block">
           <Image
             src={coffee}
             alt={t('nutr.coffeeImageAlt')}
             priority
-            className="hidden h-full max-w-[380px] py-10 lg:block"
+            className="h-full max-w-[380px] py-10"
+          />
+        </div>
+
+        {/* Phone mockup — always visible; negative margin pulls it over the image on lg+ */}
+        <div className="relative z-10 lg:-ml-20">
+          <MyAppointments
+            customClassName={
+              'relative w-[19em] rounded-[2em] pt-4 min-h-[30em] bg-white shadow-2xl px-4 xl:bg-myGrey-100 transition duration-500 border-4 border-black'
+            }
+            textColor="black"
+            showAttrs={false}
+            marginCustom={'py-20'}
+            emptyAppointments="hidden"
           />
         </div>
       </div>
 
-      {/* ── Message your patients ────────────────────────────────────────────
-          Rendered only when the nutritionist has at least one accepted client.
-      ──────────────────────────────────────────────────────────────────────── */}
+      {/* ── Message your patients ──────────────────────────────────────────── */}
       {acceptedClients.length > 0 && (
         <div className="mx-auto w-full max-w-xl px-6 pb-10">
           <h2 className="mb-4 text-center text-lg font-bold text-white">
-            {t('nutr.messagePatients', 'Message your patients')}
+            {t('nutr.messagePatients')}
           </h2>
           <div className="flex flex-wrap justify-center gap-3">
             {acceptedClients.map((client) => (

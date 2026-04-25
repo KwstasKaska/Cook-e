@@ -140,8 +140,9 @@ const SliderAppointments: React.FC = () => {
                         <br />
                         {request.slot?.time}
                       </p>
-                      <div className="absolute -bottom-6 left-5 flex h-[3em] w-[3em] items-center justify-center rounded-lg border-2 border-white bg-myBlue-100 text-lg font-bold text-white">
+                      <div className="absolute -bottom-6 left-5 flex   items-center justify-center text-lg font-bold text-white">
                         <img
+                          className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full"
                           src={request.client?.image ?? undefined}
                           alt={request.client?.username}
                         />
