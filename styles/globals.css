@@ -25,6 +25,13 @@
     background-image: url('/images/mainImageOriginal.png');
   }
 
+  .loginChef {
+    background-image: url('/images/chef.png');
+  }
+
+  .loginLogo {
+    background-image: url('/images/5.png');
+  }
   th,
   td {
     /* border: 1px solid #3f4756; */

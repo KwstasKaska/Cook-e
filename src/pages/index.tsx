@@ -1,7 +1,6 @@
 import { NextPage } from 'next';
 import Image from 'next/image';
 import logo from '/public/images/logo.png';
-import star from '/public/images/Star 1.svg';
 import GeneralNav from '../components/GeneralNav';
 import Link from 'next/link';
 import { useState, useMemo } from 'react';
@@ -55,7 +54,7 @@ const RecipeCard = ({
     </div>
     <div className="flex flex-row items-center gap-1">
       <Image
-        src={star}
+        src={''}
         alt="star"
         className="md:min-h-[1.5em] md:min-w-[1.5em] xl:min-h-[2.5em] xl:min-w-[2.5em]"
       />

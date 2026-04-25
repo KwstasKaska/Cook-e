@@ -1,7 +1,5 @@
 import Image from 'next/image';
 import { NextPage } from 'next';
-import chef from '../public/images/chef.png';
-import logo from '../public/images/5.png';
 import Link from 'next/link';
 import { useRef, useEffect } from 'react';
 import {
@@ -53,11 +51,6 @@ const Login: NextPage = () => {
   };
 
   return (
-    /*
-      <main> as the top-level landmark.
-      The two <section> elements give screen readers named regions to
-      navigate between.
-    */
     <main className="flex min-h-screen w-full items-center justify-center bg-myBeige-100 text-white md:flex-row md:items-stretch md:justify-items-stretch">
       {/* Skip-to-content link */}
       <a
@@ -67,10 +60,7 @@ const Login: NextPage = () => {
         {t('skip_to_content', 'Skip to content')}
       </a>
 
-      {/* ── Decorative branding panel (desktop only) ─────────────────────
-          aria-hidden because this panel is purely visual — the logo and
-          chef image carry no information that isn't conveyed elsewhere.
-      ──────────────────────────────────────────────────────────────────── */}
+      {/* ── Decorative branding panel (desktop only) ── */}
       <section
         aria-hidden="true"
         className="hidden md:flex md:flex-1 md:flex-col md:items-end md:justify-center md:bg-myBeige-100"
@@ -80,15 +70,19 @@ const Login: NextPage = () => {
           className="rounded-l-[3.125rem] border-[5px] border-myBlue-200 bg-myBeige-100 md:relative md:w-full md:max-w-[600px]"
         >
           <Image
-            src={logo}
+            src="/images/5.png"
             alt=""
+            width={200}
+            height={76}
             priority
             className="h-auto max-h-[76px] w-auto max-w-[200px] md:absolute md:left-0 md:top-0"
           />
           <div className="flex h-full items-end justify-center">
             <Image
-              src={chef}
+              src="/images/chef.png"
               alt=""
+              width={330}
+              height={400}
               priority
               className="h-auto max-h-[400px] w-auto max-w-[330px] md:rounded-[3.125rem]"
             />
@@ -96,7 +90,7 @@ const Login: NextPage = () => {
         </div>
       </section>
 
-      {/* ── Login form section ───────────────────────────────────────────── */}
+      {/* ── Login form section ── */}
       <section
         aria-labelledby="login-heading"
         className="flex flex-1 flex-col items-center justify-center bg-myBlue-100 md:items-start"
@@ -105,20 +99,18 @@ const Login: NextPage = () => {
           ref={div1Ref}
           className="relative grid h-fit max-w-[350px] grid-flow-row justify-items-center gap-[1.5em] rounded-[1.5625em] border-[5px] border-myBlue-200 bg-myBlue-200 py-6 md:w-full md:max-w-[600px] md:rounded-l-[0px] md:rounded-r-[3.125rem] lg:border-none"
         >
-          {/*
-            Logo shown only on mobile — decorative duplicate, so alt="".
-            The meaningful logo is in the desktop panel (also aria-hidden).
-          */}
+          {/* Logo on mobile only */}
           <Image
-            src={logo}
+            src="/images/5.png"
             alt=""
+            width={140}
+            height={55}
             className="absolute h-auto max-h-[55px] w-auto max-w-[140px] justify-self-start md:hidden"
             priority
           />
 
           <LanguageSwitcher />
 
-          {/* ── Heading ────────────────────────────────────────────────── */}
           <h1
             id="login-heading"
             className="mt-[2.5em] font-exo text-xl font-bold md:mt-0 md:text-3xl lg:text-4xl"
@@ -130,7 +122,6 @@ const Login: NextPage = () => {
             {t('login.subtitle')}
           </p>
 
-          {/* ── Form ───────────────────────────────────────────────────── */}
           <Formik
             initialValues={initialValues}
             onSubmit={async (values: MyLoginFormValues, { setErrors }) => {
@@ -173,21 +164,10 @@ const Login: NextPage = () => {
                 className="grid grid-flow-row justify-items-center gap-[.8em]"
                 aria-label={t('login.title')}
               >
-                {/*
-                  Sub-heading inside the form — using <h2> keeps the
-                  document outline logical (h1 = page, h2 = form section).
-                */}
                 <h2 className="mb-[.25em] text-xl font-bold md:text-3xl lg:text-4xl">
                   {t('login.form_title')}
                 </h2>
 
-                {/*
-                  InputField is a custom component. Assuming it already
-                  renders an <input> — it needs an accessible label.
-                  If InputField accepts a `label` prop, pass one; otherwise
-                  use aria-label here. Passing both placeholder and
-                  aria-label for maximum compatibility.
-                */}
                 <InputField
                   type="text"
                   name="usernameOrEmail"
