@@ -50,8 +50,8 @@ export default function NutrNavbar() {
         </span>
       </Link>
 
-      {/* Desktop nav links */}
-      <div className="hidden md:flex items-center gap-8">
+      {/* Desktop nav links — lg+ only */}
+      <div className="hidden lg:flex items-center gap-8">
         {navLinks.map((link) => (
           <button
             key={link.sectionId}
@@ -63,9 +63,8 @@ export default function NutrNavbar() {
         ))}
       </div>
 
-      {/* Right actions */}
-      <div className="hidden md:flex items-center gap-4">
-        {/* Settings */}
+      {/* Right actions — lg+ only */}
+      <div className="hidden lg:flex items-center gap-4">
         <Link
           href="/settings"
           className="p-2 rounded text-myGrey-200 hover:text-myBlue-200 transition-colors duration-150"
@@ -92,8 +91,6 @@ export default function NutrNavbar() {
           </svg>
         </Link>
         <LanguageSwitcher />
-
-        {/* Logout */}
         {data?.me && (
           <button
             onClick={handleLogout}
@@ -105,9 +102,9 @@ export default function NutrNavbar() {
         )}
       </div>
 
-      {/* Mobile hamburger */}
+      {/* Hamburger — visible on mobile + tablet (below lg) */}
       <button
-        className="md:hidden text-myGrey-200 p-2"
+        className="lg:hidden text-myGrey-200 p-2"
         onClick={() => setMenuOpen((v) => !v)}
         aria-label="Menu"
       >
@@ -135,11 +132,11 @@ export default function NutrNavbar() {
         </svg>
       </button>
 
-      {/* Mobile dropdown */}
+      {/* Mobile + tablet dropdown */}
       {menuOpen && (
         <div
           style={{ backgroundColor: '#B3D5F8' }}
-          className="absolute top-full left-0 w-full flex flex-col items-start px-6 py-4 gap-4 md:hidden shadow-lg z-50"
+          className="absolute top-full left-0 w-full flex flex-col items-start px-6 py-4 gap-4 lg:hidden shadow-lg z-50"
         >
           {navLinks.map((link) => (
             <button

@@ -25,6 +25,7 @@ export default function Navbar() {
     await apolloClient.clearStore();
     router.push('/login');
   };
+
   return (
     <nav
       style={{ backgroundColor: '#3F4756' }}
@@ -40,8 +41,8 @@ export default function Navbar() {
         </span>
       </Link>
 
-      {/* Desktop nav links */}
-      <div className="hidden md:flex items-center gap-8">
+      {/* Desktop nav links — lg+ only */}
+      <div className="hidden lg:flex items-center gap-8">
         {navLinks.map((link) => {
           const isActive = router.pathname === link.href;
           return (
@@ -60,9 +61,8 @@ export default function Navbar() {
         })}
       </div>
 
-      {/* Right actions */}
-      <div className="hidden md:flex items-center gap-4">
-        {/* Cart */}
+      {/* Right actions — lg+ only */}
+      <div className="hidden lg:flex items-center gap-4">
         <Link
           href="/user/cart"
           className={`p-2 rounded transition-colors duration-150 ${
@@ -87,10 +87,6 @@ export default function Navbar() {
             />
           </svg>
         </Link>
-
-        {/* Language switcher */}
-
-        {/* Settings */}
         <Link
           href="/settings"
           className={`p-2 rounded transition-colors duration-150 ${
@@ -121,8 +117,6 @@ export default function Navbar() {
           </svg>
         </Link>
         <LanguageSwitcher />
-
-        {/* Logout */}
         <button
           onClick={handleLogout}
           className="ml-2 border border-white text-white text-sm font-semibold px-5 py-1.5 rounded-full hover:bg-white hover:text-myGrey-200 transition-colors duration-150"
@@ -131,9 +125,9 @@ export default function Navbar() {
         </button>
       </div>
 
-      {/* Mobile hamburger */}
+      {/* Hamburger — visible on mobile + tablet (below lg) */}
       <button
-        className="md:hidden text-white p-2"
+        className="lg:hidden text-white p-2"
         onClick={() => setMenuOpen((v) => !v)}
         aria-label="Menu"
       >
@@ -161,11 +155,11 @@ export default function Navbar() {
         </svg>
       </button>
 
-      {/* Mobile dropdown */}
+      {/* Mobile + tablet dropdown */}
       {menuOpen && (
         <div
           style={{ backgroundColor: '#3F4756' }}
-          className="absolute top-full left-0 w-full flex flex-col items-start px-6 py-4 gap-4 md:hidden shadow-lg z-50"
+          className="absolute top-full left-0 w-full flex flex-col items-start px-6 py-4 gap-4 lg:hidden shadow-lg z-50"
         >
           {navLinks.map((link) => {
             const isActive = router.pathname === link.href;

@@ -37,7 +37,6 @@ export default function CreateRecipe() {
   const [serverError, setServerError] = useState('');
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
-  // imageFile holds the actual File for upload; form.image holds the blob preview URL
   const [imageFile, setImageFile] = useState<File | null>(null);
 
   const [form, setForm] = useState<FormData>({
@@ -88,7 +87,7 @@ export default function CreateRecipe() {
     const file = e.target.files?.[0];
     if (file) {
       setImageFile(file);
-      update('image', URL.createObjectURL(file)); // blob URL for live preview only
+      update('image', URL.createObjectURL(file));
     }
   };
 
@@ -97,7 +96,7 @@ export default function CreateRecipe() {
     const file = e.dataTransfer.files?.[0];
     if (file) {
       setImageFile(file);
-      update('image', URL.createObjectURL(file)); // blob URL for live preview only
+      update('image', URL.createObjectURL(file));
     }
   };
 
@@ -183,7 +182,6 @@ export default function CreateRecipe() {
     }
 
     try {
-      // Upload image to Cloudinary first, before firing the mutation
       let recipeImageUrl: string | undefined;
       if (imageFile) {
         recipeImageUrl = await uploadToCloudinary(imageFile);
@@ -210,7 +208,6 @@ export default function CreateRecipe() {
             ...(selectedUtensilIds.length > 0 && {
               utensilIds: selectedUtensilIds,
             }),
-            // ── Macros (only send if filled in) ───────────────────────
             ...(form.caloriesTotal &&
               Number(form.caloriesTotal) > 0 && {
                 caloriesTotal: Number(form.caloriesTotal),
@@ -327,7 +324,7 @@ export default function CreateRecipe() {
             className="flex flex-col md:flex-row"
             style={{ minHeight: '500px' }}
           >
-            {/* LEFT — form */}
+            {/* LEFT — form, full width on mobile, half on desktop */}
             <div className="flex flex-col justify-between bg-white p-7 md:w-1/2">
               <div className="flex-1 overflow-y-auto">{renderStep()}</div>
 
@@ -365,7 +362,7 @@ export default function CreateRecipe() {
               </div>
             </div>
 
-            {/* Spine */}
+            {/* Spine — desktop only */}
             <div
               className="hidden md:flex flex-col items-center justify-center w-8 flex-shrink-0"
               style={{ backgroundColor: '#B3D5F8' }}
@@ -379,9 +376,9 @@ export default function CreateRecipe() {
               ))}
             </div>
 
-            {/* RIGHT — live preview */}
+            {/* RIGHT — live preview, desktop only */}
             <div
-              className="flex flex-col p-5 md:w-1/2"
+              className="hidden md:flex flex-col p-5 md:w-1/2"
               style={{ backgroundColor: '#E8EEF5', minHeight: '500px' }}
             >
               <LivePreview

@@ -31,6 +31,7 @@ import RecipeInfoCard from '../../../components/Chef/recipeDetail/RecipeInfoCard
 import RecipeTimeBreakdown from '../../../components/Chef/recipeDetail/RecipeTimeBreakdown';
 import RecipeCategoryCard from '../../../components/Chef/recipeDetail/RecipeCategoryCard';
 import RecipeMacrosCard from '../../../components/Chef/recipeDetail/RecipeMacrosCard';
+import ScrollToTopButton from '../../../components/Helper/ScrollToTopButton';
 
 // ─── Stars ────────────────────────────────────────────────────────────────────
 
@@ -128,6 +129,8 @@ export default function ChefSingleRecipe() {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
+  const initializedRef = useRef(false);
+
   const { data, loading } = useQuery(RECIPE_DETAIL_QUERY, {
     variables: { id },
     skip: !router.isReady || !id,
@@ -139,19 +142,15 @@ export default function ChefSingleRecipe() {
 
   const recipe = data?.recipe;
 
-  // ✅ Mutation hooks above the early return
   const [updateRecipe, { loading: saving }] = useUpdateRecipeMutation();
   const [deleteRecipe, { loading: deleting }] = useDeleteRecipeMutation();
 
-  // Syncs editForm on initial load and language changes.
-  // Does NOT run after a manual save — handleSave rebuilds from the mutation
-  // response directly to avoid a race with any background refetch.
   useEffect(() => {
-    if (!recipe) return;
+    if (!recipe || initializedRef.current) return;
     setEditForm(buildEditForm(recipe, lang));
-  }, [recipe, lang]);
+    initializedRef.current = true;
+  }, [recipe]);
 
-  // ✅ Early return after all hooks
   if (authLoading || !isAuthorized) return null;
 
   const update = (field: keyof EditForm, value: unknown) =>
@@ -235,7 +234,6 @@ export default function ChefSingleRecipe() {
             steps: validSteps.map((s) => ({ body: s.body.trim() })),
           },
         },
-        // ✅ No refetchQueries — we rebuild from the mutation response below
       });
 
       const result = res.data?.updateRecipe;
@@ -249,7 +247,6 @@ export default function ChefSingleRecipe() {
         return;
       }
 
-      // ✅ Rebuild editForm from the mutation response, not a refetch
       if (result?.recipe) {
         setEditForm(buildEditForm(result.recipe, lang));
       }
@@ -351,13 +348,26 @@ export default function ChefSingleRecipe() {
             lang={lang}
           />
 
+          {/* Action buttons — always directly below hero on all screen sizes */}
+          <div className="px-6 pt-4 pb-2">
+            <RecipeActionButtons
+              isEditing={isEditing}
+              saving={saving}
+              deleting={deleting}
+              onEdit={() => setIsEditing(true)}
+              onSave={handleSave}
+              onCancel={handleCancel}
+              onDelete={handleDelete}
+            />
+          </div>
+
           {isEditing && (
-            <div className="px-6 pt-4">
+            <div className="px-6 pb-2">
               <label
                 className="mb-1 block text-sm font-bold"
                 style={{ color: '#3F4756' }}
               >
-                {t('chef.recipe_detail.label_image')}
+                {t('chef.recipe_detail.no_image')}
               </label>
               <input
                 ref={imageInputRef}
@@ -370,8 +380,8 @@ export default function ChefSingleRecipe() {
           )}
 
           <div className="flex flex-col gap-6 p-6 md:flex-row md:p-8">
-            {/* LEFT column */}
-            <div className="flex-1">
+            {/* LEFT column — main content, always visible */}
+            <div className="flex-1 min-w-0">
               <div className="mb-4 flex items-center gap-2">
                 <Stars rating={0} />
                 <span className="text-sm text-gray-400">
@@ -460,28 +470,22 @@ export default function ChefSingleRecipe() {
               )}
             </div>
 
-            {/* RIGHT column */}
-            <div className="flex flex-col gap-4 md:w-56">
-              <RecipeActionButtons
-                isEditing={isEditing}
-                saving={saving}
-                deleting={deleting}
-                onEdit={() => setIsEditing(true)}
-                onSave={handleSave}
-                onCancel={handleCancel}
-                onDelete={handleDelete}
-              />
+            {/* RIGHT column — always rendered, stacks below on mobile */}
+            <div className="flex flex-col gap-4 md:w-56 md:flex-shrink-0">
+              {/* RecipeInfoCard (mini preview card) — hidden on mobile, visible on md+ */}
+              <div className="hidden md:block">
+                <RecipeInfoCard
+                  recipe={recipe}
+                  lang={lang}
+                  isEditing={isEditing}
+                  editForm={editForm}
+                  totalTime={totalTime}
+                  difficultyLabel={difficultyLabel}
+                  onUpdate={update}
+                />
+              </div>
 
-              <RecipeInfoCard
-                recipe={recipe}
-                lang={lang}
-                isEditing={isEditing}
-                editForm={editForm}
-                totalTime={totalTime}
-                difficultyLabel={difficultyLabel}
-                onUpdate={update}
-              />
-
+              {/* These cards are always visible on all screen sizes */}
               <RecipeTimeBreakdown
                 timeBreakdown={timeBreakdown}
                 totalTime={totalTime}
@@ -489,7 +493,6 @@ export default function ChefSingleRecipe() {
                 editForm={editForm}
                 onUpdate={update}
               />
-
               <RecipeCategoryCard
                 recipe={recipe}
                 lang={lang}
@@ -498,7 +501,6 @@ export default function ChefSingleRecipe() {
                 categoryLabel={categoryLabel}
                 onUpdate={update}
               />
-
               <RecipeMacrosCard
                 recipe={recipe}
                 isEditing={isEditing}
@@ -508,6 +510,7 @@ export default function ChefSingleRecipe() {
             </div>
           </div>
         </div>
+        <ScrollToTopButton />
       </main>
     </div>
   );

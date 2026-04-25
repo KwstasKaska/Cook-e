@@ -25,6 +25,7 @@ const ChefNavbar = () => {
     await apolloClient.clearStore();
     router.push('/login');
   };
+
   return (
     <nav
       className="w-full px-6 py-3 flex items-center justify-between relative z-50"
@@ -41,8 +42,8 @@ const ChefNavbar = () => {
         </span>
       </Link>
 
-      {/* Desktop nav links */}
-      <div className="hidden md:flex items-center gap-8">
+      {/* Desktop nav links — lg+ only */}
+      <div className="hidden lg:flex items-center gap-8">
         {navLinks.map((link) => (
           <Link
             key={link.href}
@@ -62,8 +63,8 @@ const ChefNavbar = () => {
         ))}
       </div>
 
-      {/* Desktop right actions */}
-      <div className="hidden md:flex items-center gap-4">
+      {/* Desktop right actions — lg+ only */}
+      <div className="hidden lg:flex items-center gap-4">
         <Link
           href="/settings"
           aria-label={t('chefnav.settings')}
@@ -99,9 +100,9 @@ const ChefNavbar = () => {
         </button>
       </div>
 
-      {/* Mobile hamburger */}
+      {/* Hamburger — visible on mobile + tablet (below lg) */}
       <button
-        className="md:hidden p-2"
+        className="lg:hidden p-2"
         style={{ color: '#3F4756' }}
         onClick={() => setMenuOpen((v) => !v)}
         aria-label="Menu"
@@ -130,10 +131,10 @@ const ChefNavbar = () => {
         </svg>
       </button>
 
-      {/* Mobile dropdown */}
+      {/* Mobile + tablet dropdown */}
       {menuOpen && (
         <div
-          className="absolute top-full left-0 w-full flex flex-col items-start px-6 py-4 gap-4 md:hidden shadow-lg z-50"
+          className="absolute top-full left-0 w-full flex flex-col items-start px-6 py-4 gap-4 lg:hidden shadow-lg z-50"
           style={{ backgroundColor: '#B3D5F8' }}
         >
           {navLinks.map((link) => (
