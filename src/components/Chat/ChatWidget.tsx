@@ -14,15 +14,15 @@ interface ChatWidgetProps {
   currentUserId: number;
 }
 
-type View = 'closed' | 'inbox' | 'thread';
+type View = 'inbox' | 'thread';
 
 // ── Component
 
 export default function ChatWidget({ currentUserId }: ChatWidgetProps) {
   const { t } = useTranslation('common');
-  const { pendingUserId, clearPending } = useChatContext();
+  const { isOpen, closeWidget, pendingUserId, clearPending } = useChatContext();
 
-  const [view, setView] = useState<View>('closed');
+  const [view, setView] = useState<View>('inbox');
   const [activeConvoId, setActiveConvoId] = useState<number | null>(null);
   const [body, setBody] = useState('');
   const [sendError, setSendError] = useState('');
@@ -36,14 +36,14 @@ export default function ChatWidget({ currentUserId }: ChatWidgetProps) {
 
   const { data: inboxData, loading: inboxLoading } = useMyConversationsQuery({
     variables: { limit: 20, offset: 0 },
-    skip: view === 'closed',
+    skip: !isOpen,
     pollInterval: 12000,
     fetchPolicy: 'network-only',
   });
 
   const { data: threadData, loading: threadLoading } = useConversationQuery({
     variables: { id: activeConvoId! },
-    skip: view !== 'thread' || activeConvoId === null,
+    skip: view !== 'thread' || activeConvoId === null || !isOpen,
     pollInterval: 12000,
     fetchPolicy: 'network-only',
   });
@@ -58,10 +58,17 @@ export default function ChatWidget({ currentUserId }: ChatWidgetProps) {
 
   // Scroll to bottom when thread updates
   useEffect(() => {
-    if (view === 'thread') {
+    if (isOpen && view === 'thread') {
       messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     }
-  }, [threadData, view]);
+  }, [threadData, view, isOpen]);
+
+  // Reset to inbox view when widget is reopened
+  useEffect(() => {
+    if (isOpen && pendingUserId === null) {
+      setView('inbox');
+    }
+  }, [isOpen, pendingUserId]);
 
   // Handle openConversation(userId) calls from anywhere in the app
   useEffect(() => {
@@ -69,9 +76,9 @@ export default function ChatWidget({ currentUserId }: ChatWidgetProps) {
       pendingFiredRef.current = false;
       return;
     }
-
     if (pendingFiredRef.current) return;
     pendingFiredRef.current = true;
+
     async function initConversation() {
       setStartError('');
       try {
@@ -104,7 +111,7 @@ export default function ChatWidget({ currentUserId }: ChatWidgetProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pendingUserId]);
 
-  // ── Helpers ───────────────────────────────────────────────────────────────
+  // ── Helpers
 
   function getOtherParticipant(convo: {
     participant1Id: number;
@@ -150,34 +157,11 @@ export default function ChatWidget({ currentUserId }: ChatWidgetProps) {
     }
   }
 
-  // ── FAB ───────────────────────────────────────────────────────────────────
+  // ── Hidden when closed
 
-  if (view === 'closed' && pendingUserId === null) {
-    return (
-      <button
-        onClick={() => setView('inbox')}
-        className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-blue-600 text-white shadow-lg flex items-center justify-center hover:bg-blue-700 transition-colors"
-        aria-label="Open messages"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="w-6 h-6"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          strokeWidth={2}
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M8 10h.01M12 10h.01M16 10h.01M21 16c0 1.1-.9 2-2 2H7l-4 4V6a2 2 0 012-2h14a2 2 0 012 2v10z"
-          />
-        </svg>
-      </button>
-    );
-  }
+  if (!isOpen) return null;
 
-  // ── Popup shell ───────────────────────────────────────────────────────────
+  // ── Panel
 
   const thread = threadData?.conversation;
 
@@ -223,8 +207,7 @@ export default function ChatWidget({ currentUserId }: ChatWidgetProps) {
         </div>
         <button
           onClick={() => {
-            setView('closed');
-            clearPending();
+            closeWidget();
           }}
           className="hover:opacity-70"
           aria-label="Close"

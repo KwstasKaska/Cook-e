@@ -5,6 +5,7 @@ import { useTranslation } from 'next-i18next';
 import LanguageSwitcher from '../Helper/LanguageSwitcher';
 import { useLogoutMutation } from '../../generated/graphql';
 import { useApolloClient } from '@apollo/client';
+import { useChatContext } from '../Chat/ChatContext';
 
 const ChefNavbar = () => {
   const router = useRouter();
@@ -12,6 +13,7 @@ const ChefNavbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [logout] = useLogoutMutation();
   const apolloClient = useApolloClient();
+  const { openWidget } = useChatContext();
 
   const navLinks = [
     { href: '/chef', label: t('chefnav.chef_home') },
@@ -25,6 +27,24 @@ const ChefNavbar = () => {
     await apolloClient.clearStore();
     router.push('/login');
   };
+
+  // Reusable chat icon SVG
+  const ChatIcon = ({ className }: { className?: string }) => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className={className ?? 'w-6 h-6'}
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      strokeWidth={1.8}
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M8 10h.01M12 10h.01M16 10h.01M21 16c0 1.1-.9 2-2 2H7l-4 4V6a2 2 0 012-2h14a2 2 0 012 2v10z"
+      />
+    </svg>
+  );
 
   return (
     <nav
@@ -65,6 +85,15 @@ const ChefNavbar = () => {
 
       {/* Desktop right actions — lg+ only */}
       <div className="hidden lg:flex items-center gap-4">
+        {/* Messages */}
+        <button
+          onClick={openWidget}
+          className="hover:opacity-70 transition-opacity p-1"
+          aria-label={t('chefnav.messages', 'Messages')}
+        >
+          <ChatIcon className="w-6 h-6" />
+        </button>
+
         <Link
           href="/settings"
           aria-label={t('chefnav.settings')}
@@ -155,6 +184,19 @@ const ChefNavbar = () => {
             className="flex items-center gap-4 pt-2 border-t w-full"
             style={{ borderColor: '#377CC3' }}
           >
+            {/* Messages — mobile */}
+            <button
+              onClick={() => {
+                openWidget();
+                setMenuOpen(false);
+              }}
+              className="hover:opacity-70 transition-opacity"
+              aria-label={t('chefnav.messages', 'Messages')}
+              style={{ color: '#3F4756' }}
+            >
+              <ChatIcon className="w-6 h-6" />
+            </button>
+
             <Link
               href="/settings"
               onClick={() => setMenuOpen(false)}

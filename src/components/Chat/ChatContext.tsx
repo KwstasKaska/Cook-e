@@ -1,27 +1,33 @@
 import React, { createContext, useContext, useState, useCallback } from 'react';
 
-// Types
+// ── Types
 
 interface ChatContextValue {
-  /**
-   * Call this from any "Message" button anywhere in the app.
-   * The ChatWidget will pick it up, call startConversation, and open the thread.
-   */
+  /** Call from any "Message" button to open a specific conversation */
   openConversation: (userId: number) => void;
+  /** Call from navbar icon to open the widget to inbox view */
+  openWidget: () => void;
+  /** Close the widget */
+  closeWidget: () => void;
+  /** Whether the widget panel is visible */
+  isOpen: boolean;
   /** Internal — consumed only by ChatWidget */
   pendingUserId: number | null;
   clearPending: () => void;
 }
 
-//  Context
+// ── Context
 
 const ChatContext = createContext<ChatContextValue>({
   openConversation: () => {},
+  openWidget: () => {},
+  closeWidget: () => {},
+  isOpen: false,
   pendingUserId: null,
   clearPending: () => {},
 });
 
-//  Provider
+// ── Provider
 
 export function ChatContextProvider({
   children,
@@ -29,9 +35,20 @@ export function ChatContextProvider({
   children: React.ReactNode;
 }) {
   const [pendingUserId, setPendingUserId] = useState<number | null>(null);
+  const [isOpen, setIsOpen] = useState(false);
 
   const openConversation = useCallback((userId: number) => {
     setPendingUserId(userId);
+    setIsOpen(true);
+  }, []);
+
+  const openWidget = useCallback(() => {
+    setIsOpen(true);
+  }, []);
+
+  const closeWidget = useCallback(() => {
+    setIsOpen(false);
+    setPendingUserId(null);
   }, []);
 
   const clearPending = useCallback(() => {
@@ -40,14 +57,21 @@ export function ChatContextProvider({
 
   return (
     <ChatContext.Provider
-      value={{ openConversation, pendingUserId, clearPending }}
+      value={{
+        openConversation,
+        openWidget,
+        closeWidget,
+        isOpen,
+        pendingUserId,
+        clearPending,
+      }}
     >
       {children}
     </ChatContext.Provider>
   );
 }
 
-//  Hook
+// ── Hook
 
 export function useChatContext() {
   return useContext(ChatContext);

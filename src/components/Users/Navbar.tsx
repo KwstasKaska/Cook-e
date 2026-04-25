@@ -1,15 +1,17 @@
+import { useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { useState } from 'react';
 import { useTranslation } from 'next-i18next';
 import LanguageSwitcher from '../Helper/LanguageSwitcher';
 import { useLogoutMutation } from '../../generated/graphql';
 import { useApolloClient } from '@apollo/client';
+import { useChatContext } from '../Chat/ChatContext';
 
 export default function Navbar() {
   const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
   const { t } = useTranslation('common');
+  const { openWidget } = useChatContext();
 
   const [logout] = useLogoutMutation();
   const apolloClient = useApolloClient();
@@ -25,6 +27,24 @@ export default function Navbar() {
     await apolloClient.clearStore();
     router.push('/login');
   };
+
+  // Reusable chat icon SVG
+  const ChatIcon = ({ className }: { className?: string }) => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className={className ?? 'w-6 h-6'}
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      strokeWidth={1.8}
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M8 10h.01M12 10h.01M16 10h.01M21 16c0 1.1-.9 2-2 2H7l-4 4V6a2 2 0 012-2h14a2 2 0 012 2v10z"
+      />
+    </svg>
+  );
 
   return (
     <nav
@@ -87,6 +107,16 @@ export default function Navbar() {
             />
           </svg>
         </Link>
+
+        {/* Messages */}
+        <button
+          onClick={openWidget}
+          className="p-2 rounded text-white hover:text-yellow-300 transition-colors duration-150"
+          aria-label={t('nav.messages', 'Messages')}
+        >
+          <ChatIcon />
+        </button>
+
         <Link
           href="/settings"
           className={`p-2 rounded transition-colors duration-150 ${
@@ -200,6 +230,19 @@ export default function Navbar() {
                 />
               </svg>
             </Link>
+
+            {/* Messages — mobile */}
+            <button
+              onClick={() => {
+                openWidget();
+                setMenuOpen(false);
+              }}
+              className="text-white hover:text-yellow-300"
+              aria-label={t('nav.messages', 'Messages')}
+            >
+              <ChatIcon />
+            </button>
+
             <Link
               href="/user/settings"
               onClick={() => setMenuOpen(false)}

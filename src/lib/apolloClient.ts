@@ -66,16 +66,16 @@ const createApolloClient = (headers: IncomingHttpHeaders | null = null) => {
       typePolicies: {
         Query: {
           fields: {
-            // ── Recipes (filtered — replace) ──────────────────────────
+            // ── Recipes (filtered — replace)
             myRecipes: replaceField(['limit', 'offset']),
             myRecipesByCategory: replaceField(['category', 'limit', 'offset']),
             recipes: replaceField(['limit', 'offset']),
             recipesByCategory: replaceField(['category', 'limit', 'offset']),
 
-            // ── Favorites (filtered — replace) ────────────────────────
+            // ── Favorites (filtered — replace)
             myFavorites: replaceField(['limit', 'offset']),
 
-            // ── Articles (filtered — replace) ─────────────────────────
+            // ── Articles (filtered — replace)
             myArticles: replaceField(['limit', 'offset']),
             articles: replaceField(['limit', 'offset']),
             chefArticles: replaceField(['limit', 'offset']),
@@ -86,11 +86,11 @@ const createApolloClient = (headers: IncomingHttpHeaders | null = null) => {
             ]),
             articlesByChef: replaceField(['chefId', 'limit', 'offset']),
 
-            // ── Ratings (per-entity — replace) ────────────────────────
+            // ── Ratings (per-entity — replace)
             chefRatings: replaceField(['chefId', 'limit', 'offset']),
             recipeRatings: replaceField(['recipeId', 'limit', 'offset']),
 
-            // ── Cooked recipes (append — grows over time) ─────────────
+            // ── Cooked recipes (append — grows over time)
             myCookedRecipes: appendPaginatedField(),
 
             // ── Messaging (append — load older messages) ──────────────

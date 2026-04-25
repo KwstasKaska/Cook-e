@@ -5,11 +5,13 @@ import { useLogoutMutation, useMeQuery } from '../../generated/graphql';
 import { useApolloClient } from '@apollo/client';
 import { useTranslation } from 'next-i18next';
 import LanguageSwitcher from '../Helper/LanguageSwitcher';
+import { useChatContext } from '../Chat/ChatContext';
 
 export default function NutrNavbar() {
   const { t } = useTranslation('common');
   const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
+  const { openWidget } = useChatContext();
 
   const [logout, { loading: logoutLoading }] = useLogoutMutation();
   const apolloClient = useApolloClient();
@@ -32,6 +34,24 @@ export default function NutrNavbar() {
     await apolloClient.clearStore();
     router.push('/login');
   };
+
+  // Reusable chat icon SVG
+  const ChatIcon = ({ className }: { className?: string }) => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className={className ?? 'w-6 h-6'}
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      strokeWidth={1.8}
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M8 10h.01M12 10h.01M16 10h.01M21 16c0 1.1-.9 2-2 2H7l-4 4V6a2 2 0 012-2h14a2 2 0 012 2v10z"
+      />
+    </svg>
+  );
 
   if (loading) return null;
 
@@ -65,6 +85,15 @@ export default function NutrNavbar() {
 
       {/* Right actions — lg+ only */}
       <div className="hidden lg:flex items-center gap-4">
+        {/* Messages */}
+        <button
+          onClick={openWidget}
+          className="p-2 rounded text-myGrey-200 hover:text-myBlue-200 transition-colors duration-150"
+          aria-label={t('nutrnav.nutr_messages', 'Messages')}
+        >
+          <ChatIcon />
+        </button>
+
         <Link
           href="/settings"
           className="p-2 rounded text-myGrey-200 hover:text-myBlue-200 transition-colors duration-150"
@@ -153,6 +182,19 @@ export default function NutrNavbar() {
 
           <div className="flex items-center gap-4 pt-2 border-t border-gray-400 w-full">
             <LanguageSwitcher />
+
+            {/* Messages — mobile */}
+            <button
+              onClick={() => {
+                openWidget();
+                setMenuOpen(false);
+              }}
+              className="text-myGrey-200 hover:text-myBlue-200"
+              aria-label={t('nutrnav.nutr_messages', 'Messages')}
+            >
+              <ChatIcon />
+            </button>
+
             <Link
               href="/settings"
               onClick={() => setMenuOpen(false)}

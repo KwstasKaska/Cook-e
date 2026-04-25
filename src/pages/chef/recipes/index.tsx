@@ -68,6 +68,11 @@ export default function ChefRecipes() {
       ? allRecipesQuery.loading
       : categoryRecipesQuery.loading;
 
+  const fetchingMore =
+    activeCategory === null
+      ? allRecipesQuery.networkStatus === 3
+      : categoryRecipesQuery.networkStatus === 3;
+
   const rawRecipes: Recipe[] = useMemo(() => {
     const list =
       activeCategory === null
@@ -113,6 +118,25 @@ export default function ChefRecipes() {
 
   const openModal = (recipe: Recipe) =>
     setSelectedRecipe(toSummaryData(recipe, lang));
+
+  const handleLoadMore = () => {
+    if (activeCategory === null) {
+      allRecipesQuery.fetchMore({
+        variables: { limit: 20, offset: rawRecipes.length },
+      });
+    } else {
+      categoryRecipesQuery.fetchMore({
+        variables: {
+          category: activeCategory,
+          limit: 20,
+          offset: rawRecipes.length,
+        },
+      });
+    }
+  };
+
+  // Show load more only if the last fetch returned a full page
+  const hasMore = rawRecipes.length > 0 && rawRecipes.length % 20 === 0;
 
   return (
     <div
@@ -255,14 +279,18 @@ export default function ChefRecipes() {
             </div>
           </div>
 
-          <div className="mt-8 flex justify-center">
-            <button
-              className="rounded-full px-10 py-3 text-sm font-bold text-white transition hover:opacity-90"
-              style={{ backgroundColor: '#3F4756' }}
-            >
-              {t('chef.recipes.more')}
-            </button>
-          </div>
+          {hasMore && (
+            <div className="mt-8 flex justify-center">
+              <button
+                onClick={handleLoadMore}
+                disabled={fetchingMore}
+                className="rounded-full px-10 py-3 text-sm font-bold text-white transition hover:opacity-90 disabled:opacity-50"
+                style={{ backgroundColor: '#3F4756' }}
+              >
+                {fetchingMore ? t('common.loading') : t('chef.recipes.more')}
+              </button>
+            </div>
+          )}
         </div>
       </main>
     </div>
