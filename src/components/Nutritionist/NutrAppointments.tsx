@@ -3,8 +3,11 @@ import { useTranslation } from 'next-i18next';
 
 import coffee from '/public/images/coffee.jpg';
 import MyAppointments from './Helper/MyAppointments';
-import { useGetAppointmentRequestsForNutritionistQuery } from '../../generated/graphql';
 import { useChatContext } from '../Chat/ChatContext';
+import {
+  AppointmentStatus,
+  useGetAppointmentRequestsForNutritionistQuery,
+} from '../../generated/graphql';
 
 interface NutrAppointmentsProps {}
 
@@ -19,7 +22,7 @@ const NutrAppointments: React.FC<NutrAppointmentsProps> = ({}) => {
 
   const acceptedClients = Object.values(
     (requestsData?.getAppointmentRequestsForNutritionist ?? [])
-      .filter((req) => req.status === 'ACCEPTED' && req.client)
+      .filter((req) => req.status === AppointmentStatus.Accepted && req.client)
       .reduce<Record<number, { id: number; username: string }>>((acc, req) => {
         const client = req.client!;
         if (!acc[client.id]) {
