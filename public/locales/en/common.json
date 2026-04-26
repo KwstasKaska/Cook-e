@@ -479,7 +479,6 @@
     "submit": "Forgot my password"
   },
   "general_nav": {
-    "home": "Home",
     "user": "User",
     "chef": "Chef",
     "nutritionist": "Nutritionist"
@@ -491,9 +490,6 @@
     "hero_title": "Your cooking experience is changing",
     "hero_subtitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Condimentum id venenatis a vitae.",
     "cta": "Get started",
-    "sample_recipe_title": "Spaghetti bolognese",
-    "sample_recipe_difficulty": "Difficulty: Easy",
-    "sample_chef_name": "Konstantinos Kaskantirhs",
     "stat_85": "Of people don't know how to make use of their ingredients and utensils",
     "stat_100": "Partner chefs",
     "stat_50": "Certified nutritionists",

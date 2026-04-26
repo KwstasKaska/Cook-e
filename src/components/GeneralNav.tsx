@@ -7,7 +7,6 @@ const GeneralNav: React.FC = () => {
   return (
     <nav className="text-black">
       <ul className="grid grid-flow-col justify-evenly text-9 font-bold md:text-sm xl:text-xl">
-        <li>{t('general_nav.home')}</li>
         <li>{t('general_nav.user')}</li>
         <li>{t('general_nav.chef')}</li>
         <li>{t('general_nav.nutritionist')}</li>

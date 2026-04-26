@@ -479,7 +479,6 @@
     "submit": "Ξέχασα τον κωδικό μου"
   },
   "general_nav": {
-    "home": "Αρχική",
     "user": "Χρήστης",
     "chef": "Mάγειρας",
     "nutritionist": "Διατροφολόγος"
@@ -491,9 +490,6 @@
     "hero_title": "Η μαγειρική σου εμπειρία αλλάζει",
     "hero_subtitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Condimentum id venenatis a vitae.",
     "cta": "Ξεκίνησε τώρα",
-    "sample_recipe_title": "Μακαρόνια με κιμά",
-    "sample_recipe_difficulty": "Βαθμός δυσκολίας: Εύκολο",
-    "sample_chef_name": "Κωνσταντίνος Κασκαντιρης",
     "stat_85": "Των ανθρώπων δεν ξέρει πώς να αξιοποιεί τα υλικά και σκεύη τους",
     "stat_100": "Συνεργάτες μάγειρες",
     "stat_50": "Εγκεκριμένοι διατροφολόγοι",

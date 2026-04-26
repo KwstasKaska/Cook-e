@@ -27,6 +27,7 @@ interface RecipeCardProps {
   title: string;
   image: string;
   authorName: string;
+  authorImage?: string | null;
   difficulty: string;
 }
 
@@ -34,6 +35,7 @@ const RecipeCard = ({
   title,
   image,
   authorName,
+  authorImage,
   difficulty,
 }: RecipeCardProps) => (
   <div className="grid w-full cursor-pointer grid-flow-row justify-items-center gap-2 rounded-[.9em] bg-myGrey-100 pb-[1.5em] shadow-2xl drop-shadow-2xl transition duration-300 hover:scale-105 hover:ease-in xl:px-4">
@@ -46,19 +48,23 @@ const RecipeCard = ({
       {title}
     </h1>
     <p className="text-xs md:text-xs xl:text-xl">{difficulty}</p>
+
+    {/* Author */}
     <div className="m-[0.65em] flex flex-row items-center gap-2">
-      <div className="h-[2em] w-[2em] rounded-[.5em] bg-gray-300 md:h-[3em] md:w-[3em]" />
+      {authorImage ? (
+        <img
+          src={authorImage}
+          alt={authorName}
+          className="h-[2em] w-[2em] rounded-[.5em] object-cover md:h-[3em] md:w-[3em]"
+        />
+      ) : (
+        <div className="flex h-[2em] w-[2em] items-center justify-center rounded-[.5em] bg-myBlue-200 text-xs font-bold text-white md:h-[3em] md:w-[3em]">
+          {authorName.charAt(0).toUpperCase()}
+        </div>
+      )}
       <p className="text-xs leading-[.8rem] text-black md:text-sm xl:text-2xl">
         {authorName}
       </p>
-    </div>
-    <div className="flex flex-row items-center gap-1">
-      <Image
-        src={''}
-        alt="star"
-        className="md:min-h-[1.5em] md:min-w-[1.5em] xl:min-h-[2.5em] xl:min-w-[2.5em]"
-      />
-      <p className="text-xs md:text-xs xl:text-2xl">—</p>
     </div>
   </div>
 );
@@ -142,15 +148,23 @@ const Index: NextPage = () => {
 
   const cards =
     featuredRecipes.length > 0
-      ? featuredRecipes.map((recipe) => (
-          <RecipeCard
-            key={recipe.id}
-            title={pick(recipe.title_el, recipe.title_en, lang)}
-            image={recipeImageSrc(recipe.recipeImage)}
-            authorName={recipe.author?.user?.username ?? '—'}
-            difficulty={difficultyLabel(recipe.difficulty)}
-          />
-        ))
+      ? featuredRecipes.map((recipe) => {
+          const href = meData?.me
+            ? `/${meData.me.role.toLowerCase()}/recipes`
+            : '/login';
+
+          return (
+            <Link href={href} key={recipe.id}>
+              <RecipeCard
+                title={pick(recipe.title_el, recipe.title_en, lang)}
+                image={recipeImageSrc(recipe.recipeImage)}
+                authorName={recipe.author?.user?.username ?? '—'}
+                authorImage={recipe.author?.user?.image}
+                difficulty={difficultyLabel(recipe.difficulty)}
+              />
+            </Link>
+          );
+        })
       : [<SkeletonCard key={0} />, <SkeletonCard key={1} />];
 
   return (
@@ -193,18 +207,18 @@ const Index: NextPage = () => {
               <button
                 onClick={() => setSlideIndex((i) => Math.max(i - 1, 0))}
                 disabled={slideIndex === 0}
-                className="text-white disabled:opacity-30 text-2xl px-2"
+                className="px-2 text-2xl text-white disabled:opacity-30"
                 aria-label="Previous"
               >
                 ‹
               </button>
-              <div className="w-[70%] mt-[3em]">{cards[slideIndex]}</div>
+              <div className="mt-[3em] w-[70%]">{cards[slideIndex]}</div>
               <button
                 onClick={() =>
                   setSlideIndex((i) => Math.min(i + 1, cards.length - 1))
                 }
                 disabled={slideIndex === cards.length - 1}
-                className="text-white disabled:opacity-30 text-2xl px-2"
+                className="px-2 text-2xl text-white disabled:opacity-30"
                 aria-label="Next"
               >
                 ›
@@ -212,7 +226,7 @@ const Index: NextPage = () => {
             </div>
 
             {/* Desktop: side by side */}
-            <div className="hidden md:grid md:grid-cols-2 md:gap-7 mt-[3em]">
+            <div className="mt-[3em] hidden md:grid md:grid-cols-2 md:gap-7">
               {cards}
             </div>
           </div>
