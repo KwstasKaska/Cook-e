@@ -1,0 +1,13 @@
+query ArticlesByNutritionist(
+  $nutritionistId: Int!
+  $limit: Int = 10
+  $offset: Int = 0
+) {
+  articlesByNutritionist(
+    nutritionistId: $nutritionistId
+    limit: $limit
+    offset: $offset
+  ) {
+    ...RegularArticle
+  }
+}

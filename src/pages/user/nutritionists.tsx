@@ -2,17 +2,17 @@ import { useState } from 'react';
 import Navbar from '../../components/Users/Navbar';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { useRouter } from 'next/router';
-import { format } from 'date-fns';
-import { el, enUS } from 'date-fns/locale';
 import {
   useNutritionistsQuery,
-  useAvailableSlotsQuery,
-  useRequestAppointmentMutation,
   useMyAppointmentRequestsQuery,
+  useArticlesByNutritionistQuery,
 } from '../../generated/graphql';
 import useIsUser from '../../utils/useIsUser';
 import { useChatContext } from '../../components/Chat/ChatContext';
+import NutrArticlesGrid, {
+  NUTR_ARTICLES_LIMIT,
+} from '../../components/Users/Nutritionists/NutrArticlesGrid';
+import NutrBookingSection from '../../components/Users/Nutritionists/NutrBookingSection';
 
 type SelectedNutritionist = {
   id: number;
@@ -23,11 +23,6 @@ type SelectedNutritionist = {
   phone?: string | null;
   city?: string | null;
   image?: string | null;
-};
-
-const toDisplay = (isoDate: string, locale: Locale): string => {
-  const [year, month, day] = isoDate.split('-').map(Number);
-  return format(new Date(year, month - 1, day), 'dd MMMM yyyy', { locale });
 };
 
 export async function getServerSideProps({ locale }: { locale: string }) {
@@ -111,7 +106,7 @@ function ListView({
         ) : (
           <div className="relative mx-auto md:px-8">
             <div className="rounded-2xl bg-white px-4 pb-8 pt-2 shadow-lg">
-              <div className="flex justify-end pr-1 pt-3 pb-1">
+              <div className="flex justify-end pr-1 pb-1 pt-3">
                 <span className="text-sm text-gray-400">
                   {filtered.length} {t('nutritionists.showAll')}
                 </span>
@@ -187,7 +182,7 @@ function NutrCard({
   );
 }
 
-// ── Profile view
+//  Profile view
 
 function ProfileView({
   nutr,
@@ -202,71 +197,32 @@ function ProfileView({
   }>;
   onBack: () => void;
 }) {
-  const { t, i18n } = useTranslation('common');
-  const { locale } = useRouter();
-  const isEl = locale === 'el';
-  const dateFnsLocale = i18n.language === 'el' ? el : enUS;
+  const { t } = useTranslation('common');
   const { openConversation } = useChatContext();
 
-  const [monthIndex, setMonthIndex] = useState(new Date().getMonth());
-  const [selectedSlotId, setSelectedSlotId] = useState<number | null>(null);
-  const [serverError, setServerError] = useState('');
-  const [successMsg, setSuccessMsg] = useState('');
-
-  const { data: slotsData, loading: slotsLoading } = useAvailableSlotsQuery({
-    variables: { nutritionistId: nutr.id },
+  const {
+    data: articlesData,
+    loading: articlesLoading,
+    fetchMore: fetchMoreArticles,
+    networkStatus: articlesNetworkStatus,
+  } = useArticlesByNutritionistQuery({
+    variables: {
+      nutritionistId: nutr.userId,
+      limit: NUTR_ARTICLES_LIMIT,
+      offset: 0,
+    },
     fetchPolicy: 'network-only',
+    notifyOnNetworkStatusChange: true,
   });
 
-  const [requestAppointment, { loading: requesting }] =
-    useRequestAppointmentMutation();
+  const articles = articlesData?.articlesByNutritionist ?? [];
+  const fetchingMoreArticles = articlesNetworkStatus === 3;
+  const hasMoreArticles =
+    articles.length > 0 && articles.length % NUTR_ARTICLES_LIMIT === 0;
 
-  const availableSlots = slotsData?.availableSlots ?? [];
-
-  const visibleSlots = availableSlots.filter((slot) => {
-    if (!slot.date) return false;
-    const slotDate = new Date(slot.date);
-    return !isNaN(slotDate.getTime()) && slotDate.getMonth() === monthIndex;
-  });
-
-  const monthName = new Date(2026, monthIndex).toLocaleString(
-    isEl ? 'el-GR' : 'en-US',
-    { month: 'long' },
-  );
-
-  // ── Accepted-appointment gate
   const hasAcceptedAppointment = myRequests.some(
     (req) => req.status === 'ACCEPTED' && req.slot?.nutritionistId === nutr.id,
   );
-
-  const handleMonthChange = (delta: number) => {
-    setMonthIndex((m) => Math.min(11, Math.max(0, m + delta)));
-    setSelectedSlotId(null);
-  };
-
-  const handleBook = async () => {
-    if (!selectedSlotId) return;
-    setServerError('');
-    setSuccessMsg('');
-    try {
-      const result = await requestAppointment({
-        variables: { data: { slotId: selectedSlotId } },
-      });
-      if (result.errors) {
-        setServerError(t('nutritionists.bookError'));
-        return;
-      }
-      const gqlErrors = (result.data?.requestAppointment as any)?.errors;
-      if (gqlErrors?.length) {
-        setServerError(gqlErrors[0].message);
-        return;
-      }
-      setSuccessMsg(t('nutritionists.bookSuccess'));
-      setSelectedSlotId(null);
-    } catch {
-      setServerError(t('nutritionists.bookError'));
-    }
-  };
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#3F4756' }}>
@@ -280,7 +236,7 @@ function ProfileView({
           }}
         />
         <div className="relative z-10 mx-auto max-w-4xl px-6 pb-20 pt-10">
-          {/* Back button */}
+          {/* Back */}
           <button
             onClick={onBack}
             className="mb-6 flex items-center gap-1 text-sm text-gray-300 transition-colors hover:text-white"
@@ -355,11 +311,6 @@ function ProfileView({
                   />
                 </svg>
               </a>
-
-              {/* ── Message button ────────────────────────────────────────────
-                  Visible only when the user has an accepted appointment
-                  with this specific nutritionist.
-              ──────────────────────────────────────────────────────────────── */}
               {hasAcceptedAppointment && (
                 <button
                   onClick={() => openConversation(nutr.userId)}
@@ -395,119 +346,29 @@ function ProfileView({
             </p>
           )}
 
-          {/* Booking section */}
-          <div className="flex flex-col items-center">
-            <div className="mb-6 rounded-full border-2 border-gray-800 bg-gray-100 px-6 py-3">
-              <h2 className="text-center text-lg font-bold text-gray-800 md:text-xl">
-                {t('nutritionists.availableTimes')}
-              </h2>
-            </div>
+          {/* Articles — above booking */}
+          <NutrArticlesGrid
+            articles={articles as any}
+            loading={articlesLoading}
+            fetchingMore={fetchingMoreArticles}
+            hasMore={hasMoreArticles}
+            onLoadMore={() =>
+              fetchMoreArticles({
+                variables: {
+                  nutritionistId: nutr.userId,
+                  limit: NUTR_ARTICLES_LIMIT,
+                  offset: articles.length,
+                },
+              })
+            }
+          />
 
-            {/* Month selector */}
-            <div className="mb-6 flex items-center gap-4 self-start bg-myRed">
-              <button
-                onClick={() => handleMonthChange(-1)}
-                disabled={monthIndex === 0}
-                className="text-white transition-colors hover:text-gray-300 disabled:opacity-30"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2.5}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M15 19l-7-7 7-7"
-                  />
-                </svg>
-              </button>
-              <span className="text-base font-semibold capitalize text-white">
-                {monthName}
-              </span>
-              <button
-                onClick={() => handleMonthChange(1)}
-                disabled={monthIndex === 11}
-                className="text-white transition-colors hover:text-gray-300 disabled:opacity-30"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2.5}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M9 5l7 7-7 7"
-                  />
-                </svg>
-              </button>
-            </div>
-
-            {/* Slots */}
-            {slotsLoading ? (
-              <div className="flex justify-center py-8">
-                <div className="h-6 w-6 animate-spin rounded-full border-4 border-myBlue-200 border-t-transparent" />
-              </div>
-            ) : visibleSlots.length === 0 ? (
-              <p className="mb-8 text-sm text-gray-300">
-                {t('nutritionists.noSlots')}
-              </p>
-            ) : (
-              <div className="mb-8 flex flex-wrap justify-center gap-3">
-                {visibleSlots.map((slot) => {
-                  const isSelected = selectedSlotId === slot.id;
-                  return (
-                    <button
-                      key={slot.id}
-                      onClick={() =>
-                        setSelectedSlotId(isSelected ? null : slot.id)
-                      }
-                      className="rounded-full border-2 px-5 py-2.5 text-sm font-semibold transition-all duration-150"
-                      style={{
-                        backgroundColor: isSelected ? '#B3D5F8' : 'white',
-                        borderColor: isSelected ? '#377CC3' : '#3F4756',
-                        color: '#3F4756',
-                      }}
-                    >
-                      {toDisplay(slot.date, dateFnsLocale)} {slot.time}
-                    </button>
-                  );
-                })}
-              </div>
-            )}
-
-            {serverError && (
-              <p className="mb-3 text-sm font-semibold text-red-400">
-                {serverError}
-              </p>
-            )}
-            {successMsg && (
-              <p className="mb-3 text-sm font-semibold text-green-400">
-                {successMsg}
-              </p>
-            )}
-
-            <button
-              onClick={handleBook}
-              disabled={!selectedSlotId || requesting}
-              className="rounded-full px-12 py-3.5 text-base font-bold text-white shadow-lg transition-opacity"
-              style={{
-                backgroundColor: '#377CC3',
-                opacity: !selectedSlotId || requesting ? 0.5 : 1,
-                cursor:
-                  !selectedSlotId || requesting ? 'not-allowed' : 'pointer',
-              }}
-            >
-              {requesting ? '...' : t('nutritionists.bookAppointment')}
-            </button>
-          </div>
+          {/* Booking */}
+          <NutrBookingSection
+            nutritionistProfileId={nutr.id}
+            nutritionistUserId={nutr.userId}
+            hasAcceptedAppointment={hasAcceptedAppointment}
+          />
         </div>
       </div>
     </div>

@@ -4,11 +4,7 @@ import Navbar from '../../../components/Users/Navbar';
 import ScrollToTopButton from '../../../components/Helper/ScrollToTopButton';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import {
-  StarRow,
-  SmallStars,
-  StarPicker,
-} from '../../../components/Helper/Stars';
+import { StarRow } from '../../../components/Helper/Stars';
 import {
   useChefQuery,
   useChefAverageRatingQuery,
@@ -17,12 +13,20 @@ import {
   useRateChefMutation,
   useDeleteChefRatingMutation,
   useRecipesByChefQuery,
+  useArticlesByChefQuery,
 } from '../../../generated/graphql';
 import useIsUser from '../../../utils/useIsUser';
 import { useChatContext } from '../../../components/Chat/ChatContext';
-
-const RECIPES_LIMIT = 6;
-const RATINGS_LIMIT = 10;
+import ChefContentGrid, {
+  RECIPES_LIMIT,
+} from '../../../components/Users/Chefs/ChefContentGrid';
+import ChefArticlesGrid, {
+  ARTICLES_LIMIT,
+} from '../../../components/Users/Chefs/ChefArticlesGrid';
+import ChefRateForm from '../../../components/Users/Chefs/ChefRateForm';
+import ChefReviewsList, {
+  RATINGS_LIMIT,
+} from '../../../components/Users/Chefs/ChefReviewsList';
 
 export async function getServerSideProps({ locale }: { locale: string }) {
   return {
@@ -35,7 +39,6 @@ export async function getServerSideProps({ locale }: { locale: string }) {
 export default function ChefProfilePage() {
   const { loading: authLoading, isAuthorized } = useIsUser();
   if (authLoading || !isAuthorized) return null;
-
   return <ChefProfileContent />;
 }
 
@@ -44,10 +47,9 @@ function ChefProfileContent() {
   const router = useRouter();
   const { id } = router.query;
   const chefId = parseInt(id as string, 10);
-  const isEl = router.locale === 'el';
   const { openConversation } = useChatContext();
 
-  // ── Rating form state
+  // ── Rating state
   const [ratingScore, setRatingScore] = useState(0);
   const [ratingComment, setRatingComment] = useState('');
   const [ratingError, setRatingError] = useState('');
@@ -87,7 +89,6 @@ function ChefProfileContent() {
 
   const chef = chefData?.chef;
 
-  // ── Recipes — real fetchMore, chefId = ChefProfile.id = authorId on Recipe
   const {
     data: recipesData,
     loading: recipesLoading,
@@ -100,22 +101,43 @@ function ChefProfileContent() {
     notifyOnNetworkStatusChange: true,
   });
 
+  const {
+    data: articlesData,
+    loading: articlesLoading,
+    fetchMore: fetchMoreArticles,
+    networkStatus: articlesNetworkStatus,
+  } = useArticlesByChefQuery({
+    variables: {
+      chefId: chef?.user?.id ?? 0,
+      limit: ARTICLES_LIMIT,
+      offset: 0,
+    },
+    skip: isNaN(chefId) || !chef?.user?.id,
+    fetchPolicy: 'network-only',
+    notifyOnNetworkStatusChange: true,
+  });
+
   // ── Mutations
   const [rateChef, { loading: submitting }] = useRateChefMutation();
   const [deleteChefRating] = useDeleteChefRatingMutation();
 
+  // ── Derived state
   const avgRating = avgData?.chefAverageRating ?? 0;
   const reviews = ratingsData?.chefRatings ?? [];
   const myRating = myRatingData?.myChefRating ?? null;
   const recipes = recipesData?.recipesByChef ?? [];
+  const articles = articlesData?.articlesByChef ?? [];
 
   const fetchingMoreRecipes = recipesNetworkStatus === 3;
   const fetchingMoreRatings = ratingsNetworkStatus === 3;
+  const fetchingMoreArticles = articlesNetworkStatus === 3;
 
   const hasMoreRecipes =
     recipes.length > 0 && recipes.length % RECIPES_LIMIT === 0;
   const hasMoreReviews =
     reviews.length > 0 && reviews.length % RATINGS_LIMIT === 0;
+  const hasMoreArticles =
+    articles.length > 0 && articles.length % ARTICLES_LIMIT === 0;
 
   // ── Handlers
   const handleRate = useCallback(async () => {
@@ -166,18 +188,6 @@ function ChefProfileContent() {
     }
   }, [deleteChefRating, chefId, refetchRatings, refetchMyRating, t]);
 
-  const handleLoadMoreRecipes = () => {
-    fetchMoreRecipes({
-      variables: { chefId, limit: RECIPES_LIMIT, offset: recipes.length },
-    });
-  };
-
-  const handleLoadMoreRatings = () => {
-    fetchMoreRatings({
-      variables: { chefId, limit: RATINGS_LIMIT, offset: reviews.length },
-    });
-  };
-
   if (chefLoading) {
     return (
       <div
@@ -208,7 +218,6 @@ function ChefProfileContent() {
       <Navbar />
       <main className="flex-1">
         <div className="relative overflow-hidden">
-          {/* Diagonal background */}
           <div
             className="absolute bottom-0 left-0 w-full bg-gray-100"
             style={{
@@ -240,19 +249,19 @@ function ChefProfileContent() {
             </button>
 
             <div className="grid grid-cols-1 gap-10 md:grid-cols-[1fr_340px] md:items-start">
-              {/* ── LEFT: chef info + recipes */}
+              {/* ── LEFT */}
               <div className="flex flex-col gap-6">
-                {/* Avatar + name + message button */}
+                {/* Avatar + name + message */}
                 <div className="flex items-center gap-5">
                   {chef.user?.image ? (
                     <img
                       src={chef.user.image}
                       alt={chef.user.username}
-                      className="h-20 w-20 rounded-full border-4 border-white object-cover shadow-xl flex-shrink-0"
+                      className="h-20 w-20 flex-shrink-0 rounded-full border-4 border-white object-cover shadow-xl"
                     />
                   ) : (
                     <div
-                      className="h-20 w-20 rounded-full border-4 border-white shadow-xl flex-shrink-0 flex items-center justify-center text-2xl font-bold text-white"
+                      className="flex h-20 w-20 flex-shrink-0 items-center justify-center rounded-full border-4 border-white text-2xl font-bold text-white shadow-xl"
                       style={{ backgroundColor: '#377CC3' }}
                     >
                       {chef.user?.username?.[0]?.toUpperCase() ?? '?'}
@@ -297,235 +306,75 @@ function ChefProfileContent() {
                   </div>
                 </div>
 
-                {/* Bio */}
                 {chef.bio && (
                   <p className="max-w-lg text-sm leading-relaxed text-gray-300">
                     {chef.bio}
                   </p>
                 )}
 
-                {/* ── Recipes grid */}
-                <div>
-                  <h2 className="flex justify-center mb-4 text-xl font-bold text-black">
-                    {t('chef.profile.recipes')}
-                  </h2>
+                <ChefContentGrid
+                  recipes={recipes as any}
+                  loading={recipesLoading}
+                  fetchingMore={fetchingMoreRecipes}
+                  hasMore={hasMoreRecipes}
+                  onLoadMore={() =>
+                    fetchMoreRecipes({
+                      variables: {
+                        chefId,
+                        limit: RECIPES_LIMIT,
+                        offset: recipes.length,
+                      },
+                    })
+                  }
+                />
 
-                  {recipesLoading && !fetchingMoreRecipes ? (
-                    <div className="flex justify-center py-8">
-                      <div className="h-8 w-8 animate-spin rounded-full border-4 border-myBlue-200 border-t-transparent" />
-                    </div>
-                  ) : recipes.length === 0 ? (
-                    <p className="text-sm text-gray-400">
-                      {t('chef.profile.no_recipes', 'No recipes yet.')}
-                    </p>
-                  ) : (
-                    <>
-                      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                        {recipes.map((recipe) => {
-                          const title = isEl
-                            ? recipe.title_el
-                            : recipe.title_en;
-                          return (
-                            <div
-                              key={recipe.id}
-                              onClick={() =>
-                                router.push(`/user/recipes/${recipe.id}`)
-                              }
-                              className="cursor-pointer rounded-2xl overflow-hidden shadow-lg transition hover:scale-[1.02] hover:shadow-xl"
-                              style={{ backgroundColor: '#E9DEC5' }}
-                            >
-                              <div className="relative h-36 w-full overflow-hidden">
-                                {recipe.recipeImage ? (
-                                  <img
-                                    src={recipe.recipeImage}
-                                    alt={title}
-                                    className="h-full w-full object-cover"
-                                  />
-                                ) : (
-                                  <div
-                                    className="h-full w-full flex items-center justify-center text-4xl"
-                                    style={{ backgroundColor: '#B3D5F8' }}
-                                  >
-                                    🍽️
-                                  </div>
-                                )}
-                              </div>
-                              <div className="px-4 py-3">
-                                <p
-                                  className="font-bold text-sm leading-tight truncate"
-                                  style={{ color: '#3F4756' }}
-                                >
-                                  {title}
-                                </p>
-                                {recipe.difficulty && (
-                                  <p className="mt-1 text-xs text-gray-500 uppercase tracking-wide">
-                                    {recipe.difficulty}
-                                  </p>
-                                )}
-                              </div>
-                            </div>
-                          );
-                        })}
-                      </div>
-
-                      {hasMoreRecipes && (
-                        <div className="mt-6 flex justify-center">
-                          <button
-                            onClick={handleLoadMoreRecipes}
-                            disabled={fetchingMoreRecipes}
-                            className="rounded-full px-8 py-2 text-sm font-bold transition hover:opacity-90 disabled:opacity-50"
-                            style={{
-                              backgroundColor: '#B3D5F8',
-                              color: '#3F4756',
-                            }}
-                          >
-                            {fetchingMoreRecipes
-                              ? t('common.loading')
-                              : t('chef.profile.more')}
-                          </button>
-                        </div>
-                      )}
-                    </>
-                  )}
-                </div>
+                <ChefArticlesGrid
+                  articles={articles as any}
+                  loading={articlesLoading}
+                  fetchingMore={fetchingMoreArticles}
+                  hasMore={hasMoreArticles}
+                  onLoadMore={() =>
+                    fetchMoreArticles({
+                      variables: {
+                        chefId: chef?.user?.id ?? 0,
+                        limit: ARTICLES_LIMIT,
+                        offset: articles.length,
+                      },
+                    })
+                  }
+                />
               </div>
 
-              {/* ── RIGHT: reviews + rate form */}
+              {/* ── RIGHT */}
               <div className="flex flex-col gap-4">
-                {/* Rate form */}
-                <div className="rounded-2xl bg-white shadow-xl p-5">
-                  <h3
-                    className="mb-4 text-lg font-bold"
-                    style={{ color: '#3F4756' }}
-                  >
-                    {t('recipes.rateChefTitle')}
-                  </h3>
+                <ChefRateForm
+                  myRating={myRating}
+                  ratingScore={ratingScore}
+                  ratingComment={ratingComment}
+                  ratingError={ratingError}
+                  ratingSuccess={ratingSuccess}
+                  submitting={submitting}
+                  onScoreChange={setRatingScore}
+                  onCommentChange={setRatingComment}
+                  onSubmit={handleRate}
+                  onDelete={handleDeleteRating}
+                />
 
-                  {myRating && (
-                    <div
-                      className="mb-4 rounded-xl px-3 py-2 text-sm"
-                      style={{ backgroundColor: '#B3D5F8', color: '#3F4756' }}
-                    >
-                      {t('recipes.existingRating')}: {myRating.score}/5
-                      <button
-                        onClick={handleDeleteRating}
-                        className="ml-2 text-xs underline hover:no-underline"
-                      >
-                        {t('common.delete')}
-                      </button>
-                    </div>
-                  )}
-
-                  <div className="mb-4">
-                    <StarPicker value={ratingScore} onChange={setRatingScore} />
-                  </div>
-
-                  {ratingError && (
-                    <p className="mb-2 text-xs font-semibold text-red-500">
-                      {ratingError}
-                    </p>
-                  )}
-                  {ratingSuccess && (
-                    <p className="mb-2 text-xs font-semibold text-green-500">
-                      {ratingSuccess}
-                    </p>
-                  )}
-
-                  <button
-                    onClick={handleRate}
-                    disabled={submitting || ratingScore === 0}
-                    className="w-full rounded-xl py-2 text-sm font-bold text-white transition"
-                    style={{
-                      backgroundColor: '#377CC3',
-                      opacity: submitting || ratingScore === 0 ? 0.5 : 1,
-                      cursor:
-                        submitting || ratingScore === 0
-                          ? 'not-allowed'
-                          : 'pointer',
-                    }}
-                  >
-                    {submitting
-                      ? t('common.saving')
-                      : t('recipes.submitRating')}
-                  </button>
-                </div>
-
-                {/* Reviews list */}
-                <div className="rounded-2xl bg-white shadow-xl p-5">
-                  <h3
-                    className="mb-4 text-lg font-bold"
-                    style={{ color: '#3F4756' }}
-                  >
-                    {t('chef.rating.title')}
-                  </h3>
-
-                  {ratingsLoading && !fetchingMoreRatings ? (
-                    <div className="flex justify-center py-6">
-                      <div className="h-6 w-6 animate-spin rounded-full border-4 border-myBlue-200 border-t-transparent" />
-                    </div>
-                  ) : reviews.length === 0 ? (
-                    <p className="text-sm text-gray-400">
-                      {t('chef.recipe_detail.no_ratings_yet')}
-                    </p>
-                  ) : (
-                    <div className="flex flex-col gap-4">
-                      {reviews.map((review) => (
-                        <div
-                          key={review.id}
-                          className="border-b border-gray-100 pb-4 last:border-0"
-                        >
-                          <div className="mb-2 flex items-center gap-3">
-                            {review.user?.image ? (
-                              <img
-                                src={review.user.image}
-                                alt={review.user.username}
-                                className="h-9 w-9 rounded-full object-cover flex-shrink-0"
-                              />
-                            ) : (
-                              <div
-                                className="h-9 w-9 rounded-full flex-shrink-0 flex items-center justify-center text-white text-sm font-bold"
-                                style={{ backgroundColor: '#377CC3' }}
-                              >
-                                {review.user?.username?.[0]?.toUpperCase() ??
-                                  '?'}
-                              </div>
-                            )}
-                            <div>
-                              <p
-                                className="text-sm font-bold"
-                                style={{ color: '#3F4756' }}
-                              >
-                                {review.user?.username ?? '—'}
-                              </p>
-                              <SmallStars rating={review.score} />
-                            </div>
-                          </div>
-                          {review.comment && (
-                            <p className="text-xs text-gray-500 leading-relaxed">
-                              {review.comment}
-                            </p>
-                          )}
-                        </div>
-                      ))}
-
-                      {hasMoreReviews && (
-                        <button
-                          onClick={handleLoadMoreRatings}
-                          disabled={fetchingMoreRatings}
-                          className="mt-2 w-full rounded-xl py-1.5 text-xs font-bold transition hover:opacity-90 disabled:opacity-50"
-                          style={{
-                            backgroundColor: '#B3D5F8',
-                            color: '#3F4756',
-                          }}
-                        >
-                          {fetchingMoreRatings
-                            ? t('common.loading')
-                            : t('chef.profile.more')}
-                        </button>
-                      )}
-                    </div>
-                  )}
-                </div>
+                <ChefReviewsList
+                  reviews={reviews as any}
+                  loading={ratingsLoading}
+                  fetchingMore={fetchingMoreRatings}
+                  hasMore={hasMoreReviews}
+                  onLoadMore={() =>
+                    fetchMoreRatings({
+                      variables: {
+                        chefId,
+                        limit: RATINGS_LIMIT,
+                        offset: reviews.length,
+                      },
+                    })
+                  }
+                />
               </div>
             </div>
           </div>

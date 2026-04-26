@@ -52,13 +52,13 @@ export default function ChefRecipes() {
     useState<RecipeSummaryData | null>(null);
 
   const allRecipesQuery = useMyRecipesQuery({
-    variables: { limit: 20, offset: 0 },
+    variables: { limit: 5, offset: 0 },
     skip: activeCategory !== null,
     fetchPolicy: 'network-only',
   });
 
   const categoryRecipesQuery = useMyRecipesByCategoryQuery({
-    variables: { category: activeCategory!, limit: 20, offset: 0 },
+    variables: { category: activeCategory!, limit: 5, offset: 0 },
     skip: activeCategory === null,
     fetchPolicy: 'network-only',
   });
@@ -122,13 +122,13 @@ export default function ChefRecipes() {
   const handleLoadMore = () => {
     if (activeCategory === null) {
       allRecipesQuery.fetchMore({
-        variables: { limit: 20, offset: rawRecipes.length },
+        variables: { limit: 5, offset: rawRecipes.length },
       });
     } else {
       categoryRecipesQuery.fetchMore({
         variables: {
           category: activeCategory,
-          limit: 20,
+          limit: 5,
           offset: rawRecipes.length,
         },
       });
@@ -136,7 +136,7 @@ export default function ChefRecipes() {
   };
 
   // Show load more only if the last fetch returned a full page
-  const hasMore = rawRecipes.length > 0 && rawRecipes.length % 20 === 0;
+  const hasMore = rawRecipes.length > 0 && rawRecipes.length % 5 === 0;
 
   return (
     <div

@@ -12,7 +12,7 @@ import {
   useChefAverageRatingQuery,
   useChefRatingsQuery,
   useArticlesByChefQuery,
-  useMyRecipesQuery,
+  useMyRecipesCountQuery,
 } from '../../generated/graphql';
 import useIsChef from '../../utils/useIsChef';
 import { pick } from '../../utils/pick';
@@ -44,16 +44,14 @@ export default function ChefProfile() {
     skip: !chefProfileId,
   });
 
-  const { data: recipesData } = useMyRecipesQuery({
-    variables: { limit: 50, offset: 0 },
-  });
+  const { data: countData } = useMyRecipesCountQuery();
 
   const {
     data: articlesData,
     loading: articlesLoading,
     fetchMore: fetchMoreArticles,
   } = useArticlesByChefQuery({
-    variables: { chefId: userId!, limit: 6, offset: 0 },
+    variables: { chefId: userId!, limit: 3, offset: 0 },
     skip: !userId,
   });
 
@@ -63,7 +61,7 @@ export default function ChefProfile() {
   const ratings = ratingsData?.chefRatings ?? [];
   const totalRatings = ratings.length;
   const articles = articlesData?.articlesByChef ?? [];
-  const recipesCount = recipesData?.myRecipes?.length ?? 0;
+  const recipesCount = countData?.myRecipesCount ?? 0;
 
   const ratingCounts: Record<StarKey, number> = {
     1: 0,

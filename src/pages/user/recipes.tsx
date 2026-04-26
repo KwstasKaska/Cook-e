@@ -17,8 +17,6 @@ import useIsUser from '../../utils/useIsUser';
 
 type Step = 'home' | 'ingredients' | 'utensils' | 'results';
 
-const FAVORITES_LIMIT = 8;
-
 export async function getServerSideProps({ locale }: { locale: string }) {
   return {
     props: {
@@ -59,7 +57,7 @@ function RecipesContent() {
     fetchMore: fetchMoreFavs,
     networkStatus: favNetworkStatus,
   } = useMyFavoritesQuery({
-    variables: { limit: FAVORITES_LIMIT, offset: 0 },
+    variables: { limit: 4, offset: 0 },
     fetchPolicy: 'network-only',
     notifyOnNetworkStatusChange: true,
   });
@@ -83,9 +81,8 @@ function RecipesContent() {
   const favorites = favData?.myFavorites ?? [];
   const suggestions = suggestedData?.suggestedRecipes ?? [];
 
-  const loadingMoreFavorites = favNetworkStatus === 3;
-  const hasMoreFavorites =
-    favorites.length > 0 && favorites.length % FAVORITES_LIMIT === 0;
+  const loadingMoreFavorites = favNetworkStatus === 4;
+  const hasMoreFavorites = favorites.length > 0 && favorites.length % 4 === 0;
 
   const ingredientsByCategory = useMemo(() => {
     const map = new Map<string, typeof allIngredients>();
@@ -125,7 +122,7 @@ function RecipesContent() {
 
   const handleLoadMoreFavorites = () => {
     fetchMoreFavs({
-      variables: { limit: FAVORITES_LIMIT, offset: favorites.length },
+      variables: { limit: 4, offset: favorites.length },
     });
   };
 
