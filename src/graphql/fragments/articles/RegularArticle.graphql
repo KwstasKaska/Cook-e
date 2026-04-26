@@ -8,4 +8,9 @@ fragment RegularArticle on Article {
   creatorId
   createdAt
   updatedAt
+  creator {
+    id
+    username
+    image
+  }
 }

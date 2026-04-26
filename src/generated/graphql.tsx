@@ -76,6 +76,7 @@ export enum AppointmentStatus {
 export type Article = {
   __typename?: 'Article';
   createdAt: Scalars['String']['output'];
+  creator?: Maybe<User>;
   creatorId: Scalars['Float']['output'];
   id: Scalars['Float']['output'];
   image: Scalars['String']['output'];
@@ -1004,9 +1005,9 @@ export type RegularAppointmentRequestResponseFragment = { __typename?: 'Appointm
 
 export type RegularAppointmentResponseFragment = { __typename?: 'AppointmentResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, slot?: { __typename?: 'Appointment', id: number, date: string, time: string, isAvailable: boolean, nutritionistId: number } | null };
 
-export type RegularArticleFragment = { __typename?: 'Article', id: number, title_el: string, title_en: string, text_el: string, text_en: string, image: string, creatorId: number, createdAt: string, updatedAt: string };
+export type RegularArticleFragment = { __typename?: 'Article', id: number, title_el: string, title_en: string, text_el: string, text_en: string, image: string, creatorId: number, createdAt: string, updatedAt: string, creator?: { __typename?: 'User', id: number, username: string, image?: string | null } | null };
 
-export type RegularArticleResponseFragment = { __typename?: 'ArticleResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, article?: { __typename?: 'Article', id: number, title_el: string, title_en: string, text_el: string, text_en: string, image: string, creatorId: number, createdAt: string, updatedAt: string } | null };
+export type RegularArticleResponseFragment = { __typename?: 'ArticleResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, article?: { __typename?: 'Article', id: number, title_el: string, title_en: string, text_el: string, text_en: string, image: string, creatorId: number, createdAt: string, updatedAt: string, creator?: { __typename?: 'User', id: number, username: string, image?: string | null } | null } | null };
 
 export type RegularCartItemFragment = { __typename?: 'ShoppingCart', id: number, userId: number, ingredientId: number, quantity?: string | null, unit?: string | null, note?: string | null, addedAt: string, ingredient?: { __typename?: 'Ingredient', id: number, name_el: string, name_en: string, caloriesPer100g?: number | null } | null };
 
@@ -1079,7 +1080,7 @@ export type UpdateArticleMutationVariables = Exact<{
 }>;
 
 
-export type UpdateArticleMutation = { __typename?: 'Mutation', updateArticle: { __typename?: 'ArticleResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, article?: { __typename?: 'Article', id: number, title_el: string, title_en: string, text_el: string, text_en: string, image: string, creatorId: number, createdAt: string, updatedAt: string } | null } };
+export type UpdateArticleMutation = { __typename?: 'Mutation', updateArticle: { __typename?: 'ArticleResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, article?: { __typename?: 'Article', id: number, title_el: string, title_en: string, text_el: string, text_en: string, image: string, creatorId: number, createdAt: string, updatedAt: string, creator?: { __typename?: 'User', id: number, username: string, image?: string | null } | null } | null } };
 
 export type DeleteArticleMutationVariables = Exact<{
   id: Scalars['Int']['input'];
@@ -1200,7 +1201,7 @@ export type CreateArticleMutationVariables = Exact<{
 }>;
 
 
-export type CreateArticleMutation = { __typename?: 'Mutation', createArticle: { __typename?: 'ArticleResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, article?: { __typename?: 'Article', id: number, title_el: string, title_en: string, text_el: string, text_en: string, image: string, creatorId: number, createdAt: string, updatedAt: string } | null } };
+export type CreateArticleMutation = { __typename?: 'Mutation', createArticle: { __typename?: 'ArticleResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, article?: { __typename?: 'Article', id: number, title_el: string, title_en: string, text_el: string, text_en: string, image: string, creatorId: number, createdAt: string, updatedAt: string, creator?: { __typename?: 'User', id: number, username: string, image?: string | null } | null } | null } };
 
 export type SaveRecipeMutationVariables = Exact<{
   recipeId: Scalars['Int']['input'];
@@ -1357,7 +1358,7 @@ export type ArticleQueryVariables = Exact<{
 }>;
 
 
-export type ArticleQuery = { __typename?: 'Query', article?: { __typename?: 'Article', id: number, title_el: string, title_en: string, text_el: string, text_en: string, image: string, creatorId: number, createdAt: string, updatedAt: string } | null };
+export type ArticleQuery = { __typename?: 'Query', article?: { __typename?: 'Article', id: number, title_el: string, title_en: string, text_el: string, text_en: string, image: string, creatorId: number, createdAt: string, updatedAt: string, creator?: { __typename?: 'User', id: number, username: string, image?: string | null } | null } | null };
 
 export type ArticlesQueryVariables = Exact<{
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -1365,7 +1366,7 @@ export type ArticlesQueryVariables = Exact<{
 }>;
 
 
-export type ArticlesQuery = { __typename?: 'Query', articles: Array<{ __typename?: 'Article', id: number, title_el: string, title_en: string, text_el: string, text_en: string, image: string, creatorId: number, createdAt: string, updatedAt: string }> };
+export type ArticlesQuery = { __typename?: 'Query', articles: Array<{ __typename?: 'Article', id: number, title_el: string, title_en: string, text_el: string, text_en: string, image: string, creatorId: number, createdAt: string, updatedAt: string, creator?: { __typename?: 'User', id: number, username: string, image?: string | null } | null }> };
 
 export type ArticlesByChefQueryVariables = Exact<{
   chefId: Scalars['Int']['input'];
@@ -1374,7 +1375,7 @@ export type ArticlesByChefQueryVariables = Exact<{
 }>;
 
 
-export type ArticlesByChefQuery = { __typename?: 'Query', articlesByChef: Array<{ __typename?: 'Article', id: number, title_el: string, title_en: string, text_el: string, text_en: string, image: string, creatorId: number, createdAt: string, updatedAt: string }> };
+export type ArticlesByChefQuery = { __typename?: 'Query', articlesByChef: Array<{ __typename?: 'Article', id: number, title_el: string, title_en: string, text_el: string, text_en: string, image: string, creatorId: number, createdAt: string, updatedAt: string, creator?: { __typename?: 'User', id: number, username: string, image?: string | null } | null }> };
 
 export type ArticlesByNutritionistQueryVariables = Exact<{
   nutritionistId: Scalars['Int']['input'];
@@ -1383,7 +1384,7 @@ export type ArticlesByNutritionistQueryVariables = Exact<{
 }>;
 
 
-export type ArticlesByNutritionistQuery = { __typename?: 'Query', articlesByNutritionist: Array<{ __typename?: 'Article', id: number, title_el: string, title_en: string, text_el: string, text_en: string, image: string, creatorId: number, createdAt: string, updatedAt: string }> };
+export type ArticlesByNutritionistQuery = { __typename?: 'Query', articlesByNutritionist: Array<{ __typename?: 'Article', id: number, title_el: string, title_en: string, text_el: string, text_en: string, image: string, creatorId: number, createdAt: string, updatedAt: string, creator?: { __typename?: 'User', id: number, username: string, image?: string | null } | null }> };
 
 export type ChefQueryVariables = Exact<{
   id: Scalars['Int']['input'];
@@ -1726,6 +1727,11 @@ export const RegularArticleFragmentDoc = gql`
   creatorId
   createdAt
   updatedAt
+  creator {
+    id
+    username
+    image
+  }
 }
     `;
 export const RegularArticleResponseFragmentDoc = gql`
