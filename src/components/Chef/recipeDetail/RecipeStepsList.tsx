@@ -76,7 +76,12 @@ export default function RecipeStepsList({
           ))}
           <button
             type="button"
-            onClick={() => onUpdate('steps', [...editForm.steps, { body: '' }])}
+            onClick={() =>
+              onUpdate('steps', [
+                ...editForm.steps,
+                { id: Date.now(), body: '' },
+              ])
+            }
             className="mt-1 self-start rounded-full border px-4 py-1.5 text-xs font-semibold transition hover:bg-gray-50"
             style={{ borderColor: '#3F4756', color: '#3F4756' }}
           >

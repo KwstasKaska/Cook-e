@@ -12,7 +12,7 @@ export interface IngredientRow {
 }
 
 export interface StepRow {
-  id?: number;
+  id: number; // required — buildEditForm always provides s.id; new rows use Date.now()
   body: string;
 }
 
