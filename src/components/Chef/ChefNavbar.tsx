@@ -13,7 +13,7 @@ const ChefNavbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [logout] = useLogoutMutation();
   const apolloClient = useApolloClient();
-  const { openWidget } = useChatContext();
+  const { openWidget, closeWidget } = useChatContext();
 
   const navLinks = [
     { href: '/chef', label: t('chefnav.chef_home') },
@@ -25,6 +25,8 @@ const ChefNavbar = () => {
   const handleLogout = async () => {
     await logout();
     await apolloClient.clearStore();
+    closeWidget();
+
     router.push('/login');
   };
 

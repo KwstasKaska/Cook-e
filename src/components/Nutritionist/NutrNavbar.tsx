@@ -11,11 +11,11 @@ export default function NutrNavbar() {
   const { t } = useTranslation('common');
   const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
-  const { openWidget } = useChatContext();
 
   const [logout, { loading: logoutLoading }] = useLogoutMutation();
   const apolloClient = useApolloClient();
   const { data, loading } = useMeQuery();
+  const { openWidget, closeWidget } = useChatContext();
 
   const navLinks = [
     { label: t('nutrnav.nutr_articles'), sectionId: 'section_1' },
@@ -32,6 +32,7 @@ export default function NutrNavbar() {
   const handleLogout = async () => {
     await logout();
     await apolloClient.clearStore();
+    closeWidget();
     router.push('/login');
   };
 

@@ -11,7 +11,7 @@ export default function Navbar() {
   const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
   const { t } = useTranslation('common');
-  const { openWidget } = useChatContext();
+  const { openWidget, closeWidget } = useChatContext();
 
   const [logout] = useLogoutMutation();
   const apolloClient = useApolloClient();
@@ -25,6 +25,7 @@ export default function Navbar() {
   const handleLogout = async () => {
     await logout();
     await apolloClient.clearStore();
+    closeWidget();
     router.push('/login');
   };
 
