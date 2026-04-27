@@ -1528,6 +1528,13 @@ export type RecipeQueryVariables = Exact<{
 
 export type RecipeQuery = { __typename?: 'Query', recipe?: { __typename?: 'Recipe', id: number, title_el: string, title_en: string, description_el?: string | null, description_en?: string | null, chefComment_el?: string | null, chefComment_en?: string | null, category?: RecipeCategory | null, recipeImage?: string | null, prepTime: number, cookTime: number, restTime?: number | null, difficulty: Difficulty, caloriesTotal?: number | null, protein?: number | null, carbs?: number | null, fat?: number | null, foodEthnicity?: string | null, authorId: number, createdAt: string, updatedAt: string, steps?: Array<{ __typename?: 'Step', id: number, body_el: string, body_en: string, recipeID: number }> | null, recipeIngredients?: Array<{ __typename?: 'RecipeIngredient', recipeId: number, ingredientId: number, quantity: string, unit: string, ingredient?: { __typename?: 'Ingredient', id: number, name_el: string, name_en: string, caloriesPer100g?: number | null } | null }> | null, author?: { __typename?: 'ChefProfile', user: { __typename?: 'User', id: number, username: string, image?: string | null } } | null } | null };
 
+export type RecipeDetailQueryVariables = Exact<{
+  id: Scalars['Int']['input'];
+}>;
+
+
+export type RecipeDetailQuery = { __typename?: 'Query', recipe?: { __typename?: 'Recipe', id: number, title_el: string, title_en: string, description_el?: string | null, description_en?: string | null, chefComment_el?: string | null, chefComment_en?: string | null, category?: RecipeCategory | null, recipeImage?: string | null, prepTime: number, cookTime: number, restTime?: number | null, difficulty: Difficulty, caloriesTotal?: number | null, protein?: number | null, carbs?: number | null, fat?: number | null, foodEthnicity?: string | null, authorId: number, createdAt: string, updatedAt: string, utensils?: Array<{ __typename?: 'Utensil', id: number, name_el: string, name_en: string }> | null, steps?: Array<{ __typename?: 'Step', id: number, body_el: string, body_en: string, recipeID: number }> | null, recipeIngredients?: Array<{ __typename?: 'RecipeIngredient', recipeId: number, ingredientId: number, quantity: string, unit: string, ingredient?: { __typename?: 'Ingredient', id: number, name_el: string, name_en: string, caloriesPer100g?: number | null } | null }> | null, author?: { __typename?: 'ChefProfile', user: { __typename?: 'User', id: number, username: string, image?: string | null } } | null } | null };
+
 export type RecipeAverageRatingQueryVariables = Exact<{
   recipeId: Scalars['Int']['input'];
 }>;
@@ -4588,6 +4595,51 @@ export type RecipeQueryHookResult = ReturnType<typeof useRecipeQuery>;
 export type RecipeLazyQueryHookResult = ReturnType<typeof useRecipeLazyQuery>;
 export type RecipeSuspenseQueryHookResult = ReturnType<typeof useRecipeSuspenseQuery>;
 export type RecipeQueryResult = Apollo.QueryResult<RecipeQuery, RecipeQueryVariables>;
+export const RecipeDetailDocument = gql`
+    query RecipeDetail($id: Int!) {
+  recipe(id: $id) {
+    ...RegularRecipe
+    utensils {
+      id
+      name_el
+      name_en
+    }
+  }
+}
+    ${RegularRecipeFragmentDoc}`;
+
+/**
+ * __useRecipeDetailQuery__
+ *
+ * To run a query within a React component, call `useRecipeDetailQuery` and pass it any options that fit your needs.
+ * When your component renders, `useRecipeDetailQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useRecipeDetailQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useRecipeDetailQuery(baseOptions: Apollo.QueryHookOptions<RecipeDetailQuery, RecipeDetailQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<RecipeDetailQuery, RecipeDetailQueryVariables>(RecipeDetailDocument, options);
+      }
+export function useRecipeDetailLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<RecipeDetailQuery, RecipeDetailQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<RecipeDetailQuery, RecipeDetailQueryVariables>(RecipeDetailDocument, options);
+        }
+export function useRecipeDetailSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<RecipeDetailQuery, RecipeDetailQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<RecipeDetailQuery, RecipeDetailQueryVariables>(RecipeDetailDocument, options);
+        }
+export type RecipeDetailQueryHookResult = ReturnType<typeof useRecipeDetailQuery>;
+export type RecipeDetailLazyQueryHookResult = ReturnType<typeof useRecipeDetailLazyQuery>;
+export type RecipeDetailSuspenseQueryHookResult = ReturnType<typeof useRecipeDetailSuspenseQuery>;
+export type RecipeDetailQueryResult = Apollo.QueryResult<RecipeDetailQuery, RecipeDetailQueryVariables>;
 export const RecipeAverageRatingDocument = gql`
     query RecipeAverageRating($recipeId: Int!) {
   recipeAverageRating(recipeId: $recipeId)

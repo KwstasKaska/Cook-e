@@ -3,10 +3,10 @@ import { useRouter } from 'next/router';
 import ChefNavbar from '../../../components/Chef/ChefNavbar';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
-import { gql, useQuery } from '@apollo/client';
 import {
   Difficulty,
   RecipeCategory,
+  useRecipeDetailQuery,
   useUpdateRecipeMutation,
   useDeleteRecipeMutation,
   useIngredientsQuery,
@@ -29,67 +29,11 @@ import RecipeDescriptionCard from '../../../components/Chef/recipeDetail/RecipeD
 import RecipeIngredientsList from '../../../components/Chef/recipeDetail/RecipeIngredientsList';
 import RecipeStepsList from '../../../components/Chef/recipeDetail/RecipeStepsList';
 import RecipeActionButtons from '../../../components/Chef/recipeDetail/RecipeActionButtons';
-import RecipeInfoCard from '../../../components/Chef/recipeDetail/RecipeInfoCard';
 import RecipeTimeBreakdown from '../../../components/Chef/recipeDetail/RecipeTimeBreakdown';
 import RecipeCategoryCard from '../../../components/Chef/recipeDetail/RecipeCategoryCard';
 import RecipeMacrosCard from '../../../components/Chef/recipeDetail/RecipeMacrosCard';
 import ScrollToTopButton from '../../../components/Helper/ScrollToTopButton';
 import Stars from '../../../components/Helper/Stars';
-
-// ─── GQL
-
-const RECIPE_DETAIL_QUERY = gql`
-  query RecipeDetail($id: Int!) {
-    recipe(id: $id) {
-      id
-      title_el
-      title_en
-      description_el
-      description_en
-      chefComment_el
-      chefComment_en
-      recipeImage
-      difficulty
-      prepTime
-      cookTime
-      restTime
-      foodEthnicity
-      category
-      caloriesTotal
-      protein
-      carbs
-      fat
-      authorId
-      author {
-        user {
-          id
-          username
-          email
-        }
-      }
-      recipeIngredients {
-        ingredientId
-        quantity
-        unit
-        ingredient {
-          id
-          name_el
-          name_en
-        }
-      }
-      steps {
-        id
-        body_el
-        body_en
-      }
-      utensils {
-        id
-        name_el
-        name_en
-      }
-    }
-  }
-`;
 
 // Page
 
@@ -110,11 +54,12 @@ export default function ChefSingleRecipe() {
 
   const initializedRef = useRef(false);
 
-  const { data, loading } = useQuery(RECIPE_DETAIL_QUERY, {
-    variables: { id },
+  const { data, loading } = useRecipeDetailQuery({
+    variables: { id: id! },
     skip: !router.isReady || !id,
     fetchPolicy: 'network-only',
   });
+
   const { data: avgData } = useRecipeAverageRatingQuery({
     variables: { recipeId: id! },
     skip: !id,
@@ -319,7 +264,7 @@ export default function ChefSingleRecipe() {
     {
       label: t('chef.recipe_detail.rest_time'),
       field: 'restTime' as const,
-      value: recipe.restTime,
+      value: recipe.restTime ?? null,
     },
   ];
 
@@ -341,7 +286,7 @@ export default function ChefSingleRecipe() {
             lang={lang}
           />
 
-          {/* Action buttons — always directly below hero on all screen sizes */}
+          {/* Action buttons */}
           <div className="px-6 pt-4 pb-2">
             <RecipeActionButtons
               isEditing={isEditing}
@@ -373,8 +318,9 @@ export default function ChefSingleRecipe() {
           )}
 
           <div className="flex flex-col gap-6 p-6 md:flex-row md:p-8">
-            {/* LEFT column — main content, always visible */}
+            {/* LEFT column */}
             <div className="flex-1 min-w-0">
+              {/* Stars */}
               <div className="mb-4 flex items-center gap-2">
                 <Stars rating={avgRating} />
                 <span className="text-sm text-gray-400">
@@ -384,35 +330,15 @@ export default function ChefSingleRecipe() {
                 </span>
               </div>
 
+              {/* Description card — now contains title, difficulty, description, comment, chef name */}
               <RecipeDescriptionCard
                 recipe={recipe}
                 lang={lang}
                 isEditing={isEditing}
                 editForm={editForm}
+                difficultyLabel={difficultyLabel}
                 onUpdate={update}
               />
-
-              {isEditing && (
-                <div className="mb-4">
-                  <label
-                    className="mb-1 block text-sm font-bold"
-                    style={{ color: '#3F4756' }}
-                  >
-                    {t('chef.recipe_detail.label_title')}
-                  </label>
-                  <input
-                    value={editForm.title}
-                    onChange={(e) => update('title', e.target.value)}
-                    className="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm outline-none focus:border-blue-300"
-                    style={{ color: '#3F4756' }}
-                  />
-                  {fieldErrors.title && (
-                    <p className="mt-1 text-xs text-red-500">
-                      {fieldErrors.title}
-                    </p>
-                  )}
-                </div>
-              )}
 
               <RecipeIngredientsList
                 recipe={recipe}
@@ -465,21 +391,8 @@ export default function ChefSingleRecipe() {
               )}
             </div>
 
-            {/* RIGHT column — always rendered, stacks below on mobile */}
+            {/* RIGHT column */}
             <div className="flex flex-col gap-4 md:w-56 md:flex-shrink-0">
-              {/* RecipeInfoCard (mini preview card) — hidden on mobile, visible on md+ */}
-              <div className="hidden md:block">
-                <RecipeInfoCard
-                  recipe={recipe}
-                  lang={lang}
-                  isEditing={isEditing}
-                  editForm={editForm}
-                  difficultyLabel={difficultyLabel}
-                  onUpdate={update}
-                />
-              </div>
-
-              {/* These cards are always visible on all screen sizes */}
               <RecipeTimeBreakdown
                 timeBreakdown={timeBreakdown}
                 totalTime={totalTime}

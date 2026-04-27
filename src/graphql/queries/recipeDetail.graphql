@@ -1,0 +1,10 @@
+query RecipeDetail($id: Int!) {
+  recipe(id: $id) {
+    ...RegularRecipe
+    utensils {
+      id
+      name_el
+      name_en
+    }
+  }
+}
