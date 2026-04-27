@@ -5,12 +5,10 @@ import { ChefRating } from '../../../generated/graphql';
 interface Props {
   myRating: Pick<ChefRating, 'score'> | null;
   ratingScore: number;
-  ratingComment: string;
   ratingError: string;
   ratingSuccess: string;
   submitting: boolean;
   onScoreChange: (score: number) => void;
-  onCommentChange: (comment: string) => void;
   onSubmit: () => void;
   onDelete: () => void;
 }
@@ -18,12 +16,10 @@ interface Props {
 export default function ChefRateForm({
   myRating,
   ratingScore,
-  ratingComment,
   ratingError,
   ratingSuccess,
   submitting,
   onScoreChange,
-  onCommentChange,
   onSubmit,
   onDelete,
 }: Props) {
@@ -50,17 +46,9 @@ export default function ChefRateForm({
         </div>
       )}
 
-      <div className="mb-3">
+      <div className="mb-4">
         <StarPicker value={ratingScore} onChange={onScoreChange} />
       </div>
-
-      <textarea
-        value={ratingComment}
-        onChange={(e) => onCommentChange(e.target.value)}
-        placeholder={t('recipes.commentPlaceholder', 'Leave a comment...')}
-        rows={3}
-        className="mb-3 w-full resize-none rounded-xl border border-gray-200 px-3 py-2 text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-myBlue-200"
-      />
 
       {ratingError && (
         <p className="mb-2 text-xs font-semibold text-red-500">{ratingError}</p>

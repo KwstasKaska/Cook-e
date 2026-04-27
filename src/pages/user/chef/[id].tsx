@@ -51,7 +51,6 @@ function ChefProfileContent() {
 
   // ── Rating state
   const [ratingScore, setRatingScore] = useState(0);
-  const [ratingComment, setRatingComment] = useState('');
   const [ratingError, setRatingError] = useState('');
   const [ratingSuccess, setRatingSuccess] = useState('');
 
@@ -152,26 +151,16 @@ function ChefProfileContent() {
         variables: {
           chefId,
           score: ratingScore,
-          comment: ratingComment || undefined,
         },
       });
       setRatingSuccess(t('recipes.ratingSuccess'));
-      setRatingComment('');
       setRatingScore(0);
       await refetchRatings();
       await refetchMyRating();
     } catch {
       setRatingError(t('recipes.errorGeneric'));
     }
-  }, [
-    rateChef,
-    chefId,
-    ratingScore,
-    ratingComment,
-    refetchRatings,
-    refetchMyRating,
-    t,
-  ]);
+  }, [rateChef, chefId, ratingScore, refetchRatings, refetchMyRating, t]);
 
   const handleDeleteRating = useCallback(async () => {
     setRatingError('');
@@ -179,7 +168,6 @@ function ChefProfileContent() {
     try {
       await deleteChefRating({ variables: { chefId } });
       setRatingScore(0);
-      setRatingComment('');
       setRatingSuccess(t('recipes.ratingDeleted'));
       await refetchRatings();
       await refetchMyRating();
@@ -350,12 +338,10 @@ function ChefProfileContent() {
                 <ChefRateForm
                   myRating={myRating}
                   ratingScore={ratingScore}
-                  ratingComment={ratingComment}
                   ratingError={ratingError}
                   ratingSuccess={ratingSuccess}
                   submitting={submitting}
                   onScoreChange={setRatingScore}
-                  onCommentChange={setRatingComment}
                   onSubmit={handleRate}
                   onDelete={handleDeleteRating}
                 />
