@@ -37,32 +37,6 @@ export default function ChefIndex() {
       <ChefNavbar />
 
       <main className="relative flex flex-1 flex-col overflow-hidden">
-        {/* Decorative circles */}
-        <div
-          className="pointer-events-none absolute"
-          style={{
-            left: '-60px',
-            top: '60px',
-            width: '340px',
-            height: '340px',
-            borderRadius: '50%',
-            border: '2px solid #377CC3',
-            opacity: 0.5,
-          }}
-        />
-        <div
-          className="pointer-events-none absolute"
-          style={{
-            right: '-40px',
-            top: '80px',
-            width: '280px',
-            height: '280px',
-            borderRadius: '50%',
-            border: '2px solid #5899d6',
-            opacity: 0.3,
-          }}
-        />
-
         <div className="relative z-10 flex flex-1 flex-col px-8 pt-10 md:px-16">
           {/* Top row */}
           <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
