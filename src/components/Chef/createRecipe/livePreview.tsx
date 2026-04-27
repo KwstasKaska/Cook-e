@@ -2,7 +2,6 @@ import Image from 'next/image';
 import { useTranslation } from 'next-i18next';
 import { Difficulty } from '../../../generated/graphql';
 import { FormData, CATEGORY_OPTIONS } from './types';
-import Stars from '../../Helper/Stars';
 
 // ─── LivePreview
 
@@ -84,14 +83,6 @@ export default function LivePreview({
           </div>
         )}
       </div>
-
-      {/* Rating placeholder */}
-      {step >= 2 && (
-        <div className="mb-2 flex items-center gap-1 flex-shrink-0">
-          <Stars rating={4.9} />
-          <span className="text-xs text-gray-500">4.9 / 5 (30)</span>
-        </div>
-      )}
 
       {/* Personal note block */}
       {step >= 2 && form.personalNote && (
@@ -192,7 +183,6 @@ export default function LivePreview({
                   </p>
                 )}
                 <div className="mt-1 flex items-center justify-between">
-                  <Stars rating={4.9} />
                   {totalTime > 0 && (
                     <span className="text-xs text-gray-300">
                       {t('chef.recipe_detail.time_label')} {totalTime}{' '}

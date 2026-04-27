@@ -9,7 +9,7 @@ const useIsUser = () => {
   useEffect(() => {
     if (!loading) {
       if (!data?.me) {
-        router.replace('/login?next=' + router.pathname);
+        router.replace('/login?next=' + router.asPath);
       } else if (data.me.role !== 'USER') {
         router.replace('/' + data.me.role.toLowerCase());
       }

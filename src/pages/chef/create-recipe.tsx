@@ -23,7 +23,7 @@ import StepOne from '../../components/Chef/createRecipe/stepOne';
 import StepThree from '../../components/Chef/createRecipe/stepThree';
 import StepTwo from '../../components/Chef/createRecipe/stepTwo';
 
-// ─── Main page ────────────────────────────────────────────────────────────────
+//  Main page
 
 export default function CreateRecipe() {
   const { loading: authLoading, isAuthorized } = useIsChef();
