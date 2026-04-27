@@ -1,5 +1,4 @@
 import React from 'react';
-import Image from 'next/image';
 import { useTranslation } from 'next-i18next';
 import { pick } from '../../../utils/pick';
 import { EditForm, DIFFICULTY_OPTIONS } from './types';
@@ -28,16 +27,6 @@ export default function RecipeInfoCard({
       className="overflow-hidden rounded-2xl"
       style={{ backgroundColor: '#3F4756' }}
     >
-      {recipe.recipeImage && (
-        <div className="relative h-28 w-full overflow-hidden">
-          <Image
-            src={recipe.recipeImage}
-            alt={pick(recipe.title_el, recipe.title_en, lang)}
-            fill
-            className="object-cover"
-          />
-        </div>
-      )}
       <div className="p-4">
         {isEditing ? (
           <input
@@ -71,11 +60,6 @@ export default function RecipeInfoCard({
         ) : (
           <p className="mb-2 text-xs text-gray-300">
             {t('chef.recipe_detail.difficulty')} {difficultyLabel}
-          </p>
-        )}
-        {recipe.description_el && (
-          <p className="mb-3 text-xs leading-relaxed text-gray-400 line-clamp-3">
-            {pick(recipe.description_el, recipe.description_en ?? '', lang)}
           </p>
         )}
       </div>
