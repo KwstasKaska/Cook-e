@@ -9,6 +9,7 @@ import { useChatContext } from '../Chat/ChatContext';
 import { ChatIcon } from '../Helper/ChatIcon';
 import { NavSettingsLink } from '../Helper/SettingsIcons';
 import { HamburgerButton } from '../Helper/HamburgerButton';
+import { NavCartLink } from '../Helper/CartIcon';
 
 export default function Navbar() {
   const router = useRouter();
@@ -72,30 +73,14 @@ export default function Navbar() {
 
       {/* Right actions — lg+ only */}
       <div className="hidden lg:flex items-center gap-4">
-        <Link
-          href="/user/cart"
+        <NavCartLink
+          ariaLabel={t('nav.cart')}
           className={`p-2 rounded transition-colors duration-150 ${
             router.pathname === '/user/cart'
               ? 'text-yellow-400'
               : 'text-myGrey-200 hover:text-myBlue-200'
           }`}
-          aria-label={t('nav.cart')}
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="w-6 h-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth={1.8}
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2 9m12-9l2 9M9 21h6"
-            />
-          </svg>
-        </Link>
+        />
 
         <button
           onClick={openWidget}
@@ -151,27 +136,11 @@ export default function Navbar() {
 
           <div className="flex items-center gap-4 pt-2 border-t border-gray-600 w-full">
             <LanguageSwitcher />
-            <Link
-              href="/user/cart"
+            <NavCartLink
+              ariaLabel={t('nav.cart')}
               onClick={() => setMenuOpen(false)}
               className="text-white hover:text-yellow-300"
-              aria-label={t('nav.cart')}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-6 h-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={1.8}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2 9m12-9l2 9M9 21h6"
-                />
-              </svg>
-            </Link>
+            />
 
             <button
               onClick={() => {
