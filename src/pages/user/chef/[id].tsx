@@ -28,7 +28,6 @@ import ChefReviewsList, {
   RATINGS_LIMIT,
 } from '../../../components/Users/Chefs/ChefReviewsList';
 import { pick } from '../../../utils/pick';
-const { i18n } = useTranslation('common');
 
 export async function getServerSideProps({ locale }: { locale: string }) {
   return {
@@ -45,7 +44,8 @@ export default function ChefProfilePage() {
 }
 
 function ChefProfileContent() {
-  const { t } = useTranslation('common');
+  const { t, i18n } = useTranslation('common');
+  const lang = i18n.language;
   const router = useRouter();
   const { id } = router.query;
   const chefId = parseInt(id as string, 10);
@@ -67,8 +67,6 @@ function ChefProfileContent() {
     variables: { chefId },
     skip: isNaN(chefId),
   });
-
-  const lang = i18n.language;
 
   const {
     data: ratingsData,
