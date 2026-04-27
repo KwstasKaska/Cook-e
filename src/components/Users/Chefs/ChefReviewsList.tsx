@@ -64,11 +64,6 @@ export default function ChefReviewsList({
                   <SmallStars rating={review.score} />
                 </div>
               </div>
-              {review.comment && (
-                <p className="text-xs leading-relaxed text-gray-500">
-                  {review.comment}
-                </p>
-              )}
             </div>
           ))}
 
