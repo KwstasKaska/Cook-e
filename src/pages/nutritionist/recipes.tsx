@@ -88,7 +88,7 @@ function NutrRecipesContent() {
         {/* Empty */}
         {!loading && filtered.length === 0 && (
           <div className="py-20 text-center text-sm text-gray-300">
-            {t('nutr_recipes.empty', 'Δεν βρέθηκαν συνταγές.')}
+            {t('chef.recipes.empty')}
           </div>
         )}
 
@@ -141,7 +141,7 @@ function NutrRecipesContent() {
                 className="rounded-full px-8 py-2.5 text-sm font-bold transition hover:opacity-90"
                 style={{ backgroundColor: '#B3D5F8', color: '#3F4756' }}
               >
-                ← {t('common.prev') ?? 'Προηγούμενα'}
+                ← {t('common.prev')}
               </button>
             )}
             {hasMore && (
