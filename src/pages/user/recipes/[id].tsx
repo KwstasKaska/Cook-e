@@ -54,7 +54,6 @@ function RecipeDetailContent() {
   );
   const [addedToCart, setAddedToCart] = useState<Set<number>>(new Set());
   const [ratingScore, setRatingScore] = useState(0);
-  const [ratingComment, setRatingComment] = useState('');
   const [ratingError, setRatingError] = useState('');
   const [ratingSuccess, setRatingSuccess] = useState('');
   const [serverError, setServerError] = useState('');
@@ -191,11 +190,10 @@ function RecipeDetailContent() {
         variables: {
           recipeId,
           score: ratingScore,
-          comment: ratingComment || undefined,
         },
       });
       setRatingSuccess(t('recipes.ratingSuccess'));
-      setRatingComment('');
+      setRatingScore(0);
       await refetchRatings();
       await refetchMyRating();
     } catch {
@@ -209,7 +207,6 @@ function RecipeDetailContent() {
     try {
       await deleteRecipeRating({ variables: { recipeId } });
       setRatingScore(0);
-      setRatingComment('');
       setRatingSuccess(t('recipes.ratingDeleted'));
       await refetchRatings();
       await refetchMyRating();
@@ -440,12 +437,10 @@ function RecipeDetailContent() {
                 <RatePanel
                   myRating={myRating}
                   ratingScore={ratingScore}
-                  ratingComment={ratingComment}
                   ratingError={ratingError}
                   ratingSuccess={ratingSuccess}
                   submitting={rating}
                   onScoreChange={setRatingScore}
-                  onCommentChange={setRatingComment}
                   onSubmit={handleRate}
                   onDelete={handleDeleteRating}
                 />

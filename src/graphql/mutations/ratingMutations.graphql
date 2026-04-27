@@ -1,5 +1,5 @@
-mutation RateRecipe($recipeId: Int!, $score: Int!, $comment: String) {
-  rateRecipe(recipeId: $recipeId, score: $score, comment: $comment) {
+mutation RateRecipe($recipeId: Int!, $score: Int!) {
+  rateRecipe(recipeId: $recipeId, score: $score) {
     ...RegularRecipeRating
   }
 }

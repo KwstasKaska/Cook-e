@@ -4,7 +4,6 @@ import { SmallStars } from '../../Helper/Stars';
 type Review = {
   id: number;
   score: number;
-  comment?: string | null;
   user?: {
     username: string;
     image?: string | null;
@@ -69,11 +68,6 @@ export default function ReviewsPanel({
                   <SmallStars rating={review.score} />
                 </div>
               </div>
-              {review.comment && (
-                <p className="text-xs text-gray-500 leading-relaxed">
-                  {review.comment}
-                </p>
-              )}
             </div>
           ))}
 

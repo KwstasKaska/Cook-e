@@ -392,13 +392,11 @@ export type MutationLoginArgs = {
 
 export type MutationRateChefArgs = {
   chefId: Scalars['Int']['input'];
-  comment?: InputMaybe<Scalars['String']['input']>;
   score: Scalars['Int']['input'];
 };
 
 
 export type MutationRateRecipeArgs = {
-  comment?: InputMaybe<Scalars['String']['input']>;
   recipeId: Scalars['Int']['input'];
   score: Scalars['Int']['input'];
 };
@@ -825,7 +823,6 @@ export type RecipeIngredientInput = {
 
 export type RecipeRating = {
   __typename?: 'RecipeRating';
-  comment?: Maybe<Scalars['String']['output']>;
   createdAt: Scalars['String']['output'];
   id: Scalars['Int']['output'];
   recipeId: Scalars['Int']['output'];
@@ -1030,9 +1027,9 @@ export type RegularConversationFragment = { __typename?: 'Conversation', id: num
 
 export type RegularMessageFragment = { __typename?: 'Message', id: number, conversationId: number, senderId: number, body: string, createdAt: string };
 
-export type RegularChefRatingFragment = { __typename?: 'ChefRating', id: number, chefId: number, userId: number, score: number, comment?: string | null, createdAt: string, user?: { __typename?: 'User', id: number, username: string, image?: string | null } | null };
+export type RegularChefRatingFragment = { __typename?: 'ChefRating', id: number, chefId: number, userId: number, score: number, createdAt: string, user?: { __typename?: 'User', id: number, username: string, image?: string | null } | null };
 
-export type RegularRecipeRatingFragment = { __typename?: 'RecipeRating', id: number, recipeId: number, userId: number, score: number, comment?: string | null, createdAt: string, user?: { __typename?: 'User', id: number, username: string, image?: string | null } | null };
+export type RegularRecipeRatingFragment = { __typename?: 'RecipeRating', id: number, recipeId: number, userId: number, score: number, createdAt: string, user?: { __typename?: 'User', id: number, username: string, image?: string | null } | null };
 
 export type TopRatedRecipeFragment = { __typename?: 'Recipe', id: number, title_el: string, title_en: string, recipeImage?: string | null, caloriesTotal?: number | null, prepTime: number, cookTime: number, difficulty: Difficulty, category?: RecipeCategory | null };
 
@@ -1161,20 +1158,10 @@ export type DeleteRecipeMutation = { __typename?: 'Mutation', deleteRecipe: bool
 export type RateChefMutationVariables = Exact<{
   chefId: Scalars['Int']['input'];
   score: Scalars['Int']['input'];
-  comment?: InputMaybe<Scalars['String']['input']>;
 }>;
 
 
-export type RateChefMutation = { __typename?: 'Mutation', rateChef: { __typename?: 'ChefRating', id: number, chefId: number, userId: number, score: number, comment?: string | null, createdAt: string, user?: { __typename?: 'User', id: number, username: string, image?: string | null } | null } };
-
-export type RateRecipeMutationVariables = Exact<{
-  recipeId: Scalars['Int']['input'];
-  score: Scalars['Int']['input'];
-  comment?: InputMaybe<Scalars['String']['input']>;
-}>;
-
-
-export type RateRecipeMutation = { __typename?: 'Mutation', rateRecipe: { __typename?: 'RecipeRating', id: number, recipeId: number, userId: number, score: number, comment?: string | null, createdAt: string, user?: { __typename?: 'User', id: number, username: string, image?: string | null } | null } };
+export type RateChefMutation = { __typename?: 'Mutation', rateChef: { __typename?: 'ChefRating', id: number, chefId: number, userId: number, score: number, createdAt: string, user?: { __typename?: 'User', id: number, username: string, image?: string | null } | null } };
 
 export type DeleteChefRatingMutationVariables = Exact<{
   chefId: Scalars['Int']['input'];
@@ -1261,6 +1248,14 @@ export type DeleteMealSchedulerMutationVariables = Exact<{
 
 
 export type DeleteMealSchedulerMutation = { __typename?: 'Mutation', deleteMealScheduler: { __typename?: 'MealPlanResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, mealScheduler?: { __typename?: 'MealScheduler', id: number, day: DayOfWeek, mealType: MealType, comment_el: string, comment_en: string } | null } };
+
+export type RateRecipeMutationVariables = Exact<{
+  recipeId: Scalars['Int']['input'];
+  score: Scalars['Int']['input'];
+}>;
+
+
+export type RateRecipeMutation = { __typename?: 'Mutation', rateRecipe: { __typename?: 'RecipeRating', id: number, recipeId: number, userId: number, score: number, createdAt: string, user?: { __typename?: 'User', id: number, username: string, image?: string | null } | null } };
 
 export type DeleteRecipeRatingMutationVariables = Exact<{
   recipeId: Scalars['Int']['input'];
@@ -1401,7 +1396,7 @@ export type ChefRatingsQueryVariables = Exact<{
 }>;
 
 
-export type ChefRatingsQuery = { __typename?: 'Query', chefRatings: Array<{ __typename?: 'ChefRating', id: number, chefId: number, userId: number, score: number, comment?: string | null, createdAt: string, user?: { __typename?: 'User', id: number, username: string, image?: string | null } | null }> };
+export type ChefRatingsQuery = { __typename?: 'Query', chefRatings: Array<{ __typename?: 'ChefRating', id: number, chefId: number, userId: number, score: number, createdAt: string, user?: { __typename?: 'User', id: number, username: string, image?: string | null } | null }> };
 
 export type ChefAverageRatingQueryVariables = Exact<{
   chefId: Scalars['Int']['input'];
@@ -1415,7 +1410,7 @@ export type MyChefRatingQueryVariables = Exact<{
 }>;
 
 
-export type MyChefRatingQuery = { __typename?: 'Query', myChefRating?: { __typename?: 'ChefRating', id: number, chefId: number, userId: number, score: number, comment?: string | null, createdAt: string, user?: { __typename?: 'User', id: number, username: string, image?: string | null } | null } | null };
+export type MyChefRatingQuery = { __typename?: 'Query', myChefRating?: { __typename?: 'ChefRating', id: number, chefId: number, userId: number, score: number, createdAt: string, user?: { __typename?: 'User', id: number, username: string, image?: string | null } | null } | null };
 
 export type ConversationQueryVariables = Exact<{
   id: Scalars['Int']['input'];
@@ -1547,7 +1542,7 @@ export type MyRecipeRatingQueryVariables = Exact<{
 }>;
 
 
-export type MyRecipeRatingQuery = { __typename?: 'Query', myRecipeRating?: { __typename?: 'RecipeRating', id: number, recipeId: number, userId: number, score: number, comment?: string | null, createdAt: string, user?: { __typename?: 'User', id: number, username: string, image?: string | null } | null } | null };
+export type MyRecipeRatingQuery = { __typename?: 'Query', myRecipeRating?: { __typename?: 'RecipeRating', id: number, recipeId: number, userId: number, score: number, createdAt: string, user?: { __typename?: 'User', id: number, username: string, image?: string | null } | null } | null };
 
 export type RecipeRatingsQueryVariables = Exact<{
   recipeId: Scalars['Int']['input'];
@@ -1556,7 +1551,7 @@ export type RecipeRatingsQueryVariables = Exact<{
 }>;
 
 
-export type RecipeRatingsQuery = { __typename?: 'Query', recipeRatings: Array<{ __typename?: 'RecipeRating', id: number, recipeId: number, userId: number, score: number, comment?: string | null, createdAt: string, user?: { __typename?: 'User', id: number, username: string, image?: string | null } | null }> };
+export type RecipeRatingsQuery = { __typename?: 'Query', recipeRatings: Array<{ __typename?: 'RecipeRating', id: number, recipeId: number, userId: number, score: number, createdAt: string, user?: { __typename?: 'User', id: number, username: string, image?: string | null } | null }> };
 
 export type RecipesQueryVariables = Exact<{
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -1888,7 +1883,6 @@ export const RegularChefRatingFragmentDoc = gql`
   chefId
   userId
   score
-  comment
   createdAt
   user {
     id
@@ -1903,7 +1897,6 @@ export const RegularRecipeRatingFragmentDoc = gql`
   recipeId
   userId
   score
-  comment
   createdAt
   user {
     id
@@ -2514,8 +2507,8 @@ export type DeleteRecipeMutationHookResult = ReturnType<typeof useDeleteRecipeMu
 export type DeleteRecipeMutationResult = Apollo.MutationResult<DeleteRecipeMutation>;
 export type DeleteRecipeMutationOptions = Apollo.BaseMutationOptions<DeleteRecipeMutation, DeleteRecipeMutationVariables>;
 export const RateChefDocument = gql`
-    mutation RateChef($chefId: Int!, $score: Int!, $comment: String) {
-  rateChef(chefId: $chefId, score: $score, comment: $comment) {
+    mutation RateChef($chefId: Int!, $score: Int!) {
+  rateChef(chefId: $chefId, score: $score) {
     ...RegularChefRating
   }
 }
@@ -2537,7 +2530,6 @@ export type RateChefMutationFn = Apollo.MutationFunction<RateChefMutation, RateC
  *   variables: {
  *      chefId: // value for 'chefId'
  *      score: // value for 'score'
- *      comment: // value for 'comment'
  *   },
  * });
  */
@@ -2548,41 +2540,6 @@ export function useRateChefMutation(baseOptions?: Apollo.MutationHookOptions<Rat
 export type RateChefMutationHookResult = ReturnType<typeof useRateChefMutation>;
 export type RateChefMutationResult = Apollo.MutationResult<RateChefMutation>;
 export type RateChefMutationOptions = Apollo.BaseMutationOptions<RateChefMutation, RateChefMutationVariables>;
-export const RateRecipeDocument = gql`
-    mutation RateRecipe($recipeId: Int!, $score: Int!, $comment: String) {
-  rateRecipe(recipeId: $recipeId, score: $score, comment: $comment) {
-    ...RegularRecipeRating
-  }
-}
-    ${RegularRecipeRatingFragmentDoc}`;
-export type RateRecipeMutationFn = Apollo.MutationFunction<RateRecipeMutation, RateRecipeMutationVariables>;
-
-/**
- * __useRateRecipeMutation__
- *
- * To run a mutation, you first call `useRateRecipeMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useRateRecipeMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [rateRecipeMutation, { data, loading, error }] = useRateRecipeMutation({
- *   variables: {
- *      recipeId: // value for 'recipeId'
- *      score: // value for 'score'
- *      comment: // value for 'comment'
- *   },
- * });
- */
-export function useRateRecipeMutation(baseOptions?: Apollo.MutationHookOptions<RateRecipeMutation, RateRecipeMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<RateRecipeMutation, RateRecipeMutationVariables>(RateRecipeDocument, options);
-      }
-export type RateRecipeMutationHookResult = ReturnType<typeof useRateRecipeMutation>;
-export type RateRecipeMutationResult = Apollo.MutationResult<RateRecipeMutation>;
-export type RateRecipeMutationOptions = Apollo.BaseMutationOptions<RateRecipeMutation, RateRecipeMutationVariables>;
 export const DeleteChefRatingDocument = gql`
     mutation DeleteChefRating($chefId: Int!) {
   deleteChefRating(chefId: $chefId)
@@ -2982,6 +2939,40 @@ export function useDeleteMealSchedulerMutation(baseOptions?: Apollo.MutationHook
 export type DeleteMealSchedulerMutationHookResult = ReturnType<typeof useDeleteMealSchedulerMutation>;
 export type DeleteMealSchedulerMutationResult = Apollo.MutationResult<DeleteMealSchedulerMutation>;
 export type DeleteMealSchedulerMutationOptions = Apollo.BaseMutationOptions<DeleteMealSchedulerMutation, DeleteMealSchedulerMutationVariables>;
+export const RateRecipeDocument = gql`
+    mutation RateRecipe($recipeId: Int!, $score: Int!) {
+  rateRecipe(recipeId: $recipeId, score: $score) {
+    ...RegularRecipeRating
+  }
+}
+    ${RegularRecipeRatingFragmentDoc}`;
+export type RateRecipeMutationFn = Apollo.MutationFunction<RateRecipeMutation, RateRecipeMutationVariables>;
+
+/**
+ * __useRateRecipeMutation__
+ *
+ * To run a mutation, you first call `useRateRecipeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRateRecipeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [rateRecipeMutation, { data, loading, error }] = useRateRecipeMutation({
+ *   variables: {
+ *      recipeId: // value for 'recipeId'
+ *      score: // value for 'score'
+ *   },
+ * });
+ */
+export function useRateRecipeMutation(baseOptions?: Apollo.MutationHookOptions<RateRecipeMutation, RateRecipeMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RateRecipeMutation, RateRecipeMutationVariables>(RateRecipeDocument, options);
+      }
+export type RateRecipeMutationHookResult = ReturnType<typeof useRateRecipeMutation>;
+export type RateRecipeMutationResult = Apollo.MutationResult<RateRecipeMutation>;
+export type RateRecipeMutationOptions = Apollo.BaseMutationOptions<RateRecipeMutation, RateRecipeMutationVariables>;
 export const DeleteRecipeRatingDocument = gql`
     mutation DeleteRecipeRating($recipeId: Int!) {
   deleteRecipeRating(recipeId: $recipeId)

@@ -3,7 +3,6 @@ fragment RegularChefRating on ChefRating {
   chefId
   userId
   score
-  comment
   createdAt
   user {
     id
