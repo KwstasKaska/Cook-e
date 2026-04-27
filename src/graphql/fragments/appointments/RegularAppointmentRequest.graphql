@@ -3,7 +3,6 @@ fragment RegularAppointmentRequest on AppointmentRequest {
   slotId
   clientId
   status
-  comment
   requestedAt
   slot {
     ...RegularAppointment

@@ -42,7 +42,6 @@ export type AppointmentRequest = {
   __typename?: 'AppointmentRequest';
   client?: Maybe<User>;
   clientId: Scalars['Float']['output'];
-  comment?: Maybe<Scalars['String']['output']>;
   id: Scalars['Int']['output'];
   requestedAt: Scalars['String']['output'];
   slot?: Maybe<Appointment>;
@@ -51,7 +50,6 @@ export type AppointmentRequest = {
 };
 
 export type AppointmentRequestInput = {
-  comment?: InputMaybe<Scalars['String']['input']>;
   slotId: Scalars['Int']['input'];
 };
 
@@ -111,7 +109,6 @@ export type ChefProfileResponse = {
 export type ChefRating = {
   __typename?: 'ChefRating';
   chefId: Scalars['Int']['output'];
-  comment?: Maybe<Scalars['String']['output']>;
   createdAt: Scalars['String']['output'];
   id: Scalars['Int']['output'];
   score: Scalars['Int']['output'];
@@ -997,9 +994,9 @@ export type RegularUserResponseFragment = { __typename?: 'UserResponse', errors?
 
 export type RegularAppointmentFragment = { __typename?: 'Appointment', id: number, date: string, time: string, isAvailable: boolean, nutritionistId: number };
 
-export type RegularAppointmentRequestFragment = { __typename?: 'AppointmentRequest', id: number, slotId: number, clientId: number, status: AppointmentStatus, comment?: string | null, requestedAt: string, slot?: { __typename?: 'Appointment', id: number, date: string, time: string, isAvailable: boolean, nutritionistId: number } | null, client?: { __typename?: 'User', id: number, username: string, image?: string | null } | null };
+export type RegularAppointmentRequestFragment = { __typename?: 'AppointmentRequest', id: number, slotId: number, clientId: number, status: AppointmentStatus, requestedAt: string, slot?: { __typename?: 'Appointment', id: number, date: string, time: string, isAvailable: boolean, nutritionistId: number } | null, client?: { __typename?: 'User', id: number, username: string, image?: string | null } | null };
 
-export type RegularAppointmentRequestResponseFragment = { __typename?: 'AppointmentRequestResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, appointmentRequest?: { __typename?: 'AppointmentRequest', id: number, slotId: number, clientId: number, status: AppointmentStatus, comment?: string | null, requestedAt: string, slot?: { __typename?: 'Appointment', id: number, date: string, time: string, isAvailable: boolean, nutritionistId: number } | null, client?: { __typename?: 'User', id: number, username: string, image?: string | null } | null } | null };
+export type RegularAppointmentRequestResponseFragment = { __typename?: 'AppointmentRequestResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, appointmentRequest?: { __typename?: 'AppointmentRequest', id: number, slotId: number, clientId: number, status: AppointmentStatus, requestedAt: string, slot?: { __typename?: 'Appointment', id: number, date: string, time: string, isAvailable: boolean, nutritionistId: number } | null, client?: { __typename?: 'User', id: number, username: string, image?: string | null } | null } | null };
 
 export type RegularAppointmentResponseFragment = { __typename?: 'AppointmentResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, slot?: { __typename?: 'Appointment', id: number, date: string, time: string, isAvailable: boolean, nutritionistId: number } | null };
 
@@ -1063,7 +1060,7 @@ export type RequestAppointmentMutationVariables = Exact<{
 }>;
 
 
-export type RequestAppointmentMutation = { __typename?: 'Mutation', requestAppointment: { __typename?: 'AppointmentRequestResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, appointmentRequest?: { __typename?: 'AppointmentRequest', id: number, slotId: number, clientId: number, status: AppointmentStatus, comment?: string | null, requestedAt: string, slot?: { __typename?: 'Appointment', id: number, date: string, time: string, isAvailable: boolean, nutritionistId: number } | null, client?: { __typename?: 'User', id: number, username: string, image?: string | null } | null } | null } };
+export type RequestAppointmentMutation = { __typename?: 'Mutation', requestAppointment: { __typename?: 'AppointmentRequestResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, appointmentRequest?: { __typename?: 'AppointmentRequest', id: number, slotId: number, clientId: number, status: AppointmentStatus, requestedAt: string, slot?: { __typename?: 'Appointment', id: number, date: string, time: string, isAvailable: boolean, nutritionistId: number } | null, client?: { __typename?: 'User', id: number, username: string, image?: string | null } | null } | null } };
 
 export type RespondToAppointmentRequestMutationVariables = Exact<{
   requestId: Scalars['Float']['input'];
@@ -1342,7 +1339,7 @@ export type GetAppointmentRequestsForNutritionistQueryVariables = Exact<{
 }>;
 
 
-export type GetAppointmentRequestsForNutritionistQuery = { __typename?: 'Query', getAppointmentRequestsForNutritionist: Array<{ __typename?: 'AppointmentRequest', id: number, slotId: number, clientId: number, status: AppointmentStatus, comment?: string | null, requestedAt: string, slot?: { __typename?: 'Appointment', id: number, date: string, time: string, isAvailable: boolean, nutritionistId: number } | null, client?: { __typename?: 'User', id: number, username: string, image?: string | null } | null }> };
+export type GetAppointmentRequestsForNutritionistQuery = { __typename?: 'Query', getAppointmentRequestsForNutritionist: Array<{ __typename?: 'AppointmentRequest', id: number, slotId: number, clientId: number, status: AppointmentStatus, requestedAt: string, slot?: { __typename?: 'Appointment', id: number, date: string, time: string, isAvailable: boolean, nutritionistId: number } | null, client?: { __typename?: 'User', id: number, username: string, image?: string | null } | null }> };
 
 export type MyAppointmentRequestsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1680,7 +1677,6 @@ export const RegularAppointmentRequestFragmentDoc = gql`
   slotId
   clientId
   status
-  comment
   requestedAt
   slot {
     ...RegularAppointment
