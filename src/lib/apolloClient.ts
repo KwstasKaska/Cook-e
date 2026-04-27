@@ -87,7 +87,7 @@ const createApolloClient = (headers: IncomingHttpHeaders | null = null) => {
             myFavorites: appendPaginatedField(),
 
             // ── Articles ──────────────────────────────────────────────
-            myArticles: appendPaginatedField(),
+            myArticles: replaceField(['limit', 'offset']),
             articles: appendPaginatedField(),
             chefArticles: appendPaginatedField(),
             articlesByNutritionist: appendPaginatedField(),
