@@ -70,6 +70,7 @@ function RecipeDetailContent() {
   const { data: avgData } = useRecipeAverageRatingQuery({
     variables: { recipeId },
     skip: isNaN(recipeId),
+    fetchPolicy: 'network-only',
   });
 
   const {
@@ -86,7 +87,11 @@ function RecipeDetailContent() {
   });
 
   const { data: myRatingData, refetch: refetchMyRating } =
-    useMyRecipeRatingQuery({ variables: { recipeId }, skip: isNaN(recipeId) });
+    useMyRecipeRatingQuery({
+      variables: { recipeId },
+      skip: isNaN(recipeId),
+      fetchPolicy: 'network-only',
+    });
 
   const { data: favData, refetch: refetchFav } = useIsFavoritedQuery({
     variables: { recipeId },
