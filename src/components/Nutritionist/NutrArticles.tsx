@@ -2,70 +2,31 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
-
-import Slider from 'react-slick';
-import { Settings } from '../Helper/SliderSettings';
 import { useMyArticlesQuery } from '../../generated/graphql';
 import moment from 'moment';
 
 moment.locale('el');
 
+const LIMIT = 3;
+
 const NutrArticles: React.FC = () => {
   const { t } = useTranslation('common');
   const { locale } = useRouter();
-  const [isHovered, setIsHovered] = useState<boolean>(false);
+  const [offset, setOffset] = useState(0);
 
   const { data, loading } = useMyArticlesQuery({
-    variables: { limit: 20, offset: 0 },
+    variables: { limit: LIMIT, offset },
     fetchPolicy: 'cache-and-network',
   });
 
   const articles = data?.myArticles ?? [];
-
-  const desktopShow = Math.min(3, articles.length);
-  const tabletShow = Math.min(2, articles.length);
-  const mobileShow = Math.min(1, articles.length);
-  const canLoop = articles.length >= 3;
-
-  const settings: Settings = {
-    dots: false,
-    infinite: canLoop,
-    slidesToShow: desktopShow,
-    slidesToScroll: desktopShow || 1,
-    initialSlide: 0,
-    autoplay: canLoop,
-    speed: 1000,
-    autoplaySpeed: 8000,
-    adaptiveHeight: true,
-    pauseOnHover: true,
-    swipeToSlide: true,
-    className: 'max-w-[58em] cursor-pointer',
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: tabletShow,
-          slidesToScroll: tabletShow || 1,
-          infinite: articles.length >= 2,
-          className: 'max-w-[43em]',
-        },
-      },
-      {
-        breakpoint: 767,
-        settings: {
-          slidesToShow: mobileShow,
-          slidesToScroll: 1,
-          infinite: articles.length >= 1,
-          className: 'w-[18em]',
-        },
-      },
-    ],
-  };
+  const hasMore = articles.length === LIMIT;
+  const hasPrev = offset > 0;
 
   return (
     <section id="section_1" className="flex min-h-screen flex-col">
-      <div className="flex w-full flex-1 flex-col items-center justify-center gap-8 bg-myGrey-200 py-10">
-        {/* Title — centered at top */}
+      <div className="flex w-full flex-1 flex-col items-center justify-center gap-8 bg-myGrey-200 px-4 py-10 sm:px-6">
+        {/* Title */}
         <h1 className="bg-gradient-to-r from-[#B3D5F8] to-[#FFFFFF] bg-clip-text font-exo text-3xl font-bold text-transparent md:text-5xl">
           {t('nutr.yourArticles')}
         </h1>
@@ -74,17 +35,14 @@ const NutrArticles: React.FC = () => {
           <p className="text-white">{t('common.loading') ?? 'Loading...'}</p>
         )}
 
-        {!loading && articles.length === 0 && (
+        {!loading && articles.length === 0 && offset === 0 && (
           <p className="text-white">{t('nutr.noArticlesYet')}</p>
         )}
 
-        {/* Slider */}
+        {/* Grid */}
         {!loading && articles.length > 0 && (
-          <div
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-          >
-            <Slider {...settings}>
+          <div className="w-full max-w-5xl">
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {articles.map((article) => {
                 const title =
                   locale === 'el' ? article.title_el : article.title_en;
@@ -94,36 +52,58 @@ const NutrArticles: React.FC = () => {
                   <Link
                     key={article.id}
                     href={`/nutritionist/articles/${article.id}`}
-                    className="block rounded-3xl border-2 border-white p-6 transition duration-500 ease-in hover:bg-myGrey-100"
+                    className="group flex flex-col overflow-hidden rounded-2xl border border-white/20 bg-white/5 transition duration-300 hover:bg-white/10"
                   >
-                    <div className="flex flex-col gap-4 rounded-[10px] bg-transparent text-white hover:text-black">
-                      <p className="flex flex-col gap-2 text-left text-base font-bold leading-relaxed">
-                        <span>
-                          {moment(parseInt(article.createdAt)).format('ll')}
-                        </span>
-                        <span
-                          className={`h-1 w-20 ${
-                            isHovered ? 'bg-black' : 'bg-myGrey-100'
-                          }`}
+                    {imageSrc && (
+                      <div className="h-44 w-full overflow-hidden">
+                        <img
+                          src={imageSrc}
+                          alt={t('nutr.articleImageAlt')}
+                          className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
                         />
+                      </div>
+                    )}
+                    <div className="flex flex-1 flex-col gap-2 p-4 text-white">
+                      <p className="text-xs font-semibold text-myBlue-100">
+                        {moment(parseInt(article.createdAt)).format('ll')}
                       </p>
-                      <h2 className="px-[.3em] text-center text-base font-bold md:text-lg">
+                      <span className="h-[2px] w-12 bg-myBlue-100" />
+                      <h2 className="text-sm font-bold leading-snug md:text-base">
                         {title}
                       </h2>
-                      <img
-                        src={imageSrc}
-                        alt={t('nutr.articleImageAlt')}
-                        className="aspect-[5/4] rounded-[10px] object-cover"
-                      />
                     </div>
                   </Link>
                 );
               })}
-            </Slider>
+            </div>
+
+            {/* Prev / Next */}
+            {(hasPrev || hasMore) && (
+              <div className="mt-8 flex justify-center gap-4">
+                {hasPrev && (
+                  <button
+                    onClick={() => setOffset((o) => o - LIMIT)}
+                    className="rounded-full px-8 py-2.5 text-sm font-bold transition hover:opacity-90"
+                    style={{ backgroundColor: '#B3D5F8', color: '#3F4756' }}
+                  >
+                    ← {t('common.prev')}
+                  </button>
+                )}
+                {hasMore && (
+                  <button
+                    onClick={() => setOffset((o) => o + LIMIT)}
+                    className="rounded-full px-8 py-2.5 text-sm font-bold transition hover:opacity-90"
+                    style={{ backgroundColor: '#B3D5F8', color: '#3F4756' }}
+                  >
+                    {t('common.next')} →
+                  </button>
+                )}
+              </div>
+            )}
           </div>
         )}
 
-        {/* New article button — centered below slider */}
+        {/* New article button */}
         <Link
           href="/nutritionist/create-article"
           className="flex items-center gap-1.5 rounded-full px-6 py-2 text-sm font-bold transition hover:opacity-90"

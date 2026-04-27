@@ -449,7 +449,9 @@
     "delete": "Delete",
     "edit": "Edit",
     "save": "Save",
-    "saving": "Saving..."
+    "saving": "Saving...",
+    "next": "Next",
+    "prev": "Previous"
   },
   "register": {
     "title": "Create an account",

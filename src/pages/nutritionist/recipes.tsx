@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
@@ -16,7 +16,7 @@ export async function getServerSideProps({ locale }: { locale: string }) {
   };
 }
 
-const LIMIT = 12;
+const LIMIT = 9; // 3 cols × 3 rows on desktop
 
 export default function NutrRecipesPage() {
   const { loading: authLoading, isAuthorized } = useIsNutritionist();
@@ -30,35 +30,35 @@ function NutrRecipesContent() {
   const lang = i18n.language;
 
   const [search, setSearch] = useState('');
+  const [offset, setOffset] = useState(0);
 
-  const { data, loading, fetchMore, networkStatus } = useRecipesQuery({
-    variables: { limit: LIMIT, offset: 0 },
-    fetchPolicy: 'network-only',
-    notifyOnNetworkStatusChange: true,
+  const { data, loading } = useRecipesQuery({
+    variables: { limit: LIMIT, offset },
+    fetchPolicy: 'cache-and-network',
   });
 
   const recipes = data?.recipes ?? [];
-  const fetchingMore = networkStatus === 3;
-  const hasMore = recipes.length > 0 && recipes.length % LIMIT === 0;
+  const hasMore = recipes.length === LIMIT;
+  const hasPrev = offset > 0;
 
-  const filtered = useMemo(() => {
-    if (!search.trim()) return recipes;
-    return recipes.filter((r) =>
-      pick(r.title_el, r.title_en, lang)
-        .toLowerCase()
-        .includes(search.toLowerCase()),
-    );
-  }, [recipes, search, lang]);
+  const filtered = search.trim()
+    ? recipes.filter((r) =>
+        pick(r.title_el, r.title_en, lang)
+          .toLowerCase()
+          .includes(search.toLowerCase()),
+      )
+    : recipes;
 
-  const handleLoadMore = () => {
-    fetchMore({ variables: { limit: LIMIT, offset: recipes.length } });
+  const handleSearch = (value: string) => {
+    setSearch(value);
+    setOffset(0); // reset to first page on new search
   };
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#3F4756' }}>
       <NutrNavbar />
 
-      <main className="mx-auto w-full max-w-6xl px-6 pb-20 pt-12">
+      <main className="mx-auto w-full max-w-6xl px-4 pb-20 pt-12 sm:px-6">
         {/* Header */}
         <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <h1 className="text-2xl font-bold text-white md:text-3xl">
@@ -67,34 +67,34 @@ function NutrRecipesContent() {
           <input
             type="text"
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(e) => handleSearch(e.target.value)}
             placeholder={t('chef.recipes.search_placeholder')}
             className="w-full rounded-full border border-gray-200 bg-white px-5 py-2.5 text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-myBlue-200 md:w-72"
           />
         </div>
 
-        {/* Loading skeleton */}
-        {loading && !fetchingMore && (
-          <div className="grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-4">
-            {Array.from({ length: 8 }).map((_, i) => (
+        {/* Loading */}
+        {loading && (
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
+            {Array.from({ length: LIMIT }).map((_, i) => (
               <div
                 key={i}
-                className="animate-pulse rounded-2xl bg-white/10 h-56"
+                className="h-56 animate-pulse rounded-2xl bg-white/10"
               />
             ))}
           </div>
         )}
 
-        {/* Empty state */}
+        {/* Empty */}
         {!loading && filtered.length === 0 && (
-          <div className="py-20 text-center text-gray-300 text-sm">
+          <div className="py-20 text-center text-sm text-gray-300">
             {t('nutr_recipes.empty', 'Δεν βρέθηκαν συνταγές.')}
           </div>
         )}
 
-        {/* Recipe grid */}
-        {filtered.length > 0 && (
-          <div className="grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-4">
+        {/* Grid */}
+        {!loading && filtered.length > 0 && (
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
             {filtered.map((recipe) => {
               const title = pick(recipe.title_el, recipe.title_en, lang);
               const author = recipe.author?.user?.username ?? '';
@@ -104,7 +104,7 @@ function NutrRecipesContent() {
                   onClick={() =>
                     router.push(`/nutritionist/recipes/${recipe.id}`)
                   }
-                  className="group flex flex-col overflow-hidden rounded-2xl bg-white shadow-md transition-transform duration-200 hover:scale-105 text-left"
+                  className="group flex flex-col overflow-hidden rounded-2xl bg-white text-left shadow-md transition-transform duration-200 hover:scale-105"
                 >
                   <div className="relative h-40 w-full overflow-hidden bg-gray-100">
                     <img
@@ -114,7 +114,7 @@ function NutrRecipesContent() {
                     />
                   </div>
                   <div className="flex flex-col gap-1 p-3">
-                    <p className="text-sm font-bold text-gray-800 line-clamp-2 leading-tight">
+                    <p className="line-clamp-2 text-sm font-bold leading-tight text-gray-800">
                       {title}
                     </p>
                     {author && (
@@ -132,16 +132,27 @@ function NutrRecipesContent() {
           </div>
         )}
 
-        {/* Load more */}
-        {hasMore && !search.trim() && (
-          <div className="mt-10 flex justify-center">
-            <button
-              onClick={handleLoadMore}
-              disabled={fetchingMore}
-              className="rounded-full bg-myBlue-200 px-8 py-2.5 text-sm font-semibold text-white hover:opacity-90 disabled:opacity-50 transition"
-            >
-              {fetchingMore ? t('common.loading') : t('nutr.loadMore')}
-            </button>
+        {/* Prev / Next — hidden when searching */}
+        {!search.trim() && (hasPrev || hasMore) && (
+          <div className="mt-10 flex justify-center gap-4">
+            {hasPrev && (
+              <button
+                onClick={() => setOffset((o) => o - LIMIT)}
+                className="rounded-full px-8 py-2.5 text-sm font-bold transition hover:opacity-90"
+                style={{ backgroundColor: '#B3D5F8', color: '#3F4756' }}
+              >
+                ← {t('common.prev') ?? 'Προηγούμενα'}
+              </button>
+            )}
+            {hasMore && (
+              <button
+                onClick={() => setOffset((o) => o + LIMIT)}
+                className="rounded-full px-8 py-2.5 text-sm font-bold transition hover:opacity-90"
+                style={{ backgroundColor: '#B3D5F8', color: '#3F4756' }}
+              >
+                {t('common.next')} →
+              </button>
+            )}
           </div>
         )}
       </main>
