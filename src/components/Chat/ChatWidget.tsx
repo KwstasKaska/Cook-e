@@ -167,8 +167,9 @@ export default function ChatWidget({ currentUserId }: ChatWidgetProps) {
 
   return (
     <div
-      className="fixed bottom-6 right-6 z-50 w-80 rounded-lg shadow-xl border border-gray-200 bg-white flex flex-col overflow-hidden"
-      style={{ height: '420px' }}
+      className="fixed z-50 bg-white flex flex-col overflow-hidden
+    inset-0
+    sm:inset-auto sm:bottom-6 sm:right-6 sm:w-80 sm:rounded-lg sm:shadow-xl sm:border sm:border-gray-200 sm:h-[420px]"
     >
       {/* Header */}
       <div className="flex items-center justify-between px-3 py-2 bg-blue-600 text-white flex-shrink-0">
