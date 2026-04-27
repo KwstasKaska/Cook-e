@@ -34,7 +34,7 @@ function NutrRecipesContent() {
 
   const { data, loading } = useRecipesQuery({
     variables: { limit: LIMIT, offset },
-    fetchPolicy: 'network-only',
+    fetchPolicy: 'cache-and-network',
   });
 
   const recipes = data?.recipes ?? [];

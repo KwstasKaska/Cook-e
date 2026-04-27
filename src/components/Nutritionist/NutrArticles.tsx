@@ -16,7 +16,7 @@ const NutrArticles: React.FC = () => {
 
   const { data, loading } = useMyArticlesQuery({
     variables: { limit: LIMIT, offset },
-    fetchPolicy: 'network-only',
+    fetchPolicy: 'cache-and-network',
   });
 
   const articles = data?.myArticles ?? [];
