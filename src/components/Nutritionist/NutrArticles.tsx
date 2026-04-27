@@ -36,7 +36,7 @@ const NutrArticles: React.FC = () => {
         )}
 
         {!loading && articles.length === 0 && offset === 0 && (
-          <p className="text-white">{t('chef.profile.no_articles')}</p>
+          <p className="text-white">{t('nutr.noArticlesYet')}</p>
         )}
 
         {/* Grid */}

@@ -141,7 +141,7 @@ function NutrRecipesContent() {
                 className="rounded-full px-8 py-2.5 text-sm font-bold transition hover:opacity-90"
                 style={{ backgroundColor: '#B3D5F8', color: '#3F4756' }}
               >
-                ← {t('common.prev')}
+                {t('common.prev')}
               </button>
             )}
             {hasMore && (
@@ -150,7 +150,7 @@ function NutrRecipesContent() {
                 className="rounded-full px-8 py-2.5 text-sm font-bold transition hover:opacity-90"
                 style={{ backgroundColor: '#B3D5F8', color: '#3F4756' }}
               >
-                {t('common.next')} →
+                {t('common.next')}
               </button>
             )}
           </div>
