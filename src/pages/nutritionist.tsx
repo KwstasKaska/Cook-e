@@ -30,7 +30,6 @@ const Nutritionist: NextPage = () => {
   const { loading, isAuthorized } = useIsNutritionist();
   const { data: meData } = useMeQuery();
 
-  if (loading || !isAuthorized) return null;
   useEffect(() => {
     const hash = window.location.hash.replace('#', '');
     if (hash) {
@@ -38,6 +37,7 @@ const Nutritionist: NextPage = () => {
       if (el) el.scrollIntoView({ behavior: 'smooth' });
     }
   }, []);
+  if (loading || !isAuthorized) return null;
   return (
     <React.Fragment>
       <NutrNavbar />
