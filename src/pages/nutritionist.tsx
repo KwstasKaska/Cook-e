@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import NutrNavbar from '../components/Nutritionist/NutrNavbar';
 import CalendarC from '../components/Nutritionist/CalendarC';
 import NutrAppointments from '../components/Nutritionist/NutrAppointments';
@@ -31,7 +31,13 @@ const Nutritionist: NextPage = () => {
   const { data: meData } = useMeQuery();
 
   if (loading || !isAuthorized) return null;
-
+  useEffect(() => {
+    const hash = window.location.hash.replace('#', '');
+    if (hash) {
+      const el = document.getElementById(hash);
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, []);
   return (
     <React.Fragment>
       <NutrNavbar />

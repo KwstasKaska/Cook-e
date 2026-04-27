@@ -23,6 +23,7 @@
     "nutr_calendar": "Calendar",
     "nutr_appointments": "Appointment management",
     "nutr_scheduler": "Nutrition planning",
+    "nutr_recipes": "Recipes",
     "nutr_logout": "Logout",
     "nutr_messages": "Messages"
   },
@@ -243,6 +244,7 @@
       "error_text": "Content is required.",
       "error_image": "Please add an image."
     },
+    "nutr_recipes": "Chefs recipes",
     "selectUserFirst": "Please select a user first.",
     "selectDayFirst": "Please select a day first.",
     "selectMealFirst": "Please select a meal type first.",

@@ -25,6 +25,10 @@ export default function NutrNavbar() {
   ];
 
   const scrollToSection = (sectionId: string) => {
+    if (router.pathname !== '/nutritionist') {
+      router.push(`/nutritionist#${sectionId}`);
+      return;
+    }
     const element = document.getElementById(sectionId);
     if (element) element.scrollIntoView({ behavior: 'smooth' });
   };
@@ -82,6 +86,16 @@ export default function NutrNavbar() {
             {link.label}
           </button>
         ))}
+        <Link
+          href="/nutritionist/recipes"
+          className={`text-sm font-semibold tracking-wide transition-colors duration-150 ${
+            router.pathname === '/nutritionist/recipes'
+              ? 'text-myBlue-200'
+              : 'text-myGrey-200 hover:text-myBlue-200'
+          }`}
+        >
+          {t('nutrnav.nutr_recipes')}
+        </Link>
       </div>
 
       {/* Right actions — lg+ only */}
@@ -180,6 +194,13 @@ export default function NutrNavbar() {
               {link.label}
             </button>
           ))}
+          <Link
+            href="/nutritionist/recipes"
+            onClick={() => setMenuOpen(false)}
+            className="text-sm font-semibold tracking-wide w-full text-left py-1 text-myGrey-200"
+          >
+            {t('nutrnav.nutr_recipes')}
+          </Link>
 
           <div className="flex items-center gap-4 pt-2 border-t border-gray-400 w-full">
             <LanguageSwitcher />
