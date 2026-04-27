@@ -1,6 +1,5 @@
 import { NextPage } from 'next';
 import Image from 'next/image';
-import logo from '/public/images/logo.png';
 import GeneralNav from '../components/GeneralNav';
 import Link from 'next/link';
 import { useState, useMemo } from 'react';
@@ -192,11 +191,6 @@ const Index: NextPage = () => {
         {/* ── Δεξιά στήλη: logo + συνταγές ── */}
         <section className="container mt-[3em] grid grid-flow-row gap-4 rounded-[3em] bg-myBlue-200 font-exo font-normal md:mt-0 md:rounded-none md:rounded-bl-[6em]">
           <div className="grid grid-flow-col items-center justify-around px-2">
-            <Image
-              src={logo}
-              alt="logo"
-              className="xl:min-h-[2em] xl:min-w-[5em]"
-            />
             {body}
           </div>
 
