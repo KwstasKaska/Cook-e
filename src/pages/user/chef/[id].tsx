@@ -27,6 +27,8 @@ import ChefRateForm from '../../../components/Users/Chefs/ChefRateForm';
 import ChefReviewsList, {
   RATINGS_LIMIT,
 } from '../../../components/Users/Chefs/ChefReviewsList';
+import { pick } from '../../../utils/pick';
+const { i18n } = useTranslation('common');
 
 export async function getServerSideProps({ locale }: { locale: string }) {
   return {
@@ -65,6 +67,8 @@ function ChefProfileContent() {
     variables: { chefId },
     skip: isNaN(chefId),
   });
+
+  const lang = i18n.language;
 
   const {
     data: ratingsData,
@@ -294,9 +298,9 @@ function ChefProfileContent() {
                   </div>
                 </div>
 
-                {chef.bio && (
+                {(chef.bio_el || chef.bio_en) && (
                   <p className="max-w-lg text-sm leading-relaxed text-gray-300">
-                    {chef.bio}
+                    {pick(chef.bio_el ?? '', chef.bio_en ?? '', lang)}
                   </p>
                 )}
 
