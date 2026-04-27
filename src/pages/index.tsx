@@ -1,5 +1,4 @@
 import { NextPage } from 'next';
-import Image from 'next/image';
 import GeneralNav from '../components/GeneralNav';
 import Link from 'next/link';
 import { useState, useMemo } from 'react';
