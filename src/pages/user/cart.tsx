@@ -153,14 +153,6 @@ function CartContent({
       <Navbar />
 
       <div className="relative overflow-hidden min-h-screen">
-        <div
-          className="absolute bottom-0 left-0 w-full bg-white"
-          style={{
-            height: '80%',
-            clipPath: 'polygon(0 12%, 100% 0%, 100% 100%, 0% 100%)',
-          }}
-        />
-
         <div className="relative z-10 max-w-2xl mx-auto px-6 pt-14 pb-20">
           {/* Heading */}
           <h2 className="text-white text-3xl md:text-4xl font-bold text-center mb-1">
