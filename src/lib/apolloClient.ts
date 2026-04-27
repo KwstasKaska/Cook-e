@@ -77,7 +77,7 @@ const createApolloClient = (headers: IncomingHttpHeaders | null = null) => {
             // ── Recipes ───────────────────────────────────────────────
             // append: load more accumulates results
             myRecipes: appendPaginatedField(),
-            recipes: appendPaginatedField(),
+            recipes: replaceField(['limit', 'offset']),
             recipesByChef: appendPaginatedField(),
             // replace: filter/category change resets the list
             myRecipesByCategory: replaceField(['category', 'limit', 'offset']),
