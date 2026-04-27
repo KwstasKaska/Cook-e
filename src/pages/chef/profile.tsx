@@ -232,12 +232,12 @@ export default function ChefProfile() {
             >
               {t('settings.bio')}
             </p>
-            {chefProfile?.bio ? (
+            {chefProfile?.bio_el || chefProfile?.bio_en ? (
               <p
                 className="text-sm leading-relaxed"
                 style={{ color: '#3F4756' }}
               >
-                {chefProfile.bio}
+                {pick(chefProfile.bio_el ?? '', chefProfile.bio_en ?? '', lang)}
               </p>
             ) : (
               <p className="text-sm italic text-gray-500">
@@ -245,7 +245,6 @@ export default function ChefProfile() {
               </p>
             )}
           </div>
-
           {/* ── Stats ─────────────────────────────────────────────────────── */}
           <div className="mt-6 flex items-center justify-center divide-x divide-gray-400">
             {stats.map((stat) => (
