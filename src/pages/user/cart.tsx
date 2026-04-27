@@ -6,7 +6,6 @@ import { useRouter } from 'next/router';
 import {
   useMyCartQuery,
   useAddToCartMutation,
-  useUpdateCartItemMutation,
   useRemoveFromCartMutation,
   useIngredientsQuery,
 } from '../../generated/graphql';
@@ -55,7 +54,6 @@ function CartContent({
 
   // ── Mutations
   const [addToCart] = useAddToCartMutation();
-  const [updateCartItem] = useUpdateCartItemMutation();
   const [removeFromCart] = useRemoveFromCartMutation();
 
   const items = data?.myCart ?? [];
@@ -79,26 +77,6 @@ function CartContent({
       next.has(id) ? next.delete(id) : next.add(id);
       return next;
     });
-
-  const handleQuantityChange = useCallback(
-    async (
-      id: number,
-      currentQty: string | null | undefined,
-      delta: number,
-    ) => {
-      const current = parseInt(currentQty ?? '100', 10);
-      const next = Math.max(50, current + delta * 50);
-      try {
-        await updateCartItem({
-          variables: { id, quantity: String(next) },
-        });
-        await refetch();
-      } catch {
-        setServerError(t('cart.updateError'));
-      }
-    },
-    [updateCartItem, refetch, t],
-  );
 
   const handleRemove = useCallback(
     async (id: number) => {
@@ -236,7 +214,6 @@ function CartContent({
                   const name = isEl
                     ? item.ingredient?.name_el ?? String(item.ingredientId)
                     : item.ingredient?.name_en ?? String(item.ingredientId);
-                  const qty = parseInt(item.quantity ?? '100', 10);
 
                   return (
                     <div
@@ -288,51 +265,7 @@ function CartContent({
                         >
                           {name}
                         </p>
-                        <div className="mt-1 flex items-center gap-1">
-                          <button
-                            onClick={() =>
-                              handleQuantityChange(item.id, item.quantity, -1)
-                            }
-                            className="flex h-5 w-5 items-center justify-center rounded-full text-xs font-bold transition hover:text-white"
-                            style={{
-                              backgroundColor: '#EAEAEA',
-                              color: '#3F4756',
-                            }}
-                            onMouseEnter={(e) =>
-                              (e.currentTarget.style.backgroundColor =
-                                '#ED5B5B')
-                            }
-                            onMouseLeave={(e) =>
-                              (e.currentTarget.style.backgroundColor =
-                                '#EAEAEA')
-                            }
-                          >
-                            −
-                          </button>
-                          <span className="min-w-[3.5em] text-center text-xs text-gray-500">
-                            {qty}g
-                          </span>
-                          <button
-                            onClick={() =>
-                              handleQuantityChange(item.id, item.quantity, 1)
-                            }
-                            className="flex h-5 w-5 items-center justify-center rounded-full text-xs font-bold transition hover:text-white"
-                            style={{
-                              backgroundColor: '#EAEAEA',
-                              color: '#3F4756',
-                            }}
-                            onMouseEnter={(e) =>
-                              (e.currentTarget.style.backgroundColor =
-                                '#377CC3')
-                            }
-                            onMouseLeave={(e) =>
-                              (e.currentTarget.style.backgroundColor =
-                                '#EAEAEA')
-                            }
-                          >
-                            +
-                          </button>
-                        </div>
+
                         {item.note && (
                           <p className="mt-1 text-xs text-gray-400 truncate">
                             {item.note}

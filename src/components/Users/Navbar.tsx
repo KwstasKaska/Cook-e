@@ -49,15 +49,15 @@ export default function Navbar() {
 
   return (
     <nav
-      style={{ backgroundColor: '#3F4756' }}
+      style={{ backgroundColor: '#B3D5F8' }}
       className="w-full px-6 py-3 flex items-center justify-between relative z-50"
     >
       {/* Logo */}
       <Link href="/user" className="flex flex-col leading-tight select-none">
-        <span className="text-white font-bold text-2xl tracking-wide">
+        <span className="text-myGrey-200 font-bold text-2xl tracking-wide">
           <span className="text-yellow-400">🍪</span>ook-e
         </span>
-        <span className="text-gray-400 text-[10px] tracking-widest uppercase">
+        <span className="text-myGrey-200/60 text-[10px] tracking-widest uppercase">
           {t('nav.tagline')}
         </span>
       </Link>
@@ -72,8 +72,8 @@ export default function Navbar() {
               href={link.href}
               className={`text-sm font-semibold tracking-wide transition-colors duration-150 ${
                 isActive
-                  ? 'text-yellow-400'
-                  : 'text-white hover:text-yellow-300'
+                  ? 'text-myBlue-200'
+                  : 'text-myGrey-200 hover:text-myBlue-200'
               }`}
             >
               {link.label}
@@ -89,7 +89,7 @@ export default function Navbar() {
           className={`p-2 rounded transition-colors duration-150 ${
             router.pathname === '/user/cart'
               ? 'text-yellow-400'
-              : 'text-white hover:text-yellow-300'
+              : 'text-myGrey-200 hover:text-myBlue-200'
           }`}
           aria-label={t('nav.cart')}
         >
@@ -112,7 +112,7 @@ export default function Navbar() {
         {/* Messages */}
         <button
           onClick={openWidget}
-          className="p-2 rounded text-white hover:text-yellow-300 transition-colors duration-150"
+          className="p-2 rounded text-myGrey-200 hover:text-myBlue-200 transition-colors duration-150"
           aria-label={t('nav.messages', 'Messages')}
         >
           <ChatIcon />
@@ -123,7 +123,7 @@ export default function Navbar() {
           className={`p-2 rounded transition-colors duration-150 ${
             router.pathname === '/user/settings'
               ? 'text-yellow-400'
-              : 'text-white hover:text-yellow-300'
+              : 'text-myGrey-200 hover:text-myBlue-200'
           }`}
           aria-label={t('nav.settings')}
         >
@@ -150,7 +150,7 @@ export default function Navbar() {
         <LanguageSwitcher />
         <button
           onClick={handleLogout}
-          className="ml-2 border border-white text-white text-sm font-semibold px-5 py-1.5 rounded-full hover:bg-white hover:text-myGrey-200 transition-colors duration-150"
+          className="ml-auto border border-myGrey-200 text-myGrey-200 text-sm font-semibold px-5 py-1.5 rounded-full hover:bg-myRed hover:border-myRed hover:text-white transition-colors"
         >
           {t('nav.logout')}
         </button>
@@ -272,7 +272,7 @@ export default function Navbar() {
             </Link>
             <button
               onClick={handleLogout}
-              className="ml-auto border border-white text-white text-sm font-semibold px-5 py-1.5 rounded-full hover:bg-white hover:text-gray-800 transition-colors"
+              className="ml-auto border border-myGrey-200 text-myGrey-200 text-sm font-semibold px-5 py-1.5 rounded-full hover:bg-myRed hover:border-myRed hover:text-white transition-colors"
             >
               {t('nav.logout')}
             </button>

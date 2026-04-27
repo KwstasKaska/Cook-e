@@ -20,17 +20,6 @@ mutation AddManyToCart($ingredientIds: [Int!]!) {
   }
 }
 
-mutation UpdateCartItem(
-  $id: Int!
-  $quantity: String
-  $unit: String
-  $note: String
-) {
-  updateCartItem(id: $id, quantity: $quantity, unit: $unit, note: $note) {
-    ...RegularCartItem
-  }
-}
-
 mutation RemoveFromCart($id: Int!) {
   removeFromCart(id: $id)
 }

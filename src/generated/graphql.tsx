@@ -1102,16 +1102,6 @@ export type AddManyToCartMutationVariables = Exact<{
 
 export type AddManyToCartMutation = { __typename?: 'Mutation', addManyToCart: Array<{ __typename?: 'ShoppingCart', id: number, userId: number, ingredientId: number, quantity?: string | null, unit?: string | null, note?: string | null, addedAt: string, ingredient?: { __typename?: 'Ingredient', id: number, name_el: string, name_en: string, caloriesPer100g?: number | null } | null }> };
 
-export type UpdateCartItemMutationVariables = Exact<{
-  id: Scalars['Int']['input'];
-  quantity?: InputMaybe<Scalars['String']['input']>;
-  unit?: InputMaybe<Scalars['String']['input']>;
-  note?: InputMaybe<Scalars['String']['input']>;
-}>;
-
-
-export type UpdateCartItemMutation = { __typename?: 'Mutation', updateCartItem: { __typename?: 'ShoppingCart', id: number, userId: number, ingredientId: number, quantity?: string | null, unit?: string | null, note?: string | null, addedAt: string, ingredient?: { __typename?: 'Ingredient', id: number, name_el: string, name_en: string, caloriesPer100g?: number | null } | null } };
-
 export type RemoveFromCartMutationVariables = Exact<{
   id: Scalars['Int']['input'];
 }>;
@@ -2284,42 +2274,6 @@ export function useAddManyToCartMutation(baseOptions?: Apollo.MutationHookOption
 export type AddManyToCartMutationHookResult = ReturnType<typeof useAddManyToCartMutation>;
 export type AddManyToCartMutationResult = Apollo.MutationResult<AddManyToCartMutation>;
 export type AddManyToCartMutationOptions = Apollo.BaseMutationOptions<AddManyToCartMutation, AddManyToCartMutationVariables>;
-export const UpdateCartItemDocument = gql`
-    mutation UpdateCartItem($id: Int!, $quantity: String, $unit: String, $note: String) {
-  updateCartItem(id: $id, quantity: $quantity, unit: $unit, note: $note) {
-    ...RegularCartItem
-  }
-}
-    ${RegularCartItemFragmentDoc}`;
-export type UpdateCartItemMutationFn = Apollo.MutationFunction<UpdateCartItemMutation, UpdateCartItemMutationVariables>;
-
-/**
- * __useUpdateCartItemMutation__
- *
- * To run a mutation, you first call `useUpdateCartItemMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdateCartItemMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [updateCartItemMutation, { data, loading, error }] = useUpdateCartItemMutation({
- *   variables: {
- *      id: // value for 'id'
- *      quantity: // value for 'quantity'
- *      unit: // value for 'unit'
- *      note: // value for 'note'
- *   },
- * });
- */
-export function useUpdateCartItemMutation(baseOptions?: Apollo.MutationHookOptions<UpdateCartItemMutation, UpdateCartItemMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateCartItemMutation, UpdateCartItemMutationVariables>(UpdateCartItemDocument, options);
-      }
-export type UpdateCartItemMutationHookResult = ReturnType<typeof useUpdateCartItemMutation>;
-export type UpdateCartItemMutationResult = Apollo.MutationResult<UpdateCartItemMutation>;
-export type UpdateCartItemMutationOptions = Apollo.BaseMutationOptions<UpdateCartItemMutation, UpdateCartItemMutationVariables>;
 export const RemoveFromCartDocument = gql`
     mutation RemoveFromCart($id: Int!) {
   removeFromCart(id: $id)
