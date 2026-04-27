@@ -7,7 +7,7 @@ import moment from 'moment';
 
 moment.locale('el');
 
-const LIMIT = 3;
+const LIMIT = 4;
 
 const NutrArticles: React.FC = () => {
   const { t } = useTranslation('common');
