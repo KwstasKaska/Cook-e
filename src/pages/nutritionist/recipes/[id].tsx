@@ -36,10 +36,6 @@ function NutrRecipeDetailContent() {
 
   const recipe = data?.recipe;
   const title = recipe ? pick(recipe.title_el, recipe.title_en, lang) : '';
-  const chefComment = recipe
-    ? pick(recipe.chefComment_el ?? '', recipe.chefComment_en ?? '', lang)
-    : '';
-  const steps = [...(recipe?.steps ?? [])].sort((a, b) => a.id - b.id);
 
   if (loading) {
     return (
@@ -124,18 +120,11 @@ function NutrRecipeDetailContent() {
           Αντιγραφή συνδέσμου συνταγής
         </button>
 
-        {/* Title + Image */}
+        {/* Title */}
         <div className="flex items-start justify-between gap-4 mb-6">
           <h1 className="text-3xl font-bold text-white leading-tight md:text-4xl">
             {title}
           </h1>
-          {recipe.recipeImage && (
-            <img
-              src={recipe.recipeImage}
-              alt={title}
-              className="h-24 w-24 flex-shrink-0 rounded-xl object-cover shadow-lg md:h-32 md:w-32"
-            />
-          )}
         </div>
 
         {/* Chef */}
@@ -185,37 +174,6 @@ function NutrRecipeDetailContent() {
                 </li>
               ))}
             </ul>
-          </div>
-        )}
-
-        {/* Chef comment */}
-        {chefComment && (
-          <p className="mb-8 text-sm italic text-gray-400">
-            &ldquo;{chefComment}&rdquo;
-          </p>
-        )}
-
-        {/* Steps */}
-        {steps.length > 0 && (
-          <div>
-            <h2 className="mb-4 text-xl font-bold text-white">
-              {t('recipe.execution', 'Εκτέλεση:')}
-            </h2>
-            <ol className="flex flex-col gap-3">
-              {steps.map((step, index) => (
-                <li key={step.id} className="flex items-start gap-3">
-                  <span
-                    className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full text-xs font-bold text-white"
-                    style={{ backgroundColor: '#377CC3' }}
-                  >
-                    {index + 1}
-                  </span>
-                  <p className="text-sm leading-relaxed text-gray-200 pt-0.5">
-                    {pick(step.body_el, step.body_en, lang)}
-                  </p>
-                </li>
-              ))}
-            </ol>
           </div>
         )}
       </main>
