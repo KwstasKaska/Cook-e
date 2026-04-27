@@ -42,13 +42,12 @@ const NutrAppointments: React.FC<NutrAppointmentsProps> = ({}) => {
       </h1>
 
       <div className="relative flex flex-1 items-center justify-center py-10">
-        {/* Coffee image — hidden on mobile, shown lg+ */}
-        <div className="hidden lg:block">
+        <div className="block px-6">
           <Image
             src={coffee}
             alt={t('nutr.coffeeImageAlt')}
             priority
-            className="h-full max-w-[380px] py-10"
+            className="w-full max-w-[280px] py-10"
           />
         </div>
 

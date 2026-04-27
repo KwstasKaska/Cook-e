@@ -159,7 +159,7 @@ const CalendarC: React.FC = () => {
   return (
     <div className="mx-auto flex w-full flex-col md:grid md:grid-cols-2 md:items-center md:justify-evenly md:gap-4 md:px-3">
       {/* Left column — calendar + controls */}
-      <div className="flex flex-col items-center gap-4 pt-16 lg:gap-10 xl:mt-16 xl:gap-20">
+      <div className="flex flex-col items-center gap-4 pt-16 px-4 lg:px-0 lg:gap-10 xl:mt-16 xl:gap-20">
         <DynamicCalendar
           onChange={handleDateChange}
           value={value}
