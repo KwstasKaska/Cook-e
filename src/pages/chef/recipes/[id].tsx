@@ -112,7 +112,7 @@ const RECIPE_DETAIL_QUERY = gql`
   }
 `;
 
-// ─── Page ─────────────────────────────────────────────────────────────────────
+// Page
 
 export default function ChefSingleRecipe() {
   const { loading: authLoading, isAuthorized } = useIsChef();

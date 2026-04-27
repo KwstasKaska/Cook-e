@@ -9,6 +9,7 @@ import {
   useTopRatedRecipesQuery,
 } from '../../generated/graphql';
 import useIsUser from '../../utils/useIsUser';
+import { DIFFICULTY_OPTIONS } from '../../components/Chef/recipeDetail/types';
 
 export async function getServerSideProps({ locale }: { locale: string }) {
   return {
@@ -136,7 +137,7 @@ function HomeContent() {
               )}
             </div>
 
-            {/* Title — constrained so it never bleeds outside on mobile */}
+            {/* Title */}
             <div className="min-w-0 text-white">
               <h1
                 className="mb-4 break-words text-3xl font-bold italic md:text-5xl"
@@ -306,6 +307,16 @@ function FannedCards({
             (activeIndex + 2) % count,
           ];
 
+  // Resolve difficulty to a human-readable label using the shared DIFFICULTY_OPTIONS
+  const getDifficultyLabel = (difficulty?: string | null): string => {
+    if (!difficulty) return '';
+    const match = DIFFICULTY_OPTIONS.find(
+      (opt) => opt.value.toLowerCase() === difficulty.toLowerCase(),
+    );
+    if (!match) return difficulty;
+    return isEl ? match.labelEl : match.labelEn;
+  };
+
   return (
     <div className="flex flex-col items-center gap-4 md:flex-row md:justify-center">
       <div className="relative w-full max-w-[260px]" style={{ height: 420 }}>
@@ -351,7 +362,7 @@ function FannedCards({
                 {isFront && recipe.difficulty && (
                   <div className="mb-1 flex justify-end">
                     <span className="rounded-full bg-white px-3 py-0.5 text-xs font-semibold text-gray-700">
-                      {recipe.difficulty}
+                      {getDifficultyLabel(recipe.difficulty)}
                     </span>
                   </div>
                 )}
@@ -378,7 +389,7 @@ function FannedCards({
                       )}
                       {recipe.category && (
                         <span className="border-l border-white/60 pl-3">
-                          {recipe.category}
+                          {t(`recipe_category.${recipe.category}`)}
                         </span>
                       )}
                     </div>

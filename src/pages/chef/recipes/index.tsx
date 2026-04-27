@@ -1,8 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import ChefNavbar from '../../../components/Chef/ChefNavbar';
-import RecipeSummaryModal, {
-  RecipeSummaryData,
-} from '../../../components/Chef/RecipeSummary';
+
 import RecipeFeaturedCard from '../../../components/Chef/RecipeFeaturedCard';
 import RecipeCompactCard from '../../../components/Chef/RecipeCompactCard';
 import RecipeCategoryFilter from '../../../components/Chef/RecipeCategoryFilter';
@@ -17,39 +15,18 @@ import {
   Recipe,
 } from '../../../generated/graphql';
 import { pick } from '../../../utils/pick';
-import { recipeImageSrc, totalDuration } from '../../../utils/recipeHelpers';
 import useIsChef from '../../../utils/useIsChef';
-
-function toSummaryData(recipe: Recipe, lang: string): RecipeSummaryData {
-  return {
-    id: recipe.id,
-    title: pick(recipe.title_el, recipe.title_en, lang),
-    image: recipeImageSrc(recipe.recipeImage),
-    description: pick(
-      recipe.description_el ?? '',
-      recipe.description_en ?? '',
-      lang,
-    ),
-    duration: totalDuration(recipe.prepTime, recipe.cookTime, recipe.restTime),
-    ingredientsCount: recipe.recipeIngredients?.length ?? 0,
-    calories: recipe.caloriesTotal ?? 0,
-    tags: [],
-  };
-}
 
 export default function ChefRecipes() {
   const { loading: authLoading, isAuthorized } = useIsChef();
   const { t } = useTranslation('common');
-  const { locale } = useRouter();
-  const lang = locale ?? 'el';
-
+  const router = useRouter();
+  const lang = router.locale ?? 'el';
   const [activeCategory, setActiveCategory] = useState<RecipeCategory | null>(
     null,
   );
   const [search, setSearch] = useState('');
   const [sort, setSort] = useState<'newest' | 'oldest' | 'alpha'>('newest');
-  const [selectedRecipe, setSelectedRecipe] =
-    useState<RecipeSummaryData | null>(null);
 
   const allRecipesQuery = useMyRecipesQuery({
     variables: { limit: 5, offset: 0 },
@@ -116,9 +93,6 @@ export default function ChefRecipes() {
   const featured = filtered[0] ?? null;
   const rest = filtered.slice(1);
 
-  const openModal = (recipe: Recipe) =>
-    setSelectedRecipe(toSummaryData(recipe, lang));
-
   const handleLoadMore = () => {
     if (activeCategory === null) {
       allRecipesQuery.fetchMore({
@@ -144,13 +118,6 @@ export default function ChefRecipes() {
       style={{ backgroundColor: '#3F4756' }}
     >
       <ChefNavbar />
-
-      {selectedRecipe && (
-        <RecipeSummaryModal
-          recipe={selectedRecipe}
-          onClose={() => setSelectedRecipe(null)}
-        />
-      )}
 
       <main className="relative flex flex-1 flex-col items-center px-4 py-8 md:px-8">
         {/* Decorative diamond shapes */}
@@ -257,7 +224,9 @@ export default function ChefRecipes() {
                       <RecipeFeaturedCard
                         recipe={featured}
                         lang={lang}
-                        onClick={() => openModal(featured)}
+                        onClick={() =>
+                          router.push(`/chef/recipes/${featured.id}`)
+                        }
                       />
                     </div>
                   )}
@@ -268,7 +237,9 @@ export default function ChefRecipes() {
                           key={recipe.id}
                           recipe={recipe}
                           lang={lang}
-                          onClick={() => openModal(recipe)}
+                          onClick={() =>
+                            router.push(`/chef/recipes/${recipe.id}`)
+                          }
                           dark={i === 0}
                         />
                       ))}

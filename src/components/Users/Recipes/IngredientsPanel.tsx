@@ -1,4 +1,5 @@
 import { useTranslation } from 'next-i18next';
+import { getDifficultyLabel } from '../../../utils/recipeHelpers';
 
 type IngredientRow = {
   ingredientId: number;
@@ -65,7 +66,7 @@ export default function IngredientsPanel({
             <span className="font-semibold">
               {t('chef.recipe_card.difficulty')}
             </span>
-            <span>{difficulty}</span>
+            <span>{getDifficultyLabel(difficulty, t)}</span>
           </div>
         )}
       </div>

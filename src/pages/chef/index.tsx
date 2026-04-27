@@ -1,16 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import ChefNavbar from '../../components/Chef/ChefNavbar';
-import RecipeSummaryModal, {
-  RecipeSummaryData,
-} from '../../components/Chef/RecipeSummary';
 
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
 import { useMyRecipesQuery } from '../../generated/graphql';
 import { pick } from '../../utils/pick';
 import useIsChef from '../../utils/useIsChef';
+import { useRouter } from 'next/router';
 
 const BG_COLORS = ['#B3D5F8', '#FEF9C3', '#FCE4EC', '#DCFCE7'];
 const ROTATIONS = [-15, -5, 5, 15];
@@ -20,9 +18,7 @@ export default function ChefIndex() {
   const { t, i18n } = useTranslation('common');
   const lang = i18n.language;
   const { loading: authLoading, isAuthorized } = useIsChef();
-
-  const [selectedRecipe, setSelectedRecipe] =
-    useState<RecipeSummaryData | null>(null);
+  const router = useRouter();
 
   const { data: recipesData, loading: recipesLoading } = useMyRecipesQuery({
     variables: { limit: 4, offset: 0 },
@@ -33,32 +29,12 @@ export default function ChefIndex() {
 
   const fanRecipes = recipesData?.myRecipes ?? [];
 
-  const openModal = (recipe: (typeof fanRecipes)[0]) => {
-    setSelectedRecipe({
-      id: recipe.id,
-      title: pick(recipe.title_el, recipe.title_en, lang),
-      image: recipe.recipeImage ?? '/images/food.jpg',
-      description: pick(recipe.description_el, recipe.description_en, lang),
-      duration: (recipe.prepTime ?? 0) + (recipe.cookTime ?? 0),
-      ingredientsCount: recipe.recipeIngredients?.length ?? 0,
-      calories: recipe.caloriesTotal ?? 0,
-      tags: recipe.category ? [t(`recipe_category.${recipe.category}`)] : [],
-    });
-  };
-
   return (
     <div
       className="flex min-h-screen flex-col"
       style={{ backgroundColor: '#3F4756' }}
     >
       <ChefNavbar />
-
-      {selectedRecipe && (
-        <RecipeSummaryModal
-          recipe={selectedRecipe}
-          onClose={() => setSelectedRecipe(null)}
-        />
-      )}
 
       <main className="relative flex flex-1 flex-col overflow-hidden">
         {/* Decorative circles */}
@@ -126,7 +102,7 @@ export default function ChefIndex() {
                   {fanRecipes.map((recipe, idx) => (
                     <div
                       key={recipe.id}
-                      onClick={() => openModal(recipe)}
+                      onClick={() => router.push(`/chef/recipes/${recipe.id}`)}
                       className="flex-shrink-0 w-44 rounded-2xl overflow-hidden shadow-xl cursor-pointer transition-transform hover:scale-105"
                       style={{
                         backgroundColor: BG_COLORS[idx % BG_COLORS.length],
@@ -168,7 +144,7 @@ export default function ChefIndex() {
                   {fanRecipes.map((recipe, idx) => (
                     <div
                       key={recipe.id}
-                      onClick={() => openModal(recipe)}
+                      onClick={() => router.push(`/chef/recipes/${recipe.id}`)}
                       className="absolute w-48 rounded-2xl overflow-hidden shadow-2xl cursor-pointer transition-transform hover:scale-105 hover:-translate-y-2"
                       style={{
                         backgroundColor: BG_COLORS[idx % BG_COLORS.length],
