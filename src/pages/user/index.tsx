@@ -90,18 +90,10 @@ function HomeContent() {
       <Navbar />
 
       <div className="relative overflow-x-hidden">
-        <div
-          className="absolute bottom-0 left-0 w-full bg-white"
-          style={{
-            height: '55%',
-            clipPath: 'polygon(0 40%, 100% 0%, 100% 100%, 0% 100%)',
-          }}
-        />
-
         {/* ── Top section: donut + title */}
         <div className="relative z-10 mx-auto max-w-6xl px-6 pb-0 pt-10">
           <div className="grid grid-cols-1 items-center gap-8 md:grid-cols-2">
-            <div className="mx-auto flex max-w-md flex-col sm:flex-row items-center gap-4 rounded-2xl bg-white p-6 shadow-lg sm:gap-6 md:mx-0">
+            <div className="order-last mx-auto flex max-w-md flex-col sm:flex-row items-center gap-4 rounded-2xl bg-white p-6 shadow-lg sm:gap-6 md:mx-0 md:order-first">
               {summaryLoading ? (
                 <div className="flex h-40 w-full items-center justify-center">
                   <div className="h-8 w-8 animate-spin rounded-full border-4 border-myBlue-200 border-t-transparent" />
@@ -156,10 +148,10 @@ function HomeContent() {
         <div className="relative z-10 mx-auto max-w-6xl px-6 pb-32 pt-12">
           <div className="grid grid-cols-1 items-end gap-8 md:grid-cols-2">
             <div>
-              <h2 className="mb-4 text-2xl font-bold text-white md:text-gray-800">
+              <h2 className="mb-4 text-2xl font-bold text-white ">
                 {t('landing.weeklyRecipesTitle')}
               </h2>
-              <div className="max-w-sm space-y-3 text-sm leading-relaxed text-gray-200 md:text-gray-600">
+              <div className="max-w-sm space-y-3 text-sm leading-relaxed text-gray-200 ">
                 <p>{t('landing.weeklyRecipesDesc1')}</p>
                 <p>{t('landing.weeklyRecipesDesc2')}</p>
                 <p>{t('landing.weeklyRecipesDesc3')}</p>
@@ -418,7 +410,7 @@ function FannedCards({
       {count > 1 && (
         <button
           onClick={onNext}
-          className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full border-2 border-gray-700 text-gray-700 transition-colors duration-150 hover:bg-gray-700 hover:text-white"
+          className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full border-2 border-white text-white "
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

@@ -78,20 +78,25 @@ const createApolloClient = (headers: IncomingHttpHeaders | null = null) => {
             // append: load more accumulates results
             myRecipes: appendPaginatedField(),
             recipes: replaceField(['limit', 'offset']),
-            recipesByChef: appendPaginatedField(),
+            recipesByChef: replaceField(['chefId', 'limit', 'offset']),
+
             // replace: filter/category change resets the list
             myRecipesByCategory: replaceField(['category', 'limit', 'offset']),
             recipesByCategory: replaceField(['category', 'limit', 'offset']),
 
             // ── Favorites ─────────────────────────────────────────────
-            myFavorites: appendPaginatedField(),
+            myFavorites: replaceField(['limit', 'offset']),
 
             // ── Articles ──────────────────────────────────────────────
             myArticles: replaceField(['limit', 'offset']),
             articles: appendPaginatedField(),
             chefArticles: appendPaginatedField(),
-            articlesByNutritionist: appendPaginatedField(),
-            articlesByChef: appendPaginatedField(),
+            articlesByNutritionist: replaceField([
+              'nutritionistId',
+              'limit',
+              'offset',
+            ]),
+            articlesByChef: replaceField(['chefId', 'limit', 'offset']),
 
             // ── Ratings ───────────────────────────────────────────────
             chefRatings: appendPaginatedField(),

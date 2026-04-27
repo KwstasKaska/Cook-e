@@ -89,18 +89,8 @@ export default function ResultsStep({
   const { t } = useTranslation('common');
 
   return (
-    <div
-      className="min-h-screen relative overflow-hidden"
-      style={{ backgroundColor: '#3F4756' }}
-    >
-      <div
-        className="absolute bottom-0 left-0 w-full bg-gray-100"
-        style={{
-          height: '72%',
-          clipPath: 'polygon(0 15%, 100% 0%, 100% 100%, 0% 100%)',
-        }}
-      />
-      <div className="relative z-10 max-w-5xl mx-auto px-6 pt-10 pb-20">
+    <div className="min-h-screen" style={{ backgroundColor: '#3F4756' }}>
+      <div className="max-w-5xl mx-auto px-6 pt-10 pb-20">
         <button
           onClick={onBack}
           className="flex items-center gap-2 text-sm font-bold mb-8 transition hover:opacity-80"

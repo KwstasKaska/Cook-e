@@ -12,17 +12,11 @@ import {
   useMyChefRatingQuery,
   useRateChefMutation,
   useDeleteChefRatingMutation,
-  useRecipesByChefQuery,
-  useArticlesByChefQuery,
 } from '../../../generated/graphql';
 import useIsUser from '../../../utils/useIsUser';
 import { useChatContext } from '../../../components/Chat/ChatContext';
-import ChefContentGrid, {
-  RECIPES_LIMIT,
-} from '../../../components/Users/Chefs/ChefContentGrid';
-import ChefArticlesGrid, {
-  ARTICLES_LIMIT,
-} from '../../../components/Users/Chefs/ChefArticlesGrid';
+import ChefContentGrid from '../../../components/Users/Chefs/ChefContentGrid';
+import ChefArticlesGrid from '../../../components/Users/Chefs/ChefArticlesGrid';
 import ChefRateForm from '../../../components/Users/Chefs/ChefRateForm';
 import ChefReviewsList, {
   RATINGS_LIMIT,
@@ -90,34 +84,6 @@ function ChefProfileContent() {
 
   const chef = chefData?.chef;
 
-  const {
-    data: recipesData,
-    loading: recipesLoading,
-    fetchMore: fetchMoreRecipes,
-    networkStatus: recipesNetworkStatus,
-  } = useRecipesByChefQuery({
-    variables: { chefId, limit: RECIPES_LIMIT, offset: 0 },
-    skip: isNaN(chefId),
-    fetchPolicy: 'network-only',
-    notifyOnNetworkStatusChange: true,
-  });
-
-  const {
-    data: articlesData,
-    loading: articlesLoading,
-    fetchMore: fetchMoreArticles,
-    networkStatus: articlesNetworkStatus,
-  } = useArticlesByChefQuery({
-    variables: {
-      chefId: chef?.user?.id ?? 0,
-      limit: ARTICLES_LIMIT,
-      offset: 0,
-    },
-    skip: isNaN(chefId) || !chef?.user?.id,
-    fetchPolicy: 'network-only',
-    notifyOnNetworkStatusChange: true,
-  });
-
   // ── Mutations
   const [rateChef, { loading: submitting }] = useRateChefMutation();
   const [deleteChefRating] = useDeleteChefRatingMutation();
@@ -126,19 +92,10 @@ function ChefProfileContent() {
   const avgRating = avgData?.chefAverageRating ?? 0;
   const reviews = ratingsData?.chefRatings ?? [];
   const myRating = myRatingData?.myChefRating ?? null;
-  const recipes = recipesData?.recipesByChef ?? [];
-  const articles = articlesData?.articlesByChef ?? [];
 
-  const fetchingMoreRecipes = recipesNetworkStatus === 3;
   const fetchingMoreRatings = ratingsNetworkStatus === 3;
-  const fetchingMoreArticles = articlesNetworkStatus === 3;
-
-  const hasMoreRecipes =
-    recipes.length > 0 && recipes.length % RECIPES_LIMIT === 0;
   const hasMoreReviews =
     reviews.length > 0 && reviews.length % RATINGS_LIMIT === 0;
-  const hasMoreArticles =
-    articles.length > 0 && articles.length % ARTICLES_LIMIT === 0;
 
   // ── Handlers
   const handleRate = useCallback(async () => {
@@ -149,12 +106,7 @@ function ChefProfileContent() {
       return;
     }
     try {
-      await rateChef({
-        variables: {
-          chefId,
-          score: ratingScore,
-        },
-      });
+      await rateChef({ variables: { chefId, score: ratingScore } });
       setRatingSuccess(t('recipes.ratingSuccess'));
       setRatingScore(0);
       await refetchRatings();
@@ -302,37 +254,13 @@ function ChefProfileContent() {
                   </p>
                 )}
 
-                <ChefContentGrid
-                  recipes={recipes as any}
-                  loading={recipesLoading}
-                  fetchingMore={fetchingMoreRecipes}
-                  hasMore={hasMoreRecipes}
-                  onLoadMore={() =>
-                    fetchMoreRecipes({
-                      variables: {
-                        chefId,
-                        limit: RECIPES_LIMIT,
-                        offset: recipes.length,
-                      },
-                    })
-                  }
-                />
+                {/* Recipes grid — self-contained */}
+                <ChefContentGrid chefId={chefId} />
 
-                <ChefArticlesGrid
-                  articles={articles as any}
-                  loading={articlesLoading}
-                  fetchingMore={fetchingMoreArticles}
-                  hasMore={hasMoreArticles}
-                  onLoadMore={() =>
-                    fetchMoreArticles({
-                      variables: {
-                        chefId: chef?.user?.id ?? 0,
-                        limit: ARTICLES_LIMIT,
-                        offset: articles.length,
-                      },
-                    })
-                  }
-                />
+                {/* Articles grid — self-contained, needs User.id not ChefProfile.id */}
+                {chef.user?.id && (
+                  <ChefArticlesGrid chefUserId={chef.user.id} />
+                )}
               </div>
 
               {/* ── RIGHT */}

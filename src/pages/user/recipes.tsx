@@ -17,6 +17,8 @@ import useIsUser from '../../utils/useIsUser';
 
 type Step = 'home' | 'ingredients' | 'utensils' | 'results';
 
+const FAV_LIMIT = 4;
+
 export async function getServerSideProps({ locale }: { locale: string }) {
   return {
     props: {
@@ -28,7 +30,6 @@ export async function getServerSideProps({ locale }: { locale: string }) {
 export default function RecipesPage() {
   const { loading: authLoading, isAuthorized } = useIsUser();
   if (authLoading || !isAuthorized) return null;
-
   return <RecipesContent />;
 }
 
@@ -41,6 +42,7 @@ function RecipesContent() {
     [],
   );
   const [selectedUtensilIds, setSelectedUtensilIds] = useState<number[]>([]);
+  const [favOffset, setFavOffset] = useState(0);
 
   // ── Queries
   const { data: ingredientsData, loading: ingredientsLoading } =
@@ -54,12 +56,9 @@ function RecipesContent() {
     data: favData,
     loading: favLoading,
     refetch: refetchFavs,
-    fetchMore: fetchMoreFavs,
-    networkStatus: favNetworkStatus,
   } = useMyFavoritesQuery({
-    variables: { limit: 4, offset: 0 },
+    variables: { limit: FAV_LIMIT, offset: favOffset },
     fetchPolicy: 'network-only',
-    notifyOnNetworkStatusChange: true,
   });
 
   const { data: suggestedData, loading: suggestedLoading } =
@@ -81,8 +80,8 @@ function RecipesContent() {
   const favorites = favData?.myFavorites ?? [];
   const suggestions = suggestedData?.suggestedRecipes ?? [];
 
-  const loadingMoreFavorites = favNetworkStatus === 4;
-  const hasMoreFavorites = favorites.length > 0 && favorites.length % 4 === 0;
+  const hasMore = favorites.length === FAV_LIMIT;
+  const hasPrev = favOffset > 0;
 
   const ingredientsByCategory = useMemo(() => {
     const map = new Map<string, typeof allIngredients>();
@@ -120,12 +119,6 @@ function RecipesContent() {
     await refetchFavs();
   };
 
-  const handleLoadMoreFavorites = () => {
-    fetchMoreFavs({
-      variables: { limit: 4, offset: favorites.length },
-    });
-  };
-
   const goToDetail = (id: number) => router.push(`/user/recipes/${id}`);
 
   return (
@@ -135,10 +128,11 @@ function RecipesContent() {
       {step === 'home' && (
         <HomeStep
           favorites={favorites}
-          favLoading={favLoading && !loadingMoreFavorites}
-          hasMoreFavorites={hasMoreFavorites}
-          loadingMoreFavorites={loadingMoreFavorites}
-          onLoadMoreFavorites={handleLoadMoreFavorites}
+          favLoading={favLoading}
+          hasPrev={hasPrev}
+          hasMore={hasMore && favorites.length > 0}
+          onPrev={() => setFavOffset((o) => o - FAV_LIMIT)}
+          onNext={() => setFavOffset((o) => o + FAV_LIMIT)}
           onStartPicker={() => setStep('ingredients')}
           onUnsave={handleUnsave}
           onSelectRecipe={goToDetail}

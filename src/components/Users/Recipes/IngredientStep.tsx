@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useTranslation } from 'next-i18next';
-import DiagonalLayout from '../../Helper/DiagonalLayout';
 
 const CAT_I18N: Record<string, string> = {
   Λαχανικά: 'vegetables',
@@ -64,7 +63,7 @@ export default function IngredientStep({
   };
 
   return (
-    <DiagonalLayout whiteStart="50%">
+    <div className="min-h-screen" style={{ backgroundColor: '#3F4756' }}>
       <div className="max-w-2xl mx-auto px-6 pt-10 pb-24">
         {loading ? (
           <div className="flex justify-center py-16">
@@ -116,7 +115,7 @@ export default function IngredientStep({
 
             {items.length > 0 && (
               <div className="mb-6">
-                <h3 className="text-gray-800 text-sm font-bold mb-3 ml-1">
+                <h3 className="text-white text-sm font-bold mb-3 ml-1">
                   {effectiveCat ? getCatLabel(effectiveCat) : ''}
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
@@ -199,6 +198,6 @@ export default function IngredientStep({
           </>
         )}
       </div>
-    </DiagonalLayout>
+    </div>
   );
 }

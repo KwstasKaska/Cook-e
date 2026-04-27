@@ -6,14 +6,11 @@ import { useRouter } from 'next/router';
 import {
   useNutritionistsQuery,
   useMyAppointmentRequestsQuery,
-  useArticlesByNutritionistQuery,
 } from '../../generated/graphql';
 import useIsUser from '../../utils/useIsUser';
 import { useChatContext } from '../../components/Chat/ChatContext';
 import { pick } from '../../utils/pick';
-import NutrArticlesGrid, {
-  NUTR_ARTICLES_LIMIT,
-} from '../../components/Users/Nutritionists/NutrArticlesGrid';
+import NutrArticlesGrid from '../../components/Users/Nutritionists/NutrArticlesGrid';
 import NutrBookingSection from '../../components/Users/Nutritionists/NutrBookingSection';
 
 type SelectedNutritionist = {
@@ -209,26 +206,6 @@ function ProfileView({
   const lang = i18n.language as 'el' | 'en';
   const { openConversation } = useChatContext();
 
-  const {
-    data: articlesData,
-    loading: articlesLoading,
-    fetchMore: fetchMoreArticles,
-    networkStatus: articlesNetworkStatus,
-  } = useArticlesByNutritionistQuery({
-    variables: {
-      nutritionistId: nutr.userId,
-      limit: NUTR_ARTICLES_LIMIT,
-      offset: 0,
-    },
-    fetchPolicy: 'network-only',
-    notifyOnNetworkStatusChange: true,
-  });
-
-  const articles = articlesData?.articlesByNutritionist ?? [];
-  const fetchingMoreArticles = articlesNetworkStatus === 3;
-  const hasMoreArticles =
-    articles.length > 0 && articles.length % NUTR_ARTICLES_LIMIT === 0;
-
   const hasAcceptedAppointment = myRequests.some(
     (req) => req.status === 'ACCEPTED' && req.slot?.nutritionistId === nutr.id,
   );
@@ -302,31 +279,10 @@ function ProfileView({
                   </svg>
                 </a>
               )}
-              <a
-                href={`mailto:${nutr.email}`}
-                className="flex h-12 w-12 items-center justify-center rounded-full shadow-md"
-                style={{ backgroundColor: '#377CC3' }}
-                aria-label="Send email"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5 text-white"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                  />
-                </svg>
-              </a>
-              {hasAcceptedAppointment && (
+              {nutr.userId && (
                 <button
                   onClick={() => openConversation(nutr.userId)}
-                  className="flex h-12 w-12 items-center justify-center rounded-full shadow-md transition-opacity hover:opacity-90"
+                  className="flex h-12 w-12 items-center justify-center rounded-full shadow-md transition hover:opacity-90"
                   style={{ backgroundColor: '#377CC3' }}
                   aria-label="Send message"
                 >
@@ -356,22 +312,8 @@ function ProfileView({
             </p>
           )}
 
-          {/* Articles — above booking */}
-          <NutrArticlesGrid
-            articles={articles as any}
-            loading={articlesLoading}
-            fetchingMore={fetchingMoreArticles}
-            hasMore={hasMoreArticles}
-            onLoadMore={() =>
-              fetchMoreArticles({
-                variables: {
-                  nutritionistId: nutr.userId,
-                  limit: NUTR_ARTICLES_LIMIT,
-                  offset: articles.length,
-                },
-              })
-            }
-          />
+          {/* Articles — self-contained grid */}
+          <NutrArticlesGrid nutritionistId={nutr.userId} />
 
           {/* Booking */}
           <NutrBookingSection

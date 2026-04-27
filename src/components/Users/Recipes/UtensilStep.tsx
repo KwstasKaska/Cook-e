@@ -1,5 +1,4 @@
 import { useTranslation } from 'next-i18next';
-import DiagonalLayout from '../../Helper/DiagonalLayout';
 
 const UTENSIL_CAT_I18N: Record<string, string> = {
   pot: 'pot',
@@ -48,7 +47,7 @@ export default function UtensilStep({
   };
 
   return (
-    <DiagonalLayout whiteStart="50%">
+    <div className="min-h-screen" style={{ backgroundColor: '#3F4756' }}>
       <div className="max-w-2xl mx-auto px-6 pt-10 pb-24">
         {loading ? (
           <div className="flex justify-center py-16">
@@ -128,6 +127,6 @@ export default function UtensilStep({
           </>
         )}
       </div>
-    </DiagonalLayout>
+    </div>
   );
 }
