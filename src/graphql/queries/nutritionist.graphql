@@ -1,9 +1,11 @@
 query Nutritionist($id: Int!) {
   nutritionist(id: $id) {
     id
-    bio
+    bio_el
+    bio_en
     phone
-    city
+    city_el
+    city_en
     user {
       id
       username

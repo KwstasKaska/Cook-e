@@ -1,9 +1,11 @@
 query MyNutritionistProfile {
   myNutritionistProfile {
     id
-    bio
+    bio_el
+    bio_en
     phone
-    city
+    city_el
+    city_en
     user {
       id
       username

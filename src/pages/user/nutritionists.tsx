@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Navbar from '../../components/Users/Navbar';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useRouter } from 'next/router';
 import {
   useNutritionistsQuery,
   useMyAppointmentRequestsQuery,
@@ -9,6 +10,7 @@ import {
 } from '../../generated/graphql';
 import useIsUser from '../../utils/useIsUser';
 import { useChatContext } from '../../components/Chat/ChatContext';
+import { pick } from '../../utils/pick';
 import NutrArticlesGrid, {
   NUTR_ARTICLES_LIMIT,
 } from '../../components/Users/Nutritionists/NutrArticlesGrid';
@@ -19,9 +21,11 @@ type SelectedNutritionist = {
   userId: number;
   username: string;
   email: string;
-  bio?: string | null;
+  bio_el?: string | null;
+  bio_en?: string | null;
   phone?: string | null;
-  city?: string | null;
+  city_el?: string | null;
+  city_en?: string | null;
   image?: string | null;
 };
 
@@ -66,6 +70,8 @@ function ListView({
   onSelect: (n: SelectedNutritionist) => void;
 }) {
   const { t } = useTranslation('common');
+  const { locale } = useRouter();
+  const lang = locale ?? 'el';
   const [search, setSearch] = useState('');
 
   const { data, loading } = useNutritionistsQuery({
@@ -122,7 +128,7 @@ function ListView({
                       key={nutr.id}
                       id={nutr.id}
                       username={nutr.user?.username ?? '—'}
-                      city={nutr.city}
+                      city={pick(nutr.city_el ?? '', nutr.city_en ?? '', lang)}
                       image={nutr.user?.image ?? null}
                       onClick={() =>
                         onSelect({
@@ -130,9 +136,11 @@ function ListView({
                           userId: nutr.user?.id ?? 0,
                           username: nutr.user?.username ?? '—',
                           email: nutr.user?.email ?? '',
-                          bio: nutr.bio,
+                          bio_el: nutr.bio_el,
+                          bio_en: nutr.bio_en,
                           phone: nutr.phone,
-                          city: nutr.city,
+                          city_el: nutr.city_el,
+                          city_en: nutr.city_en,
                           image: nutr.user?.image ?? null,
                         })
                       }
@@ -182,7 +190,7 @@ function NutrCard({
   );
 }
 
-//  Profile view
+// ── Profile view ──────────────────────────────────────────────────────────────
 
 function ProfileView({
   nutr,
@@ -197,7 +205,8 @@ function ProfileView({
   }>;
   onBack: () => void;
 }) {
-  const { t } = useTranslation('common');
+  const { t, i18n } = useTranslation('common');
+  const lang = i18n.language as 'el' | 'en';
   const { openConversation } = useChatContext();
 
   const {
@@ -223,6 +232,9 @@ function ProfileView({
   const hasAcceptedAppointment = myRequests.some(
     (req) => req.status === 'ACCEPTED' && req.slot?.nutritionistId === nutr.id,
   );
+
+  const cityText = pick(nutr.city_el ?? '', nutr.city_en ?? '', lang);
+  const bioText = pick(nutr.bio_el ?? '', nutr.bio_en ?? '', lang);
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#3F4756' }}>
@@ -337,12 +349,10 @@ function ProfileView({
             </div>
           </div>
 
-          {nutr.city && (
-            <p className="mb-2 text-sm text-gray-300">{nutr.city}</p>
-          )}
-          {nutr.bio && (
+          {cityText && <p className="mb-2 text-sm text-gray-300">{cityText}</p>}
+          {bioText && (
             <p className="mb-10 max-w-xl text-sm leading-relaxed text-gray-300">
-              {nutr.bio}
+              {bioText}
             </p>
           )}
 

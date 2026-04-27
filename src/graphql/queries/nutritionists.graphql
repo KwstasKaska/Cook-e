@@ -1,9 +1,11 @@
 query Nutritionists($limit: Int = 10, $offset: Int = 0) {
   nutritionists(limit: $limit, offset: $offset) {
     id
-    bio
+    bio_el
+    bio_en
     phone
-    city
+    city_el
+    city_en
     user {
       id
       username

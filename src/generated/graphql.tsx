@@ -504,8 +504,10 @@ export type NutritionalSummary = {
 
 export type NutritionistProfile = {
   __typename?: 'NutritionistProfile';
-  bio?: Maybe<Scalars['String']['output']>;
-  city?: Maybe<Scalars['String']['output']>;
+  bio_el?: Maybe<Scalars['String']['output']>;
+  bio_en?: Maybe<Scalars['String']['output']>;
+  city_el?: Maybe<Scalars['String']['output']>;
+  city_en?: Maybe<Scalars['String']['output']>;
   id: Scalars['Float']['output'];
   phone?: Maybe<Scalars['String']['output']>;
   user?: Maybe<User>;
@@ -533,7 +535,6 @@ export type Query = {
   getAppointmentRequestsForNutritionist: Array<AppointmentRequest>;
   getMyAppointments: Array<Appointment>;
   getNutritionistMealPlans: Array<MealScheduler>;
-  ingredientCategories: Array<IngredientsCategory>;
   ingredients: Array<Ingredient>;
   isFavorited: Scalars['Boolean']['output'];
   me?: Maybe<User>;
@@ -901,8 +902,8 @@ export type UpdateMealSchedulerInput = {
 };
 
 export type UpdateNutritionistProfileInput = {
-  bio?: InputMaybe<Scalars['String']['input']>;
-  city?: InputMaybe<Scalars['String']['input']>;
+  bio_el?: InputMaybe<Scalars['String']['input']>;
+  city_el?: InputMaybe<Scalars['String']['input']>;
   phone?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -991,7 +992,7 @@ export type RegularChefProfileResponseFragment = { __typename?: 'ChefProfileResp
 
 export type RegualarErrorFragment = { __typename?: 'FieldError', field: string, message: string };
 
-export type RegularNutritionistProfileResponseFragment = { __typename?: 'NutritionistProfileResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, nutritionistProfile?: { __typename?: 'NutritionistProfile', id: number, bio?: string | null, phone?: string | null, city?: string | null, user?: { __typename?: 'User', id: number, username: string, email: string, image?: string | null } | null } | null };
+export type RegularNutritionistProfileResponseFragment = { __typename?: 'NutritionistProfileResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, nutritionistProfile?: { __typename?: 'NutritionistProfile', id: number, bio_el?: string | null, bio_en?: string | null, phone?: string | null, city_el?: string | null, city_en?: string | null, user?: { __typename?: 'User', id: number, username: string, email: string, image?: string | null } | null } | null };
 
 export type RegularUserFragment = { __typename?: 'User', id: number, username: string, email: string, role: UserRole, image?: string | null };
 
@@ -1302,7 +1303,7 @@ export type UpdateNutritionistProfileMutationVariables = Exact<{
 }>;
 
 
-export type UpdateNutritionistProfileMutation = { __typename?: 'Mutation', updateNutritionistProfile: { __typename?: 'NutritionistProfileResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, nutritionistProfile?: { __typename?: 'NutritionistProfile', id: number, bio?: string | null, phone?: string | null, city?: string | null, user?: { __typename?: 'User', id: number, username: string, email: string, image?: string | null } | null } | null } };
+export type UpdateNutritionistProfileMutation = { __typename?: 'Mutation', updateNutritionistProfile: { __typename?: 'NutritionistProfileResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, nutritionistProfile?: { __typename?: 'NutritionistProfile', id: number, bio_el?: string | null, bio_en?: string | null, phone?: string | null, city_el?: string | null, city_en?: string | null, user?: { __typename?: 'User', id: number, username: string, email: string, image?: string | null } | null } | null } };
 
 export type UpdateUserMutationVariables = Exact<{
   data: UpdateUserInput;
@@ -1488,7 +1489,7 @@ export type MyNutritionalSummaryQuery = { __typename?: 'Query', myNutritionalSum
 export type MyNutritionistProfileQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MyNutritionistProfileQuery = { __typename?: 'Query', myNutritionistProfile?: { __typename?: 'NutritionistProfile', id: number, bio?: string | null, phone?: string | null, city?: string | null, user?: { __typename?: 'User', id: number, username: string, email: string } | null } | null };
+export type MyNutritionistProfileQuery = { __typename?: 'Query', myNutritionistProfile?: { __typename?: 'NutritionistProfile', id: number, bio_el?: string | null, bio_en?: string | null, phone?: string | null, city_el?: string | null, city_en?: string | null, user?: { __typename?: 'User', id: number, username: string, email: string } | null } | null };
 
 export type MyRecipesQueryVariables = Exact<{
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -1517,7 +1518,7 @@ export type NutritionistQueryVariables = Exact<{
 }>;
 
 
-export type NutritionistQuery = { __typename?: 'Query', nutritionist?: { __typename?: 'NutritionistProfile', id: number, bio?: string | null, phone?: string | null, city?: string | null, user?: { __typename?: 'User', id: number, username: string, email: string, image?: string | null } | null } | null };
+export type NutritionistQuery = { __typename?: 'Query', nutritionist?: { __typename?: 'NutritionistProfile', id: number, bio_el?: string | null, bio_en?: string | null, phone?: string | null, city_el?: string | null, city_en?: string | null, user?: { __typename?: 'User', id: number, username: string, email: string, image?: string | null } | null } | null };
 
 export type NutritionistsQueryVariables = Exact<{
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -1525,7 +1526,7 @@ export type NutritionistsQueryVariables = Exact<{
 }>;
 
 
-export type NutritionistsQuery = { __typename?: 'Query', nutritionists: Array<{ __typename?: 'NutritionistProfile', id: number, bio?: string | null, phone?: string | null, city?: string | null, user?: { __typename?: 'User', id: number, username: string, email: string, image?: string | null } | null }> };
+export type NutritionistsQuery = { __typename?: 'Query', nutritionists: Array<{ __typename?: 'NutritionistProfile', id: number, bio_el?: string | null, bio_en?: string | null, phone?: string | null, city_el?: string | null, city_en?: string | null, user?: { __typename?: 'User', id: number, username: string, email: string, image?: string | null } | null }> };
 
 export type RecipeQueryVariables = Exact<{
   id: Scalars['Int']['input'];
@@ -1635,9 +1636,11 @@ export const RegularNutritionistProfileResponseFragmentDoc = gql`
   }
   nutritionistProfile {
     id
-    bio
+    bio_el
+    bio_en
     phone
-    city
+    city_el
+    city_en
     user {
       id
       username
@@ -4286,9 +4289,11 @@ export const MyNutritionistProfileDocument = gql`
     query MyNutritionistProfile {
   myNutritionistProfile {
     id
-    bio
+    bio_el
+    bio_en
     phone
-    city
+    city_el
+    city_en
     user {
       id
       username
@@ -4453,9 +4458,11 @@ export const NutritionistDocument = gql`
     query Nutritionist($id: Int!) {
   nutritionist(id: $id) {
     id
-    bio
+    bio_el
+    bio_en
     phone
-    city
+    city_el
+    city_en
     user {
       id
       username
@@ -4502,9 +4509,11 @@ export const NutritionistsDocument = gql`
     query Nutritionists($limit: Int = 10, $offset: Int = 0) {
   nutritionists(limit: $limit, offset: $offset) {
     id
-    bio
+    bio_el
+    bio_en
     phone
-    city
+    city_el
+    city_en
     user {
       id
       username

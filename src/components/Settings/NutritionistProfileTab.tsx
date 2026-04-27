@@ -17,8 +17,8 @@ export default function NutritionistProfileTab() {
   const { t } = useTranslation('common');
   const { data } = useMyNutritionistProfileQuery();
   const profile = data?.myNutritionistProfile;
-  const [bio, setBio] = useState(profile?.bio ?? '');
-  const [city, setCity] = useState(profile?.city ?? '');
+  const [bio, setBio] = useState(profile?.bio_el ?? '');
+  const [city, setCity] = useState(profile?.city_el ?? '');
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [serverError, setServerError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
@@ -32,7 +32,7 @@ export default function NutritionistProfileTab() {
 
     try {
       const result = await updateNutritionistProfile({
-        variables: { data: { bio, city } },
+        variables: { data: { bio_el: bio, city_el: city } },
       });
 
       if (result.data?.updateNutritionistProfile.errors) {
@@ -58,15 +58,14 @@ export default function NutritionistProfileTab() {
           value={bio}
           onChange={setBio}
           placeholder={t('settings.bioPlaceholder')}
-          error={fieldErrors.bio}
+          error={fieldErrors.bio_el}
         />
-
         <Field
           label={t('settings.city')}
           value={city}
           onChange={setCity}
           placeholder="Αθήνα"
-          error={fieldErrors.city}
+          error={fieldErrors.city_el}
         />
       </FieldGroup>
       <ServerError message={serverError} />
