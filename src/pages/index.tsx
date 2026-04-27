@@ -134,7 +134,7 @@ const Index: NextPage = () => {
           <button
             onClick={async () => {
               await logout();
-              await apolloClient.clearStore();
+              await apolloClient.resetStore();
             }}
             disabled={logoutLoading}
             className="rounded-full border-[1px] border-white px-[1.5em] py-[0.25em] text-white transition duration-300 hover:scale-110 hover:bg-myRed hover:ease-in md:text-base xl:text-2xl"
