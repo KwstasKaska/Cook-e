@@ -101,7 +101,9 @@ function NutrRecipesContent() {
               return (
                 <button
                   key={recipe.id}
-                  onClick={() => router.push(`/user/recipes/${recipe.id}`)}
+                  onClick={() =>
+                    router.push(`/nutritionist/recipes/${recipe.id}`)
+                  }
                   className="group flex flex-col overflow-hidden rounded-2xl bg-white shadow-md transition-transform duration-200 hover:scale-105 text-left"
                 >
                   <div className="relative h-40 w-full overflow-hidden bg-gray-100">
