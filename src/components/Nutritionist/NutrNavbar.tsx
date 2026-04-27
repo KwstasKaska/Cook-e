@@ -6,6 +6,9 @@ import { useApolloClient } from '@apollo/client';
 import { useTranslation } from 'next-i18next';
 import LanguageSwitcher from '../Helper/LanguageSwitcher';
 import { useChatContext } from '../Chat/ChatContext';
+import { ChatIcon } from '../Helper/ChatIcon';
+import { NavSettingsLink } from '../Helper/SettingsIcons';
+import { HamburgerButton } from '../Helper/HamburgerButton';
 
 export default function NutrNavbar() {
   const { t } = useTranslation('common');
@@ -40,24 +43,6 @@ export default function NutrNavbar() {
     router.push('/login');
   };
 
-  // Reusable chat icon SVG
-  const ChatIcon = ({ className }: { className?: string }) => (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      className={className ?? 'w-6 h-6'}
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-      strokeWidth={1.8}
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M8 10h.01M12 10h.01M16 10h.01M21 16c0 1.1-.9 2-2 2H7l-4 4V6a2 2 0 012-2h14a2 2 0 012 2v10z"
-      />
-    </svg>
-  );
-
   if (loading) return null;
 
   return (
@@ -75,32 +60,50 @@ export default function NutrNavbar() {
         </span>
       </Link>
 
-      {/* Desktop nav links — lg+ only */}
-      <div className="hidden lg:flex items-center gap-8">
-        {navLinks.map((link) => (
-          <button
-            key={link.sectionId}
-            onClick={() => scrollToSection(link.sectionId)}
-            className="text-sm font-semibold tracking-wide text-myGrey-200 hover:text-myBlue-200 transition-colors duration-150"
-          >
-            {link.label}
-          </button>
-        ))}
+      {/* Desktop nav links — xl+ only */}
+      <div className="hidden xl:flex items-center gap-5">
+        {navLinks.map((link) => {
+          const isActive =
+            router.pathname === '/nutritionist' &&
+            router.asPath.includes(link.sectionId);
+          return (
+            <button
+              key={link.sectionId}
+              onClick={() => scrollToSection(link.sectionId)}
+              className="text-sm font-semibold tracking-wide transition-colors duration-150"
+              style={{
+                color: isActive ? '#377CC3' : '#3F4756',
+                borderBottom: isActive
+                  ? '2px solid #377CC3'
+                  : '2px solid transparent',
+                paddingBottom: '2px',
+              }}
+            >
+              {link.label}
+            </button>
+          );
+        })}
         <Link
           href="/nutritionist/recipes"
-          className={`text-sm font-semibold tracking-wide transition-colors duration-150 ${
-            router.pathname === '/nutritionist/recipes'
-              ? 'text-myBlue-200'
-              : 'text-myGrey-200 hover:text-myBlue-200'
-          }`}
+          className="text-sm font-semibold tracking-wide transition-colors duration-150"
+          style={{
+            color:
+              router.pathname === '/nutritionist/recipes'
+                ? '#377CC3'
+                : '#3F4756',
+            borderBottom:
+              router.pathname === '/nutritionist/recipes'
+                ? '2px solid #377CC3'
+                : '2px solid transparent',
+            paddingBottom: '2px',
+          }}
         >
           {t('nutrnav.nutr_recipes')}
         </Link>
       </div>
 
-      {/* Right actions — lg+ only */}
-      <div className="hidden lg:flex items-center gap-4">
-        {/* Messages */}
+      {/* Right actions — xl+ only */}
+      <div className="hidden xl:flex items-center gap-3">
         <button
           onClick={openWidget}
           className="p-2 rounded text-myGrey-200 hover:text-myBlue-200 transition-colors duration-150"
@@ -108,104 +111,77 @@ export default function NutrNavbar() {
         >
           <ChatIcon />
         </button>
-
-        <Link
-          href="/settings"
-          className="p-2 rounded text-myGrey-200 hover:text-myBlue-200 transition-colors duration-150"
-          aria-label={t('nutrnav.nutr_settings')}
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="w-6 h-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth={1.8}
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
-            />
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-            />
-          </svg>
-        </Link>
+        <NavSettingsLink ariaLabel={t('nutrnav.nutr_settings')} />
         <LanguageSwitcher />
         {data?.me && (
           <button
             onClick={handleLogout}
             disabled={logoutLoading}
-            className="ml-2 border border-myGrey-200 text-myGrey-200 text-sm font-semibold px-5 py-1.5 rounded-full hover:bg-myRed hover:border-myRed hover:text-white transition-colors duration-150"
+            className="ml-1 border border-myGrey-200 text-myGrey-200 text-sm font-semibold px-4 py-1.5 rounded-full hover:bg-myRed hover:border-myRed hover:text-white transition-colors duration-150"
           >
             {t('nutrnav.nutr_logout')}
           </button>
         )}
       </div>
 
-      {/* Hamburger — visible on mobile + tablet (below lg) */}
-      <button
-        className="lg:hidden text-myGrey-200 p-2"
+      {/* Hamburger — visible on mobile + tablet (below xl) */}
+      <HamburgerButton
+        isOpen={menuOpen}
         onClick={() => setMenuOpen((v) => !v)}
-        aria-label="Menu"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="w-6 h-6"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          strokeWidth={2}
-        >
-          {menuOpen ? (
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M6 18L18 6M6 6l12 12"
-            />
-          ) : (
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M4 6h16M4 12h16M4 18h16"
-            />
-          )}
-        </svg>
-      </button>
+        className="xl:hidden p-2 text-myGrey-200"
+      />
 
       {/* Mobile + tablet dropdown */}
       {menuOpen && (
         <div
           style={{ backgroundColor: '#B3D5F8' }}
-          className="absolute top-full left-0 w-full flex flex-col items-start px-6 py-4 gap-4 lg:hidden shadow-lg z-50"
+          className="absolute top-full left-0 w-full flex flex-col items-start px-6 py-4 gap-4 xl:hidden shadow-lg z-50"
         >
-          {navLinks.map((link) => (
-            <button
-              key={link.sectionId}
-              onClick={() => {
-                scrollToSection(link.sectionId);
-                setMenuOpen(false);
-              }}
-              className="text-sm font-semibold tracking-wide w-full text-left py-1 text-myGrey-200"
-            >
-              {link.label}
-            </button>
-          ))}
+          {navLinks.map((link) => {
+            const isActive =
+              router.pathname === '/nutritionist' &&
+              router.asPath.includes(link.sectionId);
+            return (
+              <button
+                key={link.sectionId}
+                onClick={() => {
+                  scrollToSection(link.sectionId);
+                  setMenuOpen(false);
+                }}
+                className="text-sm font-semibold tracking-wide w-full text-left py-1 transition-colors duration-150"
+                style={{
+                  color: isActive ? '#377CC3' : '#3F4756',
+                  borderBottom: isActive
+                    ? '2px solid #377CC3'
+                    : '2px solid transparent',
+                  paddingBottom: '2px',
+                }}
+              >
+                {link.label}
+              </button>
+            );
+          })}
           <Link
             href="/nutritionist/recipes"
             onClick={() => setMenuOpen(false)}
-            className="text-sm font-semibold tracking-wide w-full text-left py-1 text-myGrey-200"
+            className="text-sm font-semibold tracking-wide w-full text-left py-1 transition-colors duration-150"
+            style={{
+              color:
+                router.pathname === '/nutritionist/recipes'
+                  ? '#377CC3'
+                  : '#3F4756',
+              borderBottom:
+                router.pathname === '/nutritionist/recipes'
+                  ? '2px solid #377CC3'
+                  : '2px solid transparent',
+              paddingBottom: '2px',
+            }}
           >
             {t('nutrnav.nutr_recipes')}
           </Link>
 
           <div className="flex items-center gap-4 pt-2 border-t border-gray-400 w-full">
             <LanguageSwitcher />
-
-            {/* Messages — mobile */}
             <button
               onClick={() => {
                 openWidget();
@@ -216,33 +192,10 @@ export default function NutrNavbar() {
             >
               <ChatIcon />
             </button>
-
-            <Link
-              href="/settings"
+            <NavSettingsLink
+              ariaLabel={t('nutrnav.nutr_settings')}
               onClick={() => setMenuOpen(false)}
-              className="text-myGrey-200 hover:text-myBlue-200"
-              aria-label={t('nutrnav.nutr_settings')}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-6 h-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={1.8}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
-                />
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                />
-              </svg>
-            </Link>
+            />
             {data?.me && (
               <button
                 onClick={handleLogout}

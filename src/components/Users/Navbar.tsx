@@ -6,6 +6,9 @@ import LanguageSwitcher from '../Helper/LanguageSwitcher';
 import { useLogoutMutation } from '../../generated/graphql';
 import { useApolloClient } from '@apollo/client';
 import { useChatContext } from '../Chat/ChatContext';
+import { ChatIcon } from '../Helper/ChatIcon';
+import { NavSettingsLink } from '../Helper/SettingsIcons';
+import { HamburgerButton } from '../Helper/HamburgerButton';
 
 export default function Navbar() {
   const router = useRouter();
@@ -28,24 +31,6 @@ export default function Navbar() {
     closeWidget();
     router.push('/login');
   };
-
-  // Reusable chat icon SVG
-  const ChatIcon = ({ className }: { className?: string }) => (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      className={className ?? 'w-6 h-6'}
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-      strokeWidth={1.8}
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M8 10h.01M12 10h.01M16 10h.01M21 16c0 1.1-.9 2-2 2H7l-4 4V6a2 2 0 012-2h14a2 2 0 012 2v10z"
-      />
-    </svg>
-  );
 
   return (
     <nav
@@ -70,11 +55,14 @@ export default function Navbar() {
             <Link
               key={link.href}
               href={link.href}
-              className={`text-sm font-semibold tracking-wide transition-colors duration-150 ${
-                isActive
-                  ? 'text-myBlue-200'
-                  : 'text-myGrey-200 hover:text-myBlue-200'
-              }`}
+              className="text-sm font-semibold tracking-wide transition-colors duration-150"
+              style={{
+                color: isActive ? '#377CC3' : '#3F4756',
+                borderBottom: isActive
+                  ? '2px solid #377CC3'
+                  : '2px solid transparent',
+                paddingBottom: '2px',
+              }}
             >
               {link.label}
             </Link>
@@ -109,7 +97,6 @@ export default function Navbar() {
           </svg>
         </Link>
 
-        {/* Messages */}
         <button
           onClick={openWidget}
           className="p-2 rounded text-myGrey-200 hover:text-myBlue-200 transition-colors duration-150"
@@ -118,35 +105,7 @@ export default function Navbar() {
           <ChatIcon />
         </button>
 
-        <Link
-          href="/settings"
-          className={`p-2 rounded transition-colors duration-150 ${
-            router.pathname === '/user/settings'
-              ? 'text-yellow-400'
-              : 'text-myGrey-200 hover:text-myBlue-200'
-          }`}
-          aria-label={t('nav.settings')}
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="w-6 h-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth={1.8}
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
-            />
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-            />
-          </svg>
-        </Link>
+        <NavSettingsLink ariaLabel={t('nav.settings')} />
         <LanguageSwitcher />
         <button
           onClick={handleLogout}
@@ -157,36 +116,13 @@ export default function Navbar() {
       </div>
 
       {/* Hamburger — visible on mobile + tablet (below lg) */}
-      <button
-        className="lg:hidden text-white p-2"
+      <HamburgerButton
+        isOpen={menuOpen}
         onClick={() => setMenuOpen((v) => !v)}
-        aria-label="Menu"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="w-6 h-6"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          strokeWidth={2}
-        >
-          {menuOpen ? (
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M6 18L18 6M6 6l12 12"
-            />
-          ) : (
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M4 6h16M4 12h16M4 18h16"
-            />
-          )}
-        </svg>
-      </button>
+        className="lg:hidden p-2 text-myGrey-200"
+      />
 
-      {/* Mobile + tablet dropdown */}
+      {/* Mobile + tablet dropdown — dark background, intentionally different from chef/nutr */}
       {menuOpen && (
         <div
           style={{ backgroundColor: '#3F4756' }}
@@ -198,9 +134,14 @@ export default function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`text-sm font-semibold tracking-wide w-full py-1 ${
-                  isActive ? 'text-yellow-400' : 'text-white'
-                }`}
+                className="text-sm font-semibold tracking-wide w-full py-1 transition-colors duration-150"
+                style={{
+                  color: isActive ? '#FBBF24' : 'white',
+                  borderBottom: isActive
+                    ? '2px solid #FBBF24'
+                    : '2px solid transparent',
+                  paddingBottom: '2px',
+                }}
                 onClick={() => setMenuOpen(false)}
               >
                 {link.label}
@@ -232,7 +173,6 @@ export default function Navbar() {
               </svg>
             </Link>
 
-            {/* Messages — mobile */}
             <button
               onClick={() => {
                 openWidget();
@@ -244,32 +184,12 @@ export default function Navbar() {
               <ChatIcon />
             </button>
 
-            <Link
-              href="/user/settings"
+            <NavSettingsLink
+              ariaLabel={t('nav.settings')}
               onClick={() => setMenuOpen(false)}
-              className="text-white hover:text-yellow-300"
-              aria-label={t('nav.settings')}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="w-6 h-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={1.8}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
-                />
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                />
-              </svg>
-            </Link>
+              className="text-white hover:text-yellow-300 transition-colors duration-150"
+            />
+
             <button
               onClick={handleLogout}
               className="ml-auto border border-myGrey-200 text-myGrey-200 text-sm font-semibold px-5 py-1.5 rounded-full hover:bg-myRed hover:border-myRed hover:text-white transition-colors"
