@@ -1,7 +1,8 @@
 query Chef($id: Int!) {
   chef(id: $id) {
     id
-    bio
+    bio_el
+    bio_en
     user {
       id
       username

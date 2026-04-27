@@ -21,10 +21,10 @@ export default function ChefProfileTab() {
   const [success, setSuccess] = useState<string | null>(null);
   const [updateChefProfile, { loading }] = useUpdateChefProfileMutation();
 
-  // Sync bio once the query resolves
+  // Sync bio_el once the query resolves
   useEffect(() => {
-    if (data?.myChefProfile?.bio) {
-      setBio(data.myChefProfile.bio);
+    if (data?.myChefProfile?.bio_el) {
+      setBio(data.myChefProfile.bio_el);
     }
   }, [data]);
 
@@ -35,7 +35,7 @@ export default function ChefProfileTab() {
 
     try {
       const result = await updateChefProfile({
-        variables: { data: { bio } },
+        variables: { data: { bio_el: bio } },
       });
 
       if (result.data?.updateChefProfile.errors) {
@@ -61,7 +61,7 @@ export default function ChefProfileTab() {
           value={bio}
           onChange={setBio}
           placeholder={t('settings.chefBioPlaceholder')}
-          error={fieldErrors.bio}
+          error={fieldErrors.bio_el}
         />
       </FieldGroup>
       <ServerError message={serverError} />

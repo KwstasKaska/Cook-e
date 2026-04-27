@@ -1,6 +1,7 @@
 fragment RegularChefProfile on ChefProfile {
   id
-  bio
+  bio_el
+  bio_en
   user {
     id
     username
