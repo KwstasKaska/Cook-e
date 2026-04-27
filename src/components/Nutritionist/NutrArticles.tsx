@@ -36,7 +36,7 @@ const NutrArticles: React.FC = () => {
         )}
 
         {!loading && articles.length === 0 && offset === 0 && (
-          <p className="text-white">{t('nutr.noArticlesYet')}</p>
+          <p className="text-white">{t('chef.profile.no_articles')}</p>
         )}
 
         {/* Grid */}
@@ -76,29 +76,29 @@ const NutrArticles: React.FC = () => {
                 );
               })}
             </div>
+          </div>
+        )}
 
-            {/* Prev / Next */}
-            {(hasPrev || hasMore) && (
-              <div className="mt-8 flex justify-center gap-4">
-                {hasPrev && (
-                  <button
-                    onClick={() => setOffset((o) => o - LIMIT)}
-                    className="rounded-full px-8 py-2.5 text-sm font-bold transition hover:opacity-90"
-                    style={{ backgroundColor: '#B3D5F8', color: '#3F4756' }}
-                  >
-                    ← {t('common.prev')}
-                  </button>
-                )}
-                {hasMore && (
-                  <button
-                    onClick={() => setOffset((o) => o + LIMIT)}
-                    className="rounded-full px-8 py-2.5 text-sm font-bold transition hover:opacity-90"
-                    style={{ backgroundColor: '#B3D5F8', color: '#3F4756' }}
-                  >
-                    {t('common.next')} →
-                  </button>
-                )}
-              </div>
+        {/* Prev / Next — outside grid block so Prev shows even on empty page */}
+        {!loading && (hasPrev || (hasMore && articles.length > 0)) && (
+          <div className="flex justify-center gap-4">
+            {hasPrev && (
+              <button
+                onClick={() => setOffset((o) => o - LIMIT)}
+                className="rounded-full px-8 py-2.5 text-sm font-bold transition hover:opacity-90"
+                style={{ backgroundColor: '#B3D5F8', color: '#3F4756' }}
+              >
+                {t('common.prev')}
+              </button>
+            )}
+            {hasMore && articles.length > 0 && (
+              <button
+                onClick={() => setOffset((o) => o + LIMIT)}
+                className="rounded-full px-8 py-2.5 text-sm font-bold transition hover:opacity-90"
+                style={{ backgroundColor: '#B3D5F8', color: '#3F4756' }}
+              >
+                {t('common.next')}
+              </button>
             )}
           </div>
         )}
