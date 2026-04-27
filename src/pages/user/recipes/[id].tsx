@@ -323,22 +323,37 @@ function RecipeDetailContent() {
                 <StarRow rating={avgRating} ratingCount={reviews.length} />
               )}
 
+              {/* ── Chef section — always shown when author data is present */}
+              {recipe.author?.user && (
+                <button
+                  onClick={() => router.push(`/user/chef/${recipe.authorId}`)}
+                  className="flex w-fit items-center gap-3 group"
+                >
+                  {recipe.author.user.image ? (
+                    <img
+                      src={recipe.author.user.image}
+                      alt={recipe.author.user.username}
+                      className="h-10 w-10 rounded-full object-cover border-2 border-white shadow"
+                    />
+                  ) : (
+                    <div
+                      className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-white text-sm font-bold shadow"
+                      style={{ backgroundColor: '#377CC3', color: '#fff' }}
+                    >
+                      {recipe.author.user.username?.[0]?.toUpperCase() ?? '?'}
+                    </div>
+                  )}
+                  <span className="text-sm font-semibold text-gray-300 group-hover:underline transition">
+                    {recipe.author.user.username}
+                  </span>
+                </button>
+              )}
+
+              {/* ── Chef comment — shown only when present */}
               {(isEl ? recipe.chefComment_el : recipe.chefComment_en) && (
                 <p className="max-w-lg text-sm italic text-gray-300">
-                  "{isEl ? recipe.chefComment_el : recipe.chefComment_en}"
-                  {recipe.author?.user?.username && (
-                    <span className="ml-2 not-italic font-semibold text-gray-400">
-                      —{' '}
-                      <button
-                        onClick={() =>
-                          router.push(`/user/chef/${recipe.authorId}`)
-                        }
-                        className="hover:underline transition"
-                      >
-                        {recipe.author.user.username}
-                      </button>
-                    </span>
-                  )}
+                  &ldquo;{isEl ? recipe.chefComment_el : recipe.chefComment_en}
+                  &rdquo;
                 </p>
               )}
 
