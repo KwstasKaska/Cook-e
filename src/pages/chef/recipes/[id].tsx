@@ -474,7 +474,6 @@ export default function ChefSingleRecipe() {
                   lang={lang}
                   isEditing={isEditing}
                   editForm={editForm}
-                  totalTime={totalTime}
                   difficultyLabel={difficultyLabel}
                   onUpdate={update}
                 />
