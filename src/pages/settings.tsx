@@ -87,15 +87,6 @@ export default function SettingsPage() {
       {renderNavbar()}
 
       <div className="relative overflow-hidden min-h-screen">
-        <div
-          className="absolute bottom-0 left-0 w-full bg-gray-50"
-          style={{
-            height: '88%',
-            clipPath: 'polygon(0 6%, 100% 0%, 100% 100%, 0% 100%)',
-          }}
-          aria-hidden="true"
-        />
-
         <div className="relative z-10 max-w-5xl mx-auto px-6 pt-10 pb-20">
           <h1 className="text-white text-3xl font-bold mb-8">
             {t('settings.title')}

@@ -120,60 +120,6 @@ export default function ChefRecipes() {
       <ChefNavbar />
 
       <main className="relative flex flex-1 flex-col items-center px-4 py-8 md:px-8">
-        {/* Decorative diamond shapes */}
-        <div
-          className="pointer-events-none absolute hidden md:block"
-          style={{
-            left: '60px',
-            top: '80px',
-            width: '120px',
-            height: '120px',
-            backgroundColor: '#B3D5F8',
-            transform: 'rotate(45deg)',
-            borderRadius: '12px',
-            opacity: 0.7,
-          }}
-        />
-        <div
-          className="pointer-events-none absolute hidden md:block"
-          style={{
-            right: '60px',
-            top: '80px',
-            width: '120px',
-            height: '120px',
-            backgroundColor: '#B3D5F8',
-            transform: 'rotate(45deg)',
-            borderRadius: '12px',
-            opacity: 0.7,
-          }}
-        />
-        <div
-          className="pointer-events-none absolute hidden md:block"
-          style={{
-            left: '30px',
-            bottom: '200px',
-            width: '90px',
-            height: '90px',
-            backgroundColor: '#B3D5F8',
-            transform: 'rotate(45deg)',
-            borderRadius: '10px',
-            opacity: 0.5,
-          }}
-        />
-        <div
-          className="pointer-events-none absolute hidden md:block"
-          style={{
-            right: '30px',
-            bottom: '200px',
-            width: '90px',
-            height: '90px',
-            backgroundColor: '#B3D5F8',
-            transform: 'rotate(45deg)',
-            borderRadius: '10px',
-            opacity: 0.5,
-          }}
-        />
-
         <h1
           className="relative z-10 mb-8 text-3xl italic"
           style={{
