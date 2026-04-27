@@ -10,6 +10,8 @@ import {
   useUpdateRecipeMutation,
   useDeleteRecipeMutation,
   useIngredientsQuery,
+  useRecipeAverageRatingQuery,
+  useRecipeRatingsQuery,
 } from '../../../generated/graphql';
 import useIsChef from '../../../utils/useIsChef';
 import { pick } from '../../../utils/pick';
@@ -32,32 +34,9 @@ import RecipeTimeBreakdown from '../../../components/Chef/recipeDetail/RecipeTim
 import RecipeCategoryCard from '../../../components/Chef/recipeDetail/RecipeCategoryCard';
 import RecipeMacrosCard from '../../../components/Chef/recipeDetail/RecipeMacrosCard';
 import ScrollToTopButton from '../../../components/Helper/ScrollToTopButton';
+import Stars from '../../../components/Helper/Stars';
 
-// ─── Stars ────────────────────────────────────────────────────────────────────
-
-const Stars = ({ rating }: { rating: number }) => (
-  <div className="flex gap-0.5">
-    {Array.from({ length: 5 }).map((_, i) => (
-      <svg
-        key={i}
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-        fill={i < Math.round(rating) ? '#EAB308' : 'none'}
-        stroke="#EAB308"
-        strokeWidth={i < Math.round(rating) ? 0 : 1.5}
-        className="h-5 w-5"
-      >
-        <path
-          fillRule="evenodd"
-          d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z"
-          clipRule="evenodd"
-        />
-      </svg>
-    ))}
-  </div>
-);
-
-// ─── GQL ─────────────────────────────────────────────────────────────────────
+// ─── GQL
 
 const RECIPE_DETAIL_QUERY = gql`
   query RecipeDetail($id: Int!) {
@@ -136,6 +115,20 @@ export default function ChefSingleRecipe() {
     skip: !router.isReady || !id,
     fetchPolicy: 'network-only',
   });
+  const { data: avgData } = useRecipeAverageRatingQuery({
+    variables: { recipeId: id! },
+    skip: !id,
+    fetchPolicy: 'network-only',
+  });
+
+  const { data: ratingsData } = useRecipeRatingsQuery({
+    variables: { recipeId: id!, limit: 50, offset: 0 },
+    skip: !id,
+    fetchPolicy: 'network-only',
+  });
+
+  const avgRating = avgData?.recipeAverageRating ?? 0;
+  const totalRatings = ratingsData?.recipeRatings?.length ?? 0;
 
   const { data: ingredientsData } = useIngredientsQuery();
   const allIngredients = ingredientsData?.ingredients ?? [];
@@ -383,9 +376,11 @@ export default function ChefSingleRecipe() {
             {/* LEFT column — main content, always visible */}
             <div className="flex-1 min-w-0">
               <div className="mb-4 flex items-center gap-2">
-                <Stars rating={0} />
+                <Stars rating={avgRating} />
                 <span className="text-sm text-gray-400">
-                  {t('chef.recipe_detail.no_ratings_yet')}
+                  {totalRatings > 0
+                    ? `${avgRating.toFixed(1)} (${totalRatings})`
+                    : t('chef.recipe_detail.no_ratings_yet')}
                 </span>
               </div>
 
