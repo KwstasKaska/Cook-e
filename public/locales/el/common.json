@@ -194,7 +194,7 @@
     "noMealPlan": "Δεν έχει ανατεθεί ακόμα πλάνο διατροφής.",
     "profilePicture": "Φωτογραφία προφίλ",
     "changePhoto": "Αλλαγή φωτογραφίας",
-    "deleteAccountConfirm": "Διαγραφή λογαριασμού"
+    "deleteError": "Διαγραφή λογαριασμού"
   },
   "nutr": {
     "welcome": "Καλωσήρθες",
