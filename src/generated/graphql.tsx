@@ -282,7 +282,6 @@ export type Mutation = {
   updateAppointment?: Maybe<AppointmentResponse>;
   updateAppointmentRequest?: Maybe<AppointmentRequestResponse>;
   updateArticle: ArticleResponse;
-  updateCartItem: ShoppingCart;
   updateChefProfile: ChefProfileResponse;
   updateMealScheduler?: Maybe<MealPlanResponse>;
   updateNutritionistProfile: NutritionistProfileResponse;
@@ -298,9 +297,6 @@ export type MutationAddManyToCartArgs = {
 
 export type MutationAddToCartArgs = {
   ingredientId: Scalars['Int']['input'];
-  note?: InputMaybe<Scalars['String']['input']>;
-  quantity?: InputMaybe<Scalars['String']['input']>;
-  unit?: InputMaybe<Scalars['String']['input']>;
 };
 
 
@@ -455,14 +451,6 @@ export type MutationUpdateAppointmentRequestArgs = {
 
 export type MutationUpdateArticleArgs = {
   data: UpdateArticleInput;
-};
-
-
-export type MutationUpdateCartItemArgs = {
-  id: Scalars['Int']['input'];
-  note?: InputMaybe<Scalars['String']['input']>;
-  quantity?: InputMaybe<Scalars['String']['input']>;
-  unit?: InputMaybe<Scalars['String']['input']>;
 };
 
 
@@ -862,9 +850,6 @@ export type ShoppingCart = {
   id: Scalars['Int']['output'];
   ingredient?: Maybe<Ingredient>;
   ingredientId: Scalars['Int']['output'];
-  note?: Maybe<Scalars['String']['output']>;
-  quantity?: Maybe<Scalars['String']['output']>;
-  unit?: Maybe<Scalars['String']['output']>;
   userId: Scalars['Int']['output'];
 };
 
@@ -1006,7 +991,7 @@ export type RegularArticleFragment = { __typename?: 'Article', id: number, title
 
 export type RegularArticleResponseFragment = { __typename?: 'ArticleResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, article?: { __typename?: 'Article', id: number, title_el: string, title_en: string, text_el: string, text_en: string, image: string, creatorId: number, createdAt: string, updatedAt: string, creator?: { __typename?: 'User', id: number, username: string, image?: string | null } | null } | null };
 
-export type RegularCartItemFragment = { __typename?: 'ShoppingCart', id: number, userId: number, ingredientId: number, quantity?: string | null, unit?: string | null, note?: string | null, addedAt: string, ingredient?: { __typename?: 'Ingredient', id: number, name_el: string, name_en: string, caloriesPer100g?: number | null } | null };
+export type RegularCartItemFragment = { __typename?: 'ShoppingCart', id: number, userId: number, ingredientId: number, addedAt: string, ingredient?: { __typename?: 'Ingredient', id: number, name_el: string, name_en: string, caloriesPer100g?: number | null } | null };
 
 export type RegularCookedRecipeFragment = { __typename?: 'CookedRecipe', id: number, userId: number, recipeId: number, cookedAt: string, recipe?: { __typename?: 'Recipe', id: number, title_el: string, title_en: string, recipeImage?: string | null, category?: RecipeCategory | null, prepTime: number, cookTime: number, caloriesTotal?: number | null, difficulty: Difficulty } | null };
 
@@ -1088,20 +1073,17 @@ export type DeleteArticleMutation = { __typename?: 'Mutation', deleteArticle: bo
 
 export type AddToCartMutationVariables = Exact<{
   ingredientId: Scalars['Int']['input'];
-  quantity?: InputMaybe<Scalars['String']['input']>;
-  unit?: InputMaybe<Scalars['String']['input']>;
-  note?: InputMaybe<Scalars['String']['input']>;
 }>;
 
 
-export type AddToCartMutation = { __typename?: 'Mutation', addToCart: { __typename?: 'ShoppingCart', id: number, userId: number, ingredientId: number, quantity?: string | null, unit?: string | null, note?: string | null, addedAt: string, ingredient?: { __typename?: 'Ingredient', id: number, name_el: string, name_en: string, caloriesPer100g?: number | null } | null } };
+export type AddToCartMutation = { __typename?: 'Mutation', addToCart: { __typename?: 'ShoppingCart', id: number, userId: number, ingredientId: number, addedAt: string, ingredient?: { __typename?: 'Ingredient', id: number, name_el: string, name_en: string, caloriesPer100g?: number | null } | null } };
 
 export type AddManyToCartMutationVariables = Exact<{
   ingredientIds: Array<Scalars['Int']['input']> | Scalars['Int']['input'];
 }>;
 
 
-export type AddManyToCartMutation = { __typename?: 'Mutation', addManyToCart: Array<{ __typename?: 'ShoppingCart', id: number, userId: number, ingredientId: number, quantity?: string | null, unit?: string | null, note?: string | null, addedAt: string, ingredient?: { __typename?: 'Ingredient', id: number, name_el: string, name_en: string, caloriesPer100g?: number | null } | null }> };
+export type AddManyToCartMutation = { __typename?: 'Mutation', addManyToCart: Array<{ __typename?: 'ShoppingCart', id: number, userId: number, ingredientId: number, addedAt: string, ingredient?: { __typename?: 'Ingredient', id: number, name_el: string, name_en: string, caloriesPer100g?: number | null } | null }> };
 
 export type RemoveFromCartMutationVariables = Exact<{
   id: Scalars['Int']['input'];
@@ -1439,7 +1421,7 @@ export type GetNutritionistMealPlansQuery = { __typename?: 'Query', getNutrition
 export type MyCartQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MyCartQuery = { __typename?: 'Query', myCart: Array<{ __typename?: 'ShoppingCart', id: number, userId: number, ingredientId: number, quantity?: string | null, unit?: string | null, note?: string | null, addedAt: string, ingredient?: { __typename?: 'Ingredient', id: number, name_el: string, name_en: string, caloriesPer100g?: number | null } | null }> };
+export type MyCartQuery = { __typename?: 'Query', myCart: Array<{ __typename?: 'ShoppingCart', id: number, userId: number, ingredientId: number, addedAt: string, ingredient?: { __typename?: 'Ingredient', id: number, name_el: string, name_en: string, caloriesPer100g?: number | null } | null }> };
 
 export type MyChefProfileQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1749,9 +1731,6 @@ export const RegularCartItemFragmentDoc = gql`
   id
   userId
   ingredientId
-  quantity
-  unit
-  note
   addedAt
   ingredient {
     id
@@ -2207,13 +2186,8 @@ export type DeleteArticleMutationHookResult = ReturnType<typeof useDeleteArticle
 export type DeleteArticleMutationResult = Apollo.MutationResult<DeleteArticleMutation>;
 export type DeleteArticleMutationOptions = Apollo.BaseMutationOptions<DeleteArticleMutation, DeleteArticleMutationVariables>;
 export const AddToCartDocument = gql`
-    mutation AddToCart($ingredientId: Int!, $quantity: String, $unit: String, $note: String) {
-  addToCart(
-    ingredientId: $ingredientId
-    quantity: $quantity
-    unit: $unit
-    note: $note
-  ) {
+    mutation AddToCart($ingredientId: Int!) {
+  addToCart(ingredientId: $ingredientId) {
     ...RegularCartItem
   }
 }
@@ -2234,9 +2208,6 @@ export type AddToCartMutationFn = Apollo.MutationFunction<AddToCartMutation, Add
  * const [addToCartMutation, { data, loading, error }] = useAddToCartMutation({
  *   variables: {
  *      ingredientId: // value for 'ingredientId'
- *      quantity: // value for 'quantity'
- *      unit: // value for 'unit'
- *      note: // value for 'note'
  *   },
  * });
  */

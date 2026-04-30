@@ -1,15 +1,5 @@
-mutation AddToCart(
-  $ingredientId: Int!
-  $quantity: String
-  $unit: String
-  $note: String
-) {
-  addToCart(
-    ingredientId: $ingredientId
-    quantity: $quantity
-    unit: $unit
-    note: $note
-  ) {
+mutation AddToCart($ingredientId: Int!) {
+  addToCart(ingredientId: $ingredientId) {
     ...RegularCartItem
   }
 }

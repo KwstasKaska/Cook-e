@@ -112,7 +112,7 @@ function CartContent({
       setServerError('');
       try {
         await addToCart({
-          variables: { ingredientId, quantity: '100', unit: 'g' },
+          variables: { ingredientId },
         });
         setSearch('');
         setShowSearch(false);
@@ -254,7 +254,6 @@ function CartContent({
                         )}
                       </button>
 
-                      {/* Name + quantity */}
                       <div className="flex-1 min-w-0">
                         <p
                           className="truncate text-sm font-bold md:text-base"

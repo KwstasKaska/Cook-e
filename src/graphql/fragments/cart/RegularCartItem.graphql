@@ -2,9 +2,6 @@ fragment RegularCartItem on ShoppingCart {
   id
   userId
   ingredientId
-  quantity
-  unit
-  note
   addedAt
   ingredient {
     id
