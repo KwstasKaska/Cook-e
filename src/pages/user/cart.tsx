@@ -264,12 +264,6 @@ function CartContent({
                         >
                           {name}
                         </p>
-
-                        {item.note && (
-                          <p className="mt-1 text-xs text-gray-400 truncate">
-                            {item.note}
-                          </p>
-                        )}
                       </div>
 
                       {/* Remove */}
