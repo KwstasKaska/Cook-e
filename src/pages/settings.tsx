@@ -12,6 +12,7 @@ import MealPlanTab from '../components/Settings/MealPlanTab';
 import ChefNavbar from '../components/Chef/ChefNavbar';
 import NutrNavbar from '../components/Nutritionist/NutrNavbar';
 import { useDeleteUserMutation } from '../generated/graphql';
+import { useApolloClient } from '@apollo/client';
 
 type Role = 'CHEF' | 'USER' | 'NUTRITIONIST';
 
@@ -70,6 +71,7 @@ export default function SettingsPage() {
   const { loading: authLoading, isAuthorized, me } = useIsAuth();
   const [activeTab, setActiveTab] = useState<TabKey>('personal');
   const [deleteError, setDeleteError] = useState('');
+  const apolloClient = useApolloClient();
 
   const [deleteUser, { loading: deleting }] = useDeleteUserMutation();
 
@@ -81,6 +83,7 @@ export default function SettingsPage() {
         setDeleteError(t('settings.deleteError'));
         return;
       }
+      await apolloClient.clearStore();
       router.push('/login');
     } catch {
       setDeleteError(t('settings.deleteError'));
