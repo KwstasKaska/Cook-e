@@ -150,8 +150,6 @@ function RecipeDetailContent() {
         await addToCart({
           variables: {
             ingredientId,
-            quantity: quantity ?? '100',
-            unit: unit ?? 'g',
           },
         });
         setAddedToCart((prev) => new Set(prev).add(ingredientId));
