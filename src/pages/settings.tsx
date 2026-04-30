@@ -71,6 +71,7 @@ export default function SettingsPage() {
   const { loading: authLoading, isAuthorized, me } = useIsAuth();
   const [activeTab, setActiveTab] = useState<TabKey>('personal');
   const [deleteError, setDeleteError] = useState('');
+  const [showConfirm, setShowConfirm] = useState(false);
   const apolloClient = useApolloClient();
 
   const [deleteUser, { loading: deleting }] = useDeleteUserMutation();
@@ -149,7 +150,7 @@ export default function SettingsPage() {
                 <div className="mt-4 bg-white rounded-2xl shadow-md overflow-hidden">
                   <button
                     type="button"
-                    onClick={handleDeleteAccount}
+                    onClick={() => setShowConfirm(true)}
                     disabled={deleting}
                     aria-label={t('settings.deleteAccount')}
                     className="w-full flex items-center gap-3 px-4 py-3.5 text-sm font-semibold text-left transition-colors hover:bg-red-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-400 disabled:opacity-50"
@@ -238,6 +239,75 @@ export default function SettingsPage() {
           </div>
         </div>
       </div>
+
+      {/* ── Delete confirmation modal ───────────────────────────────────────── */}
+      {showConfirm && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center"
+          style={{ backgroundColor: 'rgba(0, 0, 0, 0.55)' }}
+          onClick={() => !deleting && setShowConfirm(false)}
+        >
+          <div
+            className="bg-white rounded-2xl shadow-2xl p-6 w-full max-w-sm mx-4"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Icon */}
+            <div
+              className="flex items-center justify-center w-12 h-12 rounded-full mb-4 mx-auto"
+              style={{ backgroundColor: '#FEE2E2' }}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={2}
+                stroke="#ED5B5B"
+                className="w-6 h-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"
+                />
+              </svg>
+            </div>
+
+            <h2
+              className="text-base font-bold text-center mb-2"
+              style={{ color: '#3F4756' }}
+            >
+              {t('settings.deleteConfirmTitle')}
+            </h2>
+            <p className="text-sm text-center text-gray-500 mb-6 leading-relaxed">
+              {t('settings.deleteConfirmMessage')}
+            </p>
+
+            <div className="flex gap-3">
+              <button
+                onClick={() => setShowConfirm(false)}
+                disabled={deleting}
+                className="flex-1 py-2.5 text-sm font-semibold rounded-full border-2 transition-colors disabled:opacity-50"
+                style={{ borderColor: '#D1D5DB', color: '#6B7280' }}
+              >
+                {t('settings.deleteConfirmCancel')}
+              </button>
+              <button
+                onClick={async () => {
+                  setShowConfirm(false);
+                  await handleDeleteAccount();
+                }}
+                disabled={deleting}
+                className="flex-1 py-2.5 text-sm font-semibold rounded-full text-white transition-colors hover:opacity-90 disabled:opacity-50"
+                style={{ backgroundColor: '#ED5B5B' }}
+              >
+                {deleting
+                  ? t('common.loading')
+                  : t('settings.deleteConfirmYes')}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

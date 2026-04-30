@@ -432,7 +432,11 @@
     "save": "Save",
     "saving": "Saving...",
     "next": "Next",
-    "prev": "Previous"
+    "prev": "Previous",
+    "deleteConfirmTitle": "Delete account",
+    "deleteConfirmMessage": "This is permanent. All your data will be deleted and cannot be recovered.",
+    "deleteConfirmYes": "Yes, delete it",
+    "deleteConfirmCancel": "Cancel"
   },
   "register": {
     "title": "Create an account",
