@@ -224,28 +224,6 @@ const Index: NextPage = () => {
             </div>
           </div>
         </section>
-
-        {/* ── Stats section ── */}
-        <section className="container mt-7 grid grid-cols-3 justify-items-center gap-2 pb-8 md:col-span-2 md:gap-4">
-          <div className="text-center">
-            <h1 className="text-2xl font-bold md:text-4xl xl:text-6xl">85%</h1>
-            <p className="text-xs leading-4 md:text-base xl:text-xl">
-              {t('index.stat_85')}
-            </p>
-          </div>
-          <div className="text-center">
-            <h1 className="text-2xl font-bold md:text-4xl xl:text-6xl">100+</h1>
-            <p className="text-xs leading-4 md:text-base xl:text-xl">
-              {t('index.stat_100')}
-            </p>
-          </div>
-          <div className="text-center">
-            <h1 className="text-2xl font-bold md:text-4xl xl:text-6xl">50+</h1>
-            <p className="text-xs leading-4 md:text-base xl:text-xl">
-              {t('index.stat_50')}
-            </p>
-          </div>
-        </section>
       </div>
     </>
   );

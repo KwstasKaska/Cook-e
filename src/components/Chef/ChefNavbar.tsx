@@ -19,7 +19,7 @@ const ChefNavbar = () => {
   const { openWidget, closeWidget } = useChatContext();
 
   const navLinks = [
-    { href: '/chef', label: t('chefnav.chef_home') },
+    { href: '/', label: t('chefnav.chef_home') },
     { href: '/chef/profile', label: t('chefnav.chef_profile') },
     { href: '/chef/recipes', label: t('chefnav.chef_recipes') },
     { href: '/chef/create-recipe', label: t('chefnav.chef_create') },

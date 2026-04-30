@@ -51,10 +51,7 @@ export default function NutrNavbar() {
       className="w-full px-6 py-3 flex items-center justify-between relative z-50"
     >
       {/* Logo */}
-      <Link
-        href="/nutritionist"
-        className="flex flex-col leading-tight select-none"
-      >
+      <Link href="/" className="flex flex-col leading-tight select-none">
         <span className="text-myGrey-200 font-bold text-2xl tracking-wide">
           <span className="text-yellow-400">🍪</span>ook-e
         </span>
