@@ -144,7 +144,7 @@
   "settings": {
     "title": "Ρυθμίσεις",
     "personalInfo": "Προσωπικά στοιχεία",
-    "security": "Ασφάλεια",
+    "security": "Απόρρητο",
     "chefProfile": "Προφίλ μάγειρα",
     "deleteAccount": "Διαγραφή λογαριασμού",
     "save": "Αποθήκευση",
@@ -250,10 +250,10 @@
     "messagePatients": "Επικοινωνήστε με τους πελάτες σας"
   },
   "chef": {
+    "more": "Περισσότερα",
     "landing": {
       "tagline_pre": "Η μαγειρική",
       "tagline_bold": "αυθεντία των συνταγών",
-      "more": "Περισσότερα",
       "no_recipes": "Δεν έχετε δημιουργήσει ακόμα συνταγές."
     },
     "recipes": {
@@ -264,7 +264,6 @@
       "servings": "άτομα",
       "duration": "χρονική διάρκεια",
       "minutes": "λεπτά",
-      "more": "Περισσότερα",
       "sort_oldest": "Παλαιότερα",
       "sort_alpha": "Αλφαβητικά",
       "empty": "Δεν βρέθηκαν συνταγές."
@@ -272,15 +271,6 @@
     "recipe_card": {
       "difficulty": "βαθμός δυσκολίας:",
       "time": "χρόνος",
-      "minutes": "λεπτά"
-    },
-    "recipe_modal": {
-      "description": "περιγραφή",
-      "time": "χρόνος",
-      "ingredients_count": "υλικά",
-      "calories": "θερμίδες",
-      "tags": "tags συνταγής",
-      "cta": "Δείτε ή επεξεργαστείτε την συνταγή",
       "minutes": "λεπτά"
     },
     "recipe_detail": {
@@ -325,7 +315,6 @@
       "followers": "Ακόλουθοι",
       "articles": "Άρθρα",
       "rating": "Βαθμολογία",
-      "more": "Περισσότερα",
       "no_articles": "Δεν έχετε γράψει άρθρα ακόμα.",
       "create_article": "Νέο άρθρο",
       "article_image_required": "Παρακαλώ επιλέξτε μια εικόνα για το άρθρο.",

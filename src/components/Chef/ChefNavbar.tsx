@@ -83,7 +83,6 @@ const ChefNavbar = () => {
         </button>
       </div>
 
-      {/* Hamburger — visible on mobile + tablet (below lg) */}
       <HamburgerButton
         isOpen={menuOpen}
         onClick={() => setMenuOpen((v) => !v)}

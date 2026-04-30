@@ -346,7 +346,7 @@ export default function ChefProfile() {
                 className="rounded-full px-8 py-2 text-sm font-bold transition hover:opacity-90"
                 style={{ backgroundColor: '#B3D5F8', color: '#3F4756' }}
               >
-                {t('chef.profile.more')}
+                {t('chef.more')}
               </button>
             </div>
           )}

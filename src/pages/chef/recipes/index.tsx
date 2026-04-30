@@ -204,7 +204,7 @@ export default function ChefRecipes() {
                 className="rounded-full px-10 py-3 text-sm font-bold text-white transition hover:opacity-90 disabled:opacity-50"
                 style={{ backgroundColor: '#3F4756' }}
               >
-                {fetchingMore ? t('common.loading') : t('chef.recipes.more')}
+                {fetchingMore ? t('common.loading') : t('chef.more')}
               </button>
             </div>
           )}

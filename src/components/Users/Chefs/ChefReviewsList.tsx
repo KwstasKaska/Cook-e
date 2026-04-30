@@ -74,7 +74,7 @@ export default function ChefReviewsList({
               className="mt-2 w-full rounded-xl py-1.5 text-xs font-bold transition hover:opacity-90 disabled:opacity-50"
               style={{ backgroundColor: '#B3D5F8', color: '#3F4756' }}
             >
-              {fetchingMore ? t('common.loading') : t('chef.profile.more')}
+              {fetchingMore ? t('common.loading') : t('chef.more')}
             </button>
           )}
         </div>

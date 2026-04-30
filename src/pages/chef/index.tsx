@@ -168,7 +168,7 @@ export default function ChefIndex() {
               className="rounded-full px-10 py-3 text-sm font-bold transition hover:opacity-90"
               style={{ backgroundColor: '#B3D5F8', color: '#3F4756' }}
             >
-              {t('chef.landing.more')}
+              {t('chef.more')}
             </Link>
           </div>
         </div>

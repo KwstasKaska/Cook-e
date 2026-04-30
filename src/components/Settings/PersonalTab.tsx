@@ -153,7 +153,6 @@ export default function PersonalTab({
         </div>
       </FieldGroup>
 
-      {/* ── Basic info ──────────────────────────────────────────── */}
       <FieldGroup title={t('settings.basicInfo')}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <Field

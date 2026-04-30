@@ -145,7 +145,7 @@
   "settings": {
     "title": "Settings",
     "personalInfo": "Personal info",
-    "security": "Security",
+    "security": "Privacy",
     "chefProfile": "Chef profile",
     "deleteAccount": "Delete account",
     "save": "Save",
@@ -225,7 +225,6 @@
     "setContent": "Set content",
     "setContentPlaceholder": "Set the content for the day and type of meal you want",
     "nutr_settings": "Settings",
-    "nutr_logout": "Logout",
     "newArticle": "New article",
     "noArticlesYet": "You haven't published any articles yet.",
     "create_article": {
@@ -252,10 +251,10 @@
     "messagePatients": "Message your patients"
   },
   "chef": {
+    "more": "More",
     "landing": {
       "tagline_pre": "The culinary",
       "tagline_bold": "authenticity of recipes",
-      "more": "More",
       "no_recipes": "You haven't created any recipes yet."
     },
     "recipes": {
@@ -266,7 +265,6 @@
       "servings": "servings",
       "duration": "duration",
       "minutes": "minutes",
-      "more": "More",
       "sort_oldest": "Oldest",
       "sort_alpha": "Alphabetical",
       "empty": "No recipes found."
@@ -274,15 +272,6 @@
     "recipe_card": {
       "difficulty": "difficulty:",
       "time": "time",
-      "minutes": "minutes"
-    },
-    "recipe_modal": {
-      "description": "description",
-      "time": "time",
-      "ingredients_count": "ingredients",
-      "calories": "calories",
-      "tags": "recipe tags",
-      "cta": "View or edit the recipe",
       "minutes": "minutes"
     },
     "recipe_detail": {
@@ -327,7 +316,6 @@
       "followers": "Followers",
       "articles": "Articles",
       "rating": "Rating",
-      "more": "More",
       "no_articles": "You haven't written any articles yet.",
       "create_article": "New article",
       "article_image_required": "Please select an image for the article.",
@@ -339,8 +327,8 @@
       "article_submit": "Publish article"
     },
     "rating": {
-      "title": "User rating",
-      "reviews": "user reviews",
+      "title": "Member rating",
+      "reviews": "Member reviews",
       "stars_plural": "stars",
       "stars_singular": "star"
     },
@@ -448,13 +436,13 @@
   },
   "register": {
     "title": "Create an account",
-    "subtitle": "A culinary delight awaits you! Complete your registration",
+    "subtitle": "A culinary delight awaits you!  Complete your registration",
     "login_button": "Login",
     "username_placeholder": "Full name",
     "email_placeholder": "Email",
     "password_placeholder": "Password",
     "role_label": "Role:",
-    "role_user": "User",
+    "role_user": "Member",
     "role_nutritionist": "Nutritionist",
     "submit": "Create an account"
   },
@@ -480,10 +468,6 @@
     "logout": "Logout",
     "hero_title": "Your cooking experience is changing",
     "hero_subtitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Condimentum id venenatis a vitae.",
-    "cta": "Get started",
-    "stat_85": "Of people don't know how to make use of their ingredients and utensils",
-    "stat_100": "Partner chefs",
-    "stat_50": "Certified nutritionists",
-    "stat_1000": "Recipes based on your choices"
+    "cta": "Get started"
   }
 }
