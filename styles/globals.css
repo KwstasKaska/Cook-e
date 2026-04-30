@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@400;700&family=Source+Sans+Pro:wght@400;700&family=Vollkorn:wght@400;700;900&display=swap');
+@import url('https://fonts.google.com/css2?family=Inter:wght@400;700&subset=latin,greek&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -7,7 +7,7 @@
 @layer base {
   html {
     scroll-behavior: smooth;
-    font-family: 'Exo 2', sans-serif;
+    font-family: 'Inter', sans-serif;
     overflow-x: hidden;
     touch-action: auto;
   }
