@@ -194,7 +194,7 @@
     "mealPlan": "My meal Plan",
     "mealPlanBy": "Nutrition plan prepared by",
     "noMealPlan": "No meal plan has been assigned yet.",
-    "deleteError": "Delete account"
+    "deleteError": "Error on deletion"
   },
   "nutr": {
     "welcome": "Welcome",
