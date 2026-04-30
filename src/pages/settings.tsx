@@ -73,21 +73,6 @@ export default function SettingsPage() {
 
   const [deleteUser, { loading: deleting }] = useDeleteUserMutation();
 
-  const renderNavbar = () => {
-    if (role === 'CHEF') return <ChefNavbar />;
-    if (role === 'NUTRITIONIST') return <NutrNavbar />;
-    return <Navbar />;
-  };
-
-  if (authLoading || !isAuthorized || !me) return null;
-
-  const role = me.role.toUpperCase() as Role;
-  const visibleTabs = TABS.filter((tab) => tab.roles.includes(role));
-
-  const activeTabLabel = t(
-    visibleTabs.find((tab) => tab.key === activeTab)?.labelKey ?? '',
-  );
-
   const handleDeleteAccount = async () => {
     setDeleteError('');
     try {
@@ -100,6 +85,21 @@ export default function SettingsPage() {
     } catch {
       setDeleteError(t('settings.deleteError'));
     }
+  };
+
+  if (authLoading || !isAuthorized || !me) return null;
+
+  const role = me.role.toUpperCase() as Role;
+  const visibleTabs = TABS.filter((tab) => tab.roles.includes(role));
+
+  const activeTabLabel = t(
+    visibleTabs.find((tab) => tab.key === activeTab)?.labelKey ?? '',
+  );
+
+  const renderNavbar = () => {
+    if (role === 'CHEF') return <ChefNavbar />;
+    if (role === 'NUTRITIONIST') return <NutrNavbar />;
+    return <Navbar />;
   };
 
   return (
