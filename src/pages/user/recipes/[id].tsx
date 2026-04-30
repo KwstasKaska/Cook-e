@@ -144,7 +144,7 @@ function RecipeDetailContent() {
     });
 
   const handleAddToCart = useCallback(
-    async (ingredientId: number, quantity?: string, unit?: string) => {
+    async (ingredientId: number) => {
       setServerError('');
       try {
         await addToCart({
