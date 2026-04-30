@@ -21,7 +21,7 @@ export default function NutrNavbar() {
   const { openWidget, closeWidget } = useChatContext();
 
   const navLinks = [
-    { label: t('nutrnav.nutr_articles'), sectionId: 'section_1' },
+    { label: t('nav.articles'), sectionId: 'section_1' },
     { label: t('nutrnav.nutr_calendar'), sectionId: 'section_2' },
     { label: t('nutrnav.nutr_appointments'), sectionId: 'section_3' },
     { label: t('nutrnav.nutr_scheduler'), sectionId: 'section_4' },
@@ -40,7 +40,7 @@ export default function NutrNavbar() {
     await logout();
     await apolloClient.clearStore();
     closeWidget();
-    router.push('/login');
+    router.push('/');
   };
 
   if (loading) return null;
@@ -95,7 +95,7 @@ export default function NutrNavbar() {
             paddingBottom: '2px',
           }}
         >
-          {t('nutrnav.nutr_recipes')}
+          {t('nav.recipes')}
         </Link>
       </div>
 
@@ -104,11 +104,11 @@ export default function NutrNavbar() {
         <button
           onClick={openWidget}
           className="p-2 rounded text-myGrey-200 hover:text-myBlue-200 transition-colors duration-150"
-          aria-label={t('nutrnav.nutr_messages', 'Messages')}
+          aria-label={t('nav.messages')}
         >
           <ChatIcon />
         </button>
-        <NavSettingsLink ariaLabel={t('nutrnav.nutr_settings')} />
+        <NavSettingsLink ariaLabel={t('nav.settings')} />
         <LanguageSwitcher />
         {data?.me && (
           <button
@@ -116,7 +116,7 @@ export default function NutrNavbar() {
             disabled={logoutLoading}
             className="ml-1 border border-myGrey-200 text-myGrey-200 text-sm font-semibold px-4 py-1.5 rounded-full hover:bg-myRed hover:border-myRed hover:text-white transition-colors duration-150"
           >
-            {t('nutrnav.nutr_logout')}
+            {t('nav.logout')}
           </button>
         )}
       </div>
@@ -174,7 +174,7 @@ export default function NutrNavbar() {
               paddingBottom: '2px',
             }}
           >
-            {t('nutrnav.nutr_recipes')}
+            {t('nav.recipes')}
           </Link>
 
           <div className="flex items-center gap-4 pt-2 border-t border-gray-400 w-full">
@@ -185,12 +185,12 @@ export default function NutrNavbar() {
                 setMenuOpen(false);
               }}
               className="text-myGrey-200 hover:text-myBlue-200"
-              aria-label={t('nutrnav.nutr_messages', 'Messages')}
+              aria-label={t('nav.messages')}
             >
               <ChatIcon />
             </button>
             <NavSettingsLink
-              ariaLabel={t('nutrnav.nutr_settings')}
+              ariaLabel={t('nav.settings')}
               onClick={() => setMenuOpen(false)}
             />
             {data?.me && (
@@ -199,7 +199,7 @@ export default function NutrNavbar() {
                 disabled={logoutLoading}
                 className="ml-auto border border-myGrey-200 text-myGrey-200 text-sm font-semibold px-5 py-1.5 rounded-full hover:bg-myRed hover:border-myRed hover:text-white transition-colors"
               >
-                {t('nutrnav.nutr_logout')}
+                {t('nav.logout')}
               </button>
             )}
           </div>

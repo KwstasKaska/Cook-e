@@ -7,25 +7,19 @@
     "cart": "Cart",
     "settings": "Settings",
     "tagline": "A food journey",
-    "messages": "Messages"
+    "messages": "Messages",
+    "articles": "Articles"
   },
   "chefnav": {
     "chef_home": "Home",
     "chef_profile": "Profile",
     "chef_recipes": "My recipes",
-    "chef_create": "Create recipe",
-    "settings": "Settings",
-    "logout": "Logout",
-    "messages": "Messages"
+    "chef_create": "Create recipe"
   },
   "nutrnav": {
-    "nutr_articles": "Articles",
     "nutr_calendar": "Calendar",
     "nutr_appointments": "Appointment management",
-    "nutr_scheduler": "Nutrition planning",
-    "nutr_recipes": "Recipes",
-    "nutr_logout": "Logout",
-    "nutr_messages": "Messages"
+    "nutr_scheduler": "Nutrition planning"
   },
   "landing": {
     "nutritionTitle": "Nutritional info",
@@ -206,7 +200,7 @@
     "coffeeImageAlt": "A coffee image",
     "noAppointmentsFor": "No available appointments for",
     "createNutritionPlan": "Create nutrition plan",
-    "nutritionPlanFor": "Nutrition plan for user",
+    "nutritionPlanFor": "Nutrition plan for member",
     "mealsAndDays": "Meals / days",
     "set": "Set",
     "preview": "Preview",
@@ -225,7 +219,7 @@
     "profileImageAlt": "Profile image",
     "accept": "Accept",
     "reject": "Reject",
-    "selectUser": "Select user",
+    "selectUser": "Select member",
     "selectDay": "Select day",
     "selectMeal": "Select meal",
     "setContent": "Set content",
@@ -246,7 +240,7 @@
       "error_image": "Please add an image."
     },
     "nutr_recipes": "Chefs recipes",
-    "selectUserFirst": "Please select a user first.",
+    "selectUserFirst": "Please select a member first.",
     "selectDayFirst": "Please select a day first.",
     "selectMealFirst": "Please select a meal type first.",
     "setContentFirst": "Please write the meal content first.",
@@ -261,8 +255,6 @@
     "landing": {
       "tagline_pre": "The culinary",
       "tagline_bold": "authenticity of recipes",
-      "user_rating": "User rating",
-      "user_reviews": "user reviews",
       "more": "More",
       "no_recipes": "You haven't created any recipes yet."
     },
@@ -327,8 +319,8 @@
     "profile": {
       "page_title": "My profile",
       "contact": "Contact",
-      "user_rating": "User rating",
-      "user_reviews": "user reviews",
+      "user_rating": "Member rating",
+      "user_reviews": "Member reviews",
       "no_ratings": "No ratings yet.",
       "bio_placeholder": "No bio set yet. You can add one from Settings.",
       "recipes": "Recipes",
@@ -469,10 +461,10 @@
   "login": {
     "title": "Welcome back!",
     "subtitle": "Ready to cook?",
-    "form_title": "Sign in",
+    "form_title": "Login",
     "username_placeholder": "Email address or username",
     "password_placeholder": "Password",
-    "submit": "Sign in",
+    "submit": "Login",
     "forgot_password": "Forgot your password?",
     "no_account": "Don't have an account yet?",
     "create_account": "Create one"
@@ -481,15 +473,11 @@
     "success": "If an account exists with this email, you will be notified via email.",
     "submit": "Forgot my password"
   },
-  "general_nav": {
-    "user": "User",
-    "chef": "Chef",
-    "nutritionist": "Nutritionist"
-  },
+
   "index": {
-    "login": "Sign in",
+    "login": "Login",
     "register": "Register",
-    "logout": "Sign out",
+    "logout": "Logout",
     "hero_title": "Your cooking experience is changing",
     "hero_subtitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Condimentum id venenatis a vitae.",
     "cta": "Get started",

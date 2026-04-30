@@ -30,7 +30,7 @@ export default function Navbar() {
     await logout();
     await apolloClient.clearStore();
     closeWidget();
-    router.push('/login');
+    router.push('/');
   };
 
   return (

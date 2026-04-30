@@ -221,7 +221,7 @@ export default function ChefProfile() {
             </div>
           </div>
 
-          {/* ── Bio ───────────────────────────────────────────────────────── */}
+          {/* Bio  */}
           <div
             className="mt-6 rounded-xl px-5 py-4"
             style={{ backgroundColor: '#D6C9A8' }}
@@ -306,7 +306,7 @@ export default function ChefProfile() {
               {t('chef.profile.no_articles')}
             </p>
           ) : (
-            <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
+            <div className="grid grid-cols-2 gap-4  md:grid-cols-3">
               {articles.map((article) => (
                 <Link
                   key={article.id}

@@ -1,5 +1,4 @@
 import { NextPage } from 'next';
-import GeneralNav from '../components/GeneralNav';
 import Link from 'next/link';
 import { useState, useMemo } from 'react';
 import {
@@ -170,7 +169,6 @@ const Index: NextPage = () => {
       <div className="min-h-screen w-full bg-myGrey-100 md:grid md:grid-cols-2">
         {/* ── Αριστερή στήλη: hero text ── */}
         <div className="container h-full pt-[1em]">
-          <GeneralNav />
           <div className="mt-12 grid h-full grid-flow-row justify-items-center gap-4 md:mt-0 md:items-center md:gap-0">
             <h1 className="px-6 text-center text-3xl font-bold leading-10 md:mt-10 md:px-[1em] md:text-4xl xl:text-7xl">
               {t('index.hero_title')}

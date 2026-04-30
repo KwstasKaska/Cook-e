@@ -2,12 +2,7 @@ import { NextPage } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import logo from '../../public/images/6.png';
-import {
-  MeDocument,
-  MeQuery,
-  useRegisterMutation,
-  useMeQuery,
-} from '../generated/graphql';
+import { useRegisterMutation, useMeQuery } from '../generated/graphql';
 import { useRouter } from 'next/router';
 import { toErrorMap } from '../utils/toErrorMap';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
@@ -60,7 +55,7 @@ const Register: NextPage = () => {
             type="button"
             className="cursor-pointer rounded-registerLogin bg-myBlue-200 px-[2.3em] font-exo text-sm font-bold text-white md:h-fit md:py-[.75em]"
           >
-            <Link href="/login">{t('register.login_button')}</Link>
+            <Link href="/">{t('register.login_button')}</Link>
           </button>
         </section>
 
@@ -80,22 +75,11 @@ const Register: NextPage = () => {
               try {
                 const response = await register({
                   variables: { options: values },
-                  update: (cache, { data }) => {
-                    cache.writeQuery<MeQuery>({
-                      query: MeDocument,
-                      data: {
-                        __typename: 'Query',
-                        me: data?.register.user,
-                      },
-                    });
-                  },
                 });
                 if (response.data?.register.errors) {
                   setErrors(toErrorMap(response.data.register.errors));
                 } else if (response.data?.register.user) {
-                  router.push(
-                    `/${response.data.register.user.role.toLowerCase()}`,
-                  );
+                  router.push('/login');
                 } else {
                   setErrors({ username: t('change_password.server_error') });
                 }

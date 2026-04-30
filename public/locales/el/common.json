@@ -7,7 +7,8 @@
     "cart": "Καλάθι",
     "settings": "Ρυθμίσεις",
     "tagline": "A food journey",
-    "messages": "Μηνύματα"
+    "messages": "Μηνύματα",
+    "articles": "Άρθρα"
   },
   "recipe_category": {
     "MEAT": "Κρέας",
@@ -19,22 +20,14 @@
     "VEGAN": "Vegan"
   },
   "chefnav": {
-    "chef_home": "Αρχική",
     "chef_profile": "Προφίλ",
     "chef_recipes": "Οι συνταγές μου",
-    "chef_create": "Δημιουργία συνταγής",
-    "settings": "Ρυθμίσεις",
-    "logout": "Αποσύνδεση",
-    "messages": "Μηνύματα"
+    "chef_create": "Δημιουργία συνταγής"
   },
   "nutrnav": {
-    "nutr_articles": "Άρθρα",
     "nutr_calendar": "Ημερολόγιο",
     "nutr_appointments": "Διαχείριση ραντεβού",
-    "nutr_scheduler": "Προγραμματισμός διατροφών",
-    "nutr_recipes": "Συνταγές",
-    "nutr_logout": "Αποσύνδεση",
-    "nutr_messages": "Μηνύματα"
+    "nutr_scheduler": "Προγραμματισμός διατροφών"
   },
   "day": {
     "MONDAY": "Δευτέρα",
@@ -79,7 +72,7 @@
     "discoverPrompt": "Θέλεις να ανακαλύψεις νέες συνταγές;",
     "discoverBtn": "Ανακάλυψε συνταγές",
     "discoverHint": "Πρόσθεσε υλικά και σκεύη για εξατομικευμένες προτάσεις",
-    "backToSearch": "Πίσω στην αναζήτηση",
+    "backToSearch": "Πίσω",
     "resultsTitle": "Διάλεξε ανάμεσα στις προτεινόμενες συνταγές",
     "newSearch": "Νέα αναζήτηση",
     "by": "Από:",
@@ -231,7 +224,6 @@
     "setContent": "Ορισμός περιεχομένου",
     "setContentPlaceholder": "Όρισε το περιεχόμενο για την ημέρα και το είδος γεύματος που επιθυμείς",
     "nutr_settings": "Ρυθμίσεις",
-    "nutr_logout": "Αποσύνδεση",
     "newArticle": "Νέο άρθρο",
     "noArticlesYet": "Δεν έχετε δημοσιεύσει άρθρα ακόμα.",
     "create_article": {
@@ -261,8 +253,6 @@
     "landing": {
       "tagline_pre": "Η μαγειρική",
       "tagline_bold": "αυθεντία των συνταγών",
-      "user_rating": "Αξιολόγηση χρηστών",
-      "user_reviews": "αξιολογήσεις χρηστών",
       "more": "Περισσότερα",
       "no_recipes": "Δεν έχετε δημιουργήσει ακόμα συνταγές."
     },
@@ -457,22 +447,22 @@
   "register": {
     "title": "Δημιουργία λογαριασμού",
     "subtitle": "Μια μαγειρική απόλαυση σε περιμένει! Ολοκλήρωσε την εγγραφή σου",
-    "login_button": "Είσοδος",
+    "login_button": "Σύνδεση",
     "username_placeholder": "Ονοματεπώνυμο",
     "email_placeholder": "Email",
     "password_placeholder": "Κωδικός πρόσβασης",
     "role_label": "Ιδιότητα:",
-    "role_user": "Χρήστης",
+    "role_user": "Μέλος",
     "role_nutritionist": "Διατροφολόγος",
     "submit": "Δημιουργία λογαριασμού"
   },
   "login": {
     "title": "Καλωσήρθες πίσω!",
     "subtitle": "Έτοιμος για μαγειρική;",
-    "form_title": "Είσοδος",
+    "form_title": "Σύνδεση",
     "username_placeholder": "Διεύθυνση email ή όνομα χρήστη",
     "password_placeholder": "Κωδικός πρόσβασης",
-    "submit": "Είσοδος",
+    "submit": "Σύνδεση",
     "forgot_password": "Ξέχασες τον κωδικό;",
     "no_account": "Δεν έχεις ακόμα λογαριασμό;",
     "create_account": "Δημιούργησε έναν"
@@ -481,17 +471,13 @@
     "success": "Αν υπάρχει λογαριασμός με αυτό το email, θα ειδοποιηθείτε μέσω μηνύματος στο email σας.",
     "submit": "Ξέχασα τον κωδικό μου"
   },
-  "general_nav": {
-    "user": "Χρήστης",
-    "chef": "Mάγειρας",
-    "nutritionist": "Διατροφολόγος"
-  },
+
   "index": {
     "login": "Σύνδεση",
     "register": "Εγγραφή",
     "logout": "Αποσύνδεση",
     "hero_title": "Η μαγειρική σου εμπειρία αλλάζει",
-    "hero_subtitle": "",
+    "hero_subtitle": "Είσαι μάγειρας; Δημιούργησε τις συνταγές και τα άρθρα σου!Είσαι διατροφολόγος; Δημιούργησε διατροφικά προγράμματα, αιτήσεις για επισκέψεις και ",
     "cta": "Ξεκίνησε τώρα",
     "stat_85": "Των ανθρώπων δεν ξέρει πώς να αξιοποιεί τα υλικά και σκεύη τους",
     "stat_100": "Συνεργάτες μάγειρες",

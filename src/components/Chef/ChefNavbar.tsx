@@ -19,7 +19,7 @@ const ChefNavbar = () => {
   const { openWidget, closeWidget } = useChatContext();
 
   const navLinks = [
-    { href: '/', label: t('chefnav.chef_home') },
+    { href: '/', label: t('nav.home') },
     { href: '/chef/profile', label: t('chefnav.chef_profile') },
     { href: '/chef/recipes', label: t('chefnav.chef_recipes') },
     { href: '/chef/create-recipe', label: t('chefnav.chef_create') },
@@ -29,7 +29,7 @@ const ChefNavbar = () => {
     await logout();
     await apolloClient.clearStore();
     closeWidget();
-    router.push('/login');
+    router.push('/');
   };
 
   return (
@@ -38,7 +38,7 @@ const ChefNavbar = () => {
       style={{ backgroundColor: '#B3D5F8' }}
     >
       {/* Logo */}
-      <Link href="/chef" className="flex items-center gap-1">
+      <Link href="/" className="flex items-center gap-1">
         <span className="text-2xl">🍪</span>
         <span
           className="text-xl font-bold italic"
@@ -76,18 +76,18 @@ const ChefNavbar = () => {
         <button
           onClick={openWidget}
           className="hover:opacity-70 transition-opacity p-1"
-          aria-label={t('chefnav.messages', 'Messages')}
+          aria-label={t('nav.messages')}
         >
           <ChatIcon className="w-6 h-6" />
         </button>
-        <NavSettingsLink ariaLabel={t('chefnav.settings')} />
+        <NavSettingsLink ariaLabel={t('nav.settings')} />
         <LanguageSwitcher />
         <button
           onClick={handleLogout}
           className="rounded-full px-5 py-2 text-sm font-bold tracking-wide transition-colors"
           style={{ backgroundColor: '#3F4756', color: 'white' }}
         >
-          {t('chefnav.logout')}
+          {t('nav.logout')}
         </button>
       </div>
 
@@ -135,12 +135,12 @@ const ChefNavbar = () => {
                 setMenuOpen(false);
               }}
               className="hover:opacity-70 transition-opacity"
-              aria-label={t('chefnav.messages', 'Messages')}
+              aria-label={t('nav.messages')}
             >
               <ChatIcon className="w-6 h-6" />
             </button>
             <NavSettingsLink
-              ariaLabel={t('chefnav.settings')}
+              ariaLabel={t('nav.settings')}
               onClick={() => setMenuOpen(false)}
             />
             <LanguageSwitcher />
@@ -149,7 +149,7 @@ const ChefNavbar = () => {
               className="ml-auto rounded-full px-5 py-1.5 text-sm font-bold transition-colors"
               style={{ backgroundColor: '#3F4756', color: 'white' }}
             >
-              {t('chefnav.logout')}
+              {t('nav.logout')}
             </button>
           </div>
         </div>
