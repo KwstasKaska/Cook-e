@@ -9,6 +9,7 @@ import { useChatContext } from '../Chat/ChatContext';
 import { ChatIcon } from '../Helper/ChatIcon';
 import { NavSettingsLink } from '../Helper/SettingsIcons';
 import { HamburgerButton } from '../Helper/HamburgerButton';
+import Logo from '../Helper/Logo';
 
 const ChefNavbar = () => {
   const router = useRouter();
@@ -37,16 +38,7 @@ const ChefNavbar = () => {
       className="w-full px-6 py-3 flex items-center justify-between relative z-50"
       style={{ backgroundColor: '#B3D5F8' }}
     >
-      {/* Logo */}
-      <Link href="/" className="flex items-center gap-1">
-        <span className="text-2xl">🍪</span>
-        <span
-          className="text-xl font-bold italic"
-          style={{ fontFamily: 'Georgia, serif', color: '#3F4756' }}
-        >
-          ook-<span style={{ color: '#377CC3' }}>e</span>
-        </span>
-      </Link>
+      <Logo />
 
       {/* Desktop nav links — lg+ only */}
       <div className="hidden lg:flex items-center gap-8">
@@ -84,7 +76,7 @@ const ChefNavbar = () => {
         <LanguageSwitcher />
         <button
           onClick={handleLogout}
-          className="rounded-full px-5 py-2 text-sm font-bold tracking-wide transition-colors"
+          className="rounded-full border-[1px] border-myGrey-200 text-myGrey-200 text-sm font-bold px-[1.2em] py-[0.25em] hover:bg-myRed hover:border-myRed hover:text-white transition-colors duration-150"
           style={{ backgroundColor: '#3F4756', color: 'white' }}
         >
           {t('nav.logout')}

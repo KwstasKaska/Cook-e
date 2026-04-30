@@ -13,7 +13,7 @@ export default function LanguageSwitcher() {
   return (
     <button
       onClick={toggleLanguage}
-      className="text-white bg-myGrey-200 text-sm font-semibold  transition-colors duration-150 rounded-3xl border-white border-2 p-2 hover:bg-white hover:text-black hover:border-black"
+      className="rounded-full border-[1px] border-white px-[1.2em] py-[0.25em] text-sm font-bold text-white hover:bg-myRed md:text-base xl:text-2xl"
     >
       {router.locale === 'el' ? 'English' : 'Ελληνικά'}
     </button>

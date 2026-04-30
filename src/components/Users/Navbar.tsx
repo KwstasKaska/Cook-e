@@ -10,6 +10,7 @@ import { ChatIcon } from '../Helper/ChatIcon';
 import { NavSettingsLink } from '../Helper/SettingsIcons';
 import { HamburgerButton } from '../Helper/HamburgerButton';
 import { NavCartLink } from '../Helper/CartIcon';
+import Logo from '../Helper/Logo';
 
 export default function Navbar() {
   const router = useRouter();
@@ -38,15 +39,7 @@ export default function Navbar() {
       style={{ backgroundColor: '#B3D5F8' }}
       className="w-full px-6 py-3 flex items-center justify-between relative z-50"
     >
-      {/* Logo */}
-      <Link href="/" className="flex flex-col leading-tight select-none">
-        <span className="text-myGrey-200 font-bold text-2xl tracking-wide">
-          <span className="text-yellow-400">🍪</span>ook-e
-        </span>
-        <span className="text-myGrey-200/60 text-[10px] tracking-widest uppercase">
-          {t('nav.tagline')}
-        </span>
-      </Link>
+      <Logo />
 
       {/* Desktop nav links — lg+ only */}
       <div className="hidden lg:flex items-center gap-8">
@@ -94,7 +87,7 @@ export default function Navbar() {
         <LanguageSwitcher />
         <button
           onClick={handleLogout}
-          className="ml-auto border border-myGrey-200 text-myGrey-200 text-sm font-semibold px-5 py-1.5 rounded-full hover:bg-myRed hover:border-myRed hover:text-white transition-colors"
+          className="rounded-full border-[1px] border-myGrey-200 text-myGrey-200 text-sm font-bold px-[1.2em] py-[0.25em] hover:bg-myRed hover:border-myRed hover:text-white transition-colors duration-150"
         >
           {t('nav.logout')}
         </button>

@@ -118,7 +118,7 @@ const Index: NextPage = () => {
           </Link>
           <Link
             href="/register"
-            className="rounded-full bg-myGrey-100 px-[.9em] py-[0.25em] text-sm text-myBlue-200 hover:outline hover:outline-2 hover:outline-black md:text-base xl:text-2xl"
+            className="rounded-full bg-myGrey-100 px-[1.2em] py-[0.25em] text-sm text-myBlue-200 hover:outline hover:outline-2 hover:outline-black md:text-base xl:text-2xl"
           >
             {t('index.register')}
           </Link>
