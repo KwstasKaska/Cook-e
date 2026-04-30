@@ -119,7 +119,7 @@ function ListView({
                   {t('nutritionists.noResults')}
                 </div>
               ) : (
-                <div className="grid grid-cols-2 gap-x-4 gap-y-14 pt-6 md:grid-cols-3">
+                <div className="grid grid-cols-2  md:grid-cols-3 gap-x-4 gap-y-14 pt-6 lg:grid-cols-4">
                   {filtered.map((nutr) => (
                     <NutrCard
                       key={nutr.id}

@@ -13,7 +13,6 @@ import useIsNutr from '../../../utils/useIsNutr';
 import { pick } from '../../../utils/pick';
 import { uploadToCloudinary } from '../../../utils/uploadToCloudinary';
 
-// ─── Delete confirm modal ─────────────────────────────────────────────────────
 const DeleteModal = ({
   onConfirm,
   onCancel,
@@ -58,7 +57,6 @@ const DeleteModal = ({
   );
 };
 
-// ─── Main page ────────────────────────────────────────────────────────────────
 export default function NutrArticleDetail() {
   const { t, i18n } = useTranslation('common');
   const lang = i18n.language;
@@ -73,6 +71,7 @@ export default function NutrArticleDetail() {
   const [editImageFile, setEditImageFile] = useState<File | null>(null);
   const [editImagePreview, setEditImagePreview] = useState<string | null>(null);
   const [editError, setEditError] = useState('');
+  const [isSaving, setIsSaving] = useState(false);
 
   const { data, loading } = useArticleQuery({
     variables: { id: id! },
@@ -85,7 +84,7 @@ export default function NutrArticleDetail() {
     },
   });
 
-  const [updateArticle, { loading: updateLoading }] = useUpdateArticleMutation({
+  const [updateArticle] = useUpdateArticleMutation({
     onCompleted: () => {
       setIsEditing(false);
       setEditImageFile(null);
@@ -109,12 +108,13 @@ export default function NutrArticleDetail() {
   };
 
   const handleUpdate = async () => {
-    if (!id) return;
+    if (!id || isSaving) return;
     if (!editTitle.trim() || !editText.trim()) {
       setEditError(t('chef.article.validation_required'));
       return;
     }
 
+    setIsSaving(true);
     try {
       let imageUrl: string | undefined;
       if (editImageFile) {
@@ -137,6 +137,8 @@ export default function NutrArticleDetail() {
       });
     } catch {
       setEditError(t('nutr.create_article.error_upload'));
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -195,7 +197,6 @@ export default function NutrArticleDetail() {
 
       <main className="flex flex-1 flex-col items-center px-4 py-8 md:px-8">
         <div className="w-full max-w-2xl">
-          {/* Back */}
           <button
             onClick={() => router.back()}
             className="mb-6 flex items-center gap-2 text-sm font-semibold transition hover:opacity-70"
@@ -218,12 +219,10 @@ export default function NutrArticleDetail() {
             {t('common.back')}
           </button>
 
-          {/* Article card */}
           <div
             className="w-full rounded-2xl overflow-hidden shadow-xl"
             style={{ backgroundColor: '#E9DEC5' }}
           >
-            {/* Hero image */}
             <div className="relative h-56 w-full">
               <Image
                 src={heroSrc}
@@ -279,7 +278,6 @@ export default function NutrArticleDetail() {
               )}
             </div>
 
-            {/* Content */}
             <div className="p-6 md:p-8">
               {isEditing ? (
                 <>
@@ -342,11 +340,11 @@ export default function NutrArticleDetail() {
                   <div className="flex gap-3">
                     <button
                       onClick={handleUpdate}
-                      disabled={updateLoading}
+                      disabled={isSaving}
                       className="rounded-full px-8 py-2.5 text-sm font-bold transition hover:opacity-90 disabled:opacity-50"
                       style={{ backgroundColor: '#EAB308', color: '#3F4756' }}
                     >
-                      {updateLoading ? t('common.loading') : t('common.save')}
+                      {isSaving ? t('common.loading') : t('common.save')}
                     </button>
                     <button
                       onClick={() => {
