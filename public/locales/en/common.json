@@ -193,7 +193,8 @@
     "passwordNeedsSpecial": "Password must contain at least one special character.",
     "mealPlan": "My meal Plan",
     "mealPlanBy": "Nutrition plan prepared by",
-    "noMealPlan": "No meal plan has been assigned yet."
+    "noMealPlan": "No meal plan has been assigned yet.",
+    "deleteAccountConfirm": "Delete account"
   },
   "nutr": {
     "welcome": "Welcome",

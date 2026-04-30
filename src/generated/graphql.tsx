@@ -264,6 +264,7 @@ export type Mutation = {
   deleteMealScheduler: MealPlanResponse;
   deleteRecipe: Scalars['Boolean']['output'];
   deleteRecipeRating: Scalars['Boolean']['output'];
+  deleteUser: Scalars['Boolean']['output'];
   forgotPassword: Scalars['Boolean']['output'];
   logCookedRecipe: CookedRecipe;
   login: UserResponse;
@@ -1178,6 +1179,11 @@ export type CreateArticleMutationVariables = Exact<{
 
 
 export type CreateArticleMutation = { __typename?: 'Mutation', createArticle: { __typename?: 'ArticleResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, article?: { __typename?: 'Article', id: number, title_el: string, title_en: string, text_el: string, text_en: string, image: string, creatorId: number, createdAt: string, updatedAt: string, creator?: { __typename?: 'User', id: number, username: string, image?: string | null } | null } | null } };
+
+export type DeleteUserMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type DeleteUserMutation = { __typename?: 'Mutation', deleteUser: boolean };
 
 export type SaveRecipeMutationVariables = Exact<{
   recipeId: Scalars['Int']['input'];
@@ -2628,6 +2634,36 @@ export function useCreateArticleMutation(baseOptions?: Apollo.MutationHookOption
 export type CreateArticleMutationHookResult = ReturnType<typeof useCreateArticleMutation>;
 export type CreateArticleMutationResult = Apollo.MutationResult<CreateArticleMutation>;
 export type CreateArticleMutationOptions = Apollo.BaseMutationOptions<CreateArticleMutation, CreateArticleMutationVariables>;
+export const DeleteUserDocument = gql`
+    mutation DeleteUser {
+  deleteUser
+}
+    `;
+export type DeleteUserMutationFn = Apollo.MutationFunction<DeleteUserMutation, DeleteUserMutationVariables>;
+
+/**
+ * __useDeleteUserMutation__
+ *
+ * To run a mutation, you first call `useDeleteUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteUserMutation, { data, loading, error }] = useDeleteUserMutation({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useDeleteUserMutation(baseOptions?: Apollo.MutationHookOptions<DeleteUserMutation, DeleteUserMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteUserMutation, DeleteUserMutationVariables>(DeleteUserDocument, options);
+      }
+export type DeleteUserMutationHookResult = ReturnType<typeof useDeleteUserMutation>;
+export type DeleteUserMutationResult = Apollo.MutationResult<DeleteUserMutation>;
+export type DeleteUserMutationOptions = Apollo.BaseMutationOptions<DeleteUserMutation, DeleteUserMutationVariables>;
 export const SaveRecipeDocument = gql`
     mutation SaveRecipe($recipeId: Int!) {
   saveRecipe(recipeId: $recipeId) {

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useRouter } from 'next/router';
 import Navbar from '../components/Users/Navbar';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
@@ -10,6 +11,7 @@ import NutritionistProfileTab from '../components/Settings/NutritionistProfileTa
 import MealPlanTab from '../components/Settings/MealPlanTab';
 import ChefNavbar from '../components/Chef/ChefNavbar';
 import NutrNavbar from '../components/Nutritionist/NutrNavbar';
+import { useDeleteUserMutation } from '../generated/graphql';
 
 type Role = 'CHEF' | 'USER' | 'NUTRITIONIST';
 
@@ -64,8 +66,12 @@ export async function getServerSideProps({ locale }: { locale: string }) {
 
 export default function SettingsPage() {
   const { t } = useTranslation('common');
+  const router = useRouter();
   const { loading: authLoading, isAuthorized, me } = useIsAuth();
   const [activeTab, setActiveTab] = useState<TabKey>('personal');
+  const [deleteError, setDeleteError] = useState('');
+
+  const [deleteUser, { loading: deleting }] = useDeleteUserMutation();
 
   const renderNavbar = () => {
     if (role === 'CHEF') return <ChefNavbar />;
@@ -81,6 +87,20 @@ export default function SettingsPage() {
   const activeTabLabel = t(
     visibleTabs.find((tab) => tab.key === activeTab)?.labelKey ?? '',
   );
+
+  const handleDeleteAccount = async () => {
+    setDeleteError('');
+    try {
+      const result = await deleteUser();
+      if (!result.data?.deleteUser) {
+        setDeleteError(t('settings.deleteError'));
+        return;
+      }
+      router.push('/login');
+    } catch {
+      setDeleteError(t('settings.deleteError'));
+    }
+  };
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#3F4756' }}>
@@ -126,12 +146,23 @@ export default function SettingsPage() {
                 <div className="mt-4 bg-white rounded-2xl shadow-md overflow-hidden">
                   <button
                     type="button"
+                    onClick={handleDeleteAccount}
+                    disabled={deleting}
                     aria-label={t('settings.deleteAccount')}
-                    className="w-full flex items-center gap-3 px-4 py-3.5 text-sm font-semibold text-left transition-colors hover:bg-red-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-400"
+                    className="w-full flex items-center gap-3 px-4 py-3.5 text-sm font-semibold text-left transition-colors hover:bg-red-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-400 disabled:opacity-50"
                     style={{ color: '#ED5B5B' }}
                   >
-                    <span>{t('settings.deleteAccount')}</span>
+                    <span>
+                      {deleting
+                        ? t('common.loading')
+                        : t('settings.deleteAccount')}
+                    </span>
                   </button>
+                  {deleteError && (
+                    <p className="px-4 pb-3 text-xs text-red-500">
+                      {deleteError}
+                    </p>
+                  )}
                 </div>
               </nav>
             </aside>

@@ -1,7 +1,5 @@
 import { Difficulty, RecipeCategory } from '../../../generated/graphql';
 
-// ─── Types ────────────────────────────────────────────────────────────────────
-
 export interface IngredientRow {
   id: number;
   ingredientId: number;
@@ -38,21 +36,15 @@ export interface FormData {
   steps: ExecutionStep[];
 }
 
-// ─── Constants ────────────────────────────────────────────────────────────────
-
 export const UNIT_OPTIONS = [
   'g',
   'kg',
   'ml',
   'l',
-  'tsp',
-  'tbsp',
-  'cup',
   'τεμ.',
   'φλ.',
   'κ.σ.',
   'κ.γ.',
-  'πρέζα',
 ];
 
 export const CATEGORY_OPTIONS: {
@@ -72,8 +64,6 @@ export const CATEGORY_OPTIONS: {
   },
   { value: RecipeCategory.Vegan, labelEl: 'Vegan', labelEn: 'Vegan' },
 ];
-
-// ─── Shared style helpers ─────────────────────────────────────────────────────
 
 export const inputClass =
   'w-full border-b border-gray-300 bg-transparent py-2 text-sm outline-none focus:border-myBlue-200 transition placeholder:text-gray-300';
