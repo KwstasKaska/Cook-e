@@ -41,7 +41,6 @@ export default function Navbar() {
     >
       <Logo />
 
-      {/* Desktop nav links — lg+ only */}
       <div className="hidden lg:flex items-center gap-8">
         {navLinks.map((link) => {
           const isActive = router.pathname === link.href;
@@ -64,8 +63,7 @@ export default function Navbar() {
         })}
       </div>
 
-      {/* Right actions — lg+ only */}
-      <div className="hidden lg:flex items-center gap-4">
+      <div className="hidden lg:flex items-center gap-3">
         <NavCartLink
           ariaLabel={t('nav.cart')}
           className={`p-2 rounded transition-colors duration-150 ${
@@ -74,7 +72,6 @@ export default function Navbar() {
               : 'text-myGrey-200 hover:text-myBlue-200'
           }`}
         />
-
         <button
           onClick={openWidget}
           className="p-2 rounded text-myGrey-200 hover:text-myBlue-200 transition-colors duration-150"
@@ -82,25 +79,22 @@ export default function Navbar() {
         >
           <ChatIcon />
         </button>
-
         <NavSettingsLink ariaLabel={t('nav.settings')} />
-        <LanguageSwitcher />
+        <LanguageSwitcher dark />
         <button
           onClick={handleLogout}
-          className="rounded-full border-[1px] border-myGrey-200 text-myGrey-200 text-sm font-bold px-[1.2em] py-[0.25em] hover:bg-myRed hover:border-myRed hover:text-white transition-colors duration-150"
+          className="rounded-full border border-myGrey-200 text-myGrey-200 text-sm font-semibold px-4 py-1.5 hover:bg-myRed hover:border-myRed hover:text-white transition-colors duration-150"
         >
           {t('nav.logout')}
         </button>
       </div>
 
-      {/* Hamburger — visible on mobile + tablet (below lg) */}
       <HamburgerButton
         isOpen={menuOpen}
         onClick={() => setMenuOpen((v) => !v)}
         className="lg:hidden p-2 text-myGrey-200"
       />
 
-      {/* Mobile + tablet dropdown — dark background, intentionally different from chef/nutr */}
       {menuOpen && (
         <div
           style={{ backgroundColor: '#3F4756' }}
@@ -134,7 +128,6 @@ export default function Navbar() {
               onClick={() => setMenuOpen(false)}
               className="text-white hover:text-yellow-300"
             />
-
             <button
               onClick={() => {
                 openWidget();
@@ -145,16 +138,14 @@ export default function Navbar() {
             >
               <ChatIcon />
             </button>
-
             <NavSettingsLink
               ariaLabel={t('nav.settings')}
               onClick={() => setMenuOpen(false)}
               className="text-white hover:text-yellow-300 transition-colors duration-150"
             />
-
             <button
               onClick={handleLogout}
-              className="ml-auto border border-myGrey-200 text-myGrey-200 text-sm font-semibold px-5 py-1.5 rounded-full hover:bg-myRed hover:border-myRed hover:text-white transition-colors"
+              className="ml-auto rounded-full border border-myGrey-200 text-myGrey-200 text-sm font-semibold px-4 py-1.5 hover:bg-myRed hover:border-myRed hover:text-white transition-colors"
             >
               {t('nav.logout')}
             </button>

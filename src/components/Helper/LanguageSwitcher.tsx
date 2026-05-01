@@ -1,21 +1,26 @@
-// components/LanguageSwitcher.tsx
 import { useRouter } from 'next/router';
 
-export default function LanguageSwitcher() {
+interface Props {
+  dark?: boolean;
+}
+
+export default function LanguageSwitcher({ dark = false }: Props) {
   const router = useRouter();
 
   const toggleLanguage = () => {
     router.push(router.pathname, router.asPath, {
-      locale: router.locale === 'el' ? 'en' : 'el', //αν είναι ελληνικά δώσμου αγγλικά, αλλιώς δώσμου ελληνικά
+      locale: router.locale === 'el' ? 'en' : 'el',
     });
   };
 
   return (
     <button
       onClick={toggleLanguage}
-      className="rounded-full border-[1px] border-white px-[1.2em] py-[0.25em] text-sm font-bold text-white hover:bg-myRed md:text-base xl:text-2xl"
+      className={`rounded-full border px-[1.2em] py-[0.25em] text-sm font-bold transition hover:bg-myBlue-200 hover:text-white hover:border-myBlue-200 ${
+        dark ? 'border-myGrey-200 text-myGrey-200' : 'border-white text-white'
+      }`}
     >
-      {router.locale === 'el' ? 'English' : 'Ελληνικά'}
+      {router.locale === 'el' ? 'EN' : 'ΕΛ'}
     </button>
   );
 }

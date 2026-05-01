@@ -40,7 +40,6 @@ const ChefNavbar = () => {
     >
       <Logo />
 
-      {/* Desktop nav links — lg+ only */}
       <div className="hidden lg:flex items-center gap-8">
         {navLinks.map((link) => {
           const isActive = router.pathname === link.href;
@@ -48,7 +47,7 @@ const ChefNavbar = () => {
             <Link
               key={link.href}
               href={link.href}
-              className="text-sm font-semibold tracking-wide transition-colors"
+              className="text-sm font-semibold tracking-wide transition-colors duration-150"
               style={{
                 color: isActive ? '#377CC3' : '#3F4756',
                 borderBottom: isActive
@@ -63,33 +62,31 @@ const ChefNavbar = () => {
         })}
       </div>
 
-      {/* Desktop right actions — lg+ only */}
-      <div className="hidden lg:flex items-center gap-4">
+      <div className="hidden lg:flex items-center gap-3">
         <button
           onClick={openWidget}
-          className="hover:opacity-70 transition-opacity p-1"
+          className="p-2 rounded text-myGrey-200 hover:text-myBlue-200 transition-colors duration-150"
           aria-label={t('nav.messages')}
         >
           <ChatIcon className="w-6 h-6" />
         </button>
         <NavSettingsLink ariaLabel={t('nav.settings')} />
-        <LanguageSwitcher />
+        <LanguageSwitcher dark />
         <button
           onClick={handleLogout}
-          className="rounded-full border-[1px] border-myGrey-200 text-myGrey-200 text-sm font-bold px-[1.2em] py-[0.25em] hover:bg-myRed hover:border-myRed hover:text-white transition-colors duration-150"
-          style={{ backgroundColor: '#3F4756', color: 'white' }}
+          className="rounded-full border border-myGrey-200 text-myGrey-200 text-sm font-semibold px-4 py-1.5 hover:bg-myRed hover:border-myRed hover:text-white transition-colors duration-150"
         >
           {t('nav.logout')}
         </button>
       </div>
 
+      {/* Hamburger */}
       <HamburgerButton
         isOpen={menuOpen}
         onClick={() => setMenuOpen((v) => !v)}
         className="lg:hidden p-2 text-myGrey-200"
       />
 
-      {/* Mobile + tablet dropdown */}
       {menuOpen && (
         <div
           className="absolute top-full left-0 w-full flex flex-col items-start px-6 py-4 gap-4 lg:hidden shadow-lg z-50"
@@ -101,7 +98,7 @@ const ChefNavbar = () => {
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-sm font-semibold tracking-wide w-full py-1"
+                className="text-sm font-semibold tracking-wide w-full py-1 transition-colors duration-150"
                 style={{
                   color: isActive ? '#377CC3' : '#3F4756',
                   borderBottom: isActive
@@ -125,7 +122,7 @@ const ChefNavbar = () => {
                 openWidget();
                 setMenuOpen(false);
               }}
-              className="hover:opacity-70 transition-opacity"
+              className="text-myGrey-200 hover:text-myBlue-200 transition-opacity"
               aria-label={t('nav.messages')}
             >
               <ChatIcon className="w-6 h-6" />
@@ -137,8 +134,7 @@ const ChefNavbar = () => {
             <LanguageSwitcher />
             <button
               onClick={handleLogout}
-              className="ml-auto rounded-full px-5 py-1.5 text-sm font-bold transition-colors"
-              style={{ backgroundColor: '#3F4756', color: 'white' }}
+              className="ml-auto rounded-full border border-myGrey-200 text-myGrey-200 text-sm font-semibold px-4 py-1.5 hover:bg-myRed hover:border-myRed hover:text-white transition-colors"
             >
               {t('nav.logout')}
             </button>

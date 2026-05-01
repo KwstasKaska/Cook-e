@@ -22,8 +22,7 @@ module.exports = {
       },
 
       fontFamily: {
-        exo: ['"Exo 2"', 'sans-serif'],
-        source: ['"Source Sans Pro"', 'sans-serif'],
+        sans: ['Inter', 'sans-serif'],
       },
 
       fontSize: {

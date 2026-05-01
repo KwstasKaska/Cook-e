@@ -1,4 +1,4 @@
-@import url('https://fonts.google.com/css2?family=Inter:wght@400;700&subset=latin,greek&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,600;0,700;1,400&subset=latin,greek&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -32,11 +32,10 @@
   .loginLogo {
     background-image: url('/images/5.png');
   }
+
   th,
   td {
-    /* border: 1px solid #3f4756; */
     background: hsl(0 0% 0% / 0.6);
-
     padding: 1rem;
   }
 
@@ -79,7 +78,7 @@
   }
 }
 
-/* Για να τοποθετήσω το accesibility κάτω αριστερά */
+/* Accessibility widget — bottom-left */
 .editorim-sidebox-open {
   bottom: 16px !important;
   right: auto !important;

@@ -187,7 +187,11 @@
     "noMealPlan": "Δεν έχει ανατεθεί ακόμα πλάνο διατροφής.",
     "profilePicture": "Φωτογραφία προφίλ",
     "changePhoto": "Αλλαγή φωτογραφίας",
-    "deleteError": "Αδυναμία διαγραφής λογαριασμού"
+    "deleteError": "Αδυναμία διαγραφής λογαριασμού",
+    "deleteConfirmTitle": "Διαγραφή λογαριασμού",
+    "deleteConfirmMessage": "Αυτή η ενέργεια είναι μόνιμη. Όλα τα δεδομένα σου θα διαγραφούν οριστικά.",
+    "deleteConfirmYes": "Ναι, διέγραψέ τον",
+    "deleteConfirmCancel": "Άκυρο"
   },
   "nutr": {
     "welcome": "Καλωσήρθες",

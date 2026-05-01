@@ -27,7 +27,7 @@ const NutrArticles: React.FC = () => {
     <section id="section_1" className="flex min-h-screen flex-col">
       <div className="flex w-full flex-1 flex-col items-center justify-center gap-8 bg-myGrey-200 px-4 py-10 sm:px-6">
         {/* Title */}
-        <h1 className="bg-gradient-to-r from-[#B3D5F8] to-[#FFFFFF] bg-clip-text font-exo text-3xl font-bold text-transparent md:text-5xl">
+        <h1 className="bg-gradient-to-r from-[#B3D5F8] to-[#FFFFFF] bg-clip-text  text-3xl font-bold text-transparent md:text-5xl">
           {t('nutr.yourArticles')}
         </h1>
 

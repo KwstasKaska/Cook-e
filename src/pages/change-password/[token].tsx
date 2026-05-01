@@ -24,7 +24,7 @@ const ChangePassword: NextPage = () => {
   return (
     <main className="flex min-h-screen items-center justify-center bg-myBeige-100">
       <div className="grid gap-4 rounded-[1.5625em] border-[5px] border-myBlue-200 bg-myBlue-200 p-8">
-        <h1 className="text-center font-exo text-2xl font-bold text-white">
+        <h1 className="text-center  text-2xl font-bold text-white">
           {t('settings.changePassword')}
         </h1>
 
@@ -85,7 +85,7 @@ const ChangePassword: NextPage = () => {
               {tokenError && (
                 <p className="text-center text-sm font-bold text-red-400">
                   {t('change_password.token_error')}{' '}
-                  <Link href="/forgot-password" className="underline">
+                  <Link href="/" className="underline">
                     {t('change_password.token_error_link')}
                   </Link>
                 </p>

@@ -53,7 +53,6 @@ export default function NutrNavbar() {
     >
       <Logo />
 
-      {/* Desktop nav links — xl+ only */}
       <div className="hidden xl:flex items-center gap-5">
         {navLinks.map((link) => {
           const isActive =
@@ -95,7 +94,6 @@ export default function NutrNavbar() {
         </Link>
       </div>
 
-      {/* Right actions — xl+ only */}
       <div className="hidden xl:flex items-center gap-3">
         <button
           onClick={openWidget}
@@ -105,26 +103,24 @@ export default function NutrNavbar() {
           <ChatIcon />
         </button>
         <NavSettingsLink ariaLabel={t('nav.settings')} />
-        <LanguageSwitcher />
+        <LanguageSwitcher dark />
         {data?.me && (
           <button
             onClick={handleLogout}
             disabled={logoutLoading}
-            className="rounded-full border-[1px] border-myGrey-200 text-myGrey-200 text-sm font-bold px-[1.2em] py-[0.25em] hover:bg-myRed hover:border-myRed hover:text-white transition-colors duration-150"
+            className="rounded-full border border-myGrey-200 text-myGrey-200 text-sm font-semibold px-4 py-1.5 hover:bg-myRed hover:border-myRed hover:text-white transition-colors duration-150 disabled:opacity-50"
           >
             {t('nav.logout')}
           </button>
         )}
       </div>
 
-      {/* Hamburger — visible on mobile + tablet (below xl) */}
       <HamburgerButton
         isOpen={menuOpen}
         onClick={() => setMenuOpen((v) => !v)}
         className="xl:hidden p-2 text-myGrey-200"
       />
 
-      {/* Mobile + tablet dropdown */}
       {menuOpen && (
         <div
           style={{ backgroundColor: '#B3D5F8' }}
@@ -193,7 +189,7 @@ export default function NutrNavbar() {
               <button
                 onClick={handleLogout}
                 disabled={logoutLoading}
-                className="ml-auto border border-myGrey-200 text-myGrey-200 text-sm font-semibold px-5 py-1.5 rounded-full hover:bg-myRed hover:border-myRed hover:text-white transition-colors"
+                className="ml-auto rounded-full border border-myGrey-200 text-myGrey-200 text-sm font-semibold px-4 py-1.5 hover:bg-myRed hover:border-myRed hover:text-white transition-colors disabled:opacity-50"
               >
                 {t('nav.logout')}
               </button>

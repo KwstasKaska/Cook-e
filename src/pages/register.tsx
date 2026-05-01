@@ -1,7 +1,6 @@
 import { NextPage } from 'next';
-import Image from 'next/image';
 import Link from 'next/link';
-import logo from '../../public/images/6.png';
+import { useEffect } from 'react';
 import { useRegisterMutation, useMeQuery } from '../generated/graphql';
 import { useRouter } from 'next/router';
 import { toErrorMap } from '../utils/toErrorMap';
@@ -10,7 +9,6 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { GetServerSideProps } from 'next';
 import LanguageSwitcher from '../components/Helper/LanguageSwitcher';
-import { useEffect } from 'react';
 
 interface MyFormValues {
   username: string;
@@ -41,135 +39,146 @@ const Register: NextPage = () => {
   };
 
   return (
-    <main className="h-screen w-full bg-myGrey-200">
-      <div className="customImg container h-full bg-auto bg-fixed bg-center bg-no-repeat pt-[3em] md:mt-0 md:flex md:flex-row md:content-center md:justify-center md:gap-[2em] md:bg-none xl:gap-[4rem]">
-        <section className="md:chefImg flex flex-row justify-center gap-[5em] md:order-2 md:grid md:grid-cols-2 md:grid-rows-none md:content-center md:bg-contain md:bg-center md:bg-no-repeat md:px-[1em]">
-          <Image
-            src={logo}
-            alt={'Cook-e'}
-            width="116"
-            height="39.77"
-            className="md:h-fit md:pb-[29em]"
-          />
-          <button
-            type="button"
-            className="cursor-pointer rounded-registerLogin bg-myBlue-200 px-[2.3em] font-exo text-sm font-bold text-white md:h-fit md:py-[.75em]"
+    <main className="flex bg-myGrey-200 min-h-screen w-full items-center justify-center px-4 py-12">
+      <section className="w-full max-w-md rounded-3xl bg-white px-8 py-8 text-myGrey-200">
+        <div className="mb-8 flex items-center justify-between">
+          <Link
+            href="/"
+            className="flex items-center gap-1.5 text-xs font-semibold text-gray-400 transition hover:text-myGrey-200"
           >
-            <Link href="/">{t('register.login_button')}</Link>
-          </button>
-        </section>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={2}
+              stroke="currentColor"
+              className="h-3.5 w-3.5"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
+              />
+            </svg>
+            {t('nav.home')}
+          </Link>
+          <LanguageSwitcher dark />
+        </div>
 
-        <section className="mt-[7em] grid grid-flow-row content-center gap-3 md:mt-0">
-          <LanguageSwitcher />
-          <h1 className="text-center font-exo text-2xl font-bold text-myBlue-200 lg:text-4xl">
+        <div className="mb-6 text-center">
+          <h1 className="mb-1 text-2xl font-bold text-myGrey-200">
             {t('register.title')}
           </h1>
+          <p className="text-sm text-gray-400">{t('register.subtitle')}</p>
+        </div>
 
-          <p className="mb-3 w-[20em] text-center text-sm font-normal lg:text-xl">
-            {t('register.subtitle')}
-          </p>
-
-          <Formik
-            initialValues={initialValues}
-            onSubmit={async (values: MyFormValues, { setErrors }) => {
-              try {
-                const response = await register({
-                  variables: { options: values },
-                });
-                if (response.data?.register.errors) {
-                  setErrors(toErrorMap(response.data.register.errors));
-                } else if (response.data?.register.user) {
-                  router.push('/login');
-                } else {
-                  setErrors({ username: t('change_password.server_error') });
-                }
-              } catch {
+        <Formik
+          initialValues={initialValues}
+          onSubmit={async (values: MyFormValues, { setErrors }) => {
+            try {
+              const response = await register({
+                variables: { options: values },
+              });
+              if (response.data?.register.errors) {
+                setErrors(toErrorMap(response.data.register.errors));
+              } else if (response.data?.register.user) {
+                router.push('/');
+              } else {
                 setErrors({ username: t('change_password.server_error') });
               }
-            }}
-          >
-            {({ isSubmitting }) => (
-              <Form className="grid grid-cols-1 justify-items-center gap-5 text-xs font-normal text-black lg:text-2xl">
-                <Field
-                  className="w-[88%] border-none shadow-xl"
-                  type="text"
-                  placeholder={t('register.username_placeholder')}
-                  name="username"
-                />
-                <ErrorMessage
-                  name="username"
-                  component="div"
-                  className="max-w-[23em] text-center text-sm font-bold text-red-500 md:max-w-[20em] md:text-base lg:max-w-[26em] lg:text-lg"
-                />
+            } catch {
+              setErrors({ username: t('change_password.server_error') });
+            }
+          }}
+        >
+          {({ isSubmitting }) => (
+            <Form className="flex flex-col gap-3 text-sm text-black">
+              <Field
+                className="w-full rounded-xl border border-gray-200 px-4 py-2.5 placeholder:italic placeholder:text-myBlue-200 focus:outline-none"
+                type="text"
+                placeholder={t('register.username_placeholder')}
+                name="username"
+              />
+              <ErrorMessage
+                name="username"
+                component="div"
+                className="text-center text-xs font-bold text-red-500"
+              />
 
-                <Field
-                  type="email"
-                  placeholder={t('register.email_placeholder')}
-                  className="w-[88%] border-none shadow-xl"
-                  name="email"
-                />
-                <ErrorMessage
-                  name="email"
-                  component="div"
-                  className="max-w-[23em] text-center text-sm font-bold text-red-500 md:max-w-[20em] md:text-base lg:max-w-[26em] lg:text-lg"
-                />
+              <Field
+                type="email"
+                placeholder={t('register.email_placeholder')}
+                className="w-full rounded-xl border border-gray-200 px-4 py-2.5 placeholder:italic placeholder:text-myBlue-200 focus:outline-none"
+                name="email"
+              />
+              <ErrorMessage
+                name="email"
+                component="div"
+                className="text-center text-xs font-bold text-red-500"
+              />
 
-                <Field
-                  type="password"
-                  placeholder={t('register.password_placeholder')}
-                  className="w-[88%] border-none shadow-xl"
-                  name="password"
-                />
-                <ErrorMessage
-                  name="password"
-                  component="div"
-                  className="max-w-[23em] whitespace-pre-line text-center text-sm font-bold text-red-500 md:max-w-[20em] md:text-base lg:max-w-[26em] lg:text-lg"
-                />
+              <Field
+                type="password"
+                placeholder={t('register.password_placeholder')}
+                className="w-full rounded-xl border border-gray-200 px-4 py-2.5 placeholder:italic placeholder:text-myBlue-200 focus:outline-none"
+                name="password"
+              />
+              <ErrorMessage
+                name="password"
+                component="div"
+                className="whitespace-pre-line text-center text-xs font-bold text-red-500"
+              />
 
-                <div
-                  id="my-radio-group"
-                  className="text-lg font-bold md:text-xl lg:text-2xl"
-                >
+              <div className="mt-2">
+                <p className="mb-2 text-sm font-bold text-myGrey-200">
                   {t('register.role_label')}
-                </div>
+                </p>
                 <div
                   role="group"
-                  className="grid grid-flow-row gap-2 text-base md:text-lg lg:text-xl"
+                  className="flex flex-col gap-1.5 text-sm text-myGrey-200"
                   aria-labelledby="my-radio-group"
                 >
-                  <label>
+                  <label className="flex cursor-pointer items-center gap-2">
                     <Field type="radio" name="role" value="user" />
-                    {'   '}
                     {t('register.role_user')}
                   </label>
-                  <label>
+                  <label className="flex cursor-pointer items-center gap-2">
                     <Field type="radio" name="role" value="chef" />
-                    {'   '}Chef
+                    Chef
                   </label>
-                  <label>
+                  <label className="flex cursor-pointer items-center gap-2">
                     <Field type="radio" name="role" value="nutritionist" />
-                    {'   '}
                     {t('register.role_nutritionist')}
                   </label>
                   <ErrorMessage
                     name="role"
                     component="div"
-                    className="max-w-[23em] text-center text-sm font-bold text-red-500 md:max-w-[20em] md:text-base lg:max-w-[26em] lg:text-lg"
+                    className="text-center text-xs font-bold text-red-500"
                   />
                 </div>
+              </div>
 
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="mt-[3em] cursor-pointer rounded-[0.56rem] bg-myBlue-200 px-[3em] py-[.5em] text-sm font-bold text-white lg:text-2xl"
-                >
-                  {t('register.submit')}
-                </button>
-              </Form>
-            )}
-          </Formik>
-        </section>
-      </div>
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="mt-4 w-full cursor-pointer rounded-xl bg-myBlue-200 py-2.5 text-sm font-bold text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                {t('register.submit')}
+              </button>
+            </Form>
+          )}
+        </Formik>
+
+        <p className="mt-6 text-center text-sm text-gray-400">
+          {t('login.no_account')}{' '}
+          <Link
+            className="font-semibold text-myGrey-200 underline transition hover:opacity-80"
+            href="/login"
+          >
+            {t('login.submit')}
+          </Link>
+        </p>
+      </section>
     </main>
   );
 };

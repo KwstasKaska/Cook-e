@@ -112,7 +112,7 @@ const SliderAppointments: React.FC = () => {
       )}
 
       {pendingRequests.length === 0 ? (
-        <div className="mt-10 mb-6 text-center font-exo text-base font-bold leading-relaxed md:mt-0 md:text-lg">
+        <div className="mt-10 mb-6 text-center  text-base font-bold leading-relaxed md:mt-0 md:text-lg">
           {t('nutr.noAppointmentRequestsFor')}
           <div className="text-myBlue-200">{displayDate}</div>
         </div>
@@ -155,7 +155,7 @@ const SliderAppointments: React.FC = () => {
                       </p>
                     </div>
 
-                    <div className="mt-8 mb-8 flex justify-center gap-4 font-exo font-normal">
+                    <div className="mt-8 mb-8 flex justify-center gap-4  font-normal">
                       <button
                         onClick={() =>
                           handleRespond(request.id, AppointmentStatus.Accepted)

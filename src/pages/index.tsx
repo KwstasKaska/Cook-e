@@ -14,7 +14,6 @@ import LanguageSwitcher from '../components/Helper/LanguageSwitcher';
 import { pick } from '../utils/pick';
 import { recipeImageSrc } from '../utils/recipeHelpers';
 
-// τυχαία επιλογή N στοιχείων από πίνακα
 function pickRandom<T>(arr: T[], count: number): T[] {
   const shuffled = [...arr].sort(() => Math.random() - 0.5);
   return shuffled.slice(0, count);
@@ -66,7 +65,6 @@ const RecipeCard = ({
   </div>
 );
 
-// skeleton card ενώ φορτώνουν οι συνταγές
 const SkeletonCard = () => (
   <div className="grid w-full animate-pulse grid-flow-row justify-items-center gap-2 rounded-[.9em] bg-myGrey-100 pb-[1.5em] opacity-40 shadow-2xl xl:px-4">
     <div className="-mt-[3em] h-[6em] w-[6em] rounded-full bg-gray-300 md:h-[7em] md:w-[7em]" />
@@ -87,7 +85,6 @@ const Index: NextPage = () => {
     variables: { limit: 10, offset: 0 },
   });
 
-  // 2 τυχαίες συνταγές για την αρχική σελίδα
   const featuredRecipes = useMemo(() => {
     const list = recipesData?.recipes ?? [];
     return pickRandom(list, 2);
@@ -103,13 +100,12 @@ const Index: NextPage = () => {
     return map[d.toLowerCase()] ?? d;
   };
 
-  // κουμπιά login/register ή logout ανάλογα με το αν είναι συνδεδεμένος
   let body = null;
   if (!meLoading) {
     if (!meData?.me) {
       body = (
         <div className="my-3 flex flex-row items-center gap-3 font-bold md:gap-6">
-          <LanguageSwitcher />
+          <LanguageSwitcher dark />
           <Link
             href="/login"
             className="rounded-full border-[1px] border-white px-[1.2em] py-[0.25em] text-sm text-white hover:bg-myRed md:text-base xl:text-2xl"
@@ -118,7 +114,7 @@ const Index: NextPage = () => {
           </Link>
           <Link
             href="/register"
-            className="rounded-full bg-myGrey-100 px-[1.2em] py-[0.25em] text-sm text-myBlue-200 hover:outline hover:outline-2 hover:outline-black md:text-base xl:text-2xl"
+            className="rounded-full border-[1px] border-white px-[1.2em] py-[0.25em] text-sm text-white hover:bg-myRed md:text-base xl:text-2xl"
           >
             {t('index.register')}
           </Link>
@@ -167,7 +163,6 @@ const Index: NextPage = () => {
   return (
     <>
       <div className="min-h-screen w-full bg-myGrey-100 md:grid md:grid-cols-2">
-        {/* ── Αριστερή στήλη: hero text ── */}
         <div className="container h-full pt-[1em]">
           <div className="mt-12 grid h-full grid-flow-row justify-items-center gap-4 md:mt-0 md:items-center md:gap-0">
             <h1 className="px-6 text-center text-3xl font-bold leading-10 md:mt-10 md:px-[1em] md:text-4xl xl:text-7xl">
@@ -185,15 +180,12 @@ const Index: NextPage = () => {
           </div>
         </div>
 
-        {/* ── Δεξιά στήλη: logo + συνταγές ── */}
-        <section className="container mt-[3em] grid grid-flow-row gap-4 rounded-[3em] bg-myBlue-200 font-exo font-normal md:mt-0 md:rounded-none md:rounded-bl-[6em]">
+        <section className="container mt-[3em] grid grid-flow-row gap-4 rounded-[3em] bg-myBlue-200  font-normal md:mt-0 md:rounded-none md:rounded-bl-[6em]">
           <div className="grid grid-flow-col items-center justify-around px-2">
             {body}
           </div>
 
-          {/* Mobile: slider με 1 κάρτα — Desktop: 2 κάρτες side by side */}
           <div className="my-[3.5em] px-6 md:px-3 md:py-[5em]">
-            {/* Mobile slider */}
             <div className="relative flex items-center justify-center gap-3 md:hidden">
               <button
                 onClick={() => setSlideIndex((i) => Math.max(i - 1, 0))}
@@ -216,7 +208,6 @@ const Index: NextPage = () => {
               </button>
             </div>
 
-            {/* Desktop: side by side */}
             <div className="mt-[3em] hidden md:grid md:grid-cols-2 md:gap-7">
               {cards}
             </div>

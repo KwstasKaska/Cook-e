@@ -188,7 +188,11 @@
     "mealPlan": "My meal Plan",
     "mealPlanBy": "Nutrition plan prepared by",
     "noMealPlan": "No meal plan has been assigned yet.",
-    "deleteError": "Error on deletion"
+    "deleteError": "Error on deletion",
+    "deleteConfirmTitle": "Delete account",
+    "deleteConfirmMessage": "This is permanent. All your data will be deleted and cannot be recovered.",
+    "deleteConfirmYes": "Yes, delete it",
+    "deleteConfirmCancel": "Cancel"
   },
   "nutr": {
     "welcome": "Welcome",
@@ -432,11 +436,7 @@
     "save": "Save",
     "saving": "Saving...",
     "next": "Next",
-    "prev": "Previous",
-    "deleteConfirmTitle": "Delete account",
-    "deleteConfirmMessage": "This is permanent. All your data will be deleted and cannot be recovered.",
-    "deleteConfirmYes": "Yes, delete it",
-    "deleteConfirmCancel": "Cancel"
+    "prev": "Previous"
   },
   "register": {
     "title": "Create an account",
