@@ -16,7 +16,7 @@ export default function LanguageSwitcher({ dark = false }: Props) {
   return (
     <button
       onClick={toggleLanguage}
-      className={`rounded-full border px-[1.2em] py-[0.25em] text-sm font-bold transition hover:bg-myBlue-200 hover:text-white hover:border-myBlue-200 ${
+      className={`rounded-full border px-4 py-1.5 text-sm font-bold transition hover:bg-myBlue-200 hover:text-white  ${
         dark ? 'border-myGrey-200 text-myGrey-200' : 'border-white text-white'
       }`}
     >

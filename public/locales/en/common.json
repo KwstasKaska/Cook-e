@@ -471,7 +471,12 @@
     "register": "Register",
     "logout": "Logout",
     "hero_title": "Your cooking experience is changing",
-    "hero_subtitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Condimentum id venenatis a vitae.",
-    "cta": "Get started"
+    "cta": "Get started",
+    "role_chef_label": "Are you a chef?",
+    "role_chef_desc": "Create your recipes and articles.",
+    "role_nutritionist_label": "Are you a nutritionist?",
+    "role_nutritionist_desc": "Create articles, nutrition plans, and manage appointment requests.",
+    "role_user_label": "Are you a member?",
+    "role_user_desc": "Find recipes, book an appointment with a nutritionist, rate chefs and communicate with other members."
   }
 }
