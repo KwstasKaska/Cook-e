@@ -5,7 +5,6 @@ import ScrollToTopButton from '../../../components/Helper/ScrollToTopButton';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
 import { StarRow } from '../../../components/Helper/Stars';
-import IngredientsPanel from '../../../components/Users/Recipes/IngredientsPanel';
 import ReviewsPanel from '../../../components/Users/Recipes/ReviewsPanel';
 import RatePanel from '../../../components/Users/Recipes/RatePanel';
 import {
@@ -25,7 +24,7 @@ import useIsUser from '../../../utils/useIsUser';
 
 const RATINGS_LIMIT = 10;
 
-type DetailTab = 'ingredients' | 'reviews' | 'rate';
+type DetailTab = 'reviews' | 'rate';
 
 export async function getServerSideProps({ locale }: { locale: string }) {
   return {
@@ -48,7 +47,7 @@ function RecipeDetailContent() {
   const recipeId = parseInt(id as string, 10);
   const isEl = router.locale === 'el';
 
-  const [activeTab, setActiveTab] = useState<DetailTab>('ingredients');
+  const [activeTab, setActiveTab] = useState<DetailTab>('reviews');
   const [checkedIngredients, setCheckedIngredients] = useState<Set<number>>(
     new Set(),
   );
@@ -111,6 +110,8 @@ function RecipeDetailContent() {
   const isFavorited = favData?.isFavorited ?? false;
   const myRating = myRatingData?.myRecipeRating ?? null;
   const title = isEl ? recipe?.title_el : recipe?.title_en;
+  const description = isEl ? recipe?.description_el : recipe?.description_en;
+  const chefComment = isEl ? recipe?.chefComment_el : recipe?.chefComment_en;
   const steps = [...(recipe?.steps ?? [])].sort((a, b) => a.id - b.id);
   const ingredients = recipe?.recipeIngredients ?? [];
   const totalTime = (recipe?.prepTime ?? 0) + (recipe?.cookTime ?? 0);
@@ -147,11 +148,7 @@ function RecipeDetailContent() {
     async (ingredientId: number) => {
       setServerError('');
       try {
-        await addToCart({
-          variables: {
-            ingredientId,
-          },
-        });
+        await addToCart({ variables: { ingredientId } });
         setAddedToCart((prev) => new Set(prev).add(ingredientId));
         setTimeout(() => {
           setAddedToCart((prev) => {
@@ -189,12 +186,7 @@ function RecipeDetailContent() {
       return;
     }
     try {
-      await rateRecipe({
-        variables: {
-          recipeId,
-          score: ratingScore,
-        },
-      });
+      await rateRecipe({ variables: { recipeId, score: ratingScore } });
       setRatingSuccess(t('recipes.ratingSuccess'));
       setRatingScore(0);
       await refetchRatings();
@@ -256,7 +248,8 @@ function RecipeDetailContent() {
       <Navbar />
       <main className="flex-1">
         <div className="mx-auto max-w-6xl px-4 py-10 md:px-8 md:py-16">
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-[1fr_260px] lg:grid-cols-[1fr_360px] md:items-start">
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-[1fr_280px] lg:grid-cols-[1fr_320px] md:items-start">
+            {/* ── LEFT column */}
             <div className="flex min-w-0 flex-col gap-6">
               <button
                 onClick={() => router.back()}
@@ -278,6 +271,7 @@ function RecipeDetailContent() {
                 {t('recipes.backToSearch')}
               </button>
 
+              {/* title + image */}
               <div className="relative min-w-0">
                 {recipe.category && (
                   <p
@@ -316,40 +310,94 @@ function RecipeDetailContent() {
                 <StarRow rating={avgRating} ratingCount={reviews.length} />
               )}
 
-              {/* ── Chef section — always shown when author data is present */}
-              {recipe.author?.user && (
-                <button
-                  onClick={() => router.push(`/user/chef/${recipe.authorId}`)}
-                  className="flex w-fit items-center gap-3 group"
-                >
-                  {recipe.author.user.image ? (
-                    <img
-                      src={recipe.author.user.image}
-                      alt={recipe.author.user.username}
-                      className="h-10 w-10 rounded-full object-cover border-2 border-white shadow"
-                    />
-                  ) : (
-                    <div
-                      className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-white text-sm font-bold shadow"
-                      style={{ backgroundColor: '#377CC3', color: '#fff' }}
-                    >
-                      {recipe.author.user.username?.[0]?.toUpperCase() ?? '?'}
-                    </div>
-                  )}
-                  <span className="text-sm font-semibold text-gray-300 group-hover:underline transition">
-                    {recipe.author.user.username}
-                  </span>
-                </button>
+              {/* ingredients */}
+              {ingredients.length > 0 && (
+                <div>
+                  <h2 className="mb-4 text-2xl font-bold text-white md:text-3xl">
+                    {t('ingredientCategories.title')}
+                  </h2>
+                  <div className="flex flex-col gap-2">
+                    {ingredients.map((ri) => {
+                      if (!ri.ingredient) return null;
+                      const ingId = ri.ingredientId;
+                      const name = isEl
+                        ? ri.ingredient.name_el
+                        : ri.ingredient.name_en;
+                      const isChecked = checkedIngredients.has(ingId);
+                      const inCart = addedToCart.has(ingId);
+                      return (
+                        <div
+                          key={ingId}
+                          className="flex items-center gap-2 py-1"
+                        >
+                          <button
+                            onClick={() => toggleIngredient(ingId)}
+                            className="flex-shrink-0"
+                          >
+                            <span
+                              className="flex h-4 w-4 items-center justify-center rounded-full border-2 transition"
+                              style={{
+                                borderColor: isChecked ? '#EAB308' : '#6B7280',
+                                backgroundColor: isChecked
+                                  ? '#EAB308'
+                                  : 'transparent',
+                              }}
+                            >
+                              {isChecked && (
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  viewBox="0 0 24 24"
+                                  fill="currentColor"
+                                  className="h-2.5 w-2.5 text-white"
+                                >
+                                  <path
+                                    fillRule="evenodd"
+                                    d="M19.916 4.626a.75.75 0 01.208 1.04l-9 13.5a.75.75 0 01-1.154.114l-6-6a.75.75 0 011.06-1.06l5.353 5.353 8.493-12.739a.75.75 0 011.04-.208z"
+                                    clipRule="evenodd"
+                                  />
+                                </svg>
+                              )}
+                            </span>
+                          </button>
+                          <span
+                            className="text-sm leading-relaxed md:text-base"
+                            style={{
+                              color: isChecked ? '#9CA3AF' : '#fff',
+                              textDecoration: isChecked
+                                ? 'line-through'
+                                : 'none',
+                            }}
+                          >
+                            {ri.quantity} {ri.unit} {name}
+                          </span>
+                          <button
+                            onClick={() => handleAddToCart(ingId)}
+                            className="transition"
+                            style={{ color: inCart ? '#EAB308' : '#6B7280' }}
+                          >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              strokeWidth={1.5}
+                              stroke="white"
+                              className="h-4 w-4"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"
+                              />
+                            </svg>
+                          </button>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
               )}
 
-              {/* ── Chef comment — shown only when present */}
-              {(isEl ? recipe.chefComment_el : recipe.chefComment_en) && (
-                <p className="max-w-lg text-sm italic text-gray-300">
-                  &ldquo;{isEl ? recipe.chefComment_el : recipe.chefComment_en}
-                  &rdquo;
-                </p>
-              )}
-
+              {/* steps */}
               {steps.length > 0 && (
                 <div>
                   <h2 className="mb-6 text-2xl font-bold text-white md:text-3xl">
@@ -419,19 +467,83 @@ function RecipeDetailContent() {
 
             {/* ── RIGHT panel */}
             <div className="min-w-0 overflow-hidden rounded-2xl bg-white shadow-xl md:sticky md:top-6">
-              {activeTab === 'ingredients' && (
-                <IngredientsPanel
-                  ingredients={ingredients}
-                  totalTime={totalTime}
-                  caloriesTotal={recipe.caloriesTotal}
-                  difficulty={recipe.difficulty}
-                  checkedIngredients={checkedIngredients}
-                  addedToCart={addedToCart}
-                  onToggleIngredient={toggleIngredient}
-                  onAddToCart={handleAddToCart}
-                  isEl={isEl}
-                />
+              {/* chef section */}
+              {recipe.author?.user && (
+                <button
+                  onClick={() => router.push(`/user/chef/${recipe.authorId}`)}
+                  className="flex w-full flex-col items-center gap-3 px-6 pt-6 pb-4 group border-b border-gray-100"
+                >
+                  {recipe.author.user.image ? (
+                    <img
+                      src={recipe.author.user.image}
+                      alt={recipe.author.user.username}
+                      className="h-20 w-20 rounded-full object-cover border-4 border-gray-100 shadow"
+                    />
+                  ) : (
+                    <div
+                      className="flex h-20 w-20 items-center justify-center rounded-full border-4 border-gray-100 text-2xl font-bold shadow"
+                      style={{ backgroundColor: '#377CC3', color: '#fff' }}
+                    >
+                      {recipe.author.user.username?.[0]?.toUpperCase() ?? '?'}
+                    </div>
+                  )}
+                  <span className="text-base font-bold text-gray-700 group-hover:underline transition">
+                    {recipe.author.user.username}
+                  </span>
+                </button>
               )}
+
+              {/* chef comment */}
+              {chefComment && (
+                <div className="px-6 py-4 border-b border-gray-100">
+                  <p className="text-sm italic text-gray-500 text-center">
+                    &ldquo;{chefComment}&rdquo;
+                  </p>
+                </div>
+              )}
+
+              {/* description */}
+              {description && (
+                <div className="px-6 py-4 border-b border-gray-100">
+                  <p className="text-sm text-gray-600 leading-relaxed">
+                    {description}
+                  </p>
+                </div>
+              )}
+
+              {/* stats */}
+              <div className="px-6 py-4 border-b border-gray-100 flex flex-col gap-2">
+                {totalTime > 0 && (
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-400">
+                      {t('chef.recipe_detail.implementation_time')}
+                    </span>
+                    <span className="font-semibold text-gray-700">
+                      {totalTime} {t('chef.recipe_detail.minutes')}
+                    </span>
+                  </div>
+                )}
+                {recipe.caloriesTotal != null && (
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-400">Kcal</span>
+                    <span className="font-semibold text-gray-700">
+                      {recipe.caloriesTotal}
+                    </span>
+                  </div>
+                )}
+                {recipe.difficulty && (
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-400">
+                      {t('chef.recipe_detail.difficulty')}
+                    </span>
+                    <span className="font-semibold text-gray-700">
+                      {recipe.difficulty}
+                    </span>
+                  </div>
+                )}
+              </div>
+
+              {/* tab content */}
               {activeTab === 'reviews' && (
                 <ReviewsPanel
                   reviews={reviews}
@@ -454,13 +566,9 @@ function RecipeDetailContent() {
                 />
               )}
 
-              {/* Bottom action bar */}
+              {/* bottom action bar */}
               <div className="flex items-center justify-around border-t border-gray-100 px-4 py-3">
                 {[
-                  {
-                    tab: 'ingredients' as DetailTab,
-                    icon: 'M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25',
-                  },
                   {
                     tab: 'reviews' as DetailTab,
                     icon: 'M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z',

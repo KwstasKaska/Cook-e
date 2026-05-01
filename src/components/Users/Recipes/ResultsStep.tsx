@@ -78,12 +78,15 @@ export default function ResultsStep({
   loading,
   onSelectRecipe,
   onBack,
+  onSearch,
   isEl,
 }: {
   suggestions: Suggestion[];
   loading: boolean;
   onSelectRecipe: (id: number) => void;
   onBack: () => void;
+  onSearch: () => void;
+
   isEl: boolean;
 }) {
   const { t } = useTranslation('common');
@@ -150,7 +153,7 @@ export default function ResultsStep({
 
         <div className="mt-16 flex justify-center">
           <button
-            onClick={onBack}
+            onClick={onSearch}
             className="rounded-full border-2 bg-gray-500 border-white px-8 py-2 text-sm font-bold text-white transition hover:bg-white hover:text-gray-800"
           >
             {t('recipes.newSearch')}

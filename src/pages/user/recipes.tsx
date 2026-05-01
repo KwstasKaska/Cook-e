@@ -163,7 +163,8 @@ function RecipesContent() {
           suggestions={suggestions}
           loading={suggestedLoading}
           onSelectRecipe={goToDetail}
-          onBack={() => setStep('ingredients')}
+          onBack={() => setStep('utensils')}
+          onSearch={() => setStep('ingredients')}
           isEl={isEl}
         />
       )}
