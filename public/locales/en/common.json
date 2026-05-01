@@ -23,15 +23,15 @@
   },
   "landing": {
     "nutritionTitle": "Nutritional info",
-    "nutritionDesc": "Track the nutritional values you consumed over the last week, summarized in the chart on the left.",
+    "nutritionDesc": "Track the nutritional values you consumed over the last week, summarized in the chart.",
     "energy": "Energy",
     "fat": "Fat",
     "protein": "Protein",
     "carbs": "Carbohydrates",
     "cookCount": "times",
     "weeklyRecipesTitle": "This week's recipes",
-    "weeklyRecipesDesc1": "The ingredients of today's recipes are what made them get recommended. Do you recognize them?",
-    "weeklyRecipesDesc2": "Probably yes, since you've used many of them recently.",
+    "weeklyRecipesDesc1": "The ratings of today's recipes are what made them get recommended.",
+
     "weeklyRecipesDesc3": "Give them a try and let us know what you think!",
     "startCooking": "Start cooking!",
     "minutes": "minutes",
@@ -109,14 +109,9 @@
   },
   "utensils": {
     "title": "Utensils",
-    "pot": "Pot",
-    "pan": "Pan",
-    "dutchOven": "Dutch oven",
-    "wok": "Wok",
-    "mortar": "Mortar & pestle",
-    "knives": "Knives",
-    "pressureCooker": "Pressure cooker",
-    "otherUtensils": "Other utensils"
+    "cookingVessels": "Cooking Vessels",
+    "utensils": "Utensils",
+    "extraEquipment": "Extra Equipment"
   },
   "cart": {
     "title": "My cart",

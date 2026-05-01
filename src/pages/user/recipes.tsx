@@ -97,7 +97,6 @@ function RecipesContent() {
 
   const categoryKeys = Array.from(ingredientsByCategory.keys());
 
-  // ── Handlers
   const toggleIngredient = (id: number) =>
     setSelectedIngredientIds((p) =>
       p.includes(id) ? p.filter((i) => i !== id) : [...p, id],
@@ -107,12 +106,6 @@ function RecipesContent() {
     setSelectedUtensilIds((p) =>
       p.includes(id) ? p.filter((i) => i !== id) : [...p, id],
     );
-
-  const reset = () => {
-    setStep('home');
-    setSelectedIngredientIds([]);
-    setSelectedUtensilIds([]);
-  };
 
   const handleUnsave = async (recipeId: number) => {
     await unsaveRecipe({ variables: { recipeId } });
@@ -170,7 +163,7 @@ function RecipesContent() {
           suggestions={suggestions}
           loading={suggestedLoading}
           onSelectRecipe={goToDetail}
-          onBack={reset}
+          onBack={() => setStep('ingredients')}
           isEl={isEl}
         />
       )}

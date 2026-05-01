@@ -149,7 +149,6 @@ function HomeContent() {
               </h2>
               <div className="max-w-sm space-y-3 text-sm leading-relaxed text-gray-200 ">
                 <p>{t('landing.weeklyRecipesDesc1')}</p>
-                <p>{t('landing.weeklyRecipesDesc2')}</p>
                 <p>{t('landing.weeklyRecipesDesc3')}</p>
               </div>
             </div>
