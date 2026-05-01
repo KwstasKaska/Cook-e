@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { useTranslation } from 'next-i18next';
 import LanguageSwitcher from '../Helper/LanguageSwitcher';
-import { useLogoutMutation } from '../../generated/graphql';
+import { useLogoutMutation, useMeQuery } from '../../generated/graphql';
 import { useApolloClient } from '@apollo/client';
 import { useChatContext } from '../Chat/ChatContext';
 import { ChatIcon } from '../Helper/ChatIcon';
@@ -20,6 +20,9 @@ export default function Navbar() {
 
   const [logout] = useLogoutMutation();
   const apolloClient = useApolloClient();
+  const { data: meData } = useMeQuery();
+
+  const me = meData?.me;
 
   const navLinks = [
     { label: t('nav.home'), href: '/user' },
@@ -74,16 +77,40 @@ export default function Navbar() {
         />
         <button
           onClick={openWidget}
-          className="p-2 rounded  hover:text-myBlue-200 transition-colors duration-150"
+          className="p-2 rounded hover:text-myBlue-200 transition-colors duration-150"
           aria-label={t('nav.messages', 'Messages')}
         >
           <ChatIcon />
         </button>
         <NavSettingsLink ariaLabel={t('nav.settings')} />
         <LanguageSwitcher dark />
+        {me && (
+          <div className="flex items-center gap-2">
+            {me.image ? (
+              <img
+                src={me.image}
+                alt={me.username}
+                className="h-8 w-8 rounded-full object-cover border-2 border-white shadow-sm"
+              />
+            ) : (
+              <div
+                className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-white text-xs font-bold shadow-sm"
+                style={{ backgroundColor: '#377CC3', color: '#fff' }}
+              >
+                {me.username?.[0]?.toUpperCase() ?? '?'}
+              </div>
+            )}
+            <span
+              className="text-sm font-semibold"
+              style={{ color: '#3F4756' }}
+            >
+              {me.username}
+            </span>
+          </div>
+        )}
         <button
           onClick={handleLogout}
-          className="rounded-full border border-myGrey-200  text-sm font-semibold px-4 py-1.5 hover:bg-myRed hover:border-myRed hover:text-white transition-colors duration-150"
+          className="rounded-full border border-myGrey-200 text-sm font-semibold px-4 py-1.5 hover:bg-myRed hover:border-myRed hover:text-white transition-colors duration-150"
         >
           {t('nav.logout')}
         </button>
@@ -92,7 +119,7 @@ export default function Navbar() {
       <HamburgerButton
         isOpen={menuOpen}
         onClick={() => setMenuOpen((v) => !v)}
-        className="lg:hidden p-2 "
+        className="lg:hidden p-2"
       />
 
       {menuOpen && (
@@ -145,7 +172,7 @@ export default function Navbar() {
             />
             <button
               onClick={handleLogout}
-              className="ml-auto rounded-full border border-myGrey-200  text-sm font-semibold px-4 py-1.5 hover:bg-myRed hover:border-myRed hover:text-white transition-colors"
+              className="ml-auto rounded-full border border-myGrey-200 text-sm font-semibold px-4 py-1.5 hover:bg-myRed hover:border-myRed hover:text-white transition-colors"
             >
               {t('nav.logout')}
             </button>
