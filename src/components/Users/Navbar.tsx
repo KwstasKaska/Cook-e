@@ -83,7 +83,6 @@ export default function Navbar() {
           <ChatIcon />
         </button>
         <NavSettingsLink ariaLabel={t('nav.settings')} />
-        <LanguageSwitcher dark />
         {me && (
           <div className="flex items-center gap-2">
             {me.image ? (
@@ -108,6 +107,7 @@ export default function Navbar() {
             </span>
           </div>
         )}
+        <LanguageSwitcher dark />
         <button
           onClick={handleLogout}
           className="rounded-full border border-myGrey-200 text-sm font-semibold px-4 py-1.5 hover:bg-myRed hover:border-myRed hover:text-white transition-colors duration-150"
@@ -123,10 +123,7 @@ export default function Navbar() {
       />
 
       {menuOpen && (
-        <div
-          style={{ backgroundColor: '#3F4756' }}
-          className="absolute top-full left-0 w-full flex flex-col items-start px-6 py-4 gap-4 lg:hidden shadow-lg z-50"
-        >
+        <div className="absolute top-full bg-myBlue-100 left-0 w-full flex flex-col items-start px-6 py-4 gap-4 lg:hidden shadow-lg z-50">
           {navLinks.map((link) => {
             const isActive = router.pathname === link.href;
             return (
@@ -135,9 +132,9 @@ export default function Navbar() {
                 href={link.href}
                 className="text-sm font-semibold tracking-wide w-full py-1 transition-colors duration-150"
                 style={{
-                  color: isActive ? '#FBBF24' : 'white',
+                  color: isActive ? '#377CC3' : '#3f4756',
                   borderBottom: isActive
-                    ? '2px solid #FBBF24'
+                    ? '2px solid #377CC3'
                     : '2px solid transparent',
                   paddingBottom: '2px',
                 }}
@@ -149,18 +146,37 @@ export default function Navbar() {
           })}
 
           <div className="flex items-center gap-4 pt-2 border-t border-gray-600 w-full">
-            <LanguageSwitcher />
+            {me && (
+              <div className="flex items-center gap-2">
+                {me.image ? (
+                  <img
+                    src={me.image}
+                    alt={me.username}
+                    className="h-7 w-7 rounded-full object-cover border-2 border-myGrey-200 shadow-sm"
+                  />
+                ) : (
+                  <div
+                    className="flex h-7 w-7 items-center justify-center rounded-full border-2 border-myGrey-200 text-xs font-bold shadow-sm"
+                    style={{ backgroundColor: '#377CC3', color: '#fff' }}
+                  >
+                    {me.username?.[0]?.toUpperCase() ?? '?'}
+                  </div>
+                )}
+                <span className="text-sm font-semibold ">{me.username}</span>
+              </div>
+            )}
+
             <NavCartLink
               ariaLabel={t('nav.cart')}
               onClick={() => setMenuOpen(false)}
-              className="text-white hover:text-yellow-300"
+              className=" hover:text-yellow-300"
             />
             <button
               onClick={() => {
                 openWidget();
                 setMenuOpen(false);
               }}
-              className="text-white hover:text-yellow-300"
+              className=" hover:text-yellow-300"
               aria-label={t('nav.messages', 'Messages')}
             >
               <ChatIcon />
@@ -168,8 +184,10 @@ export default function Navbar() {
             <NavSettingsLink
               ariaLabel={t('nav.settings')}
               onClick={() => setMenuOpen(false)}
-              className="text-white hover:text-yellow-300 transition-colors duration-150"
+              className=" hover:text-yellow-300 transition-colors duration-150"
             />
+            <LanguageSwitcher dark />
+
             <button
               onClick={handleLogout}
               className="ml-auto rounded-full border border-myGrey-200 text-sm font-semibold px-4 py-1.5 hover:bg-myRed hover:border-myRed hover:text-white transition-colors"
