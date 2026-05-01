@@ -35,7 +35,7 @@ export default function StepFive({
         {t('chef.create_recipe.step5_title')}
       </h2>
 
-      <h3 className="mb-4 text-base font-black" style={{ color: '#3F4756' }}>
+      <h3 className="mb-4 text-base  font-black">
         {t('chef.create_recipe.execution_label')}
       </h3>
 
@@ -46,10 +46,7 @@ export default function StepFive({
       <div className="flex flex-col gap-4">
         {form.steps.map((s, i) => (
           <div key={s.id} className="flex items-start gap-2">
-            <div
-              className="mt-2 h-5 w-5 flex-shrink-0 rounded-full flex items-center justify-center text-xs font-bold text-white"
-              style={{ backgroundColor: '#3F4756' }}
-            >
+            <div className="mt-2 bg-myGrey-200 h-5 w-5 flex-shrink-0 rounded-full flex items-center justify-center text-xs font-bold text-white">
               {i + 1}
             </div>
             <textarea
@@ -57,8 +54,7 @@ export default function StepFive({
               onChange={(e) => onUpdateStep(s.id, e.target.value)}
               placeholder={t('chef.create_recipe.step_placeholder')}
               rows={3}
-              className="flex-1 resize-none rounded-xl border-b border-gray-200 bg-gray-50 px-3 py-2 text-sm outline-none placeholder:text-gray-300 focus:border-gray-400"
-              style={{ color: '#3F4756' }}
+              className="flex-1 resize-none rounded-xl border-b border-gray-200 bg-gray-50 px-3 py-2 text-sm outline-none placeholder:text-gray-300  focus:border-gray-400"
             />
             {form.steps.length > 1 && (
               <button
@@ -88,8 +84,7 @@ export default function StepFive({
       <button
         type="button"
         onClick={onAddStep}
-        className="mt-4 rounded-full border px-5 py-2 text-sm font-semibold transition hover:bg-gray-50"
-        style={{ borderColor: '#3F4756', color: '#3F4756' }}
+        className="mt-4 rounded-full border px-5 py-2 text-sm font-semibold transition  border-myGrey-200 hover:bg-gray-50"
       >
         {t('chef.create_recipe.add_step')}
       </button>
@@ -97,10 +92,7 @@ export default function StepFive({
       {/* Utensils */}
       {utensilsData?.utensils && utensilsData.utensils.length > 0 && (
         <div className="mt-6">
-          <h3
-            className="mb-3 text-base font-black"
-            style={{ color: '#3F4756' }}
-          >
+          <h3 className="mb-3 text-base  font-black">
             {t('chef.create_recipe.utensils_label')}
           </h3>
           <div className="flex flex-wrap gap-2">

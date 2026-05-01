@@ -301,10 +301,7 @@ export default function ChefSingleRecipe() {
 
           {isEditing && (
             <div className="px-6 pb-2">
-              <label
-                className="mb-1 block text-sm font-bold"
-                style={{ color: '#3F4756' }}
-              >
+              <label className="mb-1 block text-sm font-bold">
                 {t('chef.recipe_detail.no_image')}
               </label>
               <input
@@ -352,10 +349,7 @@ export default function ChefSingleRecipe() {
 
               {(recipe.utensils ?? []).length > 0 && (
                 <div className="mb-6">
-                  <h3
-                    className="mb-3 text-lg font-black"
-                    style={{ color: '#3F4756' }}
-                  >
+                  <h3 className="mb-3 text-lg font-black">
                     {t('chef.recipe_detail.utensils')}
                   </h3>
                   <ol className="flex flex-col gap-1.5 list-decimal list-inside">

@@ -30,7 +30,7 @@ export default function StepOne({
         {t('chef.create_recipe.step1_title')}
       </h2>
 
-      <label className={labelClass} style={{ color: '#3F4756' }}>
+      <label className={labelClass}>
         {t('chef.create_recipe.recipe_name_label')}
       </label>
       <input
@@ -39,13 +39,12 @@ export default function StepOne({
         value={form.title}
         onChange={(e) => onUpdate('title', e.target.value)}
         className={inputClass}
-        style={{ color: '#3F4756' }}
       />
       {fieldErrors.title && (
         <p className="mt-1 text-xs text-red-500">{fieldErrors.title}</p>
       )}
 
-      <label className={`${labelClass} mt-6`} style={{ color: '#3F4756' }}>
+      <label className={`${labelClass} mt-6`}>
         {t('chef.create_recipe.photo_label')}
       </label>
       <div

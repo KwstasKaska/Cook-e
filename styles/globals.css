@@ -15,6 +15,7 @@
   body {
     scroll-behavior: smooth;
     overflow-x: hidden;
+    color: #3f4756;
   }
 
   .customImg {

@@ -51,7 +51,7 @@ const Login: NextPage = () => {
         <div className="mb-8 flex items-center justify-between">
           <Link
             href="/"
-            className="flex items-center text-myGrey-200 gap-1.5 text-xs font-semibold transition hover:opacity-70"
+            className="flex items-center  gap-1.5 text-xs font-semibold transition hover:opacity-70"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -74,15 +74,10 @@ const Login: NextPage = () => {
         </div>
 
         <div className="mb-6 text-center">
-          <h1
-            id="login-heading"
-            className="mb-1 text-2xl font-bold text-myGrey-200"
-          >
+          <h1 id="login-heading" className="mb-1 text-2xl font-bold ">
             {t('login.title')}
           </h1>
-          <p className="text-sm opacity-75 text-myGrey-200">
-            {t('login.subtitle')}
-          </p>
+          <p className="text-sm opacity-75 ">{t('login.subtitle')}</p>
         </div>
 
         <Formik
@@ -166,7 +161,7 @@ const Login: NextPage = () => {
         <p className="mt-8 text-center text-sm">
           {t('login.no_account')}{' '}
           <Link
-            className="font-semibold text-myGrey-200 opacity-75 underline transition hover:opacity-80"
+            className="font-semibold  opacity-75 underline transition hover:opacity-80"
             href="/register"
           >
             {t('login.create_account')}

@@ -37,9 +37,7 @@ export default function RecipeFeaturedCard({ recipe, lang, onClick }: Props) {
         />
       </div>
       <div className="p-4">
-        <h3 className="text-lg font-bold" style={{ color: '#3F4756' }}>
-          {title}
-        </h3>
+        <h3 className="text-lg font-bold">{title}</h3>
         <p className="mt-1 text-sm leading-relaxed text-gray-500 line-clamp-4">
           {description}
         </p>

@@ -110,7 +110,7 @@ const Accordion: React.FC<AccordionProps> = ({ acceptedClients }) => {
           >
             <section className="mt-12 translate-y-8 opacity-0 transition delay-300 duration-500">
               <select
-                className="rounded-2xl bg-myGrey-100 capitalize text-myGrey-200 text-base md:text-lg"
+                className="rounded-2xl bg-myGrey-100 capitalize  text-base md:text-lg"
                 name="person"
                 id="person"
                 value={selectedUserId ?? ''}
@@ -173,7 +173,7 @@ const Accordion: React.FC<AccordionProps> = ({ acceptedClients }) => {
           >
             <section className="mt-12 translate-y-8 opacity-0 transition delay-300 duration-500">
               <select
-                className="rounded-2xl bg-myGrey-100 capitalize text-myGrey-200 text-base md:text-lg"
+                className="rounded-2xl bg-myGrey-100 capitalize  text-base md:text-lg"
                 name="day"
                 id="day"
                 value={selectedDay}
@@ -236,7 +236,7 @@ const Accordion: React.FC<AccordionProps> = ({ acceptedClients }) => {
           >
             <section className="mt-12 translate-y-8 opacity-0 transition delay-300 duration-500">
               <select
-                className="rounded-2xl bg-myGrey-100 capitalize text-myGrey-200 text-base md:text-lg"
+                className="rounded-2xl bg-myGrey-100 capitalize  text-base md:text-lg"
                 name="field"
                 id="field"
                 value={selectedField}
@@ -299,7 +299,7 @@ const Accordion: React.FC<AccordionProps> = ({ acceptedClients }) => {
           >
             <section className="mt-12 translate-y-8 opacity-0 transition delay-300 duration-500">
               <textarea
-                className="h-[10em] resize-none rounded-2xl border-2 bg-myGrey-100 text-base text-myGrey-200 md:text-lg"
+                className="h-[10em] resize-none rounded-2xl border-2 bg-myGrey-100 text-base  md:text-lg"
                 name="cell-info"
                 id="cell-info"
                 value={cellInfo[`${selectedDay}-${selectedField}`] ?? ''}

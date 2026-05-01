@@ -18,7 +18,7 @@ export default function StepThree({ form, onUpdate }: StepThreeProps) {
         {t('chef.create_recipe.step3_title')}
       </h2>
 
-      <h3 className="mb-3 text-base font-black" style={{ color: '#3F4756' }}>
+      <h3 className="mb-3 text-base font-black">
         {t('chef.create_recipe.food_type_label')}
       </h3>
       <div className="flex flex-wrap gap-2 mb-5">
@@ -42,10 +42,7 @@ export default function StepThree({ form, onUpdate }: StepThreeProps) {
       </div>
 
       <div className="mb-4">
-        <label
-          className="mb-1 block text-sm font-semibold"
-          style={{ color: '#3F4756' }}
-        >
+        <label className="mb-1 block text-sm font-semibold">
           {t('chef.create_recipe.cuisine_label')}
         </label>
         <input
@@ -58,7 +55,7 @@ export default function StepThree({ form, onUpdate }: StepThreeProps) {
         />
       </div>
 
-      <h3 className="mb-3 text-base font-black" style={{ color: '#3F4756' }}>
+      <h3 className="mb-3 text-base font-black">
         {t('chef.create_recipe.summary_label')}
       </h3>
       <textarea
@@ -67,7 +64,6 @@ export default function StepThree({ form, onUpdate }: StepThreeProps) {
         placeholder={t('chef.create_recipe.summary_placeholder')}
         rows={3}
         className="w-full resize-none bg-transparent text-sm outline-none placeholder:text-gray-300 border-b border-gray-200"
-        style={{ color: '#3F4756' }}
       />
     </div>
   );

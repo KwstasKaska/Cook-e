@@ -22,7 +22,7 @@ export default function RecipeStepsList({
 
   return (
     <div>
-      <h3 className="mb-3 text-lg font-black" style={{ color: '#3F4756' }}>
+      <h3 className="mb-3 text-lg font-black">
         {t('chef.recipe_detail.execution')}
       </h3>
       {isEditing ? (
@@ -44,7 +44,6 @@ export default function RecipeStepsList({
                 }}
                 rows={2}
                 className="flex-1 resize-none rounded-lg border border-gray-200 bg-gray-50 px-2 py-1.5 text-sm outline-none focus:border-blue-300"
-                style={{ color: '#3F4756' }}
               />
               {editForm.steps.length > 1 && (
                 <button

@@ -39,10 +39,7 @@ export default function IngredientsPanel({
       {/* Meta row */}
       <div className="mb-5 flex flex-col gap-2 border-b border-gray-100 pb-5">
         {totalTime > 0 && (
-          <div
-            className="flex items-center gap-2 text-sm"
-            style={{ color: '#3F4756' }}
-          >
+          <div className="flex items-center gap-2 text-sm">
             <span className="font-semibold">
               {t('chef.recipe_card.minutes')}:
             </span>
@@ -50,19 +47,13 @@ export default function IngredientsPanel({
           </div>
         )}
         {caloriesTotal != null && (
-          <div
-            className="flex items-center gap-2 text-sm"
-            style={{ color: '#3F4756' }}
-          >
+          <div className="flex items-center gap-2 text-sm">
             <span className="font-semibold">Kcal:</span>
             <span>{Math.round(caloriesTotal)}</span>
           </div>
         )}
         {difficulty && (
-          <div
-            className="flex items-center gap-2 text-sm"
-            style={{ color: '#3F4756' }}
-          >
+          <div className="flex items-center gap-2 text-sm">
             <span className="font-semibold">
               {t('chef.recipe_card.difficulty')}
             </span>
@@ -71,7 +62,7 @@ export default function IngredientsPanel({
         )}
       </div>
 
-      <h3 className="mb-4 text-xl font-bold" style={{ color: '#3F4756' }}>
+      <h3 className="mb-4 text-xl font-bold">
         {t('chef.recipe_detail.ingredients')}
       </h3>
 

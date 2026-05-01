@@ -66,7 +66,7 @@ const ForgotPasswordModal: React.FC<Props> = ({ onClose }) => {
                 <button
                   type="button"
                   onClick={onClose}
-                  className="text-center text-sm text-gray-400 underline hover:text-myGrey-200 transition"
+                  className="text-center text-sm text-gray-400 underline hover: transition"
                 >
                   {t('common.back')}
                 </button>

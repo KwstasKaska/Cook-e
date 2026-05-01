@@ -5,6 +5,7 @@ import {
   MealType,
   useMyMealPlanQuery,
 } from '../../generated/graphql';
+import ScrollToTopButton from '../Helper/ScrollToTopButton';
 
 const DAY_ORDER: DayOfWeek[] = [
   DayOfWeek.Monday,
@@ -54,7 +55,6 @@ const MealPlanTab: React.FC = () => {
     );
   }
 
-  // Nutritionist name — same for all entries
   const nutrName = plan[0]?.nutritionist?.user?.username ?? '';
 
   return (
@@ -103,7 +103,7 @@ const MealPlanTab: React.FC = () => {
                       className="flex items-start gap-4 px-4 py-3"
                     >
                       <span
-                        className="mt-0.5 min-w-[7rem] text-xs font-semibold uppercase tracking-wide"
+                        className="mt-0.5 min-w-[7rem] text-xs font-semibold  tracking-wide"
                         style={{ color: '#377CC3' }}
                       >
                         {t(`meal.${mealType}`)}
@@ -119,6 +119,7 @@ const MealPlanTab: React.FC = () => {
           );
         })}
       </div>
+      <ScrollToTopButton />
     </div>
   );
 };

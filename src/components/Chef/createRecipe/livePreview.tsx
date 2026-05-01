@@ -86,21 +86,11 @@ export default function LivePreview({
 
       {/* Personal note block */}
       {step >= 2 && form.personalNote && (
-        <div
-          className="mb-3 rounded-xl p-3 flex-shrink-0"
-          style={{ backgroundColor: '#B3D5F8' }}
-        >
-          <p className="mb-2 text-xs italic" style={{ color: '#3F4756' }}>
-            "{form.personalNote}"
-          </p>
+        <div className="mb-3 rounded-xl p-3 bg-myBlue-100 flex-shrink-0">
+          <p className="mb-2 text-xs italic ">"{form.personalNote}"</p>
           <div className="flex items-center gap-2">
             <div className="h-6 w-6 rounded-full bg-gray-300 flex-shrink-0" />
-            <span
-              className="text-xs font-semibold"
-              style={{ color: '#3F4756' }}
-            >
-              Chef
-            </span>
+            <span className="text-xs font-semibold ">Chef</span>
           </div>
         </div>
       )}
@@ -108,7 +98,7 @@ export default function LivePreview({
       {/* Ingredients preview */}
       {step >= 4 && form.ingredients.some((i) => i.ingredientId > 0) && (
         <div className="mb-2 flex-shrink-0">
-          <p className="text-xs font-bold mb-1" style={{ color: '#3F4756' }}>
+          <p className="text-xs font-bold mb-1">
             {t('chef.create_recipe.ingredients_label')}:
           </p>
           <ol className="flex flex-col gap-0.5 list-decimal list-inside">
@@ -131,7 +121,7 @@ export default function LivePreview({
       {/* Steps preview */}
       {step >= 5 && form.steps.some((s) => s.text) && (
         <div className="mb-2 flex-shrink-0">
-          <p className="text-xs font-bold mb-1" style={{ color: '#3F4756' }}>
+          <p className="text-xs font-bold mb-1">
             {t('chef.create_recipe.execution_label')}:
           </p>
           <div className="flex flex-col gap-1">
@@ -197,10 +187,7 @@ export default function LivePreview({
           {/* Time card */}
           {(form.prepTime || form.cookTime || form.restTime) && (
             <div className="rounded-xl border border-gray-200 p-2 bg-white">
-              <p
-                className="text-center text-xs font-bold mb-1"
-                style={{ color: '#3F4756' }}
-              >
+              <p className="text-center text-xs  font-bold mb-1">
                 {t('chef.recipe_detail.implementation_time')} {totalTime}{' '}
                 {t('chef.create_recipe.minutes')}
               </p>
@@ -209,7 +196,7 @@ export default function LivePreview({
                   <span className="text-gray-600">
                     {t('chef.create_recipe.prep_time')}
                   </span>
-                  <span className="font-semibold" style={{ color: '#377CC3' }}>
+                  <span className="font-semibold text-myBlue-200">
                     {form.prepTime} {t('chef.create_recipe.minutes')}
                   </span>
                 </div>
@@ -219,7 +206,7 @@ export default function LivePreview({
                   <span className="text-gray-600">
                     {t('chef.create_recipe.cook_time')}
                   </span>
-                  <span className="font-semibold" style={{ color: '#377CC3' }}>
+                  <span className="font-semibold text-myBlue-200">
                     {form.cookTime} {t('chef.create_recipe.minutes')}
                   </span>
                 </div>
@@ -240,10 +227,7 @@ export default function LivePreview({
           {/* Category card */}
           {step >= 3 && (form.category || form.cuisine) && (
             <div className="rounded-xl border border-gray-200 p-2 bg-white">
-              <p
-                className="text-center text-xs font-bold mb-1"
-                style={{ color: '#3F4756' }}
-              >
+              <p className="text-center text-xs font-bold mb-1">
                 {t('chef.recipe_detail.food_type')}
               </p>
               {form.category && (

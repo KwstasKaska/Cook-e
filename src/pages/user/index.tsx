@@ -129,12 +129,8 @@ function HomeContent() {
               )}
             </div>
 
-            {/* Title */}
             <div className="min-w-0 text-white">
-              <h1
-                className="mb-4 break-words text-3xl font-bold italic md:text-5xl"
-                style={{ fontFamily: 'Georgia, serif' }}
-              >
+              <h1 className="mb-4 break-words text-3xl font-bold italic md:text-5xl">
                 {t('landing.nutritionTitle')}
               </h1>
               <p className="max-w-sm text-base leading-relaxed text-gray-200">

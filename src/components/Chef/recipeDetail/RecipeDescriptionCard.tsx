@@ -30,11 +30,10 @@ export default function RecipeDescriptionCard({
           value={editForm.title}
           onChange={(e) => onUpdate('title', e.target.value)}
           className="mb-2 w-full rounded-lg border border-blue-200 bg-white px-3 py-2 text-sm font-bold outline-none"
-          style={{ color: '#3F4756' }}
           placeholder={t('chef.recipe_detail.label_title')}
         />
       ) : (
-        <h1 className="mb-1 text-xl font-black" style={{ color: '#3F4756' }}>
+        <h1 className="mb-1 text-xl font-black">
           {pick(recipe.title_el, recipe.title_en, lang)}
         </h1>
       )}
@@ -73,7 +72,6 @@ export default function RecipeDescriptionCard({
             rows={3}
             placeholder={t('chef.recipe_detail.placeholder_description')}
             className="mb-2 w-full resize-none rounded-lg border border-blue-200 bg-white px-3 py-2 text-sm outline-none"
-            style={{ color: '#3F4756' }}
           />
           <textarea
             value={editForm.chefComment}
@@ -81,21 +79,17 @@ export default function RecipeDescriptionCard({
             rows={2}
             placeholder={t('chef.recipe_detail.placeholder_chef_comment')}
             className="w-full resize-none rounded-lg border border-blue-200 bg-white px-3 py-2 text-sm italic outline-none"
-            style={{ color: '#3F4756' }}
           />
         </>
       ) : (
         <>
           {recipe.description_el && (
-            <p
-              className="mb-3 text-sm leading-relaxed"
-              style={{ color: '#3F4756' }}
-            >
+            <p className="mb-3 text-sm leading-relaxed">
               {pick(recipe.description_el, recipe.description_en ?? '', lang)}
             </p>
           )}
           {recipe.chefComment_el && (
-            <p className="text-sm italic" style={{ color: '#3F4756' }}>
+            <p className="text-sm italic">
               "{pick(recipe.chefComment_el, recipe.chefComment_en ?? '', lang)}"
             </p>
           )}
@@ -105,7 +99,7 @@ export default function RecipeDescriptionCard({
       {/* ── Chef name ── */}
       <div className="mt-3 flex items-center gap-3">
         <div className="h-9 w-9 flex-shrink-0 rounded-full bg-gray-300" />
-        <span className="text-sm font-semibold" style={{ color: '#3F4756' }}>
+        <span className="text-sm font-semibold">
           {recipe.author?.user?.username ?? '—'}
         </span>
       </div>

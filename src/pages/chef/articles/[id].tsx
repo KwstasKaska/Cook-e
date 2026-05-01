@@ -27,10 +27,7 @@ const DeleteModal = ({
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="absolute inset-0 bg-black/40" onClick={onCancel} />
       <div className="relative z-10 w-full max-w-sm rounded-2xl bg-white p-8 shadow-2xl mx-4">
-        <h2
-          className="mb-4 text-center text-xl font-bold"
-          style={{ color: '#3F4756' }}
-        >
+        <h2 className="mb-4 text-center text-xl font-bold">
           {t('chef.article.delete_confirm')}
         </h2>
         <p className="mb-6 text-center text-sm text-gray-500">
@@ -286,10 +283,7 @@ export default function ArticleDetail() {
               {isEditing ? (
                 <>
                   <div className="mb-4">
-                    <label
-                      className="mb-1 block text-xs font-semibold"
-                      style={{ color: '#3F4756' }}
-                    >
+                    <label className="mb-1 block text-xs font-semibold">
                       {t('chef.article.title_label')}
                     </label>
                     <input
@@ -297,15 +291,11 @@ export default function ArticleDetail() {
                       value={editTitle}
                       onChange={(e) => setEditTitle(e.target.value)}
                       className="w-full rounded-xl border border-gray-300 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"
-                      style={{ color: '#3F4756' }}
                     />
                   </div>
 
                   <div className="mb-4">
-                    <label
-                      className="mb-1 block text-xs font-semibold"
-                      style={{ color: '#3F4756' }}
-                    >
+                    <label className="mb-1 block text-xs font-semibold">
                       {t('chef.article.text_label')}
                     </label>
                     <textarea
@@ -313,15 +303,11 @@ export default function ArticleDetail() {
                       onChange={(e) => setEditText(e.target.value)}
                       rows={8}
                       className="w-full rounded-xl border border-gray-300 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400 resize-none"
-                      style={{ color: '#3F4756' }}
                     />
                   </div>
 
                   <div className="mb-6">
-                    <label
-                      className="mb-1 block text-xs font-semibold"
-                      style={{ color: '#3F4756' }}
-                    >
+                    <label className="mb-1 block text-xs font-semibold">
                       {t('chef.article.image_label')}
                     </label>
                     <input
@@ -360,7 +346,6 @@ export default function ArticleDetail() {
                         setEditError('');
                       }}
                       className="rounded-full border border-gray-400 px-8 py-2.5 text-sm font-semibold transition hover:bg-gray-100"
-                      style={{ color: '#3F4756' }}
                     >
                       {t('common.cancel')}
                     </button>
@@ -374,10 +359,7 @@ export default function ArticleDetail() {
                       { day: 'numeric', month: 'long', year: 'numeric' },
                     )}
                   </p>
-                  <h1
-                    className="mb-4 text-2xl font-bold leading-snug"
-                    style={{ fontFamily: 'Georgia, serif', color: '#3F4756' }}
-                  >
+                  <h1 className="mb-4  text-2xl font-bold leading-snug">
                     {pick(article.title_el, article.title_en, lang)}
                   </h1>
                   <p

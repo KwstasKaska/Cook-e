@@ -55,8 +55,7 @@ export default function RecipeActionButtons({
         type="button"
         onClick={onSave}
         disabled={saving}
-        className="flex items-center justify-center gap-2 rounded-2xl px-4 py-2.5 text-sm font-bold text-white transition hover:opacity-90 disabled:opacity-50"
-        style={{ backgroundColor: '#377CC3' }}
+        className="flex items-center justify-center gap-2 rounded-2xl px-4 py-2.5 text-sm font-bold bg-myBlue-200 text-white transition hover:opacity-90 disabled:opacity-50"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

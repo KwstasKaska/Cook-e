@@ -16,7 +16,7 @@ export const NavSettingsLink = ({
     onClick={onClick}
     className={
       className ??
-      'p-2 rounded text-myGrey-200 hover:text-myBlue-200 transition-colors duration-150'
+      'p-2 rounded  hover:text-myBlue-200 transition-colors duration-150'
     }
   >
     <svg

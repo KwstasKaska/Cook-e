@@ -9,10 +9,7 @@ export function FieldGroup({
 }) {
   return (
     <div className="mb-8">
-      <h3
-        className="text-sm font-bold uppercase tracking-widest mb-4"
-        style={{ color: '#377CC3' }}
-      >
+      <h3 className="text-sm font-bold text-myBlue-200 tracking-widest mb-4">
         {title}
       </h3>
       <div className="flex flex-col gap-4">{children}</div>
@@ -48,11 +45,7 @@ export function Field({
         className="w-full rounded-xl border-2 px-4 py-2.5 text-sm focus:outline-none transition"
         style={{ borderColor: error ? '#ED5B5B' : '#EAEAEA' }}
       />
-      {error && (
-        <p className="mt-1 text-xs" style={{ color: '#ED5B5B' }}>
-          {error}
-        </p>
-      )}
+      {error && <p className="mt-1 text-xs text-myRed">{error}</p>}
     </div>
   );
 }
@@ -83,11 +76,7 @@ export function TextArea({
         className="w-full rounded-xl border-2 px-4 py-2.5 text-sm focus:outline-none transition resize-none"
         style={{ borderColor: error ? '#ED5B5B' : '#EAEAEA' }}
       />
-      {error && (
-        <p className="mt-1 text-xs" style={{ color: '#ED5B5B' }}>
-          {error}
-        </p>
-      )}
+      {error && <p className="mt-1 text-xs text-myRed">{error}</p>}
     </div>
   );
 }
@@ -105,8 +94,7 @@ export function SaveButton({
       <button
         onClick={onClick}
         disabled={loading}
-        className="px-8 py-2.5 rounded-full text-sm font-bold text-white transition hover:opacity-90 hover:scale-105 disabled:opacity-60 disabled:cursor-not-allowed"
-        style={{ backgroundColor: '#377CC3' }}
+        className="px-8 bg-myBlue-200 py-2.5 rounded-full text-sm font-bold text-white transition hover:opacity-90 hover:scale-105 disabled:opacity-60 disabled:cursor-not-allowed"
       >
         {loading ? '...' : t('settings.save')}
       </button>
@@ -116,18 +104,10 @@ export function SaveButton({
 
 export function ServerError({ message }: { message: string | null }) {
   if (!message) return null;
-  return (
-    <p className="mt-3 text-sm text-center" style={{ color: '#ED5B5B' }}>
-      {message}
-    </p>
-  );
+  return <p className="mt-3 text-sm text-center text-myRed">{message}</p>;
 }
 
 export function SuccessBanner({ message }: { message: string | null }) {
   if (!message) return null;
-  return (
-    <p className="mt-3 text-sm text-center" style={{ color: '#377CC3' }}>
-      {message}
-    </p>
-  );
+  return <p className="mt-3 text-sm text-center text-myBlue-200">{message}</p>;
 }

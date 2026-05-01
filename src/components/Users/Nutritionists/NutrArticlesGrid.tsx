@@ -67,10 +67,7 @@ export default function NutrArticlesGrid({ nutritionistId }: Props) {
                   )}
                 </div>
                 <div className="px-4 py-3">
-                  <p
-                    className="line-clamp-2 text-sm font-bold leading-tight"
-                    style={{ color: '#3F4756' }}
-                  >
+                  <p className="line-clamp-2 text-sm font-bold leading-tight">
                     {title}
                   </p>
                 </div>

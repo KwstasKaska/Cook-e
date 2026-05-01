@@ -249,10 +249,7 @@ function ProfileView({
 
           {/* Header */}
           <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-            <h1
-              className="text-2xl font-bold italic text-white md:text-4xl"
-              style={{ fontFamily: 'Georgia, serif' }}
-            >
+            <h1 className="text-2xl font-bold italic text-white md:text-4xl">
               {nutr.username}
             </h1>
             <div className="flex gap-3 sm:ml-4 sm:flex-shrink-0">

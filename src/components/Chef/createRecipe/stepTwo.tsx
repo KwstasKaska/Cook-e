@@ -49,7 +49,7 @@ export default function StepTwo({ form, fieldErrors, onUpdate }: StepTwoProps) {
         {t('chef.create_recipe.step2_title')}
       </h2>
 
-      <label className={labelClass} style={{ color: '#3F4756' }}>
+      <label className={labelClass}>
         {t('chef.create_recipe.personal_tip_label')}
       </label>
       <input
@@ -58,22 +58,16 @@ export default function StepTwo({ form, fieldErrors, onUpdate }: StepTwoProps) {
         value={form.personalNote}
         onChange={(e) => onUpdate('personalNote', e.target.value)}
         className={inputClass}
-        style={{ color: '#3F4756' }}
       />
 
       {/* Times */}
-      <h3
-        className="mb-3 mt-6 text-base font-black"
-        style={{ color: '#3F4756' }}
-      >
+      <h3 className="mb-3 mt-6 text-base font-black">
         {t('chef.create_recipe.total_time_label')}
       </h3>
       <div className="flex flex-col gap-3">
         {timeFields.map(({ label, field }) => (
           <div key={field} className="flex items-center justify-between gap-4">
-            <span className="text-sm" style={{ color: '#3F4756' }}>
-              {label}
-            </span>
+            <span className="text-sm">{label}</span>
             <input
               type="number"
               min={0}
@@ -93,10 +87,7 @@ export default function StepTwo({ form, fieldErrors, onUpdate }: StepTwoProps) {
       )}
 
       {/* Difficulty */}
-      <h3
-        className="mb-3 mt-6 text-base font-black"
-        style={{ color: '#3F4756' }}
-      >
+      <h3 className="mb-3 mt-6 text-base font-black">
         {t('chef.create_recipe.difficulty_label')}
       </h3>
       <div className="flex gap-3">
@@ -121,10 +112,7 @@ export default function StepTwo({ form, fieldErrors, onUpdate }: StepTwoProps) {
       )}
 
       {/* Macros */}
-      <h3
-        className="mb-1 mt-6 text-base font-black"
-        style={{ color: '#3F4756' }}
-      >
+      <h3 className="mb-1 mt-6 text-base font-black">
         {t('chef.create_recipe.macros_label')}
       </h3>
       <p className="mb-3 text-xs text-gray-400">
@@ -133,9 +121,7 @@ export default function StepTwo({ form, fieldErrors, onUpdate }: StepTwoProps) {
       <div className="flex flex-col gap-3">
         {macroFields.map(({ label, field, unit }) => (
           <div key={field} className="flex items-center justify-between gap-4">
-            <span className="text-sm" style={{ color: '#3F4756' }}>
-              {label}
-            </span>
+            <span className="text-sm">{label}</span>
             <div className="flex items-center gap-1">
               <input
                 type="number"

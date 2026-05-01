@@ -25,10 +25,7 @@ export default function RecipeCategoryCard({
 
   return (
     <div className="rounded-2xl border border-gray-200 p-4">
-      <h4
-        className="mb-3 text-center text-sm font-bold"
-        style={{ color: '#3F4756' }}
-      >
+      <h4 className="mb-3 text-center text-sm font-bold">
         {t('chef.recipe_detail.food_type')}
       </h4>
       <div className="flex flex-col gap-3">

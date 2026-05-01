@@ -20,7 +20,7 @@ const ChefNavbar = () => {
   const { openWidget, closeWidget } = useChatContext();
 
   const navLinks = [
-    { href: '/', label: t('nav.home') },
+    { href: '/chef', label: t('nav.home') },
     { href: '/chef/profile', label: t('chefnav.chef_profile') },
     { href: '/chef/recipes', label: t('chefnav.chef_recipes') },
     { href: '/chef/create-recipe', label: t('chefnav.chef_create') },
@@ -34,10 +34,7 @@ const ChefNavbar = () => {
   };
 
   return (
-    <nav
-      className="w-full px-6 py-3 flex items-center justify-between relative z-50"
-      style={{ backgroundColor: '#B3D5F8' }}
-    >
+    <nav className="w-full px-6 py-3 bg-myBlue-100 flex items-center justify-between relative z-50">
       <Logo />
 
       <div className="hidden lg:flex items-center gap-8">
@@ -65,7 +62,7 @@ const ChefNavbar = () => {
       <div className="hidden lg:flex items-center gap-3">
         <button
           onClick={openWidget}
-          className="p-2 rounded text-myGrey-200 hover:text-myBlue-200 transition-colors duration-150"
+          className="p-2 rounded  hover:text-myBlue-200 transition-colors duration-150"
           aria-label={t('nav.messages')}
         >
           <ChatIcon className="w-6 h-6" />
@@ -74,7 +71,7 @@ const ChefNavbar = () => {
         <LanguageSwitcher dark />
         <button
           onClick={handleLogout}
-          className="rounded-full border border-myGrey-200 text-myGrey-200 text-sm font-semibold px-4 py-1.5 hover:bg-myRed hover:border-myRed hover:text-white transition-colors duration-150"
+          className="rounded-full border border-myGrey-200  text-sm font-semibold px-4 py-1.5 hover:bg-myRed hover:border-myRed hover:text-white transition-colors duration-150"
         >
           {t('nav.logout')}
         </button>
@@ -84,14 +81,11 @@ const ChefNavbar = () => {
       <HamburgerButton
         isOpen={menuOpen}
         onClick={() => setMenuOpen((v) => !v)}
-        className="lg:hidden p-2 text-myGrey-200"
+        className="lg:hidden p-2 "
       />
 
       {menuOpen && (
-        <div
-          className="absolute top-full left-0 w-full flex flex-col items-start px-6 py-4 gap-4 lg:hidden shadow-lg z-50"
-          style={{ backgroundColor: '#B3D5F8' }}
-        >
+        <div className="absolute bg-myBlue-100 top-full left-0 w-full flex flex-col items-start px-6 py-4 gap-4 lg:hidden shadow-lg z-50">
           {navLinks.map((link) => {
             const isActive = router.pathname === link.href;
             return (
@@ -113,16 +107,13 @@ const ChefNavbar = () => {
             );
           })}
 
-          <div
-            className="flex items-center gap-4 pt-2 border-t w-full"
-            style={{ borderColor: '#377CC3' }}
-          >
+          <div className="flex items-center border-myBlue-200 gap-4 pt-2 border-t w-full">
             <button
               onClick={() => {
                 openWidget();
                 setMenuOpen(false);
               }}
-              className="text-myGrey-200 hover:text-myBlue-200 transition-opacity"
+              className=" hover:text-myBlue-200 transition-opacity"
               aria-label={t('nav.messages')}
             >
               <ChatIcon className="w-6 h-6" />
@@ -134,7 +125,7 @@ const ChefNavbar = () => {
             <LanguageSwitcher />
             <button
               onClick={handleLogout}
-              className="ml-auto rounded-full border border-myGrey-200 text-myGrey-200 text-sm font-semibold px-4 py-1.5 hover:bg-myRed hover:border-myRed hover:text-white transition-colors"
+              className="ml-auto rounded-full border border-myGrey-200  text-sm font-semibold px-4 py-1.5 hover:bg-myRed hover:border-myRed hover:text-white transition-colors"
             >
               {t('nav.logout')}
             </button>

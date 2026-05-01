@@ -41,20 +41,14 @@ export default function ChefIndex() {
           {/* Top row */}
           <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
             <div>
-              <p
-                className="mb-2 text-2xl italic"
-                style={{ color: '#B3D5F8', fontFamily: 'Georgia, serif' }}
-              >
+              <p className="mb-2 text-2xl italic" style={{ color: '#B3D5F8' }}>
                 {t('chef.landing.tagline_pre')}
               </p>
               <div
                 className="rounded-xl px-5 py-4"
                 style={{ backgroundColor: '#B3D5F8', display: 'inline-block' }}
               >
-                <h1
-                  className="text-4xl font-black italic leading-tight uppercase"
-                  style={{ color: '#3F4756', fontFamily: 'Georgia, serif' }}
-                >
+                <h1 className="text-4xl font-black italic leading-tight ">
                   {t('chef.landing.tagline_bold')}
                 </h1>
               </div>
@@ -88,10 +82,7 @@ export default function ChefIndex() {
                             ? t(`recipe_category.${recipe.category}`)
                             : ''}
                         </span>
-                        <p
-                          className="mt-1 text-sm font-bold leading-tight"
-                          style={{ color: '#3F4756' }}
-                        >
+                        <p className="mt-1 text-sm font-bold leading-tight">
                           {pick(recipe.title_el, recipe.title_en, lang)}
                         </p>
                       </div>
@@ -136,10 +127,7 @@ export default function ChefIndex() {
                             ? t(`recipe_category.${recipe.category}`)
                             : ''}
                         </span>
-                        <p
-                          className="mt-1 text-sm font-bold leading-tight"
-                          style={{ color: '#3F4756' }}
-                        >
+                        <p className="mt-1 text-sm font-bold leading-tight">
                           {pick(recipe.title_el, recipe.title_en, lang)}
                         </p>
                       </div>

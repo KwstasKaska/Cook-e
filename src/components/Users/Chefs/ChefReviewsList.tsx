@@ -23,9 +23,7 @@ export default function ChefReviewsList({
 
   return (
     <div className="rounded-2xl bg-white p-5 shadow-xl">
-      <h3 className="mb-4 text-lg font-bold" style={{ color: '#3F4756' }}>
-        {t('chef.rating.title')}
-      </h3>
+      <h3 className="mb-4 text-lg font-bold">{t('chef.rating.title')}</h3>
 
       {loading && !fetchingMore ? (
         <div className="flex justify-center py-6">
@@ -58,7 +56,7 @@ export default function ChefReviewsList({
                   </div>
                 )}
                 <div>
-                  <p className="text-sm font-bold" style={{ color: '#3F4756' }}>
+                  <p className="text-sm font-bold">
                     {review.user?.username ?? '—'}
                   </p>
                   <SmallStars rating={review.score} />

@@ -299,7 +299,7 @@ export default function CreateRecipe() {
     }
   };
 
-  // ── Render ─────────────────────────────────────────────────────────────────
+  // Render
   return (
     <div
       className="flex min-h-screen flex-col"
@@ -308,10 +308,7 @@ export default function CreateRecipe() {
       <ChefNavbar />
 
       <main className="flex flex-1 flex-col items-center px-4 py-6 md:px-8">
-        <h1
-          className="mb-6 text-3xl italic"
-          style={{ color: 'white', fontFamily: 'Georgia, serif' }}
-        >
+        <h1 className="mb-6 text-3xl italic" style={{ color: 'white' }}>
           {t('chef.create_recipe.page_title')}
         </h1>
 

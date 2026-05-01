@@ -67,14 +67,11 @@ export default function ChefContentGrid({ chefId }: Props) {
                   )}
                 </div>
                 <div className="px-4 py-3">
-                  <p
-                    className="truncate text-sm font-bold leading-tight"
-                    style={{ color: '#3F4756' }}
-                  >
+                  <p className="truncate text-sm font-bold leading-tight">
                     {title}
                   </p>
                   {recipe.difficulty && (
-                    <p className="mt-1 text-xs uppercase tracking-wide text-gray-500">
+                    <p className="mt-1 text-xs  tracking-wide text-gray-500">
                       {recipe.difficulty}
                     </p>
                   )}

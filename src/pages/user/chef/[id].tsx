@@ -132,10 +132,7 @@ function ChefProfileContent() {
 
   if (chefLoading) {
     return (
-      <div
-        className="flex min-h-screen items-center justify-center"
-        style={{ backgroundColor: '#3F4756' }}
-      >
+      <div className="flex min-h-screen bg-myGrey-200 items-center justify-center">
         <div className="h-10 w-10 animate-spin rounded-full border-4 border-myBlue-200 border-t-transparent" />
       </div>
     );
@@ -143,20 +140,14 @@ function ChefProfileContent() {
 
   if (!chef) {
     return (
-      <div
-        className="flex min-h-screen items-center justify-center"
-        style={{ backgroundColor: '#3F4756' }}
-      >
+      <div className="flex min-h-screen bg-myGrey-200 items-center justify-center">
         <p className="text-white">{t('chef.recipe_detail.not_found')}</p>
       </div>
     );
   }
 
   return (
-    <div
-      className="flex min-h-screen flex-col"
-      style={{ backgroundColor: '#3F4756' }}
-    >
+    <div className="flex min-h-screen bg-myGrey-200 flex-col">
       <Navbar />
       <main className="flex-1">
         <div className="relative overflow-hidden">
@@ -202,18 +193,12 @@ function ChefProfileContent() {
                       className="h-20 w-20 flex-shrink-0 rounded-full border-4 border-white object-cover shadow-xl"
                     />
                   ) : (
-                    <div
-                      className="flex h-20 w-20 flex-shrink-0 items-center justify-center rounded-full border-4 border-white text-2xl font-bold text-white shadow-xl"
-                      style={{ backgroundColor: '#377CC3' }}
-                    >
+                    <div className="flex bg-myBlue-200 h-20 w-20 flex-shrink-0 items-center justify-center rounded-full border-4 border-white text-2xl font-bold text-white shadow-xl">
                       {chef.user?.username?.[0]?.toUpperCase() ?? '?'}
                     </div>
                   )}
                   <div className="flex flex-col gap-2">
-                    <h1
-                      className="text-3xl font-bold italic text-white md:text-4xl"
-                      style={{ fontFamily: 'Georgia, serif' }}
-                    >
+                    <h1 className="text-3xl font-bold italic text-white md:text-4xl">
                       {chef.user?.username}
                     </h1>
                     {avgRating > 0 && (

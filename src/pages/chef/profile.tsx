@@ -114,30 +114,20 @@ export default function ChefProfile() {
           className="mb-6 text-3xl italic"
           style={{
             color: 'rgba(255,255,255,0.85)',
-            fontFamily: 'Georgia, serif',
           }}
         >
           {t('chef.profile.page_title')}
         </h1>
 
-        <div
-          className="w-full max-w-3xl rounded-2xl p-6 md:p-8"
-          style={{ backgroundColor: '#E9DEC5' }}
-        >
+        <div className="w-full max-w-3xl rounded-2xl bg-myBeige-100 p-6 md:p-8">
           {/* ── Top row: contact | avatar | rating ───────────────────────── */}
           <div className="flex flex-col items-center gap-6 md:flex-row md:items-start">
             {/* Contact */}
             <div className="flex-1">
-              <p
-                className="mb-2 text-sm font-semibold"
-                style={{ color: '#3F4756' }}
-              >
+              <p className="mb-2 text-sm font-semibold">
                 {t('chef.profile.contact')}
               </p>
-              <div
-                className="flex items-center gap-2 rounded-full border border-gray-400 px-3 py-1.5 text-sm"
-                style={{ color: '#3F4756' }}
-              >
+              <div className="flex items-center gap-2 rounded-full border border-gray-400 px-3 py-1.5 text-sm">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -170,29 +160,20 @@ export default function ChefProfile() {
                   />
                 ) : (
                   <div className="flex h-full w-full items-center justify-center">
-                    <span
-                      className="text-2xl font-bold"
-                      style={{ color: '#3F4756' }}
-                    >
+                    <span className="text-2xl font-bold">
                       {chefProfile?.user?.username?.[0]?.toUpperCase() ?? '?'}
                     </span>
                   </div>
                 )}
               </div>
-              <p
-                className="mt-2 text-lg font-bold"
-                style={{ fontFamily: 'Georgia, serif', color: '#3F4756' }}
-              >
+              <p className="mt-2 text-lg font-bold ">
                 {chefProfile?.user?.username ?? ''}
               </p>
             </div>
 
             {/* Rating */}
             <div className="flex-1 flex flex-col items-center md:items-end">
-              <p
-                className="mb-2 text-sm font-semibold"
-                style={{ color: '#3F4756' }}
-              >
+              <p className="mb-2 text-sm font-semibold">
                 {t('chef.profile.user_rating')}
               </p>
               {averageRating > 0 ? (
@@ -202,10 +183,7 @@ export default function ChefProfile() {
                     className="flex items-center gap-2 rounded-full border-2 border-gray-400 px-3 py-1.5 transition hover:border-yellow-400"
                   >
                     <Stars rating={averageRating} size="sm" />
-                    <span
-                      className="text-sm font-bold"
-                      style={{ color: '#3F4756' }}
-                    >
+                    <span className="text-sm font-bold">
                       {averageRating.toFixed(1)}/ 5
                     </span>
                   </button>
@@ -226,17 +204,11 @@ export default function ChefProfile() {
             className="mt-6 rounded-xl px-5 py-4"
             style={{ backgroundColor: '#D6C9A8' }}
           >
-            <p
-              className="mb-1 text-xs font-bold uppercase tracking-wide"
-              style={{ color: '#3F4756' }}
-            >
+            <p className="mb-1 text-xs font-bold  tracking-wide">
               {t('settings.bio')}
             </p>
             {chefProfile?.bio_el || chefProfile?.bio_en ? (
-              <p
-                className="text-sm leading-relaxed"
-                style={{ color: '#3F4756' }}
-              >
+              <p className="text-sm leading-relaxed">
                 {pick(chefProfile.bio_el ?? '', chefProfile.bio_en ?? '', lang)}
               </p>
             ) : (
@@ -250,19 +222,14 @@ export default function ChefProfile() {
             {stats.map((stat) => (
               <div key={stat.label} className="flex flex-col items-center px-8">
                 <span className="text-sm text-gray-500">{stat.label}</span>
-                <span
-                  className="text-2xl font-bold"
-                  style={{ color: '#3F4756' }}
-                >
-                  {stat.value}
-                </span>
+                <span className="text-2xl font-bold">{stat.value}</span>
               </div>
             ))}
           </div>
 
           {/* ── Articles ──────────────────────────────────────────────────── */}
           <div className="mt-8 mb-3 flex items-center justify-between">
-            <h3 className="text-sm font-semibold" style={{ color: '#3F4756' }}>
+            <h3 className="text-sm font-semibold">
               {t('chef.profile.articles')}
             </h3>
             {!showCreateForm && (
@@ -323,10 +290,7 @@ export default function ChefProfile() {
                     />
                   </div>
                   <div className="p-2">
-                    <p
-                      className="text-xs font-semibold leading-tight line-clamp-2"
-                      style={{ color: '#3F4756' }}
-                    >
+                    <p className="text-xs font-semibold leading-tight line-clamp-2">
                       {pick(article.title_el, article.title_en, lang)}
                     </p>
                   </div>

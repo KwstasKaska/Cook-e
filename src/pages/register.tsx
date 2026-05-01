@@ -40,11 +40,11 @@ const Register: NextPage = () => {
 
   return (
     <main className="flex bg-myGrey-200 min-h-screen w-full items-center justify-center px-4 py-12">
-      <section className="w-full max-w-md rounded-3xl bg-white px-8 py-8 text-myGrey-200">
+      <section className="w-full max-w-md rounded-3xl bg-white px-8 py-8 ">
         <div className="mb-8 flex items-center justify-between">
           <Link
             href="/"
-            className="flex items-center gap-1.5 text-xs font-semibold text-gray-400 transition hover:text-myGrey-200"
+            className="flex items-center gap-1.5 text-xs font-semibold text-gray-400 "
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -66,9 +66,7 @@ const Register: NextPage = () => {
         </div>
 
         <div className="mb-6 text-center">
-          <h1 className="mb-1 text-2xl font-bold text-myGrey-200">
-            {t('register.title')}
-          </h1>
+          <h1 className="mb-1 text-2xl font-bold ">{t('register.title')}</h1>
           <p className="text-sm text-gray-400">{t('register.subtitle')}</p>
         </div>
 
@@ -130,12 +128,12 @@ const Register: NextPage = () => {
               />
 
               <div className="mt-2">
-                <p className="mb-2 text-sm font-bold text-myGrey-200">
+                <p className="mb-2 text-sm font-bold ">
                   {t('register.role_label')}
                 </p>
                 <div
                   role="group"
-                  className="flex flex-col gap-1.5 text-sm text-myGrey-200"
+                  className="flex flex-col gap-1.5 text-sm "
                   aria-labelledby="my-radio-group"
                 >
                   <label className="flex cursor-pointer items-center gap-2">
@@ -172,7 +170,7 @@ const Register: NextPage = () => {
         <p className="mt-6 text-center text-sm text-gray-400">
           {t('login.no_account')}{' '}
           <Link
-            className="font-semibold text-myGrey-200 underline transition hover:opacity-80"
+            className="font-semibold  underline transition hover:opacity-80"
             href="/login"
           >
             {t('login.submit')}

@@ -120,7 +120,7 @@ function ArticleDetailContent() {
                   </div>
                 )}
                 <div>
-                  <p className="text-sm font-bold" style={{ color: '#3F4756' }}>
+                  <p className="text-sm font-bold">
                     {article.creator?.username ?? '—'}
                   </p>
                   <p className="text-xs text-gray-500">
@@ -133,12 +133,7 @@ function ArticleDetailContent() {
               </div>
 
               {/* Title */}
-              <h1
-                className="mb-5 text-2xl font-bold leading-snug"
-                style={{ fontFamily: 'Georgia, serif', color: '#3F4756' }}
-              >
-                {title}
-              </h1>
+              <h1 className="mb-5 text-2xl  font-bold leading-snug">{title}</h1>
 
               {/* Body */}
               <p

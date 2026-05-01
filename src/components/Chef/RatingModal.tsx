@@ -48,10 +48,7 @@ export default function RatingModal({
         </svg>
       </button>
 
-      <h2
-        className="mb-3 text-center text-xl font-bold"
-        style={{ color: '#3F4756' }}
-      >
+      <h2 className="mb-3 text-center  text-xl font-bold">
         {t('chef.rating.title')}
       </h2>
 

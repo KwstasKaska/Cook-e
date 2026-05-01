@@ -89,7 +89,7 @@ function NutrRecipeDetailContent() {
         {/* Category */}
         {recipe.category && (
           <p
-            className="mb-2 text-sm font-bold tracking-widest uppercase"
+            className="mb-2 text-sm font-bold tracking-widest "
             style={{ color: '#EAB308' }}
           >
             {recipe.category}

@@ -57,7 +57,7 @@ export default function RecipeIngredientsList({
 
   return (
     <div className="mb-6">
-      <h3 className="mb-3 text-lg font-black" style={{ color: '#3F4756' }}>
+      <h3 className="mb-3 text-lg font-black">
         {t('chef.recipe_detail.ingredients')}
       </h3>
 
@@ -69,10 +69,7 @@ export default function RecipeIngredientsList({
               key={ing.ingredientId}
               className="flex items-center gap-2 border-b border-gray-100 pb-2"
             >
-              <span
-                className="flex-1 text-sm truncate"
-                style={{ color: '#3F4756' }}
-              >
+              <span className="flex-1 text-sm truncate">
                 {lang === 'el' ? ing.name_el : ing.name_en}
               </span>
               <input
@@ -85,7 +82,6 @@ export default function RecipeIngredientsList({
                 }}
                 placeholder="ποσ."
                 className="w-14 rounded border border-gray-200 px-2 py-1 text-center text-sm outline-none"
-                style={{ color: '#3F4756' }}
               />
               <select
                 value={ing.unit}
@@ -95,7 +91,6 @@ export default function RecipeIngredientsList({
                   onUpdate('ingredients', updated);
                 }}
                 className="rounded border border-gray-200 px-1 py-1 text-xs outline-none"
-                style={{ color: '#3F4756' }}
               >
                 {UNIT_OPTIONS.map((u) => (
                   <option key={u} value={u}>
@@ -141,7 +136,6 @@ export default function RecipeIngredientsList({
               onChange={(e) => setSearch(e.target.value)}
               placeholder={t('chef.create_recipe.search_ingredients')}
               className="w-full rounded-full border border-gray-200 px-4 py-2 text-sm outline-none focus:border-blue-300"
-              style={{ color: '#3F4756' }}
             />
             {filtered.length > 0 && (
               <ul className="absolute z-20 mt-1 w-full rounded-xl border border-gray-100 bg-white shadow-lg max-h-48 overflow-y-auto">
@@ -151,7 +145,6 @@ export default function RecipeIngredientsList({
                       type="button"
                       onClick={() => addIngredient(ing)}
                       className="w-full px-4 py-2 text-left text-sm hover:bg-gray-50 transition"
-                      style={{ color: '#3F4756' }}
                     >
                       {lang === 'el' ? ing.name_el : ing.name_en}
                     </button>

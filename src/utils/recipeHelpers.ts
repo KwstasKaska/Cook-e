@@ -21,7 +21,6 @@ export const getDifficultyLabel = (
     easy: t('chef.create_recipe.easy'),
     medium: t('chef.create_recipe.medium'),
     difficult: t('chef.create_recipe.hard'),
-    // also handle uppercase GraphQL enum values
     EASY: t('chef.create_recipe.easy'),
     MEDIUM: t('chef.create_recipe.medium'),
     DIFFICULT: t('chef.create_recipe.hard'),

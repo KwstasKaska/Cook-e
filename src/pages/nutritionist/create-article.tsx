@@ -172,7 +172,6 @@ const CreateArticle: NextPage = () => {
                 <label
                   htmlFor="article-title"
                   className="mb-1 block text-xs font-semibold"
-                  style={{ color: '#3F4756' }}
                 >
                   {t('nutr.create_article.label_title')}
                 </label>
@@ -183,7 +182,6 @@ const CreateArticle: NextPage = () => {
                   onChange={(e) => setTitle(e.target.value)}
                   placeholder={t('nutr.create_article.placeholder_title')}
                   className="w-full rounded-xl border border-gray-300 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"
-                  style={{ color: '#3F4756' }}
                 />
               </div>
 
@@ -192,7 +190,6 @@ const CreateArticle: NextPage = () => {
                 <label
                   htmlFor="article-text"
                   className="mb-1 block text-xs font-semibold"
-                  style={{ color: '#3F4756' }}
                 >
                   {t('nutr.create_article.label_text')}
                 </label>
@@ -203,7 +200,6 @@ const CreateArticle: NextPage = () => {
                   placeholder={t('nutr.create_article.placeholder_text')}
                   rows={10}
                   className="w-full resize-none rounded-xl border border-gray-300 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"
-                  style={{ color: '#3F4756' }}
                 />
               </div>
 
@@ -230,7 +226,6 @@ const CreateArticle: NextPage = () => {
                   onClick={() => router.back()}
                   disabled={loading}
                   className="rounded-full border border-gray-400 px-8 py-2.5 text-sm font-semibold transition hover:bg-gray-100 disabled:opacity-50"
-                  style={{ color: '#3F4756' }}
                 >
                   {t('common.cancel')}
                 </button>

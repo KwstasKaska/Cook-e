@@ -28,9 +28,7 @@ export default function RatePanel({
 
   return (
     <div className="p-5">
-      <h3 className="mb-4 text-xl font-bold" style={{ color: '#3F4756' }}>
-        {t('recipes.rateTitle')}
-      </h3>
+      <h3 className="mb-4 text-xl font-bold">{t('recipes.rateTitle')}</h3>
 
       {/* Existing rating notice */}
       {myRating && (

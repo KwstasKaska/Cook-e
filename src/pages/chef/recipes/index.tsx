@@ -124,7 +124,6 @@ export default function ChefRecipes() {
           className="relative z-10 mb-8 text-3xl italic"
           style={{
             color: 'rgba(255,255,255,0.85)',
-            fontFamily: 'Georgia, serif',
           }}
         >
           {t('chef.recipes.page_title')}
@@ -136,7 +135,7 @@ export default function ChefRecipes() {
         >
           {/* Top bar */}
           <div className="mb-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <h2 className="text-2xl font-bold" style={{ color: '#3F4756' }}>
+            <h2 className="text-2xl font-bold">
               {t('chef.recipes.categories_label')}
             </h2>
             <RecipeSearchBar

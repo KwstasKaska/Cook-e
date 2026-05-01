@@ -33,7 +33,7 @@ export default function StepFour({
         {t('chef.create_recipe.step4_title')}
       </h2>
 
-      <h3 className="mb-3 text-base font-black" style={{ color: '#3F4756' }}>
+      <h3 className="mb-3 text-base font-black">
         {t('chef.create_recipe.ingredients_label')}
       </h3>
 
@@ -78,8 +78,7 @@ export default function StepFour({
                 onUpdateIngredient(ing.id, 'quantity', e.target.value)
               }
               placeholder="60"
-              className="w-12 bg-transparent text-sm font-semibold outline-none placeholder:text-gray-300 text-center border-b border-gray-200"
-              style={{ color: '#3F4756' }}
+              className="w-12 text-my-g bg-transparent text-sm font-semibold outline-none placeholder:text-gray-300 text-center border-b border-gray-200"
             />
 
             {/* Unit */}

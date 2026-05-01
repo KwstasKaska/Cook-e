@@ -74,7 +74,7 @@ export default function Navbar() {
         />
         <button
           onClick={openWidget}
-          className="p-2 rounded text-myGrey-200 hover:text-myBlue-200 transition-colors duration-150"
+          className="p-2 rounded  hover:text-myBlue-200 transition-colors duration-150"
           aria-label={t('nav.messages', 'Messages')}
         >
           <ChatIcon />
@@ -83,7 +83,7 @@ export default function Navbar() {
         <LanguageSwitcher dark />
         <button
           onClick={handleLogout}
-          className="rounded-full border border-myGrey-200 text-myGrey-200 text-sm font-semibold px-4 py-1.5 hover:bg-myRed hover:border-myRed hover:text-white transition-colors duration-150"
+          className="rounded-full border border-myGrey-200  text-sm font-semibold px-4 py-1.5 hover:bg-myRed hover:border-myRed hover:text-white transition-colors duration-150"
         >
           {t('nav.logout')}
         </button>
@@ -92,7 +92,7 @@ export default function Navbar() {
       <HamburgerButton
         isOpen={menuOpen}
         onClick={() => setMenuOpen((v) => !v)}
-        className="lg:hidden p-2 text-myGrey-200"
+        className="lg:hidden p-2 "
       />
 
       {menuOpen && (
@@ -145,7 +145,7 @@ export default function Navbar() {
             />
             <button
               onClick={handleLogout}
-              className="ml-auto rounded-full border border-myGrey-200 text-myGrey-200 text-sm font-semibold px-4 py-1.5 hover:bg-myRed hover:border-myRed hover:text-white transition-colors"
+              className="ml-auto rounded-full border border-myGrey-200  text-sm font-semibold px-4 py-1.5 hover:bg-myRed hover:border-myRed hover:text-white transition-colors"
             >
               {t('nav.logout')}
             </button>

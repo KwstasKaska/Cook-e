@@ -27,19 +27,14 @@ export default function RecipeTimeBreakdown({
 
   return (
     <div className="rounded-2xl border border-gray-200 p-4">
-      <h4
-        className="mb-3 text-center text-sm font-bold"
-        style={{ color: '#3F4756' }}
-      >
+      <h4 className="mb-3 text-center text-sm font-bold">
         {t('chef.recipe_detail.implementation_time')} {totalTime}{' '}
         {t('chef.recipe_detail.minutes')}
       </h4>
       <div className="flex flex-col gap-2">
         {timeBreakdown.map(({ label, field, value }) => (
           <div key={field} className="flex items-center justify-between gap-2">
-            <span className="text-xs" style={{ color: '#3F4756' }}>
-              {label}
-            </span>
+            <span className="text-xs">{label}</span>
             {isEditing ? (
               <input
                 type="number"

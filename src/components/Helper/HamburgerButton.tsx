@@ -8,11 +8,7 @@ export const HamburgerButton = ({
   onClick: () => void;
   className?: string;
 }) => (
-  <button
-    onClick={onClick}
-    aria-label="Menu"
-    className={className ?? 'p-2 text-myGrey-200'}
-  >
+  <button onClick={onClick} aria-label="Menu" className={className ?? 'p-2 '}>
     <svg
       xmlns="http://www.w3.org/2000/svg"
       className="w-6 h-6"

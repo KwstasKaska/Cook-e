@@ -27,9 +27,7 @@ export default function ChefRateForm({
 
   return (
     <div className="rounded-2xl bg-white p-5 shadow-xl">
-      <h3 className="mb-4 text-lg font-bold" style={{ color: '#3F4756' }}>
-        {t('recipes.rateChefTitle')}
-      </h3>
+      <h3 className="mb-4 text-lg font-bold">{t('recipes.rateChefTitle')}</h3>
 
       {myRating && (
         <div

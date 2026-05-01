@@ -97,7 +97,7 @@ export default function NutrNavbar() {
       <div className="hidden xl:flex items-center gap-3">
         <button
           onClick={openWidget}
-          className="p-2 rounded text-myGrey-200 hover:text-myBlue-200 transition-colors duration-150"
+          className="p-2 rounded  hover:text-myBlue-200 transition-colors duration-150"
           aria-label={t('nav.messages')}
         >
           <ChatIcon />
@@ -108,7 +108,7 @@ export default function NutrNavbar() {
           <button
             onClick={handleLogout}
             disabled={logoutLoading}
-            className="rounded-full border border-myGrey-200 text-myGrey-200 text-sm font-semibold px-4 py-1.5 hover:bg-myRed hover:border-myRed hover:text-white transition-colors duration-150 disabled:opacity-50"
+            className="rounded-full border border-myGrey-200  text-sm font-semibold px-4 py-1.5 hover:bg-myRed hover:border-myRed hover:text-white transition-colors duration-150 disabled:opacity-50"
           >
             {t('nav.logout')}
           </button>
@@ -118,7 +118,7 @@ export default function NutrNavbar() {
       <HamburgerButton
         isOpen={menuOpen}
         onClick={() => setMenuOpen((v) => !v)}
-        className="xl:hidden p-2 text-myGrey-200"
+        className="xl:hidden p-2 "
       />
 
       {menuOpen && (
@@ -176,7 +176,7 @@ export default function NutrNavbar() {
                 openWidget();
                 setMenuOpen(false);
               }}
-              className="text-myGrey-200 hover:text-myBlue-200"
+              className=" hover:text-myBlue-200"
               aria-label={t('nav.messages')}
             >
               <ChatIcon />
@@ -189,7 +189,7 @@ export default function NutrNavbar() {
               <button
                 onClick={handleLogout}
                 disabled={logoutLoading}
-                className="ml-auto rounded-full border border-myGrey-200 text-myGrey-200 text-sm font-semibold px-4 py-1.5 hover:bg-myRed hover:border-myRed hover:text-white transition-colors disabled:opacity-50"
+                className="ml-auto rounded-full border border-myGrey-200  text-sm font-semibold px-4 py-1.5 hover:bg-myRed hover:border-myRed hover:text-white transition-colors disabled:opacity-50"
               >
                 {t('nav.logout')}
               </button>

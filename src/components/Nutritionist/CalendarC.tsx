@@ -257,7 +257,7 @@ const CalendarC: React.FC = () => {
                         {slot.isAvailable ? (
                           <button
                             onClick={() => handleDelete(slot.id)}
-                            className="ml-2 shrink-0 rounded-full p-1 text-myGrey-200 hover:bg-myRed hover:text-white hover:transition hover:duration-300"
+                            className="ml-2 shrink-0 rounded-full p-1  hover:bg-myRed hover:text-white hover:transition hover:duration-300"
                             title={t('nutr.deleteTime')}
                           >
                             <svg

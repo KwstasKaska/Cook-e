@@ -127,7 +127,7 @@ const MyAppointments: React.FC<MyAppointmentsProps> = ({
                               />
                             </div>
                           ) : (
-                            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-myGrey-100 text-base font-bold text-myGrey-200">
+                            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-myGrey-100 text-base font-bold ">
                               {appt.clientUsername.charAt(0).toUpperCase()}
                             </div>
                           )}

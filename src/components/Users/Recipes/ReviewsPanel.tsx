@@ -27,9 +27,7 @@ export default function ReviewsPanel({
 
   return (
     <div className="p-5">
-      <h3 className="mb-5 text-xl font-bold" style={{ color: '#3F4756' }}>
-        {t('chef.rating.title')}
-      </h3>
+      <h3 className="mb-5 text-xl font-bold">{t('chef.rating.title')}</h3>
 
       {loading ? (
         <div className="flex justify-center py-8">
@@ -62,7 +60,7 @@ export default function ReviewsPanel({
                   </div>
                 )}
                 <div>
-                  <p className="text-sm font-bold" style={{ color: '#3F4756' }}>
+                  <p className="text-sm font-bold">
                     {review.user?.username ?? '—'}
                   </p>
                   <SmallStars rating={review.score} />

@@ -127,7 +127,7 @@ function CartContent({
   const checkedCount = checkedIds.size;
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#3F4756' }}>
+    <div className="min-h-screen bg-myGrey-200">
       <Navbar />
 
       <div className="relative overflow-hidden min-h-screen">
@@ -166,8 +166,7 @@ function CartContent({
                   setSearch('');
                   setShowSearch(false);
                 }}
-                className="rounded-xl px-4 py-2 text-sm font-bold text-white transition hover:scale-105"
-                style={{ backgroundColor: '#377CC3' }}
+                className="rounded-xl px-4 py-2 text-sm font-bold text-white transition hover:scale-105 bg-myBlue-200"
               >
                 ✕
               </button>
@@ -290,10 +289,7 @@ function CartContent({
               </div>
 
               {/* Footer */}
-              <div
-                className="mt-6 flex items-center justify-between border-t-2 pt-5"
-                style={{ borderColor: '#EAEAEA' }}
-              >
+              <div className="mt-6 flex border-myGrey-100 items-center justify-between border-t-2 pt-5">
                 <p className="text-sm text-gray-400">
                   {checkedCount}/{items.length} {t('cart.items')}
                 </p>
