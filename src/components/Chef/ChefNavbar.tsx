@@ -122,7 +122,7 @@ const ChefNavbar = () => {
               ariaLabel={t('nav.settings')}
               onClick={() => setMenuOpen(false)}
             />
-            <LanguageSwitcher />
+            <LanguageSwitcher dark />
             <button
               onClick={handleLogout}
               className="ml-auto rounded-full border border-myGrey-200  text-sm font-semibold px-4 py-1.5 hover:bg-myRed hover:border-myRed hover:text-white transition-colors"
