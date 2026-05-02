@@ -170,7 +170,7 @@ export default function NutrNavbar() {
           </Link>
 
           <div className="flex items-center gap-4 pt-2 border-t border-gray-400 w-full">
-            <LanguageSwitcher />
+            <LanguageSwitcher dark />
             <button
               onClick={() => {
                 openWidget();
