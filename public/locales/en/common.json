@@ -355,7 +355,7 @@
       "preview_placeholder": "the preview will appear here",
       "photo_slot": "photo",
       "recipe_title_preview": "Recipe title",
-      "personal_tip_label": "Personal note/tip",
+      "personal_tip_label": "Personal note",
       "personal_tip_placeholder": "e.g. spaghetti bolognese",
       "total_time_label": "Total implementation time",
       "prep_time": "preparation time:",
@@ -396,10 +396,10 @@
       "error_ingredients": "Add at least one ingredient.",
       "error_steps": "Add at least one step.",
       "error_server": "Something went wrong. Please try again.",
-      "macros_label": "Nutritional info (optional)",
+      "macros_label": "Nutritional info",
       "macros_hint": "per serving",
       "calories": "Calories",
-      "protein": "Protein",
+      "protein": "Proteins",
       "carbs": "Carbohydrates",
       "fat": "Fat"
     }

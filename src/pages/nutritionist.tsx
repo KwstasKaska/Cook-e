@@ -37,31 +37,37 @@ const Nutritionist: NextPage = () => {
       if (el) el.scrollIntoView({ behavior: 'smooth' });
     }
   }, []);
+
   if (loading || !isAuthorized) return null;
+
+  const avatar = meData?.me?.image;
+  const initial = meData?.me?.username?.[0]?.toUpperCase() ?? '?';
+
   return (
     <React.Fragment>
       <NutrNavbar />
       <main className="relative">
-        {/* Welcome header */}
         <div className="grid grid-flow-col-dense justify-start pt-10 pb-6 pl-5 md:pl-20 xl:pl-32 gap-x-4">
-          {meData?.me?.image && (
+          {avatar ? (
             <Image
-              src={meData.me.image}
-              alt={'profile'}
+              src={avatar}
+              alt="profile"
               width={112}
               height={112}
               className="row-span-2 max-h-14 max-w-[3.5rem] justify-self-end rounded-full object-cover object-top md:max-h-20 md:max-w-[5rem] xl:max-h-28 xl:max-w-[7rem]"
             />
+          ) : (
+            <div className="row-span-2 flex max-h-14 max-w-[3.5rem] items-center justify-center justify-self-end rounded-full bg-myBlue-100 md:max-h-20 md:max-w-[5rem] xl:max-h-28 xl:max-w-[7rem] aspect-square">
+              <span className="text-xl font-bold md:text-2xl xl:text-3xl">
+                {initial}
+              </span>
+            </div>
           )}
           <h1 className="text-2xl font-bold md:text-4xl">
             {t('nutr.welcome')}, <br /> Dr. {meData?.me?.username}
           </h1>
-          <p className="text-sm leading-relaxed text-gray-600 md:text-base">
-            {t('nutr.howIsYourDay')}
-          </p>
         </div>
 
-        {/* Decorative background shapes */}
         <div className="absolute left-[1.3em] top-[2em] -z-[1] h-[9em] w-[18em] -rotate-[13deg] rounded-[1em] bg-myGrey-100 md:left-28 md:scale-125 xl:left-48 xl:scale-150 2xl:left-64 2xl:top-20 2xl:scale-[2]" />
         <div className="absolute left-[5em] top-[5em] -z-[2] h-[9em] w-[18em] -rotate-[13deg] rounded-[1em] bg-myBlue-100 md:left-48 md:scale-125 xl:left-72 xl:scale-150 2xl:top-40 2xl:left-[22em] 2xl:scale-[2]" />
 

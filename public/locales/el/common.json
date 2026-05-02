@@ -354,7 +354,7 @@
       "preview_placeholder": "η προεπισκόπηση θα εμφανιστεί εδώ",
       "photo_slot": "Φωτογραφία",
       "recipe_title_preview": "Τίτλος συνταγής",
-      "personal_tip_label": "Προσωπικό σχόλιο/tip",
+      "personal_tip_label": "Προσωπικό σχόλιο",
       "personal_tip_placeholder": "πχ μακαρόνια με κιμά",
       "total_time_label": "Συνολικός χρόνος υλοποίησης",
       "prep_time": "χρόνος προετοιμασίας:",
@@ -395,10 +395,10 @@
       "error_ingredients": "Προσθέστε τουλάχιστον ένα υλικό.",
       "error_steps": "Προσθέστε τουλάχιστον ένα βήμα.",
       "error_server": "Κάτι πήγε λάθος. Δοκιμάστε ξανά.",
-      "macros_label": "Διατροφικά στοιχεία (προαιρετικά)",
+      "macros_label": "Διατροφικά στοιχεία",
       "macros_hint": "ανά μερίδα",
       "calories": "Θερμίδες",
-      "protein": "Πρωτεΐνη",
+      "protein": "Πρωτεΐνες",
       "carbs": "Υδατάνθρακες",
       "fat": "Λίπη"
     }
