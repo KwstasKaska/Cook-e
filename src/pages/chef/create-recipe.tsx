@@ -36,7 +36,11 @@ export default function CreateRecipe() {
 
   const [serverError, setServerError] = useState('');
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
-
+  const { data: ingredientsData } = useIngredientsQuery({
+    skip: authLoading || !isAuthorized,
+  });
+  const [createRecipe, { loading }] = useCreateRecipeMutation();
+  const [selectedUtensilIds, setSelectedUtensilIds] = useState<number[]>([]);
   const [imageFile, setImageFile] = useState<File | null>(null);
 
   const [form, setForm] = useState<FormData>({
@@ -68,18 +72,12 @@ export default function CreateRecipe() {
 
   if (authLoading || !isAuthorized) return null;
 
-  // ── GraphQL ────────────────────────────────────────────────────────────────
-  const { data: ingredientsData } = useIngredientsQuery();
-  const [createRecipe, { loading }] = useCreateRecipeMutation();
-  const [selectedUtensilIds, setSelectedUtensilIds] = useState<number[]>([]);
-
   const ingredientName = (id: number) => {
     const found = ingredientsData?.ingredients.find((i) => i.id === id);
     if (!found) return '';
     return lang === 'el' ? found.name_el : found.name_en;
   };
 
-  // ── Form helpers ───────────────────────────────────────────────────────────
   const update = (field: keyof FormData, value: unknown) =>
     setForm((prev) => ({ ...prev, [field]: value }));
 
@@ -100,7 +98,7 @@ export default function CreateRecipe() {
     }
   };
 
-  // ── Ingredient helpers ─────────────────────────────────────────────────────
+  //Ingredient helpers
   const addIngredient = () =>
     update('ingredients', [
       ...form.ingredients,
