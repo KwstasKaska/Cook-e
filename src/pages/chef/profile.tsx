@@ -121,12 +121,8 @@ export default function ChefProfile() {
 
         <div className="w-full max-w-3xl rounded-2xl bg-myBeige-100 p-6 md:p-8">
           <div className="flex flex-col items-center gap-6 md:flex-row md:items-start">
-            {/* Avatar */}
             <div className="flex-1 flex flex-col items-center">
-              <div
-                className="h-24 w-24 overflow-hidden rounded-full border-4 shadow-lg"
-                style={{ borderColor: '#3F4756', backgroundColor: '#B3D5F8' }}
-              >
+              <div className="h-24 border-myGrey-200 w-24 overflow-hidden rounded-full border-4 shadow-lg bg-myBlue-100">
                 {chefProfile?.user?.image ? (
                   <img
                     src={chefProfile.user.image}
