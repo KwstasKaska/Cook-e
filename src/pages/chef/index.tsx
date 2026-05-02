@@ -30,10 +30,7 @@ export default function ChefIndex() {
   const fanRecipes = recipesData?.myRecipes ?? [];
 
   return (
-    <div
-      className="flex min-h-screen flex-col"
-      style={{ backgroundColor: '#3F4756' }}
-    >
+    <div className="flex min-h-screen  flex-col">
       <ChefNavbar />
 
       <main className="relative flex flex-1 flex-col overflow-hidden">

@@ -29,10 +29,7 @@ function ArticleDetailContent() {
 
   if (loading || !id) {
     return (
-      <div
-        className="flex min-h-screen flex-col"
-        style={{ backgroundColor: '#3F4756' }}
-      >
+      <div className="flex  min-h-screen flex-col">
         <Navbar />
         <div className="flex flex-1 items-center justify-center">
           <div className="h-10 w-10 animate-spin rounded-full border-4 border-myBlue-200 border-t-transparent" />
@@ -43,10 +40,7 @@ function ArticleDetailContent() {
 
   if (!article) {
     return (
-      <div
-        className="flex min-h-screen flex-col"
-        style={{ backgroundColor: '#3F4756' }}
-      >
+      <div className="flex  min-h-screen flex-col">
         <Navbar />
         <div className="flex flex-1 items-center justify-center">
           <p className="text-white opacity-60">{t('chef.article.not_found')}</p>
@@ -60,10 +54,7 @@ function ArticleDetailContent() {
   const heroSrc = article.image ?? '/images/food.jpg';
 
   return (
-    <div
-      className="flex min-h-screen flex-col"
-      style={{ backgroundColor: '#3F4756' }}
-    >
+    <div className="flex  min-h-screen flex-col">
       <Navbar />
 
       <main className="flex flex-1 flex-col items-center px-4 py-8 md:px-8">

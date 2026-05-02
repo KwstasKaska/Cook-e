@@ -143,10 +143,7 @@ export default function LivePreview({
       {step >= 2 && (
         <div className="mt-auto flex flex-col gap-2 pt-2">
           {/* Recipe info card */}
-          <div
-            className="overflow-hidden rounded-xl"
-            style={{ backgroundColor: '#3F4756' }}
-          >
+          <div className="overflow-hidden bg-myGrey-200 rounded-xl">
             <div className="flex gap-2 p-2">
               <div className="relative h-14 w-14 flex-shrink-0 overflow-hidden rounded-lg bg-gray-600">
                 {form.image && (

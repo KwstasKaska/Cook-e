@@ -70,10 +70,7 @@ const CreateArticle: NextPage = () => {
   };
 
   return (
-    <div
-      className="flex min-h-screen flex-col"
-      style={{ backgroundColor: '#3F4756' }}
-    >
+    <div className="flex min-h-screen flex-col">
       <NutrNavbar />
 
       <main className="flex flex-1 flex-col items-center px-4 py-8 md:px-8">

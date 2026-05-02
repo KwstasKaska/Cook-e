@@ -113,10 +113,7 @@ export default function ChefRecipes() {
   const hasMore = rawRecipes.length > 0 && rawRecipes.length % 5 === 0;
 
   return (
-    <div
-      className="flex min-h-screen flex-col"
-      style={{ backgroundColor: '#3F4756' }}
-    >
+    <div className="flex min-h-screen  flex-col">
       <ChefNavbar />
 
       <main className="relative flex flex-1 flex-col items-center px-4 py-8 md:px-8">
@@ -200,8 +197,7 @@ export default function ChefRecipes() {
               <button
                 onClick={handleLoadMore}
                 disabled={fetchingMore}
-                className="rounded-full px-10 py-3 text-sm font-bold text-white transition hover:opacity-90 disabled:opacity-50"
-                style={{ backgroundColor: '#3F4756' }}
+                className="rounded-full  px-10 py-3 text-sm font-bold text-white transition hover:opacity-90 disabled:opacity-50"
               >
                 {fetchingMore ? t('common.loading') : t('chef.more')}
               </button>

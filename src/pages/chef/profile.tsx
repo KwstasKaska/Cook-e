@@ -3,7 +3,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import ChefNavbar from '../../components/Chef/ChefNavbar';
 import Stars from '../../components/Helper/Stars';
-import RatingModal from '../../components/Chef/RatingModal';
 import ArticleCreateForm from '../../components/Chef/ArticleCreateForm';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
@@ -24,10 +23,9 @@ export default function ChefProfile() {
   const lang = i18n.language;
   const { loading: authLoading, isAuthorized } = useIsChef();
 
-  const [showRatingModal, setShowRatingModal] = useState(false);
   const [showCreateForm, setShowCreateForm] = useState(false);
 
-  // ── Data fetching ──────────────────────────────────────────────────────────
+  // ── Data fetching
   const { data: profileData, loading: profileLoading } =
     useMyChefProfileQuery();
   const chefProfile = profileData?.myChefProfile;
@@ -82,10 +80,7 @@ export default function ChefProfile() {
 
   if (profileLoading) {
     return (
-      <div
-        className="flex min-h-screen flex-col items-center justify-center"
-        style={{ backgroundColor: '#3F4756' }}
-      >
+      <div className="flex min-h-screen  flex-col items-center justify-center">
         <ChefNavbar />
         <p className="text-white opacity-60 mt-20">{t('common.loading')}</p>
       </div>
@@ -93,21 +88,8 @@ export default function ChefProfile() {
   }
 
   return (
-    <div
-      className="flex min-h-screen flex-col"
-      style={{ backgroundColor: '#3F4756' }}
-    >
+    <div className="flex min-h-screen  flex-col">
       <ChefNavbar />
-
-      {showRatingModal && averageRating > 0 && (
-        <RatingModal
-          onClose={() => setShowRatingModal(false)}
-          average={averageRating}
-          total={totalRatings}
-          counts={ratingCounts}
-          overlay
-        />
-      )}
 
       <main className="flex flex-1 flex-col items-center px-4 py-8 md:px-8">
         <h1
@@ -149,15 +131,12 @@ export default function ChefProfile() {
               </p>
               {averageRating > 0 ? (
                 <>
-                  <button
-                    onClick={() => setShowRatingModal(true)}
-                    className="flex items-center gap-2 rounded-full border-2 border-gray-400 px-3 py-1.5 transition hover:border-yellow-400"
-                  >
+                  <div className="flex items-center gap-2 rounded-full border-2 border-gray-400 px-3 py-1.5">
                     <Stars rating={averageRating} size="sm" />
                     <span className="text-sm font-bold">
                       {averageRating.toFixed(1)}/ 5
                     </span>
-                  </button>
+                  </div>
                   <p className="mt-1 text-xs text-gray-500">
                     {totalRatings} {t('chef.profile.user_reviews')}
                   </p>
@@ -249,12 +228,11 @@ export default function ChefProfile() {
                 <Link
                   key={article.id}
                   href={`/chef/articles/${article.id}`}
-                  className="cursor-pointer overflow-hidden rounded-xl transition hover:scale-105 hover:shadow-lg"
-                  style={{ backgroundColor: '#B3D5F8' }}
+                  className="cursor-pointer overflow-hidden rounded-xl transition hover:scale-105 bg-myBlue-100 hover:shadow-lg"
                 >
                   <div className="relative h-28 w-full overflow-hidden">
                     <Image
-                      src={article.image ?? '/images/food.jpg'}
+                      src={article.image}
                       alt={pick(article.title_el, article.title_en, lang)}
                       fill
                       className="object-cover"

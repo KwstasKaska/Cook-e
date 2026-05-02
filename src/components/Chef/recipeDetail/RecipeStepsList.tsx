@@ -29,10 +29,7 @@ export default function RecipeStepsList({
         <div className="flex flex-col gap-3">
           {editForm.steps.map((s: StepRow, i: number) => (
             <div key={i} className="flex items-start gap-2">
-              <div
-                className="mt-2 h-5 w-5 flex-shrink-0 rounded-full flex items-center justify-center text-xs font-bold text-white"
-                style={{ backgroundColor: '#3F4756' }}
-              >
+              <div className="mt-2 h-5 bg-myGrey-200 w-5 flex-shrink-0 rounded-full flex items-center justify-center text-xs font-bold text-white">
                 {i + 1}
               </div>
               <textarea

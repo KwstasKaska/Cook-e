@@ -115,7 +115,7 @@ function RecipesContent() {
   const goToDetail = (id: number) => router.push(`/user/recipes/${id}`);
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#3F4756' }}>
+    <div className="min-h-screen">
       <Navbar />
 
       {step === 'home' && (

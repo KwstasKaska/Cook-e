@@ -301,10 +301,7 @@ export default function CreateRecipe() {
 
   // Render
   return (
-    <div
-      className="flex min-h-screen flex-col"
-      style={{ backgroundColor: '#3F4756' }}
-    >
+    <div className="flex bg-myGrey-200 min-h-screen flex-col">
       <ChefNavbar />
 
       <main className="flex flex-1 flex-col items-center px-4 py-6 md:px-8">
@@ -338,8 +335,7 @@ export default function CreateRecipe() {
                   <button
                     type="button"
                     onClick={handleNext}
-                    className="flex-1 rounded-full py-2.5 text-sm font-bold text-white transition hover:opacity-90"
-                    style={{ backgroundColor: '#3F4756' }}
+                    className="flex-1 rounded-full bg-myGrey-200 py-2.5 text-sm font-bold text-white transition hover:opacity-90"
                   >
                     {t('chef.create_recipe.next_btn')}
                   </button>
@@ -348,8 +344,7 @@ export default function CreateRecipe() {
                     type="button"
                     onClick={handleFinish}
                     disabled={loading}
-                    className="flex-1 rounded-full py-2.5 text-sm font-bold text-white transition hover:opacity-90 disabled:opacity-50"
-                    style={{ backgroundColor: '#3F4756' }}
+                    className="flex-1 rounded-full bg-myGrey-200 py-2.5 text-sm font-bold text-white transition hover:opacity-90 disabled:opacity-50"
                   >
                     {loading
                       ? t('chef.create_recipe.saving')

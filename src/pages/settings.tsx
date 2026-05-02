@@ -107,7 +107,7 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#3F4756' }}>
+    <div className="min-h-screen">
       {renderNavbar()}
 
       <div className="relative overflow-hidden min-h-screen">

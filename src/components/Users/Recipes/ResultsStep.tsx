@@ -92,7 +92,7 @@ export default function ResultsStep({
   const { t } = useTranslation('common');
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#3F4756' }}>
+    <div className="min-h-screen">
       <div className="max-w-5xl mx-auto px-6 pt-10 pb-20">
         <button
           onClick={onBack}

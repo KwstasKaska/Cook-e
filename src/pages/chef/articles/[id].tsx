@@ -153,10 +153,7 @@ export default function ArticleDetail() {
 
   if (loading || !id) {
     return (
-      <div
-        className="flex min-h-screen flex-col items-center justify-center"
-        style={{ backgroundColor: '#3F4756' }}
-      >
+      <div className="flex min-h-screen  flex-col items-center justify-center">
         <ChefNavbar />
         <p className="text-white opacity-60 mt-20">{t('common.loading')}</p>
       </div>
@@ -165,10 +162,7 @@ export default function ArticleDetail() {
 
   if (!article) {
     return (
-      <div
-        className="flex min-h-screen flex-col items-center justify-center"
-        style={{ backgroundColor: '#3F4756' }}
-      >
+      <div className="flex min-h-screen  flex-col items-center justify-center">
         <ChefNavbar />
         <p className="text-white opacity-60 mt-20">
           {t('chef.article.not_found')}
@@ -180,10 +174,7 @@ export default function ArticleDetail() {
   const heroSrc = editImagePreview ?? article.image ?? '/images/food.jpg';
 
   return (
-    <div
-      className="flex min-h-screen flex-col"
-      style={{ backgroundColor: '#3F4756' }}
-    >
+    <div className="flex min-h-screen  flex-col">
       <ChefNavbar />
 
       {showDeleteModal && (

@@ -35,7 +35,7 @@ const NutrAppointments: React.FC<NutrAppointmentsProps> = ({}) => {
   return (
     <section
       id="section_3"
-      className="flex min-h-screen w-full flex-col items-center bg-myGrey-200"
+      className="flex min-h-screen w-full flex-col items-center "
     >
       <h1 className="relative z-[2] pt-6 text-center text-2xl font-bold text-white hover:text-myRed md:text-4xl">
         {t('nutr.todayAppointments')}

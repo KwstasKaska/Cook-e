@@ -81,7 +81,7 @@ function ListView({
   );
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#3F4756' }}>
+    <div className="min-h-screen">
       <Navbar />
       <div className="relative z-10 mx-auto w-full max-w-5xl px-6 pb-20 pt-12">
         <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
@@ -212,7 +212,7 @@ function ProfileView({
   const bioText = pick(nutr.bio_el ?? '', nutr.bio_en ?? '', lang);
 
   return (
-    <div className="min-h-screen bg-myGrey-200">
+    <div className="min-h-screen ">
       <Navbar />
       <div className="relative overflow-hidden">
         <div className="relative z-10 mx-auto max-w-4xl px-6 pb-20 pt-10">

@@ -86,7 +86,7 @@ function HomeContent() {
     setActiveCard((prev) => (prev + 1) % Math.max(topRecipes.length, 1));
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#3F4756' }}>
+    <div className="min-h-screen">
       <Navbar />
 
       <div className="relative overflow-x-hidden">

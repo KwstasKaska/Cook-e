@@ -132,7 +132,7 @@ function ChefProfileContent() {
 
   if (chefLoading) {
     return (
-      <div className="flex min-h-screen bg-myGrey-200 items-center justify-center">
+      <div className="flex min-h-screen  items-center justify-center">
         <div className="h-10 w-10 animate-spin rounded-full border-4 border-myBlue-200 border-t-transparent" />
       </div>
     );
@@ -140,14 +140,14 @@ function ChefProfileContent() {
 
   if (!chef) {
     return (
-      <div className="flex min-h-screen bg-myGrey-200 items-center justify-center">
+      <div className="flex min-h-screen  items-center justify-center">
         <p className="text-white">{t('chef.recipe_detail.not_found')}</p>
       </div>
     );
   }
 
   return (
-    <div className="flex min-h-screen bg-myGrey-200 flex-col">
+    <div className="flex min-h-screen  flex-col">
       <Navbar />
       <main className="flex-1">
         <div className="relative overflow-hidden">

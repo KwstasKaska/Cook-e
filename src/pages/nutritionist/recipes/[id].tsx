@@ -39,7 +39,7 @@ function NutrRecipeDetailContent() {
 
   if (loading) {
     return (
-      <div className="min-h-screen" style={{ backgroundColor: '#3F4756' }}>
+      <div className="min-h-screen">
         <NutrNavbar />
         <div className="flex justify-center pt-24">
           <div className="h-8 w-8 animate-spin rounded-full border-4 border-myBlue-200 border-t-transparent" />
@@ -50,7 +50,7 @@ function NutrRecipeDetailContent() {
 
   if (!recipe) {
     return (
-      <div className="min-h-screen" style={{ backgroundColor: '#3F4756' }}>
+      <div className="min-h-screen">
         <NutrNavbar />
         <p className="pt-24 text-center text-gray-300">
           {t('common.not_found', 'Η συνταγή δεν βρέθηκε.')}
@@ -60,7 +60,7 @@ function NutrRecipeDetailContent() {
   }
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#3F4756' }}>
+    <div className="min-h-screen">
       <NutrNavbar />
 
       <main className="mx-auto w-full max-w-2xl px-6 pb-20 pt-8">

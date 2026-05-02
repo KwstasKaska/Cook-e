@@ -233,13 +233,10 @@ export default function ChefSingleRecipe() {
       lang === 'el' ? 'labelEl' : 'labelEn'
     ] ?? '';
 
-  // ── Loading / not found ────────────────────────────────────────────────────
+  //  Loading / not found
   if (loading || !recipe || !editForm) {
     return (
-      <div
-        className="flex min-h-screen flex-col"
-        style={{ backgroundColor: '#3F4756' }}
-      >
+      <div className="flex min-h-screen flex-col">
         <ChefNavbar />
         <main className="flex flex-1 items-center justify-center">
           <p className="text-white text-sm">
@@ -271,10 +268,7 @@ export default function ChefSingleRecipe() {
   const displayImage = imagePreview ?? recipe.recipeImage;
 
   return (
-    <div
-      className="flex min-h-screen flex-col"
-      style={{ backgroundColor: '#3F4756' }}
-    >
+    <div className="flex min-h-screen flex-col">
       <ChefNavbar />
 
       <main className="flex flex-1 flex-col items-center px-4 py-8 md:px-8">

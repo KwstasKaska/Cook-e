@@ -229,7 +229,7 @@ function RecipeDetailContent() {
 
   if (recipeLoading) {
     return (
-      <div className="flex min-h-screen items-center bg-myGrey-200 justify-center">
+      <div className="flex min-h-screen items-center  justify-center">
         <div className="h-10 w-10 animate-spin rounded-full border-4 border-myBlue-200 border-t-transparent" />
       </div>
     );
@@ -237,14 +237,14 @@ function RecipeDetailContent() {
 
   if (!recipe) {
     return (
-      <div className="flex min-h-screen bg-myGrey-200 items-center justify-center">
+      <div className="flex min-h-screen  items-center justify-center">
         <p className="text-white">{t('chef.recipe_detail.not_found')}</p>
       </div>
     );
   }
 
   return (
-    <div className="flex min-h-screen bg-myGrey-200 flex-col">
+    <div className="flex min-h-screen  flex-col">
       <Navbar />
       <main className="flex-1">
         <div className="mx-auto max-w-6xl px-4 py-10 md:px-8 md:py-16">
