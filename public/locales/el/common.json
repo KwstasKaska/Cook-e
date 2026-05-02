@@ -27,7 +27,7 @@
   "nutrnav": {
     "nutr_calendar": "Ημερολόγιο",
     "nutr_appointments": "Διαχείριση ραντεβού",
-    "nutr_scheduler": "Προγραμματισμός διατροφών"
+    "nutr_scheduler": "Διατροφικά πλάνα"
   },
   "day": {
     "MONDAY": "Δευτέρα",
@@ -93,7 +93,9 @@
     "rateChefTitle": "Αξιολόγηστε τον μάγειρα",
     "logCooked": "Το μαγείρεψα!",
     "difficulty": "Δυσκολία",
-    "favourites_more": "Φόρτωση περισσότερων"
+    "favourites_more": "Φόρτωση περισσότερων",
+    "ingredients": "Υλικά",
+    "copy": "Αντιγραφή συνδέσμου συνταγής"
   },
   "ingredientCategories": {
     "title": "Συστατικά",
@@ -196,15 +198,15 @@
     "todayAppointments": "Σημερινά ραντεβού",
     "coffeeImageAlt": "Εικόνα με καφέ",
     "noAppointmentsFor": "Δεν υπάρχουν διαθέσιμα ραντεβού για τις",
-    "createNutritionPlan": "Δημιουργία προγράμματος διατροφής",
-    "nutritionPlanFor": "Πρόγραμμα διατροφής για τον χρήστη",
+    "createNutritionPlan": "Δημιουργία πλάνου διατροφής",
+    "nutritionPlanFor": "Πλάνο διατροφής για το μέλος",
     "mealsAndDays": "Γεύματα / ημέρες",
     "set": "Ορισμός",
     "preview": "Προεπισκόπηση",
     "back": "Πίσω",
-    "cancel": "Ακύρωση",
+    "cancel": "Επαναφορά ήμερας",
     "apply": "Εφαρμογή",
-    "setAvailability": "Ρύθμιση διαθεσιμότητας ημερομηνιών και ωρών",
+    "setAvailability": "Ρύθμιση διαθεσιμότητας",
     "selectedDate": "Επιλεγμένη ημερομηνία:",
     "registerAvailableHours": "Καταχώρηση διαθέσιμων ωρών",
     "selectTime": "Επιλογή ώρας",
@@ -216,7 +218,7 @@
     "profileImageAlt": "Εικόνα προφίλ",
     "accept": "Αποδοχή",
     "reject": "Απόρριψη",
-    "selectUser": "Επιλογή χρήστη",
+    "selectUser": "Επιλογή μέλους",
     "selectDay": "Επιλογή ημέρας",
     "selectMeal": "Επιλογή γεύματος",
     "setContent": "Ορισμός περιεχομένου",
@@ -236,7 +238,7 @@
       "error_image": "Προσθέστε μια εικόνα."
     },
     "nutr_recipes": "Συνταγές μαγείρων",
-    "selectUserFirst": "Παρακαλώ επιλέξτε χρήστη πρώτα.",
+    "selectUserFirst": "Παρακαλώ επιλέξτε μέλος πρώτα.",
     "selectDayFirst": "Παρακαλώ επιλέξτε ημέρα πρώτα.",
     "selectMealFirst": "Παρακαλώ επιλέξτε τύπο γεύματος πρώτα.",
     "setContentFirst": "Παρακαλώ γράψτε το περιεχόμενο γεύματος πρώτα.",

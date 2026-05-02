@@ -24,10 +24,10 @@ export default function NutrRecipeDetailPage() {
 function NutrRecipeDetailContent() {
   const { t } = useTranslation('common');
   const router = useRouter();
+
   const { id } = router.query;
   const recipeId = parseInt(id as string, 10);
   const lang = router.locale === 'el' ? 'el' : 'en';
-
   const { data, loading } = useRecipeQuery({
     variables: { id: recipeId },
     skip: isNaN(recipeId),
@@ -36,6 +36,13 @@ function NutrRecipeDetailContent() {
 
   const recipe = data?.recipe;
   const title = recipe ? pick(recipe.title_el, recipe.title_en, lang) : '';
+
+  const hasMacros =
+    recipe &&
+    (recipe.caloriesTotal != null ||
+      recipe.protein != null ||
+      recipe.carbs != null ||
+      recipe.fat != null);
 
   if (loading) {
     return (
@@ -53,7 +60,7 @@ function NutrRecipeDetailContent() {
       <div className="min-h-screen">
         <NutrNavbar />
         <p className="pt-24 text-center text-gray-300">
-          {t('common.not_found', 'Η συνταγή δεν βρέθηκε.')}
+          {t('recipe_detail.not_found')}
         </p>
       </div>
     );
@@ -64,9 +71,8 @@ function NutrRecipeDetailContent() {
       <NutrNavbar />
 
       <main className="mx-auto w-full max-w-2xl px-6 pb-20 pt-8">
-        {/* Back */}
         <button
-          onClick={() => router.back()}
+          onClick={() => router.push('/nutritionist/recipes')}
           className="mb-6 flex items-center gap-1 text-sm text-gray-300 hover:text-white transition-colors"
         >
           <svg
@@ -85,16 +91,6 @@ function NutrRecipeDetailContent() {
           </svg>
           {t('common.back', 'Πίσω στην αναζήτηση')}
         </button>
-
-        {/* Category */}
-        {recipe.category && (
-          <p
-            className="mb-2 text-sm font-bold tracking-widest "
-            style={{ color: '#EAB308' }}
-          >
-            {recipe.category}
-          </p>
-        )}
 
         <button
           onClick={() => {
@@ -117,17 +113,15 @@ function NutrRecipeDetailContent() {
               d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-4 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
             />
           </svg>
-          Αντιγραφή συνδέσμου συνταγής
+          {t('recipes.copy')}
         </button>
 
-        {/* Title */}
         <div className="flex items-start justify-between gap-4 mb-6">
           <h1 className="text-3xl font-bold text-white leading-tight md:text-4xl">
             {title}
           </h1>
         </div>
 
-        {/* Chef */}
         {recipe.author?.user && (
           <div className="mb-4 flex items-center gap-3">
             {recipe.author.user.image ? (
@@ -149,22 +143,19 @@ function NutrRecipeDetailContent() {
             </span>
           </div>
         )}
-        {/* Ingredients */}
+
         {recipe.recipeIngredients && recipe.recipeIngredients.length > 0 && (
-          <div className="mb-8">
+          <div className="mb-8 ">
             <h2 className="mb-3 text-xl font-bold text-white">
-              {t('recipe.ingredients', 'Υλικά')}
+              {t('recipes.ingredients')}
             </h2>
-            <ul className="flex flex-col gap-1.5">
+            <ul className="rounded-xl bg-white/5 border  border-white/10 px-4 py-3 flex flex-col gap-1.5">
               {recipe.recipeIngredients.map((ri) => (
                 <li
                   key={ri.ingredientId}
-                  className="flex items-center gap-2 text-sm text-gray-200"
+                  className="flex items-center gap-2 text-white text-sm "
                 >
-                  <span
-                    className="h-1.5 w-1.5 rounded-full flex-shrink-0"
-                    style={{ backgroundColor: '#377CC3' }}
-                  />
+                  <span className="h-1.5 w-1.5 rounded-full bg-myBlue-200 flex-shrink-0" />
                   {pick(
                     ri.ingredient?.name_el ?? '',
                     ri.ingredient?.name_en ?? '',
@@ -174,6 +165,42 @@ function NutrRecipeDetailContent() {
                 </li>
               ))}
             </ul>
+          </div>
+        )}
+
+        {hasMacros && (
+          <div className="mb-8">
+            <h2 className="mb-3 text-xl font-bold text-white">
+              {t('chef.create_recipe.macros_label')}
+            </h2>
+            <div className="rounded-xl bg-white/5 border text-white border-white/10 px-4 py-3 flex flex-col gap-2">
+              {recipe.caloriesTotal != null && (
+                <div className="flex justify-between  text-sm">
+                  <span className="">{t('chef.create_recipe.calories')}</span>
+                  <span className="font-semibold ">
+                    {recipe.caloriesTotal} kcal
+                  </span>
+                </div>
+              )}
+              {recipe.protein != null && (
+                <div className="flex justify-between text-sm">
+                  <span className="">{t('chef.create_recipe.protein')}</span>
+                  <span className="font-semibold ">{recipe.protein}g</span>
+                </div>
+              )}
+              {recipe.carbs != null && (
+                <div className="flex justify-between text-sm">
+                  <span className="">{t('chef.create_recipe.carbs')}</span>
+                  <span className="font-semibold ">{recipe.carbs}g</span>
+                </div>
+              )}
+              {recipe.fat != null && (
+                <div className="flex justify-between text-sm">
+                  <span className="">{t('chef.create_recipe.fat')}</span>
+                  <span className="font-semibold ">{recipe.fat}g</span>
+                </div>
+              )}
+            </div>
           </div>
         )}
       </main>

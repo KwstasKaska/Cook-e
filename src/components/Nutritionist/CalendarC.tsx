@@ -73,8 +73,6 @@ const CalendarC: React.FC = () => {
     (s) => s.date === selectedDate,
   );
 
-  // ── Handlers ─────────────────────────────────────────────────────────────
-
   const handleDateChange = (val: Value) => {
     if (val instanceof Date) setValue(val);
     else if (Array.isArray(val)) setValue(val[0]);
@@ -147,8 +145,6 @@ const CalendarC: React.FC = () => {
     setEnd(Math.max(end - 4, 4));
   };
 
-  // ── Render ────────────────────────────────────────────────────────────────
-
   if (!isClient) return null;
 
   // Display version of selectedDate for the UI
@@ -174,17 +170,11 @@ const CalendarC: React.FC = () => {
             {t('nutr.cancel')}
           </button>
         </div>
-        <div className="mx-auto my-8 max-w-[16em] rounded-lg border-2 border-black bg-myGrey-100 hover:scale-110 hover:border-myBlue-200 hover:bg-myBlue-200 hover:text-white hover:transition hover:duration-300 hover:ease-in">
-          <button
-            className="text-base font-bold leading-relaxed md:text-lg"
-            onClick={handleSet}
-          >
-            {t('nutr.setAvailability')}
-          </button>
+        <div className=" rounded-lg border-2 border-black py-1 px-3 hover:scale-110 hover:border-myBlue-200 hover:bg-myBlue-200 hover:text-white hover:transition">
+          <button onClick={handleSet}>{t('nutr.setAvailability')}</button>
         </div>
       </div>
 
-      {/* Right column — slider OR slot manager */}
       {isShowCalendar ? (
         <div className="mt-8 md:mt-0">
           <SliderAppointments />
@@ -208,7 +198,6 @@ const CalendarC: React.FC = () => {
                 <h2 className="absolute left-20 top-5 text-base font-bold md:text-lg">
                   {t('nutr.selectedDate')}
                 </h2>
-                {/* Show locale-formatted date to user, but ISO is what's in context */}
                 <p className="absolute top-20 left-20 text-center font-normal">
                   {displayDate}
                 </p>
@@ -217,7 +206,6 @@ const CalendarC: React.FC = () => {
                 </h2>
               </div>
 
-              {/* Time input form */}
               <form
                 onSubmit={handleSubmit}
                 className="mt-4 flex flex-col items-center gap-3"
@@ -244,7 +232,6 @@ const CalendarC: React.FC = () => {
                 </button>
               </form>
 
-              {/* Slots list for selected date */}
               {slotsForDate.length > 0 && (
                 <div>
                   <ul className="grid grid-flow-row items-center divide-y-2 divide-black text-center">

@@ -19,7 +19,7 @@
   "nutrnav": {
     "nutr_calendar": "Calendar",
     "nutr_appointments": "Appointment management",
-    "nutr_scheduler": "Nutrition planning"
+    "nutr_scheduler": "Nutrition plans"
   },
   "landing": {
     "nutritionTitle": "Nutritional info",
@@ -94,7 +94,9 @@
     "rateChefTitle": "Rate this chef",
     "logCooked": "I cooked this!",
     "difficulty": "Difficulty",
-    "favourites_more": "Load more"
+    "favourites_more": "Load more",
+    "ingredients": "Ingredients",
+    "copy": "Copy recipe link"
   },
   "ingredientCategories": {
     "title": "Ingredients",
@@ -203,9 +205,9 @@
     "set": "Set",
     "preview": "Preview",
     "back": "Back",
-    "cancel": "Cancel",
+    "cancel": "Reset day",
     "apply": "Apply",
-    "setAvailability": "Set availability of dates and times",
+    "setAvailability": "Set availability",
     "selectedDate": "Selected date:",
     "registerAvailableHours": "Register available hours",
     "selectTime": "Select time",

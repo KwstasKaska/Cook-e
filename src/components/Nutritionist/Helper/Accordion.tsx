@@ -67,7 +67,7 @@ const Accordion: React.FC<AccordionProps> = ({ acceptedClients }) => {
     <div className="container mt-10">
       <div
         onClick={handleClick}
-        className="flex flex-col gap-4 text-white md:h-[40em] md:flex-row"
+        className="flex flex-col gap-4 text-myGrey-200 md:h-[40em] md:flex-row"
       >
         {/* Panel 1 — Select user */}
         <div

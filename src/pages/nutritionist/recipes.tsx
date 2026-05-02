@@ -16,7 +16,7 @@ export async function getServerSideProps({ locale }: { locale: string }) {
   };
 }
 
-const LIMIT = 9; // 3 cols × 3 rows on desktop
+const LIMIT = 9;
 
 export default function NutrRecipesPage() {
   const { loading: authLoading, isAuthorized } = useIsNutritionist();
@@ -51,7 +51,7 @@ function NutrRecipesContent() {
 
   const handleSearch = (value: string) => {
     setSearch(value);
-    setOffset(0); // reset to first page on new search
+    setOffset(0);
   };
 
   return (
@@ -59,7 +59,6 @@ function NutrRecipesContent() {
       <NutrNavbar />
 
       <main className="mx-auto w-full max-w-6xl px-4 pb-20 pt-12 sm:px-6">
-        {/* Header */}
         <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <h1 className="text-2xl font-bold text-white md:text-3xl">
             {t('nutr.nutr_recipes')}
@@ -73,7 +72,6 @@ function NutrRecipesContent() {
           />
         </div>
 
-        {/* Loading */}
         {loading && (
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
             {Array.from({ length: LIMIT }).map((_, i) => (
@@ -85,14 +83,12 @@ function NutrRecipesContent() {
           </div>
         )}
 
-        {/* Empty */}
         {!loading && filtered.length === 0 && (
           <div className="py-20 text-center text-sm text-gray-300">
             {t('chef.recipes.empty')}
           </div>
         )}
 
-        {/* Grid */}
         {!loading && filtered.length > 0 && (
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
             {filtered.map((recipe) => {
@@ -120,11 +116,6 @@ function NutrRecipesContent() {
                     {author && (
                       <p className="text-xs text-gray-500">by {author}</p>
                     )}
-                    {recipe.category && (
-                      <span className="mt-1 w-fit rounded-full bg-myBlue-200/10 px-2 py-0.5 text-xs font-medium text-myBlue-200">
-                        {recipe.category}
-                      </span>
-                    )}
                   </div>
                 </button>
               );
@@ -132,7 +123,6 @@ function NutrRecipesContent() {
           </div>
         )}
 
-        {/* Prev / Next — hidden when searching */}
         {!search.trim() && (hasPrev || hasMore) && (
           <div className="mt-10 flex justify-center gap-4">
             {hasPrev && (

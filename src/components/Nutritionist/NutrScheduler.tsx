@@ -111,7 +111,6 @@ const NutrScheduler: React.FC = () => {
     }
 
     if (!hadError) {
-      // Clear all submitted cells on full success
       setCellInfo({});
     }
   };
@@ -119,7 +118,7 @@ const NutrScheduler: React.FC = () => {
   return (
     <section
       id="section_4"
-      className="flex min-h-screen w-full flex-col bg-myGrey-100"
+      className="flex min-h-screen w-full  flex-col bg-myGrey-100"
     >
       <TableContextType.Provider
         value={{
@@ -187,13 +186,13 @@ const NutrScheduler: React.FC = () => {
           </div>
         ) : (
           <div>
-            <h2 className="mt-4 text-center text-2xl font-bold md:text-4xl">
+            <h2 className="mt-4  text-center text-2xl font-bold md:text-4xl">
               {t('nutr.createNutritionPlan')}
             </h2>
 
             <Accordion acceptedClients={acceptedClients} />
 
-            <div className="mx-auto my-8 flex w-full flex-col items-center justify-center lg:my-10">
+            <div className="mx-auto  my-8 flex w-full flex-col items-center justify-center lg:my-10">
               {fieldError && (
                 <p className="mb-2 text-sm text-myRed">{fieldError}</p>
               )}
