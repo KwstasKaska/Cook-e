@@ -454,6 +454,7 @@
     "submit": "Login",
     "forgot_password": "Forgot your password?",
     "no_account": "Don't have an account yet?",
+    "account": "Do you have an account?",
     "create_account": "Create one"
   },
   "forgot_password": {

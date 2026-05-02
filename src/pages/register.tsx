@@ -168,7 +168,7 @@ const Register: NextPage = () => {
         </Formik>
 
         <p className="mt-6 text-center text-sm text-gray-400">
-          {t('login.no_account')}{' '}
+          {t('login.account')}{' '}
           <Link
             className="font-semibold  underline transition hover:opacity-80"
             href="/login"

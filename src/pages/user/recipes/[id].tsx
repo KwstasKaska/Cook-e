@@ -523,14 +523,6 @@ function RecipeDetailContent() {
                     </span>
                   </div>
                 )}
-                {recipe.caloriesTotal != null && (
-                  <div className="flex justify-between text-sm">
-                    <span className="text-gray-400">Kcal</span>
-                    <span className="font-semibold text-gray-700">
-                      {recipe.caloriesTotal}
-                    </span>
-                  </div>
-                )}
                 {recipe.difficulty && (
                   <div className="flex justify-between text-sm">
                     <span className="text-gray-400">
@@ -539,6 +531,53 @@ function RecipeDetailContent() {
                     <span className="font-semibold text-gray-700">
                       {recipe.difficulty}
                     </span>
+                  </div>
+                )}
+                {(recipe.caloriesTotal != null ||
+                  recipe.protein != null ||
+                  recipe.carbs != null ||
+                  recipe.fat != null) && (
+                  <div className="mt-1 flex flex-col gap-1.5 border-t border-gray-100 pt-2">
+                    {recipe.caloriesTotal != null && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-400">
+                          {t('chef.create_recipe.calories')}
+                        </span>
+                        <span className="font-semibold text-gray-700">
+                          {recipe.caloriesTotal} kcal
+                        </span>
+                      </div>
+                    )}
+                    {recipe.protein != null && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-400">
+                          {t('chef.create_recipe.protein')}
+                        </span>
+                        <span className="font-semibold text-gray-700">
+                          {recipe.protein}g
+                        </span>
+                      </div>
+                    )}
+                    {recipe.carbs != null && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-400">
+                          {t('chef.create_recipe.carbs')}
+                        </span>
+                        <span className="font-semibold text-gray-700">
+                          {recipe.carbs}g
+                        </span>
+                      </div>
+                    )}
+                    {recipe.fat != null && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-400">
+                          {t('chef.create_recipe.fat')}
+                        </span>
+                        <span className="font-semibold text-gray-700">
+                          {recipe.fat}g
+                        </span>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>

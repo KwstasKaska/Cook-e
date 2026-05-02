@@ -457,6 +457,7 @@
     "submit": "Σύνδεση",
     "forgot_password": "Ξέχασες τον κωδικό;",
     "no_account": "Δεν έχεις ακόμα λογαριασμό;",
+    "account": "Έχεις λογαριασμό;",
     "create_account": "Δημιούργησε έναν"
   },
   "forgot_password": {

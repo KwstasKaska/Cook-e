@@ -187,7 +187,7 @@ function NutrCard({
   );
 }
 
-// ── Profile view ──────────────────────────────────────────────────────────────
+// ── Profile view
 
 function ProfileView({
   nutr,
@@ -214,18 +214,10 @@ function ProfileView({
   const bioText = pick(nutr.bio_el ?? '', nutr.bio_en ?? '', lang);
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#3F4756' }}>
+    <div className="min-h-screen bg-myGrey-200">
       <Navbar />
       <div className="relative overflow-hidden">
-        <div
-          className="absolute bottom-0 left-0 w-full bg-gray-100"
-          style={{
-            height: '60%',
-            clipPath: 'polygon(0 35%, 100% 5%, 100% 100%, 0% 100%)',
-          }}
-        />
         <div className="relative z-10 mx-auto max-w-4xl px-6 pb-20 pt-10">
-          {/* Back */}
           <button
             onClick={onBack}
             className="mb-6 flex items-center gap-1 text-sm text-gray-300 transition-colors hover:text-white"

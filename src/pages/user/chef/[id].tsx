@@ -151,14 +151,6 @@ function ChefProfileContent() {
       <Navbar />
       <main className="flex-1">
         <div className="relative overflow-hidden">
-          <div
-            className="absolute bottom-0 left-0 w-full bg-gray-100"
-            style={{
-              height: '70%',
-              clipPath: 'polygon(0 20%, 100% 0%, 100% 100%, 0% 100%)',
-            }}
-          />
-
           <div className="relative z-10 mx-auto max-w-4xl px-6 pb-20 pt-10">
             {/* Back */}
             <button
@@ -227,7 +219,6 @@ function ChefProfileContent() {
                             d="M8 10h.01M12 10h.01M16 10h.01M21 16c0 1.1-.9 2-2 2H7l-4 4V6a2 2 0 012-2h14a2 2 0 012 2v10z"
                           />
                         </svg>
-                        {t('send_message', 'Send message')}
                       </button>
                     )}
                   </div>

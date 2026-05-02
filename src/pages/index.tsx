@@ -24,7 +24,6 @@ interface RecipeCardProps {
   image: string;
   authorName: string;
   authorImage?: string | null;
-  difficulty: string;
 }
 
 const RecipeCard = ({
@@ -32,7 +31,6 @@ const RecipeCard = ({
   image,
   authorName,
   authorImage,
-  difficulty,
 }: RecipeCardProps) => (
   <div className="grid w-full cursor-pointer grid-flow-row justify-items-center gap-2 rounded-[.9em] bg-myGrey-100 pb-[1.5em] shadow-2xl drop-shadow-2xl transition duration-300 hover:scale-105 hover:ease-in">
     <img
@@ -41,7 +39,6 @@ const RecipeCard = ({
       className="-mt-[3em] h-[6em] w-[6em] rounded-full object-cover md:h-[7em] md:w-[7em]"
     />
     <h1 className="px-2 text-center text-xs font-bold md:text-base">{title}</h1>
-    <p className="text-xs md:text-sm">{difficulty}</p>
 
     <div className="m-[0.65em] flex flex-row items-center gap-2">
       {authorImage ? (
@@ -78,16 +75,6 @@ const Index: NextPage = () => {
     const list = recipesData?.recipes ?? [];
     return pickRandom(list, 2);
   }, [recipesData]);
-
-  const difficultyLabel = (d?: string) => {
-    if (!d) return '';
-    const map: Record<string, string> = {
-      easy: lang === 'el' ? 'Εύκολο' : 'Easy',
-      medium: lang === 'el' ? 'Μέτριο' : 'Medium',
-      difficult: lang === 'el' ? 'Δύσκολο' : 'Difficult',
-    };
-    return map[d.toLowerCase()] ?? d;
-  };
 
   let body = null;
   if (!meLoading) {
@@ -140,7 +127,6 @@ const Index: NextPage = () => {
           image={recipeImageSrc(recipe.recipeImage)}
           authorName={recipe.author?.user?.username ?? '—'}
           authorImage={recipe.author?.user?.image}
-          difficulty={difficultyLabel(recipe.difficulty)}
         />
       </Link>
     );
