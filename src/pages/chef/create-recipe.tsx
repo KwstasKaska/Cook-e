@@ -316,19 +316,10 @@ export default function CreateRecipe() {
             className="flex flex-col md:flex-row"
             style={{ minHeight: '500px' }}
           >
-            {/* LEFT — form, full width on mobile, half on desktop */}
             <div className="flex flex-col justify-between bg-white p-7 md:w-1/2">
               <div className="flex-1 overflow-y-auto">{renderStep()}</div>
 
               <div className="mt-6 flex items-center gap-3 flex-shrink-0">
-                <button
-                  type="button"
-                  onClick={handleBack}
-                  className="rounded-full border px-5 py-2.5 text-sm font-semibold transition hover:bg-gray-50"
-                  style={{ borderColor: '#3F4756', color: '#3F4756' }}
-                >
-                  {t('chef.create_recipe.preview_btn')}
-                </button>
                 {currentStep < TOTAL_STEPS ? (
                   <button
                     type="button"
