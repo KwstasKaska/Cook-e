@@ -20,7 +20,6 @@ type SelectedNutritionist = {
   email: string;
   bio_el?: string | null;
   bio_en?: string | null;
-  phone?: string | null;
   city_el?: string | null;
   city_en?: string | null;
   image?: string | null;
@@ -135,7 +134,6 @@ function ListView({
                           email: nutr.user?.email ?? '',
                           bio_el: nutr.bio_el,
                           bio_en: nutr.bio_en,
-                          phone: nutr.phone,
                           city_el: nutr.city_el,
                           city_en: nutr.city_en,
                           image: nutr.user?.image ?? null,
@@ -245,29 +243,6 @@ function ProfileView({
               {nutr.username}
             </h1>
             <div className="flex gap-3 sm:ml-4 sm:flex-shrink-0">
-              {nutr.phone && (
-                <a
-                  href={`tel:${nutr.phone}`}
-                  className="flex h-12 w-12 items-center justify-center rounded-full shadow-md"
-                  style={{ backgroundColor: '#377CC3' }}
-                  aria-label="Call"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5 text-white"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
-                    />
-                  </svg>
-                </a>
-              )}
               {nutr.userId && (
                 <button
                   onClick={() => openConversation(nutr.userId)}
