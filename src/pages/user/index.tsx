@@ -90,7 +90,6 @@ function HomeContent() {
       <Navbar />
 
       <div className="relative overflow-x-hidden">
-        {/* ── Top section: donut + title */}
         <div className="relative z-10 mx-auto max-w-6xl px-6 pb-0 pt-10">
           <div className="grid grid-cols-1 items-center gap-8 md:grid-cols-2">
             <div className="order-last mx-auto flex max-w-md flex-col sm:flex-row items-center gap-4 rounded-2xl bg-white p-6 shadow-lg sm:gap-6 md:mx-0 md:order-first">

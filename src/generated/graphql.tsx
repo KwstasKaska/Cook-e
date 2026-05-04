@@ -1022,7 +1022,7 @@ export type RegularChefRatingFragment = { __typename?: 'ChefRating', id: number,
 
 export type RegularRecipeRatingFragment = { __typename?: 'RecipeRating', id: number, recipeId: number, userId: number, score: number, createdAt: string, user?: { __typename?: 'User', id: number, username: string, image?: string | null } | null };
 
-export type TopRatedRecipeFragment = { __typename?: 'Recipe', id: number, title_el: string, title_en: string, recipeImage?: string | null, caloriesTotal?: number | null, prepTime: number, cookTime: number, difficulty: Difficulty, category?: RecipeCategory | null };
+export type TopRatedRecipeFragment = { __typename?: 'Recipe', id: number, title_el: string, title_en: string, recipeImage?: string | null, caloriesTotal?: number | null, prepTime: number, cookTime: number, difficulty: Difficulty, category?: RecipeCategory | null, author?: { __typename?: 'ChefProfile', user: { __typename?: 'User', username: string, image?: string | null } } | null };
 
 export type RegularRecipeFragment = { __typename?: 'Recipe', id: number, title_el: string, title_en: string, description_el?: string | null, description_en?: string | null, chefComment_el?: string | null, chefComment_en?: string | null, category?: RecipeCategory | null, recipeImage?: string | null, prepTime: number, cookTime: number, restTime?: number | null, difficulty: Difficulty, caloriesTotal?: number | null, protein?: number | null, carbs?: number | null, fat?: number | null, foodEthnicity?: string | null, authorId: number, createdAt: string, updatedAt: string, steps?: Array<{ __typename?: 'Step', id: number, body_el: string, body_en: string, recipeID: number }> | null, recipeIngredients?: Array<{ __typename?: 'RecipeIngredient', recipeId: number, ingredientId: number, quantity: string, unit: string, ingredient?: { __typename?: 'Ingredient', id: number, name_el: string, name_en: string, caloriesPer100g?: number | null } | null }> | null, author?: { __typename?: 'ChefProfile', user: { __typename?: 'User', id: number, username: string, image?: string | null } } | null };
 
@@ -1583,7 +1583,7 @@ export type TopRatedRecipesQueryVariables = Exact<{
 }>;
 
 
-export type TopRatedRecipesQuery = { __typename?: 'Query', topRatedRecipes: Array<{ __typename?: 'Recipe', id: number, title_el: string, title_en: string, recipeImage?: string | null, caloriesTotal?: number | null, prepTime: number, cookTime: number, difficulty: Difficulty, category?: RecipeCategory | null }> };
+export type TopRatedRecipesQuery = { __typename?: 'Query', topRatedRecipes: Array<{ __typename?: 'Recipe', id: number, title_el: string, title_en: string, recipeImage?: string | null, caloriesTotal?: number | null, prepTime: number, cookTime: number, difficulty: Difficulty, category?: RecipeCategory | null, author?: { __typename?: 'ChefProfile', user: { __typename?: 'User', username: string, image?: string | null } } | null }> };
 
 export type UsersQueryVariables = Exact<{
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -1915,6 +1915,12 @@ export const TopRatedRecipeFragmentDoc = gql`
   cookTime
   difficulty
   category
+  author {
+    user {
+      username
+      image
+    }
+  }
 }
     `;
 export const RegularRecipeFragmentDoc = gql`

@@ -1,10 +1,10 @@
 import { NextPage } from 'next';
 import Link from 'next/link';
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 import {
   useLogoutMutation,
   useMeQuery,
-  useRecipesQuery,
+  useTopRatedRecipesQuery,
 } from '../generated/graphql';
 import { useApolloClient } from '@apollo/client';
 import { useTranslation } from 'next-i18next';
@@ -13,11 +13,6 @@ import { GetServerSideProps } from 'next';
 import LanguageSwitcher from '../components/Helper/LanguageSwitcher';
 import { pick } from '../utils/pick';
 import { recipeImageSrc } from '../utils/recipeHelpers';
-
-function pickRandom<T>(arr: T[], count: number): T[] {
-  const shuffled = [...arr].sort(() => Math.random() - 0.5);
-  return shuffled.slice(0, count);
-}
 
 interface RecipeCardProps {
   title: string;
@@ -67,14 +62,11 @@ const Index: NextPage = () => {
   const lang = i18n.language;
 
   const { loading: meLoading, data: meData } = useMeQuery();
-  const { data: recipesData } = useRecipesQuery({
-    variables: { limit: 10, offset: 0 },
+  const { data: topRatedData } = useTopRatedRecipesQuery({
+    variables: { limit: 2 },
   });
 
-  const featuredRecipes = useMemo(() => {
-    const list = recipesData?.recipes ?? [];
-    return pickRandom(list, 2);
-  }, [recipesData]);
+  const featuredRecipes = topRatedData?.topRatedRecipes ?? [];
 
   let body = null;
   if (!meLoading) {
@@ -171,14 +163,12 @@ const Index: NextPage = () => {
           </div>
         </div>
 
-        {/* ── Δεξιά στήλη: nav buttons + συνταγές ── */}
         <section className="container mt-[3em] grid grid-flow-row gap-4 rounded-[3em] bg-myBlue-200 font-exo font-normal md:mt-0 md:rounded-none md:rounded-bl-[6em]">
           <div className="flex flex-row items-center justify-center px-4 pt-4">
             {body}
           </div>
 
           <div className="my-[3.5em] px-6 md:px-3 md:py-[2em]">
-            {/* Mobile slider */}
             <div className="relative flex items-center justify-center gap-3 md:hidden">
               <button
                 onClick={() => setSlideIndex((i) => Math.max(i - 1, 0))}
@@ -201,7 +191,6 @@ const Index: NextPage = () => {
               </button>
             </div>
 
-            {/* Desktop: side by side */}
             <div className="mt-[3em] hidden md:grid md:grid-cols-2 md:gap-7">
               {cards}
             </div>
