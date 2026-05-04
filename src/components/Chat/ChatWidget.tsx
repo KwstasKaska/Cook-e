@@ -160,7 +160,6 @@ export default function ChatWidget({ currentUserId }: ChatWidgetProps) {
             <button
               onClick={() => setView('inbox')}
               className="hover:opacity-70 mr-1"
-              aria-label="Back"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -188,11 +187,7 @@ export default function ChatWidget({ currentUserId }: ChatWidgetProps) {
                   : t('messages', 'Messages')}
           </span>
         </div>
-        <button
-          onClick={closeWidget}
-          className="hover:opacity-70"
-          aria-label="Close"
-        >
+        <button onClick={closeWidget} className="hover:opacity-70">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="w-4 h-4"
@@ -310,7 +305,6 @@ export default function ChatWidget({ currentUserId }: ChatWidgetProps) {
               onClick={handleSend}
               disabled={sending || !body.trim()}
               className="flex-shrink-0 w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center disabled:opacity-40 hover:bg-blue-700 transition-colors"
-              aria-label="Send"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

@@ -98,11 +98,10 @@ export default function NutrNavbar() {
         <button
           onClick={openWidget}
           className="p-2 rounded  hover:text-myBlue-200 transition-colors duration-150"
-          aria-label={t('nav.messages')}
         >
           <ChatIcon />
         </button>
-        <NavSettingsLink ariaLabel={t('nav.settings')} />
+        <NavSettingsLink />
         <LanguageSwitcher dark />
         {data?.me && (
           <button
@@ -177,14 +176,10 @@ export default function NutrNavbar() {
                 setMenuOpen(false);
               }}
               className=" hover:text-myBlue-200"
-              aria-label={t('nav.messages')}
             >
               <ChatIcon />
             </button>
-            <NavSettingsLink
-              ariaLabel={t('nav.settings')}
-              onClick={() => setMenuOpen(false)}
-            />
+            <NavSettingsLink onClick={() => setMenuOpen(false)} />
             {data?.me && (
               <button
                 onClick={handleLogout}

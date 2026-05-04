@@ -2,17 +2,14 @@
 import Link from 'next/link';
 
 export const NavSettingsLink = ({
-  ariaLabel,
   className,
   onClick,
 }: {
-  ariaLabel: string;
   className?: string;
   onClick?: () => void;
 }) => (
   <Link
     href="/settings"
-    aria-label={ariaLabel}
     onClick={onClick}
     className={
       className ??

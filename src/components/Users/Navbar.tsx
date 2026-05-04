@@ -69,7 +69,6 @@ export default function Navbar() {
 
       <div className="hidden xl:flex items-center gap-3">
         <NavCartLink
-          ariaLabel={t('nav.cart')}
           className={`p-2 rounded transition-colors duration-150 ${
             router.pathname === '/user/cart'
               ? 'text-yellow-400'
@@ -79,11 +78,10 @@ export default function Navbar() {
         <button
           onClick={openWidget}
           className="p-2 rounded hover:text-myBlue-200 transition-colors duration-150"
-          aria-label={t('nav.messages', 'Messages')}
         >
           <ChatIcon />
         </button>
-        <NavSettingsLink ariaLabel={t('nav.settings')} />
+        <NavSettingsLink />
         {me && (
           <div className="flex items-center gap-2">
             {me.image ? (
@@ -168,7 +166,6 @@ export default function Navbar() {
             )}
 
             <NavCartLink
-              ariaLabel={t('nav.cart')}
               onClick={() => setMenuOpen(false)}
               className="hover:text-yellow-300"
             />
@@ -178,12 +175,10 @@ export default function Navbar() {
                 setMenuOpen(false);
               }}
               className="hover:text-yellow-300"
-              aria-label={t('nav.messages', 'Messages')}
             >
               <ChatIcon />
             </button>
             <NavSettingsLink
-              ariaLabel={t('nav.settings')}
               onClick={() => setMenuOpen(false)}
               className="hover:text-yellow-300 transition-colors duration-150"
             />

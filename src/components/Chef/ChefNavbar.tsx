@@ -63,11 +63,10 @@ const ChefNavbar = () => {
         <button
           onClick={openWidget}
           className="p-2 rounded  hover:text-myBlue-200 transition-colors duration-150"
-          aria-label={t('nav.messages')}
         >
           <ChatIcon className="w-6 h-6" />
         </button>
-        <NavSettingsLink ariaLabel={t('nav.settings')} />
+        <NavSettingsLink />
         <LanguageSwitcher dark />
         <button
           onClick={handleLogout}
@@ -77,7 +76,6 @@ const ChefNavbar = () => {
         </button>
       </div>
 
-      {/* Hamburger */}
       <HamburgerButton
         isOpen={menuOpen}
         onClick={() => setMenuOpen((v) => !v)}
@@ -114,14 +112,10 @@ const ChefNavbar = () => {
                 setMenuOpen(false);
               }}
               className=" hover:text-myBlue-200 transition-opacity"
-              aria-label={t('nav.messages')}
             >
               <ChatIcon className="w-6 h-6" />
             </button>
-            <NavSettingsLink
-              ariaLabel={t('nav.settings')}
-              onClick={() => setMenuOpen(false)}
-            />
+            <NavSettingsLink onClick={() => setMenuOpen(false)} />
             <LanguageSwitcher dark />
             <button
               onClick={handleLogout}

@@ -96,10 +96,6 @@ export default function SettingsPage() {
   const role = me.role.toUpperCase() as Role;
   const visibleTabs = TABS.filter((tab) => tab.roles.includes(role));
 
-  const activeTabLabel = t(
-    visibleTabs.find((tab) => tab.key === activeTab)?.labelKey ?? '',
-  );
-
   const renderNavbar = () => {
     if (role === 'CHEF') return <ChefNavbar />;
     if (role === 'NUTRITIONIST') return <NutrNavbar />;
@@ -118,10 +114,9 @@ export default function SettingsPage() {
 
           <div className="flex flex-col md:flex-row gap-6 items-start">
             <aside className="w-full md:w-56 flex-shrink-0">
-              <nav aria-label={t('settings.title')}>
+              <nav>
                 <div
                   role="tablist"
-                  aria-label={t('settings.title')}
                   className="bg-white rounded-2xl shadow-md overflow-hidden"
                 >
                   {visibleTabs.map((tab) => {
@@ -152,7 +147,6 @@ export default function SettingsPage() {
                     type="button"
                     onClick={() => setShowConfirm(true)}
                     disabled={deleting}
-                    aria-label={t('settings.deleteAccount')}
                     className="w-full flex items-center gap-3 px-4 py-3.5 text-sm font-semibold text-left transition-colors hover:bg-red-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-400 disabled:opacity-50"
                     style={{ color: '#ED5B5B' }}
                   >
@@ -171,16 +165,11 @@ export default function SettingsPage() {
               </nav>
             </aside>
 
-            <main
-              className="flex-1 min-w-0"
-              aria-live="polite"
-              aria-label={activeTabLabel}
-            >
+            <main className="flex-1 min-w-0">
               {activeTab === 'personal' && (
                 <section
                   id="tabpanel-personal"
                   role="tabpanel"
-                  aria-labelledby="tab-personal"
                   tabIndex={0}
                   className="bg-white rounded-2xl shadow-md p-6 md:p-8 focus:outline-none"
                 >
@@ -191,7 +180,6 @@ export default function SettingsPage() {
                 <section
                   id="tabpanel-security"
                   role="tabpanel"
-                  aria-labelledby="tab-security"
                   tabIndex={0}
                   className="bg-white rounded-2xl shadow-md p-6 md:p-8 focus:outline-none"
                 >
@@ -202,7 +190,6 @@ export default function SettingsPage() {
                 <section
                   id="tabpanel-chef-profile"
                   role="tabpanel"
-                  aria-labelledby="tab-chef-profile"
                   tabIndex={0}
                   className="bg-white rounded-2xl shadow-md p-6 md:p-8 focus:outline-none"
                 >
@@ -213,7 +200,6 @@ export default function SettingsPage() {
                 <section
                   id="tabpanel-nutritionist-profile"
                   role="tabpanel"
-                  aria-labelledby="tab-nutritionist-profile"
                   tabIndex={0}
                   className="bg-white rounded-2xl shadow-md p-6 md:p-8 focus:outline-none"
                 >
@@ -224,7 +210,6 @@ export default function SettingsPage() {
                 <section
                   id="tabpanel-meal-plan"
                   role="tabpanel"
-                  aria-labelledby="tab-meal-plan"
                   tabIndex={0}
                   className="bg-white rounded-2xl shadow-md p-6 md:p-8 focus:outline-none"
                 >

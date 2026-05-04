@@ -131,11 +131,7 @@ const Register: NextPage = () => {
                 <p className="mb-2 text-sm font-bold ">
                   {t('register.role_label')}
                 </p>
-                <div
-                  role="group"
-                  className="flex flex-col gap-1.5 text-sm "
-                  aria-labelledby="my-radio-group"
-                >
+                <div role="group" className="flex flex-col gap-1.5 text-sm ">
                   <label className="flex cursor-pointer items-center gap-2">
                     <Field type="radio" name="role" value="user" />
                     {t('register.role_user')}

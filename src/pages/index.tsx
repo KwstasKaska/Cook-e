@@ -174,7 +174,6 @@ const Index: NextPage = () => {
                 onClick={() => setSlideIndex((i) => Math.max(i - 1, 0))}
                 disabled={slideIndex === 0}
                 className="px-2 text-2xl text-white disabled:opacity-30"
-                aria-label="Previous"
               >
                 ‹
               </button>
@@ -185,7 +184,6 @@ const Index: NextPage = () => {
                 }
                 disabled={slideIndex === cards.length - 1}
                 className="px-2 text-2xl text-white disabled:opacity-30"
-                aria-label="Next"
               >
                 ›
               </button>
