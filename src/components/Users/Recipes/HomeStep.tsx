@@ -23,7 +23,6 @@ export default function HomeStep({
   onPrev,
   onNext,
   onStartPicker,
-  onUnsave,
   onSelectRecipe,
   isEl,
 }: {
@@ -34,7 +33,6 @@ export default function HomeStep({
   onPrev?: () => void;
   onNext?: () => void;
   onStartPicker: () => void;
-  onUnsave: (recipeId: number) => void;
   onSelectRecipe: (id: number) => void;
   isEl: boolean;
 }) {
@@ -42,7 +40,6 @@ export default function HomeStep({
 
   return (
     <div className="max-w-5xl mx-auto px-6 pt-10 pb-20">
-      {/* Heading */}
       <div className="mb-10">
         <h1 className="text-white text-3xl md:text-4xl font-bold mb-1">
           {t('recipes.title')}
@@ -50,7 +47,6 @@ export default function HomeStep({
         <p className="text-gray-300 text-sm">{t('recipes.subtitle')}</p>
       </div>
 
-      {/* Favorites grid */}
       <div className="mb-12">
         <div className="flex items-center justify-between mb-5">
           <h2 className="text-white text-xl font-bold">
@@ -92,24 +88,6 @@ export default function HomeStep({
                         🍽️
                       </div>
                     )}
-                    {/* Unsave button */}
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onUnsave(recipe.id);
-                      }}
-                      className="absolute top-2 right-2 flex h-7 w-7 items-center justify-center rounded-full bg-white/80 shadow transition hover:bg-white"
-                      title="Remove from favorites"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-4 w-4 text-red-400"
-                        fill="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-                      </svg>
-                    </button>
                   </div>
                   <div className="p-3">
                     <h3 className="text-sm font-bold text-gray-800 leading-tight mb-2">
@@ -127,7 +105,6 @@ export default function HomeStep({
           </div>
         )}
 
-        {/* Prev / Next */}
         {!favLoading && (hasPrev || hasMore) && (
           <div className="mt-6 flex justify-center gap-4">
             {hasPrev && onPrev && (
@@ -152,7 +129,6 @@ export default function HomeStep({
         )}
       </div>
 
-      {/* Discover CTA */}
       <div className="flex flex-col items-center gap-3 pt-4">
         <p className="text-gray-500 text-sm">{t('recipes.discoverPrompt')}</p>
         <button

@@ -11,7 +11,6 @@ import {
   useUtensilsQuery,
   useMyFavoritesQuery,
   useSuggestedRecipesQuery,
-  useUnsaveRecipeMutation,
 } from '../../generated/graphql';
 import useIsUser from '../../utils/useIsUser';
 
@@ -52,11 +51,7 @@ function RecipesContent() {
     fetchPolicy: 'network-only',
   });
 
-  const {
-    data: favData,
-    loading: favLoading,
-    refetch: refetchFavs,
-  } = useMyFavoritesQuery({
+  const { data: favData, loading: favLoading } = useMyFavoritesQuery({
     variables: { limit: FAV_LIMIT, offset: favOffset },
     fetchPolicy: 'network-only',
   });
@@ -71,8 +66,6 @@ function RecipesContent() {
       skip: step !== 'results' || selectedIngredientIds.length === 0,
       fetchPolicy: 'network-only',
     });
-
-  const [unsaveRecipe] = useUnsaveRecipeMutation();
 
   // ── Derived data
   const allIngredients = ingredientsData?.ingredients ?? [];
@@ -107,11 +100,6 @@ function RecipesContent() {
       p.includes(id) ? p.filter((i) => i !== id) : [...p, id],
     );
 
-  const handleUnsave = async (recipeId: number) => {
-    await unsaveRecipe({ variables: { recipeId } });
-    await refetchFavs();
-  };
-
   const goToDetail = (id: number) => router.push(`/user/recipes/${id}`);
 
   return (
@@ -127,7 +115,6 @@ function RecipesContent() {
           onPrev={() => setFavOffset((o) => o - FAV_LIMIT)}
           onNext={() => setFavOffset((o) => o + FAV_LIMIT)}
           onStartPicker={() => setStep('ingredients')}
-          onUnsave={handleUnsave}
           onSelectRecipe={goToDetail}
           isEl={isEl}
         />
