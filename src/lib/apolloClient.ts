@@ -6,36 +6,32 @@ import {
   NormalizedCacheObject,
   ApolloLink,
 } from '@apollo/client';
+import { onError } from '@apollo/client/link/error';
 import merge from 'deepmerge';
 import isEqual from 'lodash/isEqual';
 import { AppProps } from 'next/app';
 import { IncomingHttpHeaders } from 'http';
+import { toast } from 'sonner';
 export const APOLLO_STATE_PROP_NAME = '__APOLLO_STATE__';
 import createUploadLink from 'apollo-upload-client/createUploadLink.mjs';
 
 let apolloClient: ApolloClient<NormalizedCacheObject> | null = null;
 
-// For true "load more" / infinite scroll — appends incoming pages to existing.
-// Resets when offset is 0 (fresh navigation), deduplicates by __ref.
 const appendPaginatedField = (): {
   keyArgs: false;
   merge(existing: any[] | undefined, incoming: any[], options: any): any[];
 } => ({
   keyArgs: false,
   merge(existing = [], incoming, { args }) {
-    // Fresh fetch (offset 0 or no args) — reset instead of append
     if (!args || !args.offset || args.offset === 0) {
       return incoming;
     }
-    // Load more — append, deduplicate by __ref
     const existingRefs = new Set(existing.map((e: any) => e.__ref));
     const newItems = incoming.filter((i: any) => !existingRefs.has(i.__ref));
     return [...existing, ...newItems];
   },
 });
 
-// For filtered / re-fetchable lists — always replaces, never appends.
-// keyArgs includes all variables so each unique combination gets its own slot.
 const replaceField = (
   keyArgs: string[] = [],
 ): {
@@ -46,6 +42,17 @@ const replaceField = (
   merge(_existing, incoming) {
     return incoming;
   },
+});
+
+const errorLink = onError(({ graphQLErrors, networkError }) => {
+  if (graphQLErrors) {
+    graphQLErrors.forEach(({ message }) => {
+      toast.error(message);
+    });
+  }
+  if (networkError) {
+    toast.error('Network error — check your connection.');
+  }
 });
 
 const createApolloClient = (headers: IncomingHttpHeaders | null = null) => {
@@ -69,25 +76,17 @@ const createApolloClient = (headers: IncomingHttpHeaders | null = null) => {
 
   return new ApolloClient({
     ssrMode: typeof window === 'undefined',
-    link: from([httpLink as unknown as ApolloLink]),
+    link: from([errorLink, httpLink as unknown as ApolloLink]),
     cache: new InMemoryCache({
       typePolicies: {
         Query: {
           fields: {
-            // ── Recipes ───────────────────────────────────────────────
-            // append: load more accumulates results
             myRecipes: appendPaginatedField(),
             recipes: replaceField(['limit', 'offset']),
             recipesByChef: replaceField(['chefId', 'limit', 'offset']),
-
-            // replace: filter/category change resets the list
             myRecipesByCategory: replaceField(['category', 'limit', 'offset']),
             recipesByCategory: replaceField(['category', 'limit', 'offset']),
-
-            // ── Favorites ─────────────────────────────────────────────
             myFavorites: replaceField(['limit', 'offset']),
-
-            // ── Articles ──────────────────────────────────────────────
             myArticles: replaceField(['limit', 'offset']),
             articles: appendPaginatedField(),
             chefArticles: appendPaginatedField(),
@@ -97,40 +96,22 @@ const createApolloClient = (headers: IncomingHttpHeaders | null = null) => {
               'offset',
             ]),
             articlesByChef: replaceField(['chefId', 'limit', 'offset']),
-
-            // ── Ratings ───────────────────────────────────────────────
             chefRatings: appendPaginatedField(),
             recipeRatings: appendPaginatedField(),
-
-            // ── Cooked recipes ────────────────────────────────────────
             myCookedRecipes: appendPaginatedField(),
-
-            // ── Directory lists ───────────────────────────────────────
             chefs: appendPaginatedField(),
             nutritionists: appendPaginatedField(),
-
-            // ── Messaging ─────────────────────────────────────────────
-            // replace: inbox always shows current state
             myConversations: replaceField(['limit', 'offset']),
-
-            // ── Appointments ──────────────────────────────────────────
-            // replace: date-filtered, always show current state
             getMyAppointments: replaceField(['limit', 'offset']),
             getAppointmentRequestsForNutritionist: replaceField([
               'limit',
               'offset',
             ]),
-
-            // ── Meal plans ────────────────────────────────────────────
-            // replace: user-filtered
             getNutritionistMealPlans: replaceField([
               'userId',
               'limit',
               'offset',
             ]),
-
-            // ── Cart ──────────────────────────────────────────────────
-            // replace: single fetch, always current state
             myCart: replaceField([]),
           },
         },

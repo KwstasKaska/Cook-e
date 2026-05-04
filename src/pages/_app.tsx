@@ -10,6 +10,7 @@ import { appWithTranslation } from 'next-i18next';
 import { useMeQuery } from '../generated/graphql';
 import ChatWidget from '../components/Chat/ChatWidget';
 import { ChatContextProvider } from '../components/Chat/ChatContext';
+import { Toaster } from 'sonner';
 
 function Inner({ Component, pageProps }: AppProps) {
   const { data } = useMeQuery();
@@ -20,6 +21,7 @@ function Inner({ Component, pageProps }: AppProps) {
       <HeadComponent title="Cook-e" />
       <Component {...pageProps} />
       {currentUser && <ChatWidget currentUserId={Number(currentUser.id)} />}
+      <Toaster position="bottom-right" richColors />
     </>
   );
 }
