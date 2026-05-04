@@ -19,7 +19,7 @@ function Inner({ Component, pageProps }: AppProps) {
     <>
       <HeadComponent title="Cook-e" />
       <Component {...pageProps} />
-      {currentUser && <ChatWidget currentUserId={currentUser.id} />}
+      {currentUser && <ChatWidget currentUserId={Number(currentUser.id)} />}
     </>
   );
 }
