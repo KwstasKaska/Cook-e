@@ -44,11 +44,10 @@ const Login: NextPage = () => {
 
   return (
     <main className="flex bg-myGrey-200 min-h-screen w-full items-center justify-center px-4 py-12">
-      <section
-        aria-labelledby="login-heading"
-        className="w-full max-w-md rounded-3xl bg-white px-8 py-8"
-      >
+      <section className="w-full max-w-md rounded-3xl bg-white px-8 py-8">
+        {/* πάνω στοιχεία κουμπιού αρχικής και αλλαγής γλώσσας */}
         <div className="mb-8 flex items-center justify-between">
+          {/* Κουμπί για να πάς πίσω στην αρχική */}
           <Link
             href="/"
             className="flex items-center  gap-1.5 text-xs font-semibold transition hover:opacity-70"
@@ -70,16 +69,16 @@ const Login: NextPage = () => {
             {t('nav.home')}
           </Link>
 
+          {/* ορίζω την αλλαγή γλώσσας σε σκούρο χρώμα για να φαίνεται η αντίθεση */}
           <LanguageSwitcher dark />
         </div>
 
+        {/* κείμενο καλωσορίσματος */}
         <div className="mb-6 text-center">
-          <h1 id="login-heading" className="mb-1 text-2xl font-bold ">
-            {t('login.title')}
-          </h1>
-          <p className="text-sm opacity-75 ">{t('login.subtitle')}</p>
+          <h1 className="mb-1 text-2xl font-bold ">{t('login.title')}</h1>
         </div>
 
+        {/* φόρμα για εισαγωγή email και κωδικού */}
         <Formik
           initialValues={initialValues}
           onSubmit={async (values: MyLoginFormValues, { setErrors }) => {
@@ -105,16 +104,11 @@ const Login: NextPage = () => {
           }}
         >
           {({ isSubmitting }) => (
-            <Form
-              id="login-form"
-              noValidate
-              className="flex flex-col gap-3"
-              aria-label={t('login.title')}
-            >
+            // χρησιμοποιώ το no validate για να πετάξει πρώτα τα δικά μου validation errors
+            <Form noValidate className="flex flex-col gap-3">
               <InputField
                 type="email"
                 name="email"
-                aria-label={t('login.username_placeholder')}
                 autoComplete="email"
                 className="w-full rounded-xl border border-gray-200 px-4 py-2.5 placeholder:italic placeholder:text-myBlue-200 focus:outline-none"
                 placeholder={t('login.username_placeholder')}
@@ -122,7 +116,6 @@ const Login: NextPage = () => {
               <InputField
                 type="password"
                 name="password"
-                aria-label={t('login.password_placeholder')}
                 autoComplete="current-password"
                 className="w-full rounded-xl border border-gray-200 px-4 py-2.5 placeholder:italic placeholder:text-myBlue-200 focus:outline-none"
                 placeholder={t('login.password_placeholder')}
@@ -132,11 +125,8 @@ const Login: NextPage = () => {
                 className="mt-1 w-full bg-myBlue-200 rounded-xl py-2.5 text-sm font-semibold text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
                 type="submit"
                 disabled={isSubmitting}
-                aria-busy={isSubmitting}
               >
-                {isSubmitting
-                  ? t('common.saving', 'Submitting…')
-                  : t('login.submit')}
+                {isSubmitting ? t('common.saving') : t('login.submit')}
               </button>
 
               <button

@@ -1,18 +1,14 @@
-// src/components/Helper/NavCartLink.tsx
 import Link from 'next/link';
 
 export const NavCartLink = ({
-  ariaLabel,
   className,
   onClick,
 }: {
-  ariaLabel: string;
   className?: string;
   onClick?: () => void;
 }) => (
   <Link
     href="/user/cart"
-    aria-label={ariaLabel}
     onClick={onClick}
     className={
       className ??

@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import Navbar from '../../components/Users/Navbar';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
@@ -25,14 +25,12 @@ export default function CartPage() {
   const { locale } = useRouter();
   const isEl = locale === 'el';
 
-  // ── Auth guard
   const { loading: authLoading, isAuthorized } = useIsUser();
   if (authLoading || !isAuthorized) return null;
 
   return <CartContent isEl={isEl} t={t} />;
 }
 
-// Split into inner component so hooks run after auth guard
 function CartContent({
   isEl,
   t,
@@ -40,37 +38,35 @@ function CartContent({
   isEl: boolean;
   t: ReturnType<typeof useTranslation>['t'];
 }) {
-  // ── State
   const [checkedIds, setCheckedIds] = useState<Set<number>>(new Set());
-  const [search, setSearch] = useState('');
-  const [showSearch, setShowSearch] = useState(false);
-  const [serverError, setServerError] = useState('');
+  const [openCategory, setOpenCategory] = useState<string | null>(null);
 
-  // ── Queries
   const { data, loading, refetch } = useMyCartQuery({
     fetchPolicy: 'network-only',
   });
-  const { data: ingredientsData } = useIngredientsQuery({ skip: !showSearch });
-
-  // ── Mutations
+  const { data: ingredientsData } = useIngredientsQuery();
   const [addToCart] = useAddToCartMutation();
   const [removeFromCart] = useRemoveFromCartMutation();
 
   const items = data?.myCart ?? [];
+  const cartIngredientIds = useMemo(
+    () => new Set(items.map((i) => i.ingredientId)),
+    [items],
+  );
 
-  // ── Ingredient search results
-  const filteredIngredients =
-    search.trim().length > 0
-      ? (ingredientsData?.ingredients ?? [])
-          .filter((ing) =>
-            (isEl ? ing.name_el : ing.name_en)
-              .toLowerCase()
-              .includes(search.toLowerCase()),
-          )
-          .slice(0, 8)
-      : [];
+  const ingredientsByCategory = useMemo(() => {
+    const all = ingredientsData?.ingredients ?? [];
+    const map = new Map<string, typeof all>();
+    for (const ing of all) {
+      const key = isEl
+        ? ing.category?.name_el ?? ''
+        : ing.category?.name_en ?? '';
+      if (!map.has(key)) map.set(key, []);
+      map.get(key)!.push(ing);
+    }
+    return map;
+  }, [ingredientsData, isEl]);
 
-  // ── Handlers
   const toggleChecked = (id: number) =>
     setCheckedIds((prev) => {
       const next = new Set(prev);
@@ -80,48 +76,31 @@ function CartContent({
 
   const handleRemove = useCallback(
     async (id: number) => {
-      try {
-        await removeFromCart({ variables: { id } });
-        setCheckedIds((prev) => {
-          const next = new Set(prev);
-          next.delete(id);
-          return next;
-        });
-        await refetch();
-      } catch {
-        setServerError(t('cart.removeError'));
-      }
+      await removeFromCart({ variables: { id } });
+      setCheckedIds((prev) => {
+        const next = new Set(prev);
+        next.delete(id);
+        return next;
+      });
+      await refetch();
     },
-    [removeFromCart, refetch, t],
+    [removeFromCart, refetch],
   );
 
   const handleClearChecked = useCallback(async () => {
-    try {
-      await Promise.all(
-        [...checkedIds].map((id) => removeFromCart({ variables: { id } })),
-      );
-      setCheckedIds(new Set());
-      await refetch();
-    } catch {
-      setServerError(t('cart.removeError'));
-    }
-  }, [checkedIds, removeFromCart, refetch, t]);
+    await Promise.all(
+      [...checkedIds].map((id) => removeFromCart({ variables: { id } })),
+    );
+    setCheckedIds(new Set());
+    await refetch();
+  }, [checkedIds, removeFromCart, refetch]);
 
-  const handleAddIngredient = useCallback(
+  const handleAdd = useCallback(
     async (ingredientId: number) => {
-      setServerError('');
-      try {
-        await addToCart({
-          variables: { ingredientId },
-        });
-        setSearch('');
-        setShowSearch(false);
-        await refetch();
-      } catch {
-        setServerError(t('cart.addError'));
-      }
+      await addToCart({ variables: { ingredientId } });
+      await refetch();
     },
-    [addToCart, refetch, t],
+    [addToCart, refetch],
   );
 
   const checkedCount = checkedIds.size;
@@ -130,9 +109,8 @@ function CartContent({
     <div className="min-h-screen bg-myGrey-200">
       <Navbar />
 
-      <div className="relative overflow-hidden min-h-screen">
-        <div className="relative z-10 max-w-2xl mx-auto px-6 pt-14 pb-20">
-          {/* Heading */}
+      <div className="relative min-h-screen">
+        <div className="relative z-10 max-w-2xl mx-auto px-6 pt-14 pb-24">
           <h2 className="text-white text-3xl md:text-4xl font-bold text-center mb-1">
             {t('cart.title')}
           </h2>
@@ -140,74 +118,17 @@ function CartContent({
             {t('cart.subtitle')}
           </p>
 
-          {/* Server error */}
-          {serverError && (
-            <p className="mb-4 text-center text-sm font-semibold text-red-500">
-              {serverError}
-            </p>
-          )}
-
-          {/* Add item */}
-          <div className="mb-6 relative">
-            <div className="flex gap-2">
-              <input
-                type="text"
-                value={search}
-                onChange={(e) => {
-                  setSearch(e.target.value);
-                  setShowSearch(true);
-                }}
-                onFocus={() => setShowSearch(true)}
-                placeholder={t('cart.addIngredient')}
-                className="flex-1 rounded-xl border-2 border-gray-200 px-4 py-2 text-sm text-gray-700 placeholder-gray-400 focus:border-myBlue-200 focus:outline-none"
-              />
-              <button
-                onClick={() => {
-                  setSearch('');
-                  setShowSearch(false);
-                }}
-                className="rounded-xl px-4 py-2 text-sm font-bold text-white transition hover:scale-105 bg-myBlue-200"
-              >
-                ✕
-              </button>
-            </div>
-
-            {/* Ingredient dropdown */}
-            {showSearch && filteredIngredients.length > 0 && (
-              <div className="absolute left-0 right-0 top-full mt-1 z-20 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden">
-                {filteredIngredients.map((ing) => (
-                  <button
-                    key={ing.id}
-                    onClick={() => handleAddIngredient(ing.id)}
-                    className="w-full flex items-center justify-between px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition border-b border-gray-50 last:border-0"
-                  >
-                    <span className="font-medium">
-                      {isEl ? ing.name_el : ing.name_en}
-                    </span>
-                    {ing.caloriesPer100g && (
-                      <span className="text-xs text-gray-400">
-                        {ing.caloriesPer100g} kcal/100g
-                      </span>
-                    )}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-
-          {/* Loading */}
           {loading ? (
             <div className="flex justify-center py-16">
               <div className="h-8 w-8 animate-spin rounded-full border-4 border-myBlue-200 border-t-transparent" />
             </div>
           ) : items.length === 0 ? (
-            <div className="rounded-2xl border-2 border-dashed border-gray-200 p-10 text-center bg-white">
-              <p className="text-gray-500">{t('cart.emptyCart')}</p>
+            <div className="rounded-2xl border-2 border-dashed border-gray-500 p-10 text-center mb-6">
+              <p className="text-gray-400">{t('cart.emptyCart')}</p>
             </div>
           ) : (
             <>
-              {/* 2-column grid */}
-              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <div className="flex flex-col gap-2">
                 {items.map((item) => {
                   const isChecked = checkedIds.has(item.id);
                   const name = isEl
@@ -225,7 +146,6 @@ function CartContent({
                           : 'white',
                       }}
                     >
-                      {/* Checkbox */}
                       <button
                         onClick={() => toggleChecked(item.id)}
                         className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded border-2 transition"
@@ -253,19 +173,16 @@ function CartContent({
                         )}
                       </button>
 
-                      <div className="flex-1 min-w-0">
-                        <p
-                          className="truncate text-sm font-bold md:text-base"
-                          style={{
-                            color: isChecked ? '#9CA3AF' : '#3F4756',
-                            textDecoration: isChecked ? 'line-through' : 'none',
-                          }}
-                        >
-                          {name}
-                        </p>
-                      </div>
+                      <p
+                        className="flex-1 min-w-0 truncate text-sm font-bold md:text-base"
+                        style={{
+                          color: isChecked ? '#9CA3AF' : '#3F4756',
+                          textDecoration: isChecked ? 'line-through' : 'none',
+                        }}
+                      >
+                        {name}
+                      </p>
 
-                      {/* Remove */}
                       <button
                         onClick={() => handleRemove(item.id)}
                         className="flex-shrink-0 text-gray-300 transition hover:text-red-400"
@@ -288,7 +205,6 @@ function CartContent({
                 })}
               </div>
 
-              {/* Footer */}
               <div className="mt-6 flex border-myGrey-100 items-center justify-between border-t-2 pt-5">
                 <p className="text-sm text-gray-400">
                   {checkedCount}/{items.length} {t('cart.items')}
@@ -319,8 +235,90 @@ function CartContent({
               </div>
             </>
           )}
+
+          <div className="mt-10">
+            <h3 className="text-white text-xl font-bold mb-4">
+              {t('cart.browseIngredients')}
+            </h3>
+
+            {[...ingredientsByCategory.entries()].map(([category, ings]) => {
+              const isOpen = openCategory === category;
+
+              return (
+                <div key={category} className="mb-2">
+                  <button
+                    onClick={() => setOpenCategory(isOpen ? null : category)}
+                    className="w-full flex items-center justify-between rounded-2xl bg-white bg-opacity-10 px-4 py-3 text-left transition hover:bg-opacity-15"
+                  >
+                    <span className="text-sm font-bold text-white">
+                      {category}
+                    </span>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                      className="h-4 w-4 text-gray-300 transition-transform"
+                      style={{
+                        transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+                      }}
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M12.53 16.28a.75.75 0 01-1.06 0l-7.5-7.5a.75.75 0 011.06-1.06L12 14.69l6.97-6.97a.75.75 0 111.06 1.06l-7.5 7.5z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </button>
+
+                  {isOpen && (
+                    <div className="grid grid-cols-1 gap-2 mt-2 sm:grid-cols-2 lg:grid-cols-3">
+                      {ings.map((ing) => {
+                        const alreadyIn = cartIngredientIds.has(ing.id);
+                        const name = isEl ? ing.name_el : ing.name_en;
+
+                        return (
+                          <button
+                            key={ing.id}
+                            onClick={() => !alreadyIn && handleAdd(ing.id)}
+                            disabled={alreadyIn}
+                            className="flex items-center justify-between rounded-xl bg-white px-3 py-2.5 text-left text-sm transition"
+                            style={{
+                              opacity: alreadyIn ? 0.45 : 1,
+                              cursor: alreadyIn ? 'default' : 'pointer',
+                            }}
+                          >
+                            <span
+                              className="font-semibold truncate"
+                              style={{ color: '#3F4756' }}
+                            >
+                              {name}
+                            </span>
+                            {!alreadyIn && (
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                                fill="currentColor"
+                                className="h-4 w-4 flex-shrink-0 ml-2 text-myBlue-200"
+                              >
+                                <path
+                                  fillRule="evenodd"
+                                  d="M12 3.75a.75.75 0 01.75.75v6.75h6.75a.75.75 0 010 1.5h-6.75v6.75a.75.75 0 01-1.5 0v-6.75H4.5a.75.75 0 010-1.5h6.75V4.5a.75.75 0 01.75-.75z"
+                                  clipRule="evenodd"
+                                />
+                              </svg>
+                            )}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
+
       <ScrollToTopButton />
     </div>
   );

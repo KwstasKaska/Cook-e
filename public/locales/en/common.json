@@ -125,7 +125,8 @@
     "emptyCart": "Your cart is empty.",
     "updateError": "Error updating item.",
     "removeError": "Error removing item.",
-    "addError": "Error adding item."
+    "addError": "Error adding item.",
+    "browseIngredients": "Add ingredients"
   },
   "chat": {
     "title": "Members communication",
@@ -418,16 +419,7 @@
     "token_error_link": "Request a new one",
     "server_error": "Something went wrong. Please try again."
   },
-  "footer": {
-    "socialMedia": "Find us on social media",
-    "usefulInfo": "Useful information",
-    "settings": "Settings",
-    "contact": "Contact",
-    "faq": "Frequently asked questions",
-    "terms": "Terms of use",
-    "privacy": "Privacy policy",
-    "aboutUs": "Who we are"
-  },
+
   "common": {
     "read_more": "Read more",
     "read_less": "Read less",
@@ -456,7 +448,6 @@
   },
   "login": {
     "title": "Welcome back!",
-    "subtitle": "Ready to cook?",
     "form_title": "Login",
     "username_placeholder": "Email address",
     "password_placeholder": "Password",
