@@ -103,7 +103,6 @@ const Accordion: React.FC<AccordionProps> = ({ acceptedClients }) => {
           <div
             data-content="accordion-content"
             id="panel1-content"
-            aria-labelledby="panel1-heading"
             role="region"
             aria-hidden="false"
             className="flex h-full flex-col items-center"
@@ -166,7 +165,6 @@ const Accordion: React.FC<AccordionProps> = ({ acceptedClients }) => {
           <div
             data-content="accordion-content"
             id="panel2-content"
-            aria-labelledby="panel2-heading"
             role="region"
             aria-hidden="true"
             className="flex h-full flex-col items-center"
@@ -229,7 +227,6 @@ const Accordion: React.FC<AccordionProps> = ({ acceptedClients }) => {
           <div
             data-content="accordion-content"
             id="panel3-content"
-            aria-labelledby="panel3-heading"
             role="region"
             aria-hidden="true"
             className="flex h-full flex-col items-center"
@@ -292,7 +289,6 @@ const Accordion: React.FC<AccordionProps> = ({ acceptedClients }) => {
           <div
             data-content="accordion-content"
             id="panel4-content"
-            aria-labelledby="panel4-heading"
             role="region"
             aria-hidden="true"
             className="flex h-full flex-col items-center"
