@@ -21,7 +21,6 @@ export default function ChefProfileTab() {
   const [success, setSuccess] = useState<string | null>(null);
   const [updateChefProfile, { loading }] = useUpdateChefProfileMutation();
 
-  // Sync bio_el once the query resolves
   useEffect(() => {
     if (data?.myChefProfile?.bio_el) {
       setBio(data.myChefProfile.bio_el);

@@ -184,11 +184,7 @@ export default function SettingsPage() {
                   tabIndex={0}
                   className="bg-white rounded-2xl shadow-md p-6 md:p-8 focus:outline-none"
                 >
-                  <PersonalTab
-                    username={me.username}
-                    email={me.email}
-                    image={me.image}
-                  />
+                  <PersonalTab username={me.username} image={me.image} />
                 </section>
               )}
               {activeTab === 'security' && (

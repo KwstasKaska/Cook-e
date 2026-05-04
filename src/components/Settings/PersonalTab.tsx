@@ -12,17 +12,13 @@ import { uploadToCloudinary } from '../../utils/uploadToCloudinary';
 
 export default function PersonalTab({
   username,
-  email,
   image,
 }: {
   username: string;
-  email: string;
   image?: string | null;
 }) {
   const { t } = useTranslation('common');
   const [usernameVal, setUsernameVal] = useState(username);
-  const [emailVal, setEmailVal] = useState(email);
-  const [phoneVal, setPhoneVal] = useState('');
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
@@ -46,14 +42,7 @@ export default function PersonalTab({
     setSuccess(null);
 
     if (!usernameVal.trim()) {
-      setFieldErrors((p) => ({
-        ...p,
-        username: t('settings.usernameRequired'),
-      }));
-      return;
-    }
-    if (!emailVal.trim()) {
-      setFieldErrors((p) => ({ ...p, email: t('settings.emailRequired') }));
+      setFieldErrors({ username: t('settings.usernameRequired') });
       return;
     }
 
@@ -67,8 +56,6 @@ export default function PersonalTab({
         variables: {
           data: {
             username: usernameVal,
-            email: emailVal,
-            phoneNumber: phoneVal || undefined,
             ...(imageUrl && { image: imageUrl }),
           },
         },
@@ -108,7 +95,7 @@ export default function PersonalTab({
               />
             ) : (
               <div
-                className="flex h-full w-full  items-center justify-center"
+                className="flex h-full w-full items-center justify-center"
                 style={{ backgroundColor: '#E8EEF5' }}
               >
                 <svg
@@ -152,27 +139,11 @@ export default function PersonalTab({
       </FieldGroup>
 
       <FieldGroup title={t('settings.basicInfo')}>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <Field
-            label={t('settings.fullName')}
-            value={usernameVal}
-            onChange={setUsernameVal}
-            error={fieldErrors.username}
-          />
-          <Field
-            label="Email"
-            type="email"
-            value={emailVal}
-            onChange={setEmailVal}
-            error={fieldErrors.email}
-          />
-        </div>
         <Field
-          label={t('settings.phone')}
-          type="tel"
-          value={phoneVal}
-          onChange={setPhoneVal}
-          placeholder="+30 210 0000000"
+          label={t('settings.fullName')}
+          value={usernameVal}
+          onChange={setUsernameVal}
+          error={fieldErrors.username}
         />
       </FieldGroup>
 

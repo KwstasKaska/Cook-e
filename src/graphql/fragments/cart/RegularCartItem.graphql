@@ -7,6 +7,9 @@ fragment RegularCartItem on ShoppingCart {
     id
     name_el
     name_en
-    caloriesPer100g
+    category {
+      name_el
+      name_en
+    }
   }
 }

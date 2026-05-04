@@ -380,8 +380,8 @@ export type MutationLogCookedRecipeArgs = {
 
 
 export type MutationLoginArgs = {
+  email: Scalars['String']['input'];
   password: Scalars['String']['input'];
-  usernameOrEmail: Scalars['String']['input'];
 };
 
 
@@ -991,7 +991,7 @@ export type RegularArticleFragment = { __typename?: 'Article', id: number, title
 
 export type RegularArticleResponseFragment = { __typename?: 'ArticleResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, article?: { __typename?: 'Article', id: number, title_el: string, title_en: string, text_el: string, text_en: string, image: string, creatorId: number, createdAt: string, updatedAt: string, creator?: { __typename?: 'User', id: number, username: string, image?: string | null } | null } | null };
 
-export type RegularCartItemFragment = { __typename?: 'ShoppingCart', id: number, userId: number, ingredientId: number, addedAt: string, ingredient?: { __typename?: 'Ingredient', id: number, name_el: string, name_en: string, caloriesPer100g?: number | null } | null };
+export type RegularCartItemFragment = { __typename?: 'ShoppingCart', id: number, userId: number, ingredientId: number, addedAt: string, ingredient?: { __typename?: 'Ingredient', id: number, name_el: string, name_en: string, category?: { __typename?: 'IngredientsCategory', name_el: string, name_en: string } | null } | null };
 
 export type RegularCookedRecipeFragment = { __typename?: 'CookedRecipe', id: number, userId: number, recipeId: number, cookedAt: string, recipe?: { __typename?: 'Recipe', id: number, title_el: string, title_en: string, recipeImage?: string | null, category?: RecipeCategory | null, prepTime: number, cookTime: number, caloriesTotal?: number | null, difficulty: Difficulty } | null };
 
@@ -1076,14 +1076,14 @@ export type AddToCartMutationVariables = Exact<{
 }>;
 
 
-export type AddToCartMutation = { __typename?: 'Mutation', addToCart: { __typename?: 'ShoppingCart', id: number, userId: number, ingredientId: number, addedAt: string, ingredient?: { __typename?: 'Ingredient', id: number, name_el: string, name_en: string, caloriesPer100g?: number | null } | null } };
+export type AddToCartMutation = { __typename?: 'Mutation', addToCart: { __typename?: 'ShoppingCart', id: number, userId: number, ingredientId: number, addedAt: string, ingredient?: { __typename?: 'Ingredient', id: number, name_el: string, name_en: string, category?: { __typename?: 'IngredientsCategory', name_el: string, name_en: string } | null } | null } };
 
 export type AddManyToCartMutationVariables = Exact<{
   ingredientIds: Array<Scalars['Int']['input']> | Scalars['Int']['input'];
 }>;
 
 
-export type AddManyToCartMutation = { __typename?: 'Mutation', addManyToCart: Array<{ __typename?: 'ShoppingCart', id: number, userId: number, ingredientId: number, addedAt: string, ingredient?: { __typename?: 'Ingredient', id: number, name_el: string, name_en: string, caloriesPer100g?: number | null } | null }> };
+export type AddManyToCartMutation = { __typename?: 'Mutation', addManyToCart: Array<{ __typename?: 'ShoppingCart', id: number, userId: number, ingredientId: number, addedAt: string, ingredient?: { __typename?: 'Ingredient', id: number, name_el: string, name_en: string, category?: { __typename?: 'IngredientsCategory', name_el: string, name_en: string } | null } | null }> };
 
 export type RemoveFromCartMutationVariables = Exact<{
   id: Scalars['Int']['input'];
@@ -1196,7 +1196,7 @@ export type ForgotPasswordMutationVariables = Exact<{
 export type ForgotPasswordMutation = { __typename?: 'Mutation', forgotPassword: boolean };
 
 export type LoginMutationVariables = Exact<{
-  usernameOrEmail: Scalars['String']['input'];
+  email: Scalars['String']['input'];
   password: Scalars['String']['input'];
 }>;
 
@@ -1421,7 +1421,7 @@ export type GetNutritionistMealPlansQuery = { __typename?: 'Query', getNutrition
 export type MyCartQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MyCartQuery = { __typename?: 'Query', myCart: Array<{ __typename?: 'ShoppingCart', id: number, userId: number, ingredientId: number, addedAt: string, ingredient?: { __typename?: 'Ingredient', id: number, name_el: string, name_en: string, caloriesPer100g?: number | null } | null }> };
+export type MyCartQuery = { __typename?: 'Query', myCart: Array<{ __typename?: 'ShoppingCart', id: number, userId: number, ingredientId: number, addedAt: string, ingredient?: { __typename?: 'Ingredient', id: number, name_el: string, name_en: string, category?: { __typename?: 'IngredientsCategory', name_el: string, name_en: string } | null } | null }> };
 
 export type MyChefProfileQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1736,7 +1736,10 @@ export const RegularCartItemFragmentDoc = gql`
     id
     name_el
     name_en
-    caloriesPer100g
+    category {
+      name_el
+      name_en
+    }
   }
 }
     `;
@@ -2769,8 +2772,8 @@ export type ForgotPasswordMutationHookResult = ReturnType<typeof useForgotPasswo
 export type ForgotPasswordMutationResult = Apollo.MutationResult<ForgotPasswordMutation>;
 export type ForgotPasswordMutationOptions = Apollo.BaseMutationOptions<ForgotPasswordMutation, ForgotPasswordMutationVariables>;
 export const LoginDocument = gql`
-    mutation Login($usernameOrEmail: String!, $password: String!) {
-  login(usernameOrEmail: $usernameOrEmail, password: $password) {
+    mutation Login($email: String!, $password: String!) {
+  login(email: $email, password: $password) {
     ...RegularUserResponse
   }
 }
@@ -2790,7 +2793,7 @@ export type LoginMutationFn = Apollo.MutationFunction<LoginMutation, LoginMutati
  * @example
  * const [loginMutation, { data, loading, error }] = useLoginMutation({
  *   variables: {
- *      usernameOrEmail: // value for 'usernameOrEmail'
+ *      email: // value for 'email'
  *      password: // value for 'password'
  *   },
  * });

@@ -18,7 +18,7 @@ import LanguageSwitcher from '../components/Helper/LanguageSwitcher';
 import ForgotPasswordModal from '../components/Helper/ForgotPasswordModal';
 
 interface MyLoginFormValues {
-  usernameOrEmail: string;
+  email: string;
   password: string;
 }
 
@@ -38,7 +38,7 @@ const Login: NextPage = () => {
   if (loading || data?.me) return null;
 
   const initialValues: MyLoginFormValues = {
-    usernameOrEmail: '',
+    email: '',
     password: '',
   };
 
@@ -83,32 +83,24 @@ const Login: NextPage = () => {
         <Formik
           initialValues={initialValues}
           onSubmit={async (values: MyLoginFormValues, { setErrors }) => {
-            const { usernameOrEmail, password } = values;
-            try {
-              const response = await login({
-                variables: { usernameOrEmail, password },
-                update: (cache, { data }) => {
-                  cache.writeQuery<MeQuery>({
-                    query: MeDocument,
-                    data: { __typename: 'Query', me: data?.login.user },
-                  });
-                },
-              });
-              if (response.data?.login.errors) {
-                setErrors(toErrorMap(response.data?.login.errors));
-              } else if (response.data?.login.user) {
-                if (typeof router.query.next === 'string') {
-                  router.push(router.query.next);
-                } else {
-                  router.push(
-                    `/${response.data.login.user.role.toLowerCase()}`,
-                  );
-                }
+            const { email, password } = values;
+            const response = await login({
+              variables: { email, password },
+              update: (cache, { data }) => {
+                cache.writeQuery<MeQuery>({
+                  query: MeDocument,
+                  data: { __typename: 'Query', me: data?.login.user },
+                });
+              },
+            });
+            if (response.data?.login.errors) {
+              setErrors(toErrorMap(response.data?.login.errors));
+            } else if (response.data?.login.user) {
+              if (typeof router.query.next === 'string') {
+                router.push(router.query.next);
+              } else {
+                router.push(`/${response.data.login.user.role.toLowerCase()}`);
               }
-            } catch {
-              setErrors({
-                usernameOrEmail: t('change_password.server_error'),
-              });
             }
           }}
         >
@@ -120,10 +112,10 @@ const Login: NextPage = () => {
               aria-label={t('login.title')}
             >
               <InputField
-                type="text"
-                name="usernameOrEmail"
+                type="email"
+                name="email"
                 aria-label={t('login.username_placeholder')}
-                autoComplete="username"
+                autoComplete="email"
                 className="w-full rounded-xl border border-gray-200 px-4 py-2.5 placeholder:italic placeholder:text-myBlue-200 focus:outline-none"
                 placeholder={t('login.username_placeholder')}
               />
