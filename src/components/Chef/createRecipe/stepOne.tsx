@@ -26,7 +26,7 @@ export default function StepOne({
 
   return (
     <div>
-      <h2 className="mb-5 text-2xl font-black" style={{ color: '#EAB308' }}>
+      <h2 className="mb-5 text-2xl font-black text-myYellow">
         {t('chef.create_recipe.step1_title')}
       </h2>
 

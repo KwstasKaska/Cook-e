@@ -232,10 +232,7 @@ export default function LivePreview({
                   <p className="text-xs text-gray-500">
                     {t('chef.recipe_detail.dish_type')}
                   </p>
-                  <p
-                    className="text-xs font-medium italic border-b pb-0.5 mb-1"
-                    style={{ color: '#377CC3', borderColor: '#B3D5F8' }}
-                  >
+                  <p className="text-xs text-myBlue-200 border-myBlue-100 font-medium italic border-b pb-0.5 mb-1">
                     {lang === 'el'
                       ? CATEGORY_OPTIONS.find((c) => c.value === form.category)
                           ?.labelEl

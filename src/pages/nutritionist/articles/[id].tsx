@@ -207,10 +207,7 @@ export default function NutrArticleDetail() {
             {t('common.back')}
           </button>
 
-          <div
-            className="w-full rounded-2xl overflow-hidden shadow-xl"
-            style={{ backgroundColor: '#E9DEC5' }}
-          >
+          <div className="w-full rounded-2xl bg-myBeige-100 overflow-hidden shadow-xl">
             <div className="relative h-56 w-full">
               <Image
                 src={heroSrc}
@@ -222,8 +219,7 @@ export default function NutrArticleDetail() {
                 <div className="absolute top-3 right-3 flex gap-2">
                   <button
                     onClick={() => setIsEditing(true)}
-                    className="flex items-center gap-1 rounded-full px-3 py-1.5 text-xs font-bold shadow transition hover:opacity-90"
-                    style={{ backgroundColor: '#EAB308', color: '#3F4756' }}
+                    className="flex items-center gap-1 rounded-full px-3 py-1.5 text-xs bg-myYellow font-bold shadow transition hover:opacity-90"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -318,8 +314,7 @@ export default function NutrArticleDetail() {
                     <button
                       onClick={handleUpdate}
                       disabled={isSaving}
-                      className="rounded-full px-8 py-2.5 text-sm font-bold transition hover:opacity-90 disabled:opacity-50"
-                      style={{ backgroundColor: '#EAB308', color: '#3F4756' }}
+                      className="rounded-full px-8 py-2.5 text-sm font-bold transition bg-myYellow hover:opacity-90 disabled:opacity-50"
                     >
                       {isSaving ? t('common.loading') : t('common.save')}
                     </button>

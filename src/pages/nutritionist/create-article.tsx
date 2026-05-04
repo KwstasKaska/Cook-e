@@ -98,12 +98,7 @@ const CreateArticle: NextPage = () => {
             {t('common.back')}
           </button>
 
-          {/* Card */}
-          <div
-            className="w-full overflow-hidden rounded-2xl shadow-xl"
-            style={{ backgroundColor: '#E9DEC5' }}
-          >
-            {/* Hero image preview */}
+          <div className="w-full bg-myBeige-100 overflow-hidden rounded-2xl shadow-xl">
             <div className="relative h-56 w-full bg-gray-200">
               {preview ? (
                 <Image
@@ -134,8 +129,7 @@ const CreateArticle: NextPage = () => {
               {/* Image upload button overlay */}
               <label
                 htmlFor="article-image"
-                className="absolute bottom-3 right-3 flex cursor-pointer items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-bold shadow transition hover:opacity-90"
-                style={{ backgroundColor: '#EAB308', color: '#3F4756' }}
+                className="absolute bottom-3 right-3 flex cursor-pointer items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-bold shadow transition bg-myYellow hover:opacity-90"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -212,8 +206,7 @@ const CreateArticle: NextPage = () => {
                 <button
                   onClick={handleSubmit}
                   disabled={loading}
-                  className="rounded-full px-8 py-2.5 text-sm font-bold transition hover:opacity-90 disabled:opacity-50"
-                  style={{ backgroundColor: '#EAB308', color: '#3F4756' }}
+                  className="rounded-full px-8 py-2.5 text-sm font-bold transition hover:opacity-90 bg-myYellow disabled:opacity-50"
                 >
                   {loading
                     ? t('common.saving')

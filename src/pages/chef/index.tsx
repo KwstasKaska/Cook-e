@@ -38,13 +38,10 @@ export default function ChefIndex() {
           {/* Top row */}
           <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
             <div>
-              <p className="mb-2 text-2xl italic" style={{ color: '#B3D5F8' }}>
+              <p className="mb-2 text-2xl italic bg-myBlue-100">
                 {t('chef.landing.tagline_pre')}
               </p>
-              <div
-                className="rounded-xl px-5 py-4"
-                style={{ backgroundColor: '#B3D5F8', display: 'inline-block' }}
-              >
+              <div className="rounded-xl inline-block bg-myBlue-100 px-5 py-4">
                 <h1 className="text-4xl font-black italic leading-tight ">
                   {t('chef.landing.tagline_bold')}
                 </h1>
@@ -146,12 +143,10 @@ export default function ChefIndex() {
             )}
           </div>
 
-          {/* More button */}
           <div className="flex justify-center pb-10">
             <Link
               href="/chef/recipes"
-              className="rounded-full px-10 py-3 text-sm font-bold transition hover:opacity-90"
-              style={{ backgroundColor: '#B3D5F8', color: '#3F4756' }}
+              className="rounded-full px-10 bg-myBlue-100 py-3 text-sm font-bold transition hover:opacity-90"
             >
               {t('chef.more')}
             </Link>

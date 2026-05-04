@@ -83,10 +83,7 @@ export default function PersonalTab({
     <div>
       <FieldGroup title={t('settings.profilePicture')}>
         <div className="flex items-center gap-5">
-          <div
-            className="h-20 w-20 flex-shrink-0 overflow-hidden rounded-full border-2"
-            style={{ borderColor: '#EAEAEA' }}
-          >
+          <div className="h-20 w-20 flex-shrink-0 border-myGrey-100 overflow-hidden rounded-full border-2">
             {avatarSrc ? (
               <img
                 src={avatarSrc}
@@ -119,8 +116,7 @@ export default function PersonalTab({
           <div className="flex flex-col gap-1">
             <button
               onClick={() => fileInputRef.current?.click()}
-              className="rounded-full border-2 px-5 py-2 text-xs font-bold transition hover:opacity-80"
-              style={{ borderColor: '#377CC3', color: '#377CC3' }}
+              className="rounded-full border-2 border-myBlue-200 text-myBlue-200 px-5 py-2 text-xs font-bold transition hover:opacity-80"
             >
               {t('settings.changePhoto')}
             </button>

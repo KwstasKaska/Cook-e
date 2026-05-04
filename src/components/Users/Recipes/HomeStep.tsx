@@ -81,10 +81,7 @@ export default function HomeStep({
                         className="h-full w-full object-cover"
                       />
                     ) : (
-                      <div
-                        className="flex h-full w-full items-center justify-center text-4xl"
-                        style={{ backgroundColor: '#B3D5F8' }}
-                      >
+                      <div className="flex h-full w-full bg-myBlue-100 items-center justify-center text-4xl">
                         🍽️
                       </div>
                     )}
@@ -110,8 +107,7 @@ export default function HomeStep({
             {hasPrev && onPrev && (
               <button
                 onClick={onPrev}
-                className="rounded-full px-8 py-2 text-sm font-bold transition hover:opacity-90"
-                style={{ backgroundColor: '#B3D5F8', color: '#3F4756' }}
+                className="rounded-full bg-myBlue-100 px-8 py-2 text-sm font-bold transition hover:opacity-90"
               >
                 {t('common.prev')}
               </button>
@@ -119,8 +115,7 @@ export default function HomeStep({
             {hasMore && onNext && (
               <button
                 onClick={onNext}
-                className="rounded-full px-8 py-2 text-sm font-bold transition hover:opacity-90"
-                style={{ backgroundColor: '#B3D5F8', color: '#3F4756' }}
+                className="rounded-full bg-myBlue-100 px-8 py-2 text-sm font-bold transition hover:opacity-90"
               >
                 {t('common.next')}
               </button>
@@ -133,8 +128,7 @@ export default function HomeStep({
         <p className="text-gray-500 text-sm">{t('recipes.discoverPrompt')}</p>
         <button
           onClick={onStartPicker}
-          className="flex items-center gap-3 px-10 py-4 rounded-full font-bold text-base text-gray-800 hover:scale-105 transition-transform shadow-xl"
-          style={{ backgroundColor: '#EAB308' }}
+          className="flex items-center bg-myYellow gap-3 px-10 py-4 rounded-full font-bold text-base text-gray-800 hover:scale-105 transition-transform shadow-xl"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

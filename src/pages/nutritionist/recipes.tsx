@@ -55,7 +55,7 @@ function NutrRecipesContent() {
   };
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#3F4756' }}>
+    <div className="min-h-screen bg-myGrey-200">
       <NutrNavbar />
 
       <main className="mx-auto w-full max-w-6xl px-4 pb-20 pt-12 sm:px-6">
@@ -128,8 +128,7 @@ function NutrRecipesContent() {
             {hasPrev && (
               <button
                 onClick={() => setOffset((o) => o - LIMIT)}
-                className="rounded-full px-8 py-2.5 text-sm font-bold transition hover:opacity-90"
-                style={{ backgroundColor: '#B3D5F8', color: '#3F4756' }}
+                className="rounded-full px-8 py-2.5 text-sm font-bold transition hover:opacity-90 bg-myBlue-100"
               >
                 {t('common.prev')}
               </button>
@@ -137,8 +136,7 @@ function NutrRecipesContent() {
             {hasMore && (
               <button
                 onClick={() => setOffset((o) => o + LIMIT)}
-                className="rounded-full px-8 py-2.5 text-sm font-bold transition hover:opacity-90"
-                style={{ backgroundColor: '#B3D5F8', color: '#3F4756' }}
+                className="rounded-full px-8 py-2.5 text-sm font-bold transition hover:opacity-90 bg-myBlue-100"
               >
                 {t('common.next')}
               </button>

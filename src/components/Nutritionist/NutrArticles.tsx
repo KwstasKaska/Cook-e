@@ -101,11 +101,9 @@ const NutrArticles: React.FC = () => {
           </div>
         )}
 
-        {/* New article button */}
         <Link
           href="/nutritionist/create-article"
-          className="flex items-center gap-1.5 rounded-full px-6 py-2 text-sm font-bold transition hover:opacity-90"
-          style={{ backgroundColor: '#EAB308', color: '#3F4756' }}
+          className="flex items-center gap-1.5 rounded-full px-6 py-2 text-sm font-bold transition hover:opacity-90 bg-myYellow"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

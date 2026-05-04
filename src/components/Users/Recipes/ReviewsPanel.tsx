@@ -52,10 +52,7 @@ export default function ReviewsPanel({
                     className="h-10 w-10 rounded-full object-cover flex-shrink-0"
                   />
                 ) : (
-                  <div
-                    className="h-10 w-10 rounded-full flex-shrink-0 flex items-center justify-center text-white text-sm font-bold"
-                    style={{ backgroundColor: '#377CC3' }}
-                  >
+                  <div className="h-10 w-10 rounded-full flex-shrink-0 flex items-center justify-center bg-myBlue-200 text-white text-sm font-bold">
                     {review.user?.username?.[0]?.toUpperCase() ?? '?'}
                   </div>
                 )}
@@ -73,8 +70,7 @@ export default function ReviewsPanel({
             <button
               onClick={onLoadMore}
               disabled={loadingMore}
-              className="mt-2 w-full rounded-xl py-1.5 text-xs font-bold transition hover:opacity-90 disabled:opacity-50"
-              style={{ backgroundColor: '#B3D5F8', color: '#3F4756' }}
+              className="mt-2 w-full rounded-xl py-1.5 text-xs font-bold transition hover:opacity-90 bg-myBlue-100 disabled:opacity-50"
             >
               {loadingMore ? t('common.loading') : t('chef.more')}
             </button>

@@ -78,8 +78,7 @@ export default function RecipeStepsList({
                 { id: Date.now(), body: '' },
               ])
             }
-            className="mt-1 self-start rounded-full border px-4 py-1.5 text-xs font-semibold transition hover:bg-gray-50"
-            style={{ borderColor: '#3F4756', color: '#3F4756' }}
+            className="mt-1 self-start rounded-full border px-4 py-1.5 text-xs font-semibold transition border-myGrey-200 hover:bg-gray-50"
           >
             + {t('chef.create_recipe.add_step')}
           </button>
@@ -88,10 +87,7 @@ export default function RecipeStepsList({
         <div className="flex flex-col gap-3">
           {(recipe.steps ?? []).map((step: any, i: number) => (
             <div key={i} className="flex items-start gap-3">
-              <div
-                className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full border-2"
-                style={{ borderColor: '#3F4756' }}
-              />
+              <div className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center border-myGrey-200 rounded-full border-2" />
               <span className="text-sm text-gray-600">
                 {pick(step.body_el, step.body_en, lang)}
               </span>

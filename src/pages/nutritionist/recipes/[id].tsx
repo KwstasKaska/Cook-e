@@ -132,8 +132,8 @@ function NutrRecipeDetailContent() {
               />
             ) : (
               <div
-                className="flex h-9 w-9 items-center justify-center rounded-full border-2 border-white text-sm font-bold shadow"
-                style={{ backgroundColor: '#377CC3', color: '#fff' }}
+                className="flex h-9 w-9 items-center justify-center rounded-full border-2 border-white bg-myBlue-200 text-sm font-bold shadow"
+                style={{ color: '#fff' }}
               >
                 {recipe.author.user.username?.[0]?.toUpperCase() ?? '?'}
               </div>

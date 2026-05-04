@@ -96,8 +96,7 @@ export default function ResultsStep({
       <div className="max-w-5xl mx-auto px-6 pt-10 pb-20">
         <button
           onClick={onBack}
-          className="flex items-center gap-2 text-sm font-bold mb-8 transition hover:opacity-80"
-          style={{ color: '#EAB308' }}
+          className="flex items-center gap-2 text-sm font-bold mb-8 transition hover:opacity-80 text-myYellow"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

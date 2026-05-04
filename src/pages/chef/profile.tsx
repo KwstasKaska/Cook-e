@@ -185,8 +185,7 @@ export default function ChefProfile() {
             {!showCreateForm && (
               <button
                 onClick={() => setShowCreateForm(true)}
-                className="flex items-center gap-1.5 rounded-full px-4 py-1.5 text-xs font-bold transition hover:opacity-90"
-                style={{ backgroundColor: '#EAB308', color: '#3F4756' }}
+                className="flex items-center gap-1.5 rounded-full px-4 py-1.5 text-xs font-bold transition bg-myYellow hover:opacity-90"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -256,8 +255,7 @@ export default function ChefProfile() {
                     variables: { chefId: userId!, offset: articles.length },
                   })
                 }
-                className="rounded-full px-8 py-2 text-sm font-bold transition hover:opacity-90"
-                style={{ backgroundColor: '#B3D5F8', color: '#3F4756' }}
+                className="rounded-full bg-myBlue-100 px-8 py-2 text-sm font-bold transition hover:opacity-90"
               >
                 {t('chef.more')}
               </button>

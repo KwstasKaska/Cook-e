@@ -27,8 +27,7 @@ export default function RecipeActionButtons({
       <button
         type="button"
         onClick={onEdit}
-        className="flex items-center justify-center gap-2 rounded-2xl px-4 py-2.5 text-sm font-bold text-white transition hover:opacity-90"
-        style={{ backgroundColor: '#EAB308' }}
+        className="flex items-center justify-center gap-2 rounded-2xl px-4 py-2.5 text-sm font-bold text-white transition hover:opacity-90 bg-myYellow"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -76,8 +75,7 @@ export default function RecipeActionButtons({
       <button
         type="button"
         onClick={onCancel}
-        className="flex items-center justify-center gap-2 rounded-2xl border px-4 py-2.5 text-sm font-bold transition hover:bg-gray-50"
-        style={{ borderColor: '#3F4756', color: '#3F4756' }}
+        className="flex items-center justify-center gap-2 rounded-2xl border px-4 py-2.5 text-sm font-bold border-myGrey-200 transition hover:bg-gray-50"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

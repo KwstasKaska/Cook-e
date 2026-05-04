@@ -30,12 +30,8 @@ export default function RatePanel({
     <div className="p-5">
       <h3 className="mb-4 text-xl font-bold">{t('recipes.rateTitle')}</h3>
 
-      {/* Existing rating notice */}
       {myRating && (
-        <div
-          className="mb-4 rounded-xl px-3 py-2 text-sm"
-          style={{ backgroundColor: '#B3D5F8', color: '#3F4756' }}
-        >
+        <div className="mb-4 rounded-xl bg-myBlue-100 px-3 py-2 text-sm">
           {t('recipes.existingRating')}: {myRating.score}/5
           <button
             onClick={onDelete}

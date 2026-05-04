@@ -169,11 +169,9 @@ export default function IngredientStep({
 
             <div className="text-center mt-6 mb-4 min-h-[1.5rem]">
               {error ? (
-                <p className="text-sm font-medium" style={{ color: '#ED5B5B' }}>
-                  {error}
-                </p>
+                <p className="text-sm font-medium text-myRed">{error}</p>
               ) : selectedIds.length > 0 ? (
-                <p className="text-sm" style={{ color: '#B3D5F8' }}>
+                <p className="text-sm text-myBlue-100">
                   {selectedIds.length} {t('recipes.selectedIngredients')}
                 </p>
               ) : null}
@@ -182,8 +180,7 @@ export default function IngredientStep({
             <div className="flex justify-center">
               <button
                 onClick={handleNext}
-                className="rounded-full px-12 py-3 text-sm font-bold text-gray-800 transition hover:scale-105"
-                style={{ backgroundColor: '#EAB308' }}
+                className="rounded-full px-12 py-3 text-sm font-bold text-gray-800 transition bg-myYellow hover:scale-105"
               >
                 {t('recipes.next')}
               </button>

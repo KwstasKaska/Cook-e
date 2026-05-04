@@ -23,8 +23,7 @@ export default function RecipeDescriptionCard({
   const { t } = useTranslation('common');
 
   return (
-    <div className="mb-6 rounded-xl p-4" style={{ backgroundColor: '#B3D5F8' }}>
-      {/* ── Title ── */}
+    <div className="mb-6 rounded-xl p-4 bg-myBlue-100">
       {isEditing ? (
         <input
           value={editForm.title}
@@ -58,7 +57,7 @@ export default function RecipeDescriptionCard({
           ))}
         </div>
       ) : difficultyLabel ? (
-        <p className="mb-3 text-xs font-semibold" style={{ color: '#377CC3' }}>
+        <p className="mb-3 text-xs font-semibold text-myBlue-200">
           {t('chef.recipe_detail.difficulty')} {difficultyLabel}
         </p>
       ) : null}

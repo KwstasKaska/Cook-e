@@ -41,14 +41,10 @@ export default function RecipeTimeBreakdown({
                 min={0}
                 value={editForm[field]}
                 onChange={(e) => onUpdate(field, e.target.value)}
-                className="w-16 rounded border border-gray-200 px-2 py-0.5 text-right text-xs font-semibold outline-none"
-                style={{ color: '#377CC3' }}
+                className="w-16 rounded border border-gray-200 px-2 py-0.5 text-right text-xs font-semibold text-myBlue-200  outline-none"
               />
             ) : (
-              <span
-                className="flex-shrink-0 text-xs font-semibold"
-                style={{ color: '#377CC3' }}
-              >
+              <span className="flex-shrink-0 text-myBlue-200 text-xs font-semibold">
                 {value ?? 0} {t('chef.recipe_detail.minutes')}
               </span>
             )}

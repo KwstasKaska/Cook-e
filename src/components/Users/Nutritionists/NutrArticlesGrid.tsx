@@ -58,10 +58,7 @@ export default function NutrArticlesGrid({ nutritionistId }: Props) {
                       className="h-full w-full object-cover"
                     />
                   ) : (
-                    <div
-                      className="flex h-full w-full items-center justify-center text-4xl"
-                      style={{ backgroundColor: '#B3D5F8' }}
-                    >
+                    <div className="flex h-full w-full items-center justify-center bg-myBlue-100 text-4xl">
                       📰
                     </div>
                   )}
@@ -83,8 +80,7 @@ export default function NutrArticlesGrid({ nutritionistId }: Props) {
           {hasPrev && (
             <button
               onClick={() => setOffset((o) => o - LIMIT)}
-              className="rounded-full px-8 py-2 text-sm font-bold transition hover:opacity-90"
-              style={{ backgroundColor: '#B3D5F8', color: '#3F4756' }}
+              className="rounded-full px-8 bg-myBlue-100 py-2 text-sm font-bold transition hover:opacity-90"
             >
               {t('common.prev')}
             </button>
@@ -92,8 +88,7 @@ export default function NutrArticlesGrid({ nutritionistId }: Props) {
           {hasMore && articles.length > 0 && (
             <button
               onClick={() => setOffset((o) => o + LIMIT)}
-              className="rounded-full px-8 py-2 text-sm font-bold transition hover:opacity-90"
-              style={{ backgroundColor: '#B3D5F8', color: '#3F4756' }}
+              className="rounded-full px-8 bg-myBlue-100 py-2 text-sm font-bold transition hover:opacity-90"
             >
               {t('common.next')}
             </button>

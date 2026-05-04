@@ -40,13 +40,12 @@ export default function RecipeMacrosCard({
                   min={0}
                   value={editForm[field]}
                   onChange={(e) => onUpdate(field, e.target.value)}
-                  className="w-16 rounded border border-gray-200 px-2 py-0.5 text-right text-xs font-semibold outline-none"
-                  style={{ color: '#377CC3' }}
+                  className="w-16 rounded border border-gray-200 px-2 py-0.5 text-right text-myBlue-200 text-xs font-semibold outline-none"
                 />
                 <span className="text-gray-400">{unit}</span>
               </div>
             ) : (
-              <span className="font-semibold" style={{ color: '#377CC3' }}>
+              <span className="font-semibold text-myBlue-200">
                 {recipe[field] ?? '—'} {unit}
               </span>
             )}

@@ -76,8 +76,7 @@ const NutrAppointments: React.FC<NutrAppointmentsProps> = ({}) => {
               <button
                 key={client.id}
                 onClick={() => openConversation(client.id)}
-                className="flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold text-white shadow transition-opacity hover:opacity-90"
-                style={{ backgroundColor: '#377CC3' }}
+                className="flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold bg-myBlue-200 text-white shadow transition-opacity hover:opacity-90"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

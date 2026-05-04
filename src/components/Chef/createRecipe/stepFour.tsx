@@ -29,7 +29,7 @@ export default function StepFour({
 
   return (
     <div>
-      <h2 className="mb-5 text-2xl font-black" style={{ color: '#EAB308' }}>
+      <h2 className="mb-5 text-2xl font-black text-myYellow">
         {t('chef.create_recipe.step4_title')}
       </h2>
 
@@ -127,8 +127,7 @@ export default function StepFour({
       <button
         type="button"
         onClick={onAddIngredient}
-        className="mt-5 rounded-full border px-5 py-2 text-sm font-semibold transition hover:bg-gray-50"
-        style={{ borderColor: '#3F4756', color: '#3F4756' }}
+        className="mt-5 rounded-full border px-5 py-2 text-sm font-semibold transition hover:bg-gray-50 border-myGrey-200"
       >
         {t('chef.create_recipe.add_ingredient')}
       </button>

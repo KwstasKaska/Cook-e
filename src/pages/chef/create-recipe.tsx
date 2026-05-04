@@ -303,7 +303,7 @@ export default function CreateRecipe() {
       <ChefNavbar />
 
       <main className="flex flex-1 flex-col items-center px-4 py-6 md:px-8">
-        <h1 className="mb-6 text-3xl italic" style={{ color: 'white' }}>
+        <h1 className="mb-6 text-3xl italic text-white">
           {t('chef.create_recipe.page_title')}
         </h1>
 
@@ -344,15 +344,11 @@ export default function CreateRecipe() {
             </div>
 
             {/* Spine — desktop only */}
-            <div
-              className="hidden md:flex flex-col items-center justify-center w-8 flex-shrink-0"
-              style={{ backgroundColor: '#B3D5F8' }}
-            >
+            <div className="hidden md:flex flex-col items-center justify-center w-8 bg-myBlue-100 flex-shrink-0">
               {[0, 1, 2].map((i) => (
                 <div
                   key={i}
-                  className="my-2 h-6 w-4 rounded-full"
-                  style={{ backgroundColor: '#3F4756', opacity: 0.4 }}
+                  className="my-2 h-6 w-4 bg-myGrey-200 opacity-40 rounded-full"
                 />
               ))}
             </div>

@@ -48,10 +48,7 @@ export default function ChefReviewsList({
                     className="h-9 w-9 flex-shrink-0 rounded-full object-cover"
                   />
                 ) : (
-                  <div
-                    className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full text-sm font-bold text-white"
-                    style={{ backgroundColor: '#377CC3' }}
-                  >
+                  <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center bg-myBlue-200 rounded-full text-sm font-bold text-white">
                     {review.user?.username?.[0]?.toUpperCase() ?? '?'}
                   </div>
                 )}
@@ -69,8 +66,7 @@ export default function ChefReviewsList({
             <button
               onClick={onLoadMore}
               disabled={fetchingMore}
-              className="mt-2 w-full rounded-xl py-1.5 text-xs font-bold transition hover:opacity-90 disabled:opacity-50"
-              style={{ backgroundColor: '#B3D5F8', color: '#3F4756' }}
+              className="mt-2 w-full rounded-xl py-1.5 text-xs font-bold transition hover:opacity-90 bg-myBlue-100 disabled:opacity-50"
             >
               {fetchingMore ? t('common.loading') : t('chef.more')}
             </button>

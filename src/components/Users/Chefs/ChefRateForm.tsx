@@ -30,10 +30,7 @@ export default function ChefRateForm({
       <h3 className="mb-4 text-lg font-bold">{t('recipes.rateChefTitle')}</h3>
 
       {myRating && (
-        <div
-          className="mb-4 rounded-xl px-3 py-2 text-sm"
-          style={{ backgroundColor: '#B3D5F8', color: '#3F4756' }}
-        >
+        <div className="mb-4 rounded-xl bg-myBlue-100 px-3 py-2 text-sm">
           {t('recipes.existingRating')}: {myRating.score}/5
           <button
             onClick={onDelete}

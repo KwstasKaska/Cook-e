@@ -47,10 +47,7 @@ export default function NutrNavbar() {
   if (loading) return null;
 
   return (
-    <nav
-      style={{ backgroundColor: '#B3D5F8' }}
-      className="w-full px-6 py-3 flex items-center justify-between relative z-50"
-    >
+    <nav className="w-full bg-myBlue-100 px-6 py-3 flex items-center justify-between relative z-50">
       <Logo />
 
       <div className="hidden xl:flex items-center gap-5">
@@ -121,10 +118,7 @@ export default function NutrNavbar() {
       />
 
       {menuOpen && (
-        <div
-          style={{ backgroundColor: '#B3D5F8' }}
-          className="absolute top-full left-0 w-full flex flex-col items-start px-6 py-4 gap-4 xl:hidden shadow-lg z-50"
-        >
+        <div className="absolute bg-myBlue-100 top-full left-0 w-full flex flex-col items-start px-6 py-4 gap-4 xl:hidden shadow-lg z-50">
           {navLinks.map((link) => {
             const isActive =
               router.pathname === '/nutritionist' &&

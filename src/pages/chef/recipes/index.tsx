@@ -126,11 +126,7 @@ export default function ChefRecipes() {
           {t('chef.recipes.page_title')}
         </h1>
 
-        <div
-          className="relative z-10 w-full max-w-4xl rounded-2xl p-6 md:p-8"
-          style={{ backgroundColor: 'white' }}
-        >
-          {/* Top bar */}
+        <div className="relative z-10 bg-white w-full max-w-4xl rounded-2xl p-6 md:p-8">
           <div className="mb-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <h2 className="text-2xl font-bold">
               {t('chef.recipes.categories_label')}

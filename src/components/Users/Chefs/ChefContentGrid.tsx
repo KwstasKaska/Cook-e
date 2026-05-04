@@ -47,8 +47,7 @@ export default function ChefContentGrid({ chefId }: Props) {
               <div
                 key={recipe.id}
                 onClick={() => router.push(`/user/recipes/${recipe.id}`)}
-                className="cursor-pointer overflow-hidden rounded-2xl shadow-lg transition hover:scale-[1.02] hover:shadow-xl"
-                style={{ backgroundColor: '#E9DEC5' }}
+                className="cursor-pointer overflow-hidden rounded-2xl shadow-lg transition bg-myBeige-100 hover:scale-[1.02] hover:shadow-xl"
               >
                 <div className="relative h-36 w-full overflow-hidden">
                   {recipe.recipeImage ? (
@@ -58,10 +57,7 @@ export default function ChefContentGrid({ chefId }: Props) {
                       className="h-full w-full object-cover"
                     />
                   ) : (
-                    <div
-                      className="flex h-full w-full items-center justify-center text-4xl"
-                      style={{ backgroundColor: '#B3D5F8' }}
-                    >
+                    <div className="flex h-full w-full bg-myBlue-100 items-center justify-center text-4xl">
                       🍽️
                     </div>
                   )}
@@ -82,14 +78,12 @@ export default function ChefContentGrid({ chefId }: Props) {
         </div>
       )}
 
-      {/* Prev / Next */}
       {!loading && (hasPrev || (hasMore && recipes.length > 0)) && (
         <div className="mt-6 flex justify-center gap-4">
           {hasPrev && (
             <button
               onClick={() => setOffset((o) => o - LIMIT)}
-              className="rounded-full px-8 py-2 text-sm font-bold transition hover:opacity-90"
-              style={{ backgroundColor: '#B3D5F8', color: '#3F4756' }}
+              className="rounded-full px-8 py-2 bg-myBlue-100 text-sm font-bold transition hover:opacity-90"
             >
               {t('common.prev')}
             </button>
@@ -97,8 +91,7 @@ export default function ChefContentGrid({ chefId }: Props) {
           {hasMore && recipes.length > 0 && (
             <button
               onClick={() => setOffset((o) => o + LIMIT)}
-              className="rounded-full px-8 py-2 text-sm font-bold transition hover:opacity-90"
-              style={{ backgroundColor: '#B3D5F8', color: '#3F4756' }}
+              className="rounded-full px-8 py-2 bg-myBlue-100 text-sm font-bold transition hover:opacity-90"
             >
               {t('common.next')}
             </button>

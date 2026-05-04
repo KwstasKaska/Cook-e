@@ -45,7 +45,7 @@ export default function StepTwo({ form, fieldErrors, onUpdate }: StepTwoProps) {
 
   return (
     <div>
-      <h2 className="mb-5 text-2xl font-black" style={{ color: '#EAB308' }}>
+      <h2 className="mb-5 text-2xl font-black text-myYellow">
         {t('chef.create_recipe.step2_title')}
       </h2>
 
@@ -74,8 +74,7 @@ export default function StepTwo({ form, fieldErrors, onUpdate }: StepTwoProps) {
               value={form[field]}
               onChange={(e) => onUpdate(field, e.target.value)}
               placeholder={`10 ${t('chef.create_recipe.minutes')}`}
-              className="w-28 border-b border-gray-300 bg-transparent py-1 text-sm outline-none text-right font-semibold"
-              style={{ color: '#EAB308' }}
+              className="w-28 border-b border-gray-300 bg-transparent py-1 text-sm outline-none text-right font-semibold text-myYellow"
             />
           </div>
         ))}
@@ -129,8 +128,7 @@ export default function StepTwo({ form, fieldErrors, onUpdate }: StepTwoProps) {
                 value={form[field]}
                 onChange={(e) => onUpdate(field, e.target.value)}
                 placeholder="0"
-                className="w-24 border-b border-gray-300 bg-transparent py-1 text-sm outline-none text-right font-semibold"
-                style={{ color: '#EAB308' }}
+                className="w-24 border-b border-gray-300 bg-transparent py-1 text-sm outline-none text-right font-semibold text-myYellow"
               />
               <span className="text-xs text-gray-400">{unit}</span>
             </div>

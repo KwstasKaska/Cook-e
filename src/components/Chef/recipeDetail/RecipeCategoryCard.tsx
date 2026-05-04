@@ -59,10 +59,7 @@ export default function RecipeCategoryCard({
                 ))}
               </div>
             ) : (
-              <p
-                className="mt-0.5 border-b pb-1 text-sm font-medium italic"
-                style={{ color: '#377CC3', borderColor: '#B3D5F8' }}
-              >
+              <p className="mt-0.5 border-b border-myYellow text-myBlue-200 pb-1 text-sm font-medium italic">
                 {categoryLabel}
               </p>
             )}
@@ -77,14 +74,10 @@ export default function RecipeCategoryCard({
               <input
                 value={editForm.foodEthnicity}
                 onChange={(e) => onUpdate('foodEthnicity', e.target.value)}
-                className="mt-0.5 w-full border-b pb-1 text-sm font-medium italic outline-none"
-                style={{ color: '#377CC3', borderColor: '#B3D5F8' }}
+                className="mt-0.5 w-full border-b pb-1 text-sm font-medium italic outline-none border-myYellow text-myBlue-200"
               />
             ) : (
-              <p
-                className="mt-0.5 text-sm font-medium italic"
-                style={{ color: '#377CC3' }}
-              >
+              <p className="mt-0.5 text-sm font-medium italic text-myBlue-200">
                 {recipe.foodEthnicity}
               </p>
             )}

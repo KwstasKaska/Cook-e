@@ -39,10 +39,7 @@ export default function Navbar() {
   };
 
   return (
-    <nav
-      style={{ backgroundColor: '#B3D5F8' }}
-      className="w-full px-6 py-3 flex items-center justify-between relative z-50"
-    >
+    <nav className="w-full px-6 py-3 bg-myBlue-100 flex items-center justify-between relative z-50">
       <Logo />
 
       <div className="hidden xl:flex items-center gap-8">
@@ -92,18 +89,13 @@ export default function Navbar() {
               />
             ) : (
               <div
-                className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-white text-xs font-bold shadow-sm"
-                style={{ backgroundColor: '#377CC3', color: '#fff' }}
+                className="flex h-8 w-8 items-center justify-center rounded-full border-2 bg-myBlue-200 border-white text-xs font-bold shadow-sm"
+                style={{ color: '#fff' }}
               >
                 {me.username?.[0]?.toUpperCase() ?? '?'}
               </div>
             )}
-            <span
-              className="text-sm font-semibold"
-              style={{ color: '#3F4756' }}
-            >
-              {me.username}
-            </span>
+            <span className="text-sm font-semibold">{me.username}</span>
           </div>
         )}
         <LanguageSwitcher dark />
@@ -155,8 +147,8 @@ export default function Navbar() {
                   />
                 ) : (
                   <div
-                    className="flex h-7 w-7 items-center justify-center rounded-full border-2 border-myGrey-200 text-xs font-bold shadow-sm"
-                    style={{ backgroundColor: '#377CC3', color: '#fff' }}
+                    className="flex h-7 w-7 items-center justify-center rounded-full border-2 bg-myBlue-200 border-myGrey-200 text-xs font-bold shadow-sm"
+                    style={{ color: '#fff' }}
                   >
                     {me.username?.[0]?.toUpperCase() ?? '?'}
                   </div>
