@@ -8,7 +8,8 @@
     "settings": "Settings",
     "tagline": "A food journey",
     "messages": "Messages",
-    "articles": "Articles"
+    "articles": "Articles",
+    "chat": "Members communication"
   },
   "chefnav": {
     "chef_home": "Home",
@@ -96,7 +97,7 @@
     "difficulty": "Difficulty",
     "favourites_more": "Load more",
     "ingredients": "Ingredients",
-    "copy": "Copy recipe link"
+    "copy": "Copy link"
   },
   "ingredientCategories": {
     "title": "Ingredients",
@@ -125,6 +126,12 @@
     "updateError": "Error updating item.",
     "removeError": "Error removing item.",
     "addError": "Error adding item."
+  },
+  "chat": {
+    "title": "Members communication",
+    "usersCount": "members",
+    "noResults": "No members found.",
+    "loadMore": "Load more"
   },
   "nutritionists": {
     "searchTitle": "Find your nutritionist:",
@@ -279,11 +286,11 @@
       "ingredients": "ingredients:",
       "utensils": "utensils:",
       "execution": "execution:",
-      "implementation_time": "implementation time:",
+      "implementation_time": "Implementation time:",
       "prep_time": "preparation time:",
       "cook_time": "cooking time:",
       "rest_time": "resting time:",
-      "difficulty": "difficulty:",
+      "difficulty": "Difficulty:",
       "food_type": "food type",
       "dish_type": "dish type",
       "cuisine": "cuisine",

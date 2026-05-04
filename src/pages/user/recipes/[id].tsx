@@ -22,6 +22,7 @@ import {
 } from '../../../generated/graphql';
 import useIsUser from '../../../utils/useIsUser';
 import { getDifficultyLabel } from '../../../utils/recipeHelpers';
+import ShareButton from '../../../components/Helper/ShareButton';
 
 const RATINGS_LIMIT = 10;
 
@@ -230,7 +231,7 @@ function RecipeDetailContent() {
 
   if (recipeLoading) {
     return (
-      <div className="flex min-h-screen items-center  justify-center">
+      <div className="flex min-h-screen items-center justify-center">
         <div className="h-10 w-10 animate-spin rounded-full border-4 border-myBlue-200 border-t-transparent" />
       </div>
     );
@@ -238,19 +239,18 @@ function RecipeDetailContent() {
 
   if (!recipe) {
     return (
-      <div className="flex min-h-screen  items-center justify-center">
+      <div className="flex min-h-screen items-center justify-center">
         <p className="text-white">{t('chef.recipe_detail.not_found')}</p>
       </div>
     );
   }
 
   return (
-    <div className="flex min-h-screen  flex-col">
+    <div className="flex min-h-screen flex-col">
       <Navbar />
       <main className="flex-1">
         <div className="mx-auto max-w-6xl px-4 py-10 md:px-8 md:py-16">
           <div className="grid grid-cols-1 gap-8 md:grid-cols-[1fr_280px] lg:grid-cols-[1fr_320px] md:items-start">
-            {/* ── LEFT column */}
             <div className="flex min-w-0 flex-col gap-6">
               <button
                 onClick={() => router.back()}
@@ -282,9 +282,18 @@ function RecipeDetailContent() {
                   </p>
                 )}
                 <div className="flex items-start justify-between gap-4">
-                  <h1 className="break-words text-3xl font-bold text-white md:text-4xl xl:text-5xl max-w-lg">
-                    {title}
-                  </h1>
+                  <div className="flex flex-col gap-2">
+                    <h1 className="break-words text-3xl font-bold text-white md:text-4xl xl:text-5xl max-w-lg">
+                      {title}
+                    </h1>
+                    <ShareButton
+                      url={
+                        typeof window !== 'undefined'
+                          ? window.location.href
+                          : ''
+                      }
+                    />
+                  </div>
                   {recipe.recipeImage && (
                     <div className="relative hidden h-48 w-48 flex-shrink-0 overflow-hidden rounded-full border-4 border-white shadow-xl md:block">
                       <img
@@ -310,7 +319,6 @@ function RecipeDetailContent() {
                 <StarRow rating={avgRating} ratingCount={reviews.length} />
               )}
 
-              {/* ingredients */}
               {ingredients.length > 0 && (
                 <div>
                   <h2 className="mb-4 text-2xl font-bold text-white md:text-3xl">
@@ -397,7 +405,6 @@ function RecipeDetailContent() {
                 </div>
               )}
 
-              {/* steps */}
               {steps.length > 0 && (
                 <div>
                   <h2 className="mb-6 text-2xl font-bold text-white md:text-3xl">
@@ -604,7 +611,6 @@ function RecipeDetailContent() {
                 />
               )}
 
-              {/* bottom action bar */}
               <div className="flex items-center justify-around border-t border-gray-100 px-4 py-3">
                 {[
                   {

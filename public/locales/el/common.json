@@ -8,7 +8,8 @@
     "settings": "Ρυθμίσεις",
     "tagline": "A food journey",
     "messages": "Μηνύματα",
-    "articles": "Άρθρα"
+    "articles": "Άρθρα",
+    "chat": "Επικοινωνία μελών"
   },
   "recipe_category": {
     "MEAT": "Κρέας",
@@ -95,7 +96,7 @@
     "difficulty": "Δυσκολία",
     "favourites_more": "Φόρτωση περισσότερων",
     "ingredients": "Υλικά",
-    "copy": "Αντιγραφή συνδέσμου συνταγής"
+    "copy": "Αντιγραφή συνδέσμου"
   },
   "ingredientCategories": {
     "title": "Συστατικά",
@@ -124,6 +125,12 @@
     "updateError": "Σφάλμα κατά την ενημέρωση.",
     "removeError": "Σφάλμα κατά την αφαίρεση.",
     "addError": "Σφάλμα κατά την προσθήκη."
+  },
+  "chat": {
+    "title": "Επικοινωνία μελών",
+    "usersCount": "μέλη",
+    "noResults": "Δεν βρέθηκαν μέλη.",
+    "loadMore": "Περισσότεροι"
   },
   "nutritionists": {
     "searchTitle": "Αναζητήστε τον διατροφολόγο σας:",

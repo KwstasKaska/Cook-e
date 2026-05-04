@@ -8,6 +8,7 @@ fragment RegularCartItem on ShoppingCart {
     name_el
     name_en
     category {
+      id
       name_el
       name_en
     }

@@ -11,6 +11,7 @@ import { useChatContext } from '../../../components/Chat/ChatContext';
 import { pick } from '../../../utils/pick';
 import NutrArticlesGrid from '../../../components/Users/Nutritionists/NutrArticlesGrid';
 import NutrBookingSection from '../../../components/Users/Nutritionists/NutrBookingSection';
+import ShareButton from '../../../components/Helper/ShareButton';
 
 export async function getServerSideProps({ locale }: { locale: string }) {
   return {
@@ -105,7 +106,6 @@ function ProfileContent() {
             {t('nutritionists.back')}
           </button>
 
-          {/* Header */}
           <div className="mb-6 flex items-start justify-between gap-4">
             <div className="flex items-center gap-4">
               <div className="h-16 w-16 flex-shrink-0 overflow-hidden rounded-full border-4 border-white shadow-lg bg-myBlue-100">
@@ -136,29 +136,35 @@ function ProfileContent() {
               </div>
             </div>
 
-            {userId > 0 && (
-              <button
-                onClick={() => openConversation(userId)}
-                className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full shadow-md transition hover:opacity-90"
-                style={{ backgroundColor: '#377CC3' }}
-                aria-label="Send message"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5 text-white"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
+            <div className="flex flex-col items-end gap-3">
+              {userId > 0 && (
+                <button
+                  onClick={() => openConversation(userId)}
+                  className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full shadow-md transition hover:opacity-90"
+                  style={{ backgroundColor: '#377CC3' }}
+                  aria-label="Send message"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M8 10h.01M12 10h.01M16 10h.01M21 16c0 1.1-.9 2-2 2H7l-4 4V6a2 2 0 012-2h14a2 2 0 012 2v10z"
-                  />
-                </svg>
-              </button>
-            )}
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5 text-white"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M8 10h.01M12 10h.01M16 10h.01M21 16c0 1.1-.9 2-2 2H7l-4 4V6a2 2 0 012-2h14a2 2 0 012 2v10z"
+                    />
+                  </svg>
+                </button>
+              )}
+              <ShareButton
+                url={typeof window !== 'undefined' ? window.location.href : ''}
+                dark
+              />
+            </div>
           </div>
 
           {bioText && (

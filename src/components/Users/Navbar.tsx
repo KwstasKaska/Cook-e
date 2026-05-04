@@ -6,10 +6,10 @@ import LanguageSwitcher from '../Helper/LanguageSwitcher';
 import { useLogoutMutation, useMeQuery } from '../../generated/graphql';
 import { useApolloClient } from '@apollo/client';
 import { useChatContext } from '../Chat/ChatContext';
-import { ChatIcon } from '../Helper/ChatIcon';
 import { NavSettingsLink } from '../Helper/SettingsIcons';
 import { HamburgerButton } from '../Helper/HamburgerButton';
 import { NavCartLink } from '../Helper/CartIcon';
+import { ChatIcon } from '../Helper/ChatIcon';
 import Logo from '../Helper/Logo';
 
 export default function Navbar() {
@@ -28,6 +28,7 @@ export default function Navbar() {
     { label: t('nav.home'), href: '/user' },
     { label: t('nav.recipes'), href: '/user/recipes' },
     { label: t('nav.nutritionists'), href: '/user/nutritionists' },
+    { label: t('nav.chat'), href: '/user/chat' },
   ];
 
   const handleLogout = async () => {
@@ -44,7 +45,7 @@ export default function Navbar() {
     >
       <Logo />
 
-      <div className="hidden lg:flex items-center gap-8">
+      <div className="hidden xl:flex items-center gap-8">
         {navLinks.map((link) => {
           const isActive = router.pathname === link.href;
           return (
@@ -66,7 +67,7 @@ export default function Navbar() {
         })}
       </div>
 
-      <div className="hidden lg:flex items-center gap-3">
+      <div className="hidden xl:flex items-center gap-3">
         <NavCartLink
           ariaLabel={t('nav.cart')}
           className={`p-2 rounded transition-colors duration-150 ${
@@ -119,11 +120,11 @@ export default function Navbar() {
       <HamburgerButton
         isOpen={menuOpen}
         onClick={() => setMenuOpen((v) => !v)}
-        className="lg:hidden p-2"
+        className="xl:hidden p-2"
       />
 
       {menuOpen && (
-        <div className="absolute top-full bg-myBlue-100 left-0 w-full flex flex-col items-start px-6 py-4 gap-4 lg:hidden shadow-lg z-50">
+        <div className="absolute top-full bg-myBlue-100 left-0 w-full flex flex-col items-start px-6 py-4 gap-4 xl:hidden shadow-lg z-50">
           {navLinks.map((link) => {
             const isActive = router.pathname === link.href;
             return (
@@ -162,21 +163,21 @@ export default function Navbar() {
                     {me.username?.[0]?.toUpperCase() ?? '?'}
                   </div>
                 )}
-                <span className="text-sm font-semibold ">{me.username}</span>
+                <span className="text-sm font-semibold">{me.username}</span>
               </div>
             )}
 
             <NavCartLink
               ariaLabel={t('nav.cart')}
               onClick={() => setMenuOpen(false)}
-              className=" hover:text-yellow-300"
+              className="hover:text-yellow-300"
             />
             <button
               onClick={() => {
                 openWidget();
                 setMenuOpen(false);
               }}
-              className=" hover:text-yellow-300"
+              className="hover:text-yellow-300"
               aria-label={t('nav.messages', 'Messages')}
             >
               <ChatIcon />
@@ -184,7 +185,7 @@ export default function Navbar() {
             <NavSettingsLink
               ariaLabel={t('nav.settings')}
               onClick={() => setMenuOpen(false)}
-              className=" hover:text-yellow-300 transition-colors duration-150"
+              className="hover:text-yellow-300 transition-colors duration-150"
             />
             <LanguageSwitcher dark />
 

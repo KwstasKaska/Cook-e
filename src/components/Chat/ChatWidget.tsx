@@ -8,15 +8,11 @@ import {
 } from '../../generated/graphql';
 import { useChatContext } from './ChatContext';
 
-// ── Types
-
 interface ChatWidgetProps {
   currentUserId: number;
 }
 
 type View = 'inbox' | 'thread';
-
-// ── Component
 
 export default function ChatWidget({ currentUserId }: ChatWidgetProps) {
   const { t } = useTranslation('common');
@@ -29,10 +25,8 @@ export default function ChatWidget({ currentUserId }: ChatWidgetProps) {
   const [startError, setStartError] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // Guard: prevents the effect from firing twice for the same pendingUserId
   const pendingFiredRef = useRef(false);
-
-  // ── Queries
+  const wasOpenRef = useRef(false);
 
   const { data: inboxData, loading: inboxLoading } = useMyConversationsQuery({
     variables: { limit: 20, offset: 0 },
@@ -48,29 +42,24 @@ export default function ChatWidget({ currentUserId }: ChatWidgetProps) {
     fetchPolicy: 'network-only',
   });
 
-  // ── Mutations
-
   const [sendMessage, { loading: sending }] = useSendMessageMutation();
   const [startConversation, { loading: starting }] =
     useStartConversationMutation();
 
-  // ── Effects
-
-  // Scroll to bottom when thread updates
   useEffect(() => {
     if (isOpen && view === 'thread') {
       messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     }
   }, [threadData, view, isOpen]);
 
-  // Reset to inbox view when widget is reopened
   useEffect(() => {
-    if (isOpen && pendingUserId === null) {
+    if (!isOpen && wasOpenRef.current) {
       setView('inbox');
+      setActiveConvoId(null);
     }
-  }, [isOpen, pendingUserId]);
+    wasOpenRef.current = isOpen;
+  }, [isOpen]);
 
-  // Handle openConversation(userId) calls from anywhere in the app
   useEffect(() => {
     if (pendingUserId === null) {
       pendingFiredRef.current = false;
@@ -110,8 +99,6 @@ export default function ChatWidget({ currentUserId }: ChatWidgetProps) {
     initConversation();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pendingUserId]);
-
-  // ── Helpers
 
   function getOtherParticipant(convo: {
     participant1Id: number;
@@ -157,11 +144,7 @@ export default function ChatWidget({ currentUserId }: ChatWidgetProps) {
     }
   }
 
-  // ── Hidden when closed
-
   if (!isOpen) return null;
-
-  // ── Panel
 
   const thread = threadData?.conversation;
 
@@ -171,7 +154,6 @@ export default function ChatWidget({ currentUserId }: ChatWidgetProps) {
     inset-0
     sm:inset-auto sm:bottom-6 sm:right-6 sm:w-80 sm:rounded-lg sm:shadow-xl sm:border sm:border-gray-200 sm:h-[420px]"
     >
-      {/* Header */}
       <div className="flex items-center justify-between px-3 py-2 bg-blue-600 text-white flex-shrink-0">
         <div className="flex items-center gap-2">
           {view === 'thread' && (
@@ -207,9 +189,7 @@ export default function ChatWidget({ currentUserId }: ChatWidgetProps) {
           </span>
         </div>
         <button
-          onClick={() => {
-            closeWidget();
-          }}
+          onClick={closeWidget}
           className="hover:opacity-70"
           aria-label="Close"
         >
@@ -230,7 +210,6 @@ export default function ChatWidget({ currentUserId }: ChatWidgetProps) {
         </button>
       </div>
 
-      {/* Inbox */}
       {view === 'inbox' && (
         <div className="flex-1 overflow-y-auto divide-y divide-gray-100">
           {startError && (
@@ -278,14 +257,12 @@ export default function ChatWidget({ currentUserId }: ChatWidgetProps) {
         </div>
       )}
 
-      {/* Thread — loading state while startConversation is in flight */}
       {view === 'thread' && starting && (
         <div className="flex-1 flex items-center justify-center">
           <p className="text-xs text-gray-400">Άνοιγμα συνομιλίας...</p>
         </div>
       )}
 
-      {/* Thread */}
       {view === 'thread' && !starting && (
         <>
           <div className="flex-1 overflow-y-auto px-3 py-2 space-y-2">

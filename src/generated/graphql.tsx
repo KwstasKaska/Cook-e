@@ -549,6 +549,7 @@ export type Query = {
   recipesByChef: Array<Recipe>;
   suggestedRecipes: Array<RecipeSuggestion>;
   topRatedRecipes: Array<Recipe>;
+  users: Array<User>;
   utensils: Array<Utensil>;
 };
 
@@ -751,6 +752,12 @@ export type QuerySuggestedRecipesArgs = {
 
 export type QueryTopRatedRecipesArgs = {
   limit?: Scalars['Int']['input'];
+};
+
+
+export type QueryUsersArgs = {
+  limit?: Scalars['Int']['input'];
+  offset?: Scalars['Int']['input'];
 };
 
 export type Recipe = {
@@ -991,7 +998,7 @@ export type RegularArticleFragment = { __typename?: 'Article', id: number, title
 
 export type RegularArticleResponseFragment = { __typename?: 'ArticleResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, article?: { __typename?: 'Article', id: number, title_el: string, title_en: string, text_el: string, text_en: string, image: string, creatorId: number, createdAt: string, updatedAt: string, creator?: { __typename?: 'User', id: number, username: string, image?: string | null } | null } | null };
 
-export type RegularCartItemFragment = { __typename?: 'ShoppingCart', id: number, userId: number, ingredientId: number, addedAt: string, ingredient?: { __typename?: 'Ingredient', id: number, name_el: string, name_en: string, category?: { __typename?: 'IngredientsCategory', name_el: string, name_en: string } | null } | null };
+export type RegularCartItemFragment = { __typename?: 'ShoppingCart', id: number, userId: number, ingredientId: number, addedAt: string, ingredient?: { __typename?: 'Ingredient', id: number, name_el: string, name_en: string, category?: { __typename?: 'IngredientsCategory', id: number, name_el: string, name_en: string } | null } | null };
 
 export type RegularCookedRecipeFragment = { __typename?: 'CookedRecipe', id: number, userId: number, recipeId: number, cookedAt: string, recipe?: { __typename?: 'Recipe', id: number, title_el: string, title_en: string, recipeImage?: string | null, category?: RecipeCategory | null, prepTime: number, cookTime: number, caloriesTotal?: number | null, difficulty: Difficulty } | null };
 
@@ -1076,14 +1083,14 @@ export type AddToCartMutationVariables = Exact<{
 }>;
 
 
-export type AddToCartMutation = { __typename?: 'Mutation', addToCart: { __typename?: 'ShoppingCart', id: number, userId: number, ingredientId: number, addedAt: string, ingredient?: { __typename?: 'Ingredient', id: number, name_el: string, name_en: string, category?: { __typename?: 'IngredientsCategory', name_el: string, name_en: string } | null } | null } };
+export type AddToCartMutation = { __typename?: 'Mutation', addToCart: { __typename?: 'ShoppingCart', id: number, userId: number, ingredientId: number, addedAt: string, ingredient?: { __typename?: 'Ingredient', id: number, name_el: string, name_en: string, category?: { __typename?: 'IngredientsCategory', id: number, name_el: string, name_en: string } | null } | null } };
 
 export type AddManyToCartMutationVariables = Exact<{
   ingredientIds: Array<Scalars['Int']['input']> | Scalars['Int']['input'];
 }>;
 
 
-export type AddManyToCartMutation = { __typename?: 'Mutation', addManyToCart: Array<{ __typename?: 'ShoppingCart', id: number, userId: number, ingredientId: number, addedAt: string, ingredient?: { __typename?: 'Ingredient', id: number, name_el: string, name_en: string, category?: { __typename?: 'IngredientsCategory', name_el: string, name_en: string } | null } | null }> };
+export type AddManyToCartMutation = { __typename?: 'Mutation', addManyToCart: Array<{ __typename?: 'ShoppingCart', id: number, userId: number, ingredientId: number, addedAt: string, ingredient?: { __typename?: 'Ingredient', id: number, name_el: string, name_en: string, category?: { __typename?: 'IngredientsCategory', id: number, name_el: string, name_en: string } | null } | null }> };
 
 export type RemoveFromCartMutationVariables = Exact<{
   id: Scalars['Int']['input'];
@@ -1421,7 +1428,7 @@ export type GetNutritionistMealPlansQuery = { __typename?: 'Query', getNutrition
 export type MyCartQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MyCartQuery = { __typename?: 'Query', myCart: Array<{ __typename?: 'ShoppingCart', id: number, userId: number, ingredientId: number, addedAt: string, ingredient?: { __typename?: 'Ingredient', id: number, name_el: string, name_en: string, category?: { __typename?: 'IngredientsCategory', name_el: string, name_en: string } | null } | null }> };
+export type MyCartQuery = { __typename?: 'Query', myCart: Array<{ __typename?: 'ShoppingCart', id: number, userId: number, ingredientId: number, addedAt: string, ingredient?: { __typename?: 'Ingredient', id: number, name_el: string, name_en: string, category?: { __typename?: 'IngredientsCategory', id: number, name_el: string, name_en: string } | null } | null }> };
 
 export type MyChefProfileQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1577,6 +1584,14 @@ export type TopRatedRecipesQueryVariables = Exact<{
 
 
 export type TopRatedRecipesQuery = { __typename?: 'Query', topRatedRecipes: Array<{ __typename?: 'Recipe', id: number, title_el: string, title_en: string, recipeImage?: string | null, caloriesTotal?: number | null, prepTime: number, cookTime: number, difficulty: Difficulty, category?: RecipeCategory | null }> };
+
+export type UsersQueryVariables = Exact<{
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+}>;
+
+
+export type UsersQuery = { __typename?: 'Query', users: Array<{ __typename?: 'User', id: number, username: string, image?: string | null }> };
 
 export const RegualarErrorFragmentDoc = gql`
     fragment RegualarError on FieldError {
@@ -1737,6 +1752,7 @@ export const RegularCartItemFragmentDoc = gql`
     name_el
     name_en
     category {
+      id
       name_el
       name_en
     }
@@ -4948,3 +4964,46 @@ export type TopRatedRecipesQueryHookResult = ReturnType<typeof useTopRatedRecipe
 export type TopRatedRecipesLazyQueryHookResult = ReturnType<typeof useTopRatedRecipesLazyQuery>;
 export type TopRatedRecipesSuspenseQueryHookResult = ReturnType<typeof useTopRatedRecipesSuspenseQuery>;
 export type TopRatedRecipesQueryResult = Apollo.QueryResult<TopRatedRecipesQuery, TopRatedRecipesQueryVariables>;
+export const UsersDocument = gql`
+    query Users($limit: Int = 20, $offset: Int = 0) {
+  users(limit: $limit, offset: $offset) {
+    id
+    username
+    image
+  }
+}
+    `;
+
+/**
+ * __useUsersQuery__
+ *
+ * To run a query within a React component, call `useUsersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUsersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUsersQuery({
+ *   variables: {
+ *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
+ *   },
+ * });
+ */
+export function useUsersQuery(baseOptions?: Apollo.QueryHookOptions<UsersQuery, UsersQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<UsersQuery, UsersQueryVariables>(UsersDocument, options);
+      }
+export function useUsersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UsersQuery, UsersQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<UsersQuery, UsersQueryVariables>(UsersDocument, options);
+        }
+export function useUsersSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<UsersQuery, UsersQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<UsersQuery, UsersQueryVariables>(UsersDocument, options);
+        }
+export type UsersQueryHookResult = ReturnType<typeof useUsersQuery>;
+export type UsersLazyQueryHookResult = ReturnType<typeof useUsersLazyQuery>;
+export type UsersSuspenseQueryHookResult = ReturnType<typeof useUsersSuspenseQuery>;
+export type UsersQueryResult = Apollo.QueryResult<UsersQuery, UsersQueryVariables>;

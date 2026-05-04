@@ -89,7 +89,7 @@ function NutrRecipeDetailContent() {
               d="M15 19l-7-7 7-7"
             />
           </svg>
-          {t('common.back', 'Πίσω στην αναζήτηση')}
+          {t('common.back')}
         </button>
 
         <button

@@ -1,0 +1,7 @@
+query Users($limit: Int = 20, $offset: Int = 0) {
+  users(limit: $limit, offset: $offset) {
+    id
+    username
+    image
+  }
+}
