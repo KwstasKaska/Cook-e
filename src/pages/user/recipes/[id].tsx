@@ -21,6 +21,7 @@ import {
   useLogCookedRecipeMutation,
 } from '../../../generated/graphql';
 import useIsUser from '../../../utils/useIsUser';
+import { getDifficultyLabel } from '../../../utils/recipeHelpers';
 
 const RATINGS_LIMIT = 10;
 
@@ -271,7 +272,6 @@ function RecipeDetailContent() {
                 {t('recipes.backToSearch')}
               </button>
 
-              {/* title + image */}
               <div className="relative min-w-0">
                 {recipe.category && (
                   <p
@@ -465,13 +465,11 @@ function RecipeDetailContent() {
               )}
             </div>
 
-            {/* ── RIGHT panel */}
             <div className="min-w-0 overflow-hidden rounded-2xl bg-white shadow-xl md:sticky md:top-6">
-              {/* chef section */}
               {recipe.author?.user && (
                 <button
                   onClick={() => router.push(`/user/chef/${recipe.authorId}`)}
-                  className="flex w-full flex-col items-center gap-3 px-6 pt-6 pb-4 group border-b border-gray-100"
+                  className="flex w-full flex-col items-center gap-2 px-6 pt-6 pb-4 group border-b border-gray-100"
                 >
                   {recipe.author.user.image ? (
                     <img
@@ -484,16 +482,20 @@ function RecipeDetailContent() {
                       className="flex h-20 w-20 items-center justify-center rounded-full border-4 border-gray-100 text-2xl font-bold shadow"
                       style={{ backgroundColor: '#377CC3', color: '#fff' }}
                     >
-                      {recipe.author.user.username?.[0]?.toUpperCase() ?? '?'}
+                      {recipe.author.user.username[0].toUpperCase()}
                     </div>
                   )}
+
                   <span className="text-base font-bold text-gray-700 group-hover:underline transition">
                     {recipe.author.user.username}
+                  </span>
+
+                  <span className="inline-flex bg-myBlue-100 text-myBlue-200 items-center gap-1 rounded-full px-3 py-0.5 text-xs font-semibold">
+                    {t('chef.recipe_detail.view_chef_profile')} →
                   </span>
                 </button>
               )}
 
-              {/* chef comment */}
               {chefComment && (
                 <div className="px-6 py-4 border-b border-gray-100">
                   <p className="text-sm italic text-gray-500 text-center">
@@ -502,7 +504,6 @@ function RecipeDetailContent() {
                 </div>
               )}
 
-              {/* description */}
               {description && (
                 <div className="px-6 py-4 border-b border-gray-100">
                   <p className="text-sm text-gray-600 leading-relaxed">
@@ -511,7 +512,6 @@ function RecipeDetailContent() {
                 </div>
               )}
 
-              {/* stats */}
               <div className="px-6 py-4 border-b border-gray-100 flex flex-col gap-2">
                 {totalTime > 0 && (
                   <div className="flex justify-between text-sm">
@@ -529,7 +529,7 @@ function RecipeDetailContent() {
                       {t('chef.recipe_detail.difficulty')}
                     </span>
                     <span className="font-semibold text-gray-700">
-                      {recipe.difficulty}
+                      {getDifficultyLabel(recipe.difficulty, t)}
                     </span>
                   </div>
                 )}
@@ -582,7 +582,6 @@ function RecipeDetailContent() {
                 )}
               </div>
 
-              {/* tab content */}
               {activeTab === 'reviews' && (
                 <ReviewsPanel
                   reviews={reviews}

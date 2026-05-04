@@ -11,7 +11,6 @@ export function totalDuration(
   return prepTime + cookTime + (restTime ?? 0);
 }
 
-// src/utils/recipeHelpers.ts
 export const getDifficultyLabel = (
   difficulty: string | null | undefined,
   t: (key: string) => string,
