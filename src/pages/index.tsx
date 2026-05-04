@@ -144,6 +144,12 @@ const Index: NextPage = () => {
             <div className="flex flex-col gap-3 text-center text-xs md:text-sm">
               <p>
                 <span className="font-semibold">
+                  {t('index.role_user_label')}
+                </span>{' '}
+                {t('index.role_user_desc')}
+              </p>
+              <p>
+                <span className="font-semibold">
                   {t('index.role_chef_label')}
                 </span>{' '}
                 {t('index.role_chef_desc')}
@@ -153,12 +159,6 @@ const Index: NextPage = () => {
                   {t('index.role_nutritionist_label')}
                 </span>{' '}
                 {t('index.role_nutritionist_desc')}
-              </p>
-              <p>
-                <span className="font-semibold">
-                  {t('index.role_user_label')}
-                </span>{' '}
-                {t('index.role_user_desc')}
               </p>
             </div>
 

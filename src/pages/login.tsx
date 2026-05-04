@@ -124,7 +124,7 @@ const Login: NextPage = () => {
                 name="usernameOrEmail"
                 aria-label={t('login.username_placeholder')}
                 autoComplete="username"
-                className="w-full rounded-xl bg-white text-black placeholder:text-sm placeholder:italic placeholder:text-myBlue-200"
+                className="w-full rounded-xl border border-gray-200 px-4 py-2.5 placeholder:italic placeholder:text-myBlue-200 focus:outline-none"
                 placeholder={t('login.username_placeholder')}
               />
               <InputField
@@ -132,7 +132,7 @@ const Login: NextPage = () => {
                 name="password"
                 aria-label={t('login.password_placeholder')}
                 autoComplete="current-password"
-                className="w-full rounded-xl bg-white text-black placeholder:text-sm placeholder:italic placeholder:text-myBlue-200"
+                className="w-full rounded-xl border border-gray-200 px-4 py-2.5 placeholder:italic placeholder:text-myBlue-200 focus:outline-none"
                 placeholder={t('login.password_placeholder')}
               />
 
