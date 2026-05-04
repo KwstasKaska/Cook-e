@@ -155,8 +155,7 @@ function ChefProfileContent() {
             {/* Back */}
             <button
               onClick={() => router.back()}
-              className="mb-8 flex items-center gap-2 text-sm font-bold transition hover:opacity-80"
-              style={{ color: '#EAB308' }}
+              className="mb-8 flex items-center gap-2 text-sm font-bold transition hover:opacity-80 text-myYellow"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -202,8 +201,7 @@ function ChefProfileContent() {
                     {chef.user?.id && (
                       <button
                         onClick={() => openConversation(chef.user!.id)}
-                        className="flex w-fit items-center gap-2 rounded-full px-4 py-1.5 text-sm font-semibold text-white shadow transition-opacity hover:opacity-90"
-                        style={{ backgroundColor: '#377CC3' }}
+                        className="flex w-fit items-center gap-2 rounded-full px-4 py-1.5 text-sm font-semibold text-white shadow transition-opacity hover:opacity-90 bg-myBlue-200"
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"

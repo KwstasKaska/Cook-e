@@ -256,7 +256,9 @@
     "serverError": "Something went wrong. Please try again.",
     "booked": "Booked",
     "respondError": "Could not process your response. Please try again.",
-    "messagePatients": "Message your patients"
+    "messagePatients": "Message your patients",
+
+    "clear": "Clear"
   },
   "chef": {
     "more": "More",

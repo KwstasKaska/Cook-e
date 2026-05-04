@@ -102,8 +102,7 @@ export default function ArticleCreateForm({ onClose }: ArticleCreateFormProps) {
         <button
           onClick={handleSubmit}
           disabled={loading}
-          className="rounded-full  px-6 py-2 text-sm font-bold transition hover:opacity-90 disabled:opacity-50"
-          style={{ backgroundColor: '#EAB308' }}
+          className="rounded-full bg-myYellow  px-6 py-2 text-sm font-bold transition hover:opacity-90 disabled:opacity-50"
         >
           {loading ? t('common.loading') : t('chef.profile.article_submit')}
         </button>

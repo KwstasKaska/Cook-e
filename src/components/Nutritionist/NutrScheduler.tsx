@@ -1,7 +1,5 @@
 import React, { useState, useMemo } from 'react';
 import { useTranslation } from 'next-i18next';
-import Accordion from './Helper/Accordion';
-import { TableContextType } from '../Context';
 import {
   AppointmentStatus,
   DayOfWeek,
@@ -20,7 +18,7 @@ export const daysOfWeek: DayOfWeek[] = [
   DayOfWeek.Sunday,
 ];
 
-export const randomFields: MealType[] = [
+export const mealTypes: MealType[] = [
   MealType.Breakfast,
   MealType.Snack,
   MealType.Lunch,
@@ -30,15 +28,14 @@ export const randomFields: MealType[] = [
 
 export type CellInfo = Record<string, string>;
 
+const STICKY_W = 150;
+const COL_W = 170;
+
 const NutrScheduler: React.FC = () => {
   const { t } = useTranslation('common');
 
-  const [togglePreview, setTogglePreview] = useState(false);
-  const [selectedDay, setSelectedDay] = useState<DayOfWeek | ''>('');
-  const [selectedField, setSelectedField] = useState<MealType | ''>('');
   const [cellInfo, setCellInfo] = useState<CellInfo>({});
   const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
-  const [serverError, setServerError] = useState('');
   const [fieldError, setFieldError] = useState('');
 
   const { data: reqData } = useGetAppointmentRequestsForNutritionistQuery();
@@ -61,163 +58,199 @@ const NutrScheduler: React.FC = () => {
   }, [reqData]);
 
   const selectedUsername =
-    acceptedClients.find((c) => c.id === selectedUserId)?.username ?? 'testing';
+    acceptedClients.find((c) => c.id === selectedUserId)?.username ?? '';
 
-  const handleSubmit = async (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-    setServerError('');
+  const filledCells = Object.entries(cellInfo).filter(
+    ([, v]) => v.trim() !== '',
+  );
+
+  const updateCell = (day: DayOfWeek, meal: MealType, value: string) => {
+    setFieldError('');
+    setCellInfo((prev) => ({ ...prev, [`${day}-${meal}`]: value }));
+  };
+
+  const handleSubmit = async () => {
     setFieldError('');
 
     if (!selectedUserId) {
       setFieldError(t('nutr.selectUserFirst'));
       return;
     }
-
-    // Collect every filled cell in the table
-    const filledCells = Object.entries(cellInfo).filter(
-      ([, comment]) => comment.trim() !== '',
-    );
-
     if (filledCells.length === 0) {
       setFieldError(t('nutr.setContentFirst'));
       return;
     }
 
-    let hadError = false;
-
     for (const [key, comment] of filledCells) {
       const [day, mealType] = key.split('-') as [DayOfWeek, MealType];
-
-      try {
-        const result = await createMealScheduler({
-          variables: {
-            userId: selectedUserId,
-            day,
-            mealType,
-            comment,
-          },
-        });
-
-        if (result.data?.createMealScheduler.errors?.length) {
-          setFieldError(result.data.createMealScheduler.errors[0].message);
-          hadError = true;
-          break;
-        }
-      } catch {
-        setServerError(t('nutr.serverError'));
-        hadError = true;
-        break;
+      const result = await createMealScheduler({
+        variables: { userId: selectedUserId, day, mealType, comment },
+      });
+      if (result.data?.createMealScheduler.errors?.length) {
+        setFieldError(result.data.createMealScheduler.errors[0].message);
+        return;
       }
     }
 
-    if (!hadError) {
-      setCellInfo({});
-    }
+    setCellInfo({});
   };
+
+  const stickyCell = (bg: string) => ({
+    position: 'sticky' as const,
+    left: 0,
+    width: STICKY_W,
+    minWidth: STICKY_W,
+    maxWidth: STICKY_W,
+    background: bg,
+    boxShadow: '2px 0 6px rgba(0,0,0,0.06)',
+    zIndex: 10,
+  });
 
   return (
     <section
       id="section_4"
-      className="flex min-h-screen w-full  flex-col bg-myGrey-100"
+      className="flex min-h-screen w-full flex-col bg-myGrey-100 py-16"
     >
-      <TableContextType.Provider
-        value={{
-          selectedDay,
-          setSelectedDay: setSelectedDay as (d: string) => void,
-          selectedField,
-          setSelectedField: setSelectedField as (f: string) => void,
-          cellInfo,
-          setCellInfo,
-          selectedUserId,
-          setSelectedUserId,
-        }}
-      >
-        {togglePreview ? (
-          <div className="container grid flex-1 touch-pan-x grid-flow-col content-center justify-center">
-            <div className="scrollbar overflow-x-auto overflow-y-hidden">
-              <div className="pl-8 md:pl-0 md:text-base lg:text-lg">
-                <table className="w-full border-separate border-myGrey-200 text-white">
-                  <caption className="bg-myGrey-200 py-5 text-center text-base font-bold text-white md:text-lg">
-                    {t('nutr.nutritionPlanFor')} {selectedUsername}
-                  </caption>
-                  <thead>
-                    <tr className="snap-x snap-mandatory">
-                      <th className="snap-center text-base font-bold md:text-lg">
-                        {t('nutr.mealsAndDays')}
-                      </th>
-                      {daysOfWeek.map((day) => (
-                        <th
-                          key={day}
-                          className="snap-center p-4 text-center text-base capitalize md:text-lg"
-                        >
-                          {t(`day.${day}`)}
-                        </th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {randomFields.map((field) => (
-                      <tr key={field}>
-                        <th className="text-center text-base capitalize md:text-lg">
-                          {t(`meal.${field}`)}
-                        </th>
-                        {daysOfWeek.map((day) => (
+      <div className="mx-auto w-full max-w-6xl px-4">
+        <div className="mb-8 flex flex-col items-center gap-4 text-center">
+          <h2 className="text-2xl font-bold md:text-4xl">
+            {t('nutr.createNutritionPlan')}
+          </h2>
+
+          <div className="flex items-center gap-3">
+            <label className="text-xs font-bold uppercase tracking-wide text-gray-500">
+              {t('nutr.selectUser')}
+            </label>
+            <select
+              value={selectedUserId ?? ''}
+              onChange={(e) => {
+                setSelectedUserId(
+                  e.target.value ? Number(e.target.value) : null,
+                );
+                setFieldError('');
+              }}
+              className="rounded-xl border border-gray-300 bg-white px-4 py-2 text-sm font-semibold text-myGrey-200 focus:outline-none focus:ring-2 focus:ring-myBlue-200"
+            >
+              <option value="">{t('nutr.selectUser')}...</option>
+              {acceptedClients.map((c) => (
+                <option key={c.id} value={c.id}>
+                  {c.username}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        <div className="overflow-hidden rounded-2xl bg-white shadow-3xl">
+          <div className="bg-myGrey-200 px-6 py-4">
+            <span className="font-bold text-white">
+              {t('nutr.nutritionPlanFor')} {selectedUsername || '—'}
+            </span>
+          </div>
+
+          <div className="relative w-full overflow-x-auto">
+            <table
+              className="border-collapse text-sm"
+              style={{
+                tableLayout: 'fixed',
+                minWidth: STICKY_W + daysOfWeek.length * COL_W,
+              }}
+            >
+              <colgroup>
+                <col style={{ width: STICKY_W }} />
+                {daysOfWeek.map((d) => (
+                  <col key={d} style={{ width: COL_W }} />
+                ))}
+              </colgroup>
+
+              <thead>
+                <tr style={{ background: '#F9FAFB' }}>
+                  <th
+                    style={stickyCell('#F9FAFB')}
+                    className="px-4 py-4 text-left text-xs font-bold uppercase tracking-wide text-gray-500"
+                  >
+                    {t('nutr.mealsAndDays')}
+                  </th>
+                  {daysOfWeek.map((day) => (
+                    <th
+                      key={day}
+                      className="px-3 py-4 text-center text-xs font-bold uppercase tracking-wide text-myGrey-200"
+                    >
+                      {t(`day.${day}`)}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+
+              <tbody>
+                {mealTypes.map((meal, i) => {
+                  const bg = i % 2 === 0 ? '#ffffff' : '#FAFAFA';
+                  return (
+                    <tr key={meal} style={{ background: bg }}>
+                      <td
+                        style={stickyCell(bg)}
+                        className="px-4 py-4 font-bold text-myGrey-200"
+                      >
+                        {t(`meal.${meal}`)}
+                      </td>
+                      {daysOfWeek.map((day) => {
+                        const key = `${day}-${meal}`;
+                        const val = cellInfo[key] ?? '';
+                        return (
                           <td
-                            key={`${day}-${field}`}
-                            className="min-w-[18em] text-base lg:min-w-full"
+                            key={day}
+                            className="px-3 py-3 align-top"
+                            style={{ borderBottom: '1px solid #F3F4F6' }}
                           >
-                            {cellInfo[`${day}-${field}`]}
+                            <textarea
+                              value={val}
+                              onChange={(e) =>
+                                updateCell(day, meal, e.target.value)
+                              }
+                              placeholder="—"
+                              rows={3}
+                              className="w-full resize-none rounded-xl border px-3 py-2.5 text-xs text-myGrey-200 focus:outline-none focus:ring-2 focus:ring-myBlue-200"
+                              style={{
+                                borderColor: val.trim() ? '#B3D5F8' : '#E5E7EB',
+                                background: val.trim() ? '#F0F7FF' : '#F9FAFB',
+                              }}
+                            />
                           </td>
-                        ))}
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-
-              <button
-                type="button"
-                onClick={() => setTogglePreview(false)}
-                className="mx-auto mt-4 block rounded-md border-2 border-myRed py-1 px-10 text-base font-bold text-black hover:scale-110 hover:bg-myRed hover:text-white hover:shadow-3xl md:px-20 md:text-lg"
-              >
-                {t('nutr.back')}
-              </button>
-            </div>
+                        );
+                      })}
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
           </div>
-        ) : (
-          <div>
-            <h2 className="mt-4  text-center text-2xl font-bold md:text-4xl">
-              {t('nutr.createNutritionPlan')}
-            </h2>
+        </div>
 
-            <Accordion acceptedClients={acceptedClients} />
-
-            <div className="mx-auto  my-8 flex w-full flex-col items-center justify-center lg:my-10">
-              {fieldError && (
-                <p className="mb-2 text-sm text-myRed">{fieldError}</p>
-              )}
-              {serverError && (
-                <p className="mb-2 text-sm text-myRed">{serverError}</p>
-              )}
-
+        <div className="mt-6 flex flex-col items-center gap-3">
+          {fieldError && (
+            <p className="text-sm font-semibold text-myRed">{fieldError}</p>
+          )}
+          <div className="flex gap-3">
+            {filledCells.length > 0 && (
               <button
                 type="button"
-                onClick={handleSubmit}
-                className="mx-auto block rounded-md border-2 border-myBlue-200 bg-myBlue-200 px-28 py-2 text-base font-bold text-white hover:scale-110 hover:shadow-3xl md:mx-6 md:px-40 md:text-lg"
+                onClick={() => setCellInfo({})}
+                className="rounded-xl border border-gray-300 px-5 py-2 text-sm font-bold text-gray-500 transition hover:bg-gray-100"
               >
-                {t('nutr.set')}
+                {t('nutr.clear')}
               </button>
-              <button
-                type="button"
-                onClick={() => setTogglePreview(true)}
-                className="mx-auto mt-4 block rounded-md border-2 border-black py-2 px-16 text-base font-bold text-black hover:scale-110 hover:bg-myGrey-200 hover:text-white hover:shadow-3xl hover:transition hover:duration-500 md:px-20 md:text-lg"
-              >
-                {t('nutr.preview')}
-              </button>
-            </div>
+            )}
+            <button
+              type="button"
+              onClick={handleSubmit}
+              disabled={filledCells.length === 0}
+              className="rounded-xl bg-myBlue-200 px-8 py-2 text-sm font-bold text-white transition hover:opacity-90 disabled:opacity-40"
+            >
+              {t('nutr.set')}
+            </button>
           </div>
-        )}
-      </TableContextType.Provider>
+        </div>
+      </div>
     </section>
   );
 };

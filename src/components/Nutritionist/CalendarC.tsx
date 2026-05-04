@@ -154,7 +154,6 @@ const CalendarC: React.FC = () => {
 
   return (
     <div className="mx-auto flex w-full flex-col md:grid md:grid-cols-2 md:items-center md:justify-evenly md:gap-4 md:px-3">
-      {/* Left column — calendar + controls */}
       <div className="flex flex-col items-center gap-4 pt-16 px-4 lg:px-0 lg:gap-10 xl:mt-16 xl:gap-20">
         <DynamicCalendar
           onChange={handleDateChange}
@@ -162,16 +161,19 @@ const CalendarC: React.FC = () => {
           locale={calendarLocale}
           className="lg:mt-12 lg:scale-125 xl:scale-150"
         />
-        <div className="mt-3 space-x-4 lg:scale-125">
+        <div className="mt-3 space-x-4 ">
           <button
-            className="rounded-lg border-2 border-black py-1 px-7 hover:scale-110 hover:border-myRed hover:bg-myRed hover:text-white"
+            className="rounded-full px-8 py-2.5 text-sm font-bold transition hover:opacity-90 bg-myRed text-white"
             onClick={handleCancel}
           >
             {t('nutr.cancel')}
           </button>
-        </div>
-        <div className=" rounded-lg border-2 border-black py-1 px-3 hover:scale-110 hover:border-myBlue-200 hover:bg-myBlue-200 hover:text-white hover:transition">
-          <button onClick={handleSet}>{t('nutr.setAvailability')}</button>
+          <button
+            className="rounded-full px-8 py-2.5 text-sm font-bold transition hover:opacity-90 bg-myBlue-100 text-myGrey-200"
+            onClick={handleSet}
+          >
+            {t('nutr.setAvailability')}
+          </button>
         </div>
       </div>
 

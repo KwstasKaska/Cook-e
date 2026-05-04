@@ -140,8 +140,7 @@ function ProfileContent() {
               {userId > 0 && (
                 <button
                   onClick={() => openConversation(userId)}
-                  className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full shadow-md transition hover:opacity-90"
-                  style={{ backgroundColor: '#377CC3' }}
+                  className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full shadow-md transition hover:opacity-90 bg-myBlue-200"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"

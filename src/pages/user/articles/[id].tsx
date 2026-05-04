@@ -83,10 +83,7 @@ function ArticleDetailContent() {
           </button>
 
           {/* Article card */}
-          <div
-            className="w-full overflow-hidden rounded-2xl shadow-xl"
-            style={{ backgroundColor: '#E9DEC5' }}
-          >
+          <div className="w-full overflow-hidden bg-myBeige-100 rounded-2xl shadow-xl">
             {/* Hero image */}
             <div className="relative h-64 w-full">
               <Image src={heroSrc} alt={title} fill className="object-cover" />
@@ -103,10 +100,7 @@ function ArticleDetailContent() {
                     className="h-9 w-9 flex-shrink-0 rounded-full object-cover"
                   />
                 ) : (
-                  <div
-                    className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full text-sm font-bold text-white"
-                    style={{ backgroundColor: '#377CC3' }}
-                  >
+                  <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full text-sm font-bold text-white bg-myBlue-200">
                     {article.creator?.username?.[0]?.toUpperCase() ?? '?'}
                   </div>
                 )}
@@ -123,10 +117,8 @@ function ArticleDetailContent() {
                 </div>
               </div>
 
-              {/* Title */}
               <h1 className="mb-5 text-2xl  font-bold leading-snug">{title}</h1>
 
-              {/* Body */}
               <p
                 className="text-sm leading-relaxed whitespace-pre-line"
                 style={{ color: '#4A5568' }}

@@ -287,10 +287,7 @@ function CartContent({
                               cursor: alreadyIn ? 'default' : 'pointer',
                             }}
                           >
-                            <span
-                              className="font-semibold truncate"
-                              style={{ color: '#3F4756' }}
-                            >
+                            <span className="font-semibold text-myGrey-200 truncate">
                               {name}
                             </span>
                             {!alreadyIn && (

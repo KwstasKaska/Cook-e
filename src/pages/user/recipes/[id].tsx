@@ -254,8 +254,7 @@ function RecipeDetailContent() {
             <div className="flex min-w-0 flex-col gap-6">
               <button
                 onClick={() => router.back()}
-                className="flex w-fit items-center gap-2 text-sm font-bold transition hover:opacity-80"
-                style={{ color: '#EAB308' }}
+                className="flex w-fit items-center text-myYellow gap-2 text-sm font-bold transition hover:opacity-80"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -274,10 +273,7 @@ function RecipeDetailContent() {
 
               <div className="relative min-w-0">
                 {recipe.category && (
-                  <p
-                    className="mb-2 text-base font-bold"
-                    style={{ color: '#EAB308' }}
-                  >
+                  <p className="mb-2 text-base text-myYellow font-bold">
                     {recipe.category}
                   </p>
                 )}
@@ -424,13 +420,7 @@ function RecipeDetailContent() {
                       {steps.map((step, i) => (
                         <div key={step.id} className="flex gap-4">
                           <div className="flex w-8 flex-shrink-0 flex-col items-center">
-                            <div
-                              className="flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold"
-                              style={{
-                                backgroundColor: '#EAB308',
-                                color: '#3F4756',
-                              }}
-                            >
+                            <div className="flex h-6 w-6 items-center justify-center rounded-full bg-myYellow text-myGrey-200 text-xs font-bold">
                               {i + 1}
                             </div>
                             {i < steps.length - 1 && (
@@ -486,8 +476,8 @@ function RecipeDetailContent() {
                     />
                   ) : (
                     <div
-                      className="flex h-20 w-20 items-center justify-center rounded-full border-4 border-gray-100 text-2xl font-bold shadow"
-                      style={{ backgroundColor: '#377CC3', color: '#fff' }}
+                      className="flex h-20 w-20 items-center justify-center rounded-full border-4 bg-myBlue-200 border-gray-100 text-2xl font-bold shadow"
+                      style={{ color: '#fff' }}
                     >
                       {recipe.author.user.username[0].toUpperCase()}
                     </div>

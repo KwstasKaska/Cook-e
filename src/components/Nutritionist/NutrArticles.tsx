@@ -85,8 +85,7 @@ const NutrArticles: React.FC = () => {
             {hasPrev && (
               <button
                 onClick={() => setOffset((o) => o - LIMIT)}
-                className="rounded-full px-8 py-2.5 text-sm font-bold transition hover:opacity-90"
-                style={{ backgroundColor: '#B3D5F8', color: '#3F4756' }}
+                className="rounded-full px-8 py-2.5 text-sm font-bold transition hover:opacity-90 bg-myBlue-100 text-myGrey-200"
               >
                 {t('common.prev')}
               </button>
@@ -94,8 +93,7 @@ const NutrArticles: React.FC = () => {
             {hasMore && articles.length > 0 && (
               <button
                 onClick={() => setOffset((o) => o + LIMIT)}
-                className="rounded-full px-8 py-2.5 text-sm font-bold transition hover:opacity-90"
-                style={{ backgroundColor: '#B3D5F8', color: '#3F4756' }}
+                className="rounded-full px-8 py-2.5 text-sm font-bold transition hover:opacity-90 bg-myBlue-100 text-myGrey-200"
               >
                 {t('common.next')}
               </button>

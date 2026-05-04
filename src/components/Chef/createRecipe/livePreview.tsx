@@ -213,7 +213,7 @@ export default function LivePreview({
                   <span className="text-gray-600">
                     {t('chef.create_recipe.rest_time')}
                   </span>
-                  <span className="font-semibold" style={{ color: '#377CC3' }}>
+                  <span className="font-semibold text-myBlue-200">
                     {form.restTime} {t('chef.create_recipe.minutes')}
                   </span>
                 </div>
