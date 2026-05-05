@@ -76,13 +76,7 @@ const Login: NextPage = () => {
 
         <Formik
           initialValues={initialValues}
-          validate={(values) => {
-            const errors: Partial<MyLoginFormValues> = {};
-            if (!values.email) errors.email = t('login.error_email');
-            if (!values.password) errors.password = t('login.error_password');
-            return errors;
-          }}
-          onSubmit={async (values, { setErrors, setTouched }) => {
+          onSubmit={async (values, { setErrors }) => {
             const { email, password } = values;
             const response = await login({
               variables: { email, password },
@@ -95,15 +89,10 @@ const Login: NextPage = () => {
             });
             if (response.data?.login.errors) {
               const errorMap = toErrorMap(response.data.login.errors);
-              const translated = Object.fromEntries(
-                Object.entries(errorMap).map(([k, v]) => [k, t(v)]),
-              );
-              setErrors(translated);
-              setTouched(
+              setErrors(
                 Object.fromEntries(
-                  Object.keys(translated).map((k) => [k, true]),
+                  Object.entries(errorMap).map(([k, v]) => [k, t(v)]),
                 ),
-                false,
               );
             } else if (response.data?.login.user) {
               if (typeof router.query.next === 'string') {
@@ -115,7 +104,7 @@ const Login: NextPage = () => {
           }}
         >
           {({ isSubmitting }) => (
-            <Form noValidate className="flex flex-col gap-3">
+            <Form className="flex flex-col gap-3">
               <InputField
                 type="email"
                 name="email"

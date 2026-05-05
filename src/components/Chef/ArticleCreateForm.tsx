@@ -19,10 +19,6 @@ export default function ArticleCreateForm({ onClose }: ArticleCreateFormProps) {
   const [createArticle, { loading }] = useCreateArticleMutation();
 
   const handleSubmit = async () => {
-    if (!title.trim() || !text.trim()) {
-      setError(t('chef.article.validation_required'));
-      return;
-    }
     if (!image) {
       setError(t('chef.profile.article_image_required'));
       return;
@@ -30,7 +26,7 @@ export default function ArticleCreateForm({ onClose }: ArticleCreateFormProps) {
 
     const imageUrl = await uploadToCloudinary(image);
 
-    await createArticle({
+    const response = await createArticle({
       variables: {
         data: { title: title.trim(), text: text.trim(), image: imageUrl },
       },
@@ -38,6 +34,11 @@ export default function ArticleCreateForm({ onClose }: ArticleCreateFormProps) {
         cache.evict({ fieldName: 'articlesByChef' });
       },
     });
+
+    if (response.data?.createArticle.errors?.length) {
+      setError(t(response.data.createArticle.errors[0].message));
+      return;
+    }
 
     onClose();
   };

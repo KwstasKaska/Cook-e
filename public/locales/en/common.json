@@ -242,8 +242,7 @@
       "placeholder_text": "Write the content...",
       "upload_image": "Upload image",
       "submit": "Publish",
-      "error_title": "Title is required.",
-      "error_text": "Content is required.",
+
       "error_image": "Please add an image."
     },
     "nutr_recipes": "Chefs recipes",
@@ -425,10 +424,18 @@
     "username_length": "Username must be more than two characters",
     "username_at": "Username cannot contain @",
     "email_invalid": "Please enter a valid email",
-    "password_weak": "Password must be longer than 4 characters, include an uppercase letter and a special character",
+    "password_weak": "Password must be more than 4 characters, include an uppercase letter and a special character",
     "role_required": "Please select a user type",
+    "username_taken": "This username is already in use",
+    "email_taken": "This email is already in use",
     "email_not_found": "No account found with this email.",
-    "wrong_password": "Wrong password."
+    "wrong_password": "Wrong password.",
+    "article_title_required": "The title is required.",
+    "article_text_required": "The content is required.",
+    "appointment_date_required": "The date is required.",
+    "appointment_time_required": "The time is required.",
+    "email_required": "Email is required.",
+    "password_required": "Password is required."
   },
 
   "common": {
@@ -455,12 +462,7 @@
     "role_label": "Role:",
     "role_user": "Member",
     "role_nutritionist": "Nutritionist",
-    "submit": "Create an account",
-    "error_username_length": "Username must be more than two characters",
-    "error_username_at": "Username cannot contain @",
-    "error_email": "Please enter a valid email",
-    "error_password": "Password must be more than 4 characters, include an uppercase letter and a special character",
-    "error_role": "Please select a user type"
+    "submit": "Create an account"
   },
   "login": {
     "title": "Welcome back!",
@@ -471,9 +473,7 @@
     "forgot_password": "Forgot your password?",
     "no_account": "Don't have an account yet?",
     "account": "Do you have an account?",
-    "create_account": "Create one",
-    "error_email": "Email is required",
-    "error_password": "Password is required"
+    "create_account": "Create one"
   },
   "forgot_password": {
     "success": "If an account exists with this email, you will be notified via email.",

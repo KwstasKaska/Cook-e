@@ -36,14 +36,6 @@ const CreateArticle: NextPage = () => {
   const handleSubmit = async () => {
     setError('');
 
-    if (!title.trim()) {
-      setError(t('nutr.create_article.error_title'));
-      return;
-    }
-    if (!text.trim()) {
-      setError(t('nutr.create_article.error_text'));
-      return;
-    }
     if (!picture) {
       setError(t('nutr.create_article.error_image'));
       return;
@@ -59,7 +51,7 @@ const CreateArticle: NextPage = () => {
       });
 
       if (response.data?.createArticle.errors) {
-        setError(response.data.createArticle.errors[0].message);
+        setError(t(response.data.createArticle.errors[0].message));
         return;
       }
 

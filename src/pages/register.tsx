@@ -17,31 +17,6 @@ interface MyFormValues {
   role: string;
 }
 
-const validateForm = (
-  values: MyFormValues,
-  t: ReturnType<typeof useTranslation>['t'],
-) => {
-  const errors: Partial<MyFormValues> = {};
-
-  if (values.username.length <= 2)
-    errors.username = t('register.error_username_length');
-  else if (values.username.includes('@'))
-    errors.username = t('register.error_username_at');
-
-  if (!values.email.includes('@')) errors.email = t('register.error_email');
-
-  if (
-    values.password.length <= 4 ||
-    !values.password.match(/[A-Z]/) ||
-    !values.password.match(/[-!$%^&*()_+|~=`{}\[\]:";'<>?,.\/]/)
-  )
-    errors.password = t('register.error_password');
-
-  if (!values.role) errors.role = t('register.error_role');
-
-  return errors;
-};
-
 const Register: NextPage = () => {
   const router = useRouter();
   const [register] = useRegisterMutation();
@@ -97,13 +72,17 @@ const Register: NextPage = () => {
 
         <Formik
           initialValues={initialValues}
-          validate={(values) => validateForm(values, t)}
           onSubmit={async (values: MyFormValues, { setErrors }) => {
             const response = await register({
               variables: { options: values },
             });
             if (response.data?.register.errors) {
-              setErrors(toErrorMap(response.data.register.errors));
+              const errorMap = toErrorMap(response.data.register.errors);
+              setErrors(
+                Object.fromEntries(
+                  Object.entries(errorMap).map(([k, v]) => [k, t(v)]),
+                ),
+              );
             } else if (response.data?.register.user) {
               router.push('/');
             }

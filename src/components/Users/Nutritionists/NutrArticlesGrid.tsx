@@ -37,7 +37,7 @@ export default function NutrArticlesGrid({ nutritionistId }: Props) {
         </div>
       ) : articles.length === 0 && offset === 0 ? (
         <p className="text-center text-sm text-gray-300">
-          {t('chef.profile.no_articles', 'No articles yet.')}
+          {t('chef.profile.no_articles')}
         </p>
       ) : (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -74,7 +74,6 @@ export default function NutrArticlesGrid({ nutritionistId }: Props) {
         </div>
       )}
 
-      {/* Prev / Next */}
       {!loading && (hasPrev || (hasMore && articles.length > 0)) && (
         <div className="mt-6 flex justify-center gap-4">
           {hasPrev && (
