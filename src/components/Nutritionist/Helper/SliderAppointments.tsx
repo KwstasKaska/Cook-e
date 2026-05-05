@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import { useTranslation } from 'next-i18next';
 import { format } from 'date-fns';
 import { el, enUS } from 'date-fns/locale';
@@ -11,15 +11,10 @@ import {
   AppointmentStatus,
 } from '../../../generated/graphql';
 
-// ── Helper
-
-// Slot dates are stored as ISO (YYYY-MM-DD) — format for display only
 const toDisplay = (isoDate: string, locale: Locale): string => {
   const [year, month, day] = isoDate.split('-').map(Number);
   return format(new Date(year, month - 1, day), 'dd MMMM yyyy', { locale });
 };
-
-// ── Slider arrows
 
 function SampleArrow(props: any) {
   const { className, style, onClick } = props;
@@ -58,7 +53,6 @@ const settingsCalendar: Settings = {
 const SliderAppointments: React.FC = () => {
   const { t, i18n } = useTranslation('common');
   const { selectedDate } = useContext(DateContext);
-  const [respondError, setRespondError] = useState<string>('');
 
   const dateFnsLocale = i18n.language === 'el' ? el : enUS;
 
@@ -70,7 +64,6 @@ const SliderAppointments: React.FC = () => {
   const [respondToAppointmentRequest] =
     useRespondToAppointmentRequestMutation();
 
-  // selectedDate is ISO — slot.date is ISO — direct comparison always works
   const pendingRequests = (
     data?.getAppointmentRequestsForNutritionist ?? []
   ).filter(
@@ -82,19 +75,8 @@ const SliderAppointments: React.FC = () => {
     requestId: number,
     status: AppointmentStatus,
   ) => {
-    setRespondError('');
-    try {
-      const result = await respondToAppointmentRequest({
-        variables: { requestId, status },
-      });
-      if (!result.data?.respondToAppointmentRequest) {
-        setRespondError(t('nutr.respondError'));
-        return;
-      }
-      await refetch();
-    } catch {
-      setRespondError(t('nutr.serverError'));
-    }
+    await respondToAppointmentRequest({ variables: { requestId, status } });
+    await refetch();
   };
 
   if (loading) return null;
@@ -105,14 +87,8 @@ const SliderAppointments: React.FC = () => {
 
   return (
     <div>
-      {respondError && (
-        <p className="mb-4 text-center text-sm font-semibold text-myRed">
-          {respondError}
-        </p>
-      )}
-
       {pendingRequests.length === 0 ? (
-        <div className="mt-10 mb-6 text-center  text-base font-bold leading-relaxed md:mt-0 md:text-lg">
+        <div className="mt-10 mb-6 text-center text-base font-bold leading-relaxed md:mt-0 md:text-lg">
           {t('nutr.noAppointmentRequestsFor')}
           <div className="text-myBlue-200">{displayDate}</div>
         </div>
@@ -140,7 +116,7 @@ const SliderAppointments: React.FC = () => {
                         <br />
                         {request.slot?.time}
                       </p>
-                      <div className="absolute -bottom-6 left-5 flex   items-center justify-center text-lg font-bold text-white">
+                      <div className="absolute -bottom-6 left-5 flex items-center justify-center text-lg font-bold text-white">
                         <img
                           className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full"
                           src={request.client?.image ?? undefined}
@@ -155,7 +131,7 @@ const SliderAppointments: React.FC = () => {
                       </p>
                     </div>
 
-                    <div className="mt-8 mb-8 flex justify-center gap-4  font-normal">
+                    <div className="mt-8 mb-8 flex justify-center gap-4 font-normal">
                       <button
                         onClick={() =>
                           handleRespond(request.id, AppointmentStatus.Accepted)

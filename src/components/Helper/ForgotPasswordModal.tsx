@@ -10,7 +10,6 @@ interface Props {
 
 const ForgotPasswordModal: React.FC<Props> = ({ onClose }) => {
   const [complete, setComplete] = useState(false);
-  const [serverError, setServerError] = useState('');
   const [forgotPassword] = useForgotPasswordMutation();
   const { t } = useTranslation('common');
 
@@ -31,13 +30,8 @@ const ForgotPasswordModal: React.FC<Props> = ({ onClose }) => {
           <Formik
             initialValues={{ email: '' }}
             onSubmit={async (values) => {
-              setServerError('');
-              try {
-                await forgotPassword({ variables: values });
-                setComplete(true);
-              } catch {
-                setServerError(t('change_password.server_error'));
-              }
+              await forgotPassword({ variables: values });
+              setComplete(true);
             }}
           >
             {({ isSubmitting }) => (
@@ -48,12 +42,6 @@ const ForgotPasswordModal: React.FC<Props> = ({ onClose }) => {
                   placeholder="Email"
                   className="w-full rounded-xl border border-gray-200 text-black placeholder:italic placeholder:text-myBlue-200 focus:outline-none"
                 />
-
-                {serverError && (
-                  <p className="text-center text-xs font-bold text-red-500">
-                    {serverError}
-                  </p>
-                )}
 
                 <button
                   type="submit"
@@ -66,7 +54,7 @@ const ForgotPasswordModal: React.FC<Props> = ({ onClose }) => {
                 <button
                   type="button"
                   onClick={onClose}
-                  className="text-center text-sm text-gray-400 underline hover: transition"
+                  className="text-center text-sm text-gray-400 underline transition"
                 >
                   {t('common.back')}
                 </button>

@@ -102,11 +102,6 @@ export function SaveButton({
   );
 }
 
-export function ServerError({ message }: { message: string | null }) {
-  if (!message) return null;
-  return <p className="mt-3 text-sm text-center text-myRed">{message}</p>;
-}
-
 export function SuccessBanner({ message }: { message: string | null }) {
   if (!message) return null;
   return <p className="mt-3 text-sm text-center text-myBlue-200">{message}</p>;

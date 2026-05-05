@@ -70,34 +70,27 @@ export default function ChatWidget({ currentUserId }: ChatWidgetProps) {
 
     async function initConversation() {
       setStartError('');
-      try {
-        const result = await startConversation({
-          variables: { participantId: pendingUserId! },
-        });
-        clearPending();
+      const result = await startConversation({
+        variables: { participantId: pendingUserId! },
+      });
+      clearPending();
 
-        if (result.data?.startConversation?.errors?.length) {
-          setStartError(result.data.startConversation.errors[0].message);
-          setView('inbox');
-          return;
-        }
-
-        const convo = result.data?.startConversation?.conversation;
-        if (convo) {
-          setActiveConvoId(convo.id);
-          setView('thread');
-          setSendError('');
-          setBody('');
-        }
-      } catch {
-        clearPending();
-        setStartError('Κάτι πήγε λάθος. Δοκιμάστε ξανά.');
+      if (result.data?.startConversation?.errors?.length) {
+        setStartError(result.data.startConversation.errors[0].message);
         setView('inbox');
+        return;
+      }
+
+      const convo = result.data?.startConversation?.conversation;
+      if (convo) {
+        setActiveConvoId(convo.id);
+        setView('thread');
+        setSendError('');
+        setBody('');
       }
     }
 
     initConversation();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pendingUserId]);
 
   function getOtherParticipant(convo: {
@@ -123,18 +116,14 @@ export default function ChatWidget({ currentUserId }: ChatWidgetProps) {
     if (!body.trim()) return;
     setSendError('');
 
-    try {
-      const result = await sendMessage({
-        variables: { conversationId: activeConvoId!, body: body.trim() },
-      });
-      if (result.data?.sendMessage?.errors?.length) {
-        setSendError(result.data.sendMessage.errors[0].message);
-        return;
-      }
-      setBody('');
-    } catch {
-      setSendError('Κάτι πήγε λάθος. Δοκιμάστε ξανά.');
+    const result = await sendMessage({
+      variables: { conversationId: activeConvoId!, body: body.trim() },
+    });
+    if (result.data?.sendMessage?.errors?.length) {
+      setSendError(result.data.sendMessage.errors[0].message);
+      return;
     }
+    setBody('');
   }
 
   function handleKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {

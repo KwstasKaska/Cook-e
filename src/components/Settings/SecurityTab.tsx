@@ -1,13 +1,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'next-i18next';
 import { useUpdateUserMutation } from '../../generated/graphql';
-import {
-  Field,
-  FieldGroup,
-  SaveButton,
-  ServerError,
-  SuccessBanner,
-} from './SettingsUI';
+import { Field, FieldGroup, SaveButton, SuccessBanner } from './SettingsUI';
 
 export default function SecurityTab() {
   const { t } = useTranslation('common');
@@ -15,13 +9,11 @@ export default function SecurityTab() {
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
-  const [serverError, setServerError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [updateUser, { loading }] = useUpdateUserMutation();
 
   const handleSave = async () => {
     setFieldErrors({});
-    setServerError(null);
     setSuccess(null);
 
     if (!currentPassword) {
@@ -52,8 +44,6 @@ export default function SecurityTab() {
       }));
       return;
     }
-
-    // έλεγχοι για την σωστή αντιμετώπιση αλλαγής κωδικού
     if (newPassword.length <= 4) {
       setFieldErrors((p) => ({
         ...p,
@@ -76,27 +66,23 @@ export default function SecurityTab() {
       return;
     }
 
-    try {
-      const result = await updateUser({
-        variables: { data: { currentPassword, newPassword } },
-      });
+    const result = await updateUser({
+      variables: { data: { currentPassword, newPassword } },
+    });
 
-      if (result.data?.updateUser.errors) {
-        const errs: Record<string, string> = {};
-        for (const e of result.data.updateUser.errors) {
-          errs[e.field] = e.message;
-        }
-        setFieldErrors(errs);
-        return;
+    if (result.data?.updateUser.errors) {
+      const errs: Record<string, string> = {};
+      for (const e of result.data.updateUser.errors) {
+        errs[e.field] = e.message;
       }
-
-      setCurrentPassword('');
-      setNewPassword('');
-      setConfirmPassword('');
-      setSuccess(t('settings.saveSuccess'));
-    } catch {
-      setServerError(t('settings.saveError'));
+      setFieldErrors(errs);
+      return;
     }
+
+    setCurrentPassword('');
+    setNewPassword('');
+    setConfirmPassword('');
+    setSuccess(t('settings.saveSuccess'));
   };
 
   return (
@@ -127,7 +113,6 @@ export default function SecurityTab() {
           error={fieldErrors.confirmPassword}
         />
       </FieldGroup>
-      <ServerError message={serverError} />
       <SuccessBanner message={success} />
       <SaveButton onClick={handleSave} loading={loading} />
     </div>

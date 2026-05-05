@@ -9,7 +9,6 @@ import {
   FieldGroup,
   TextArea,
   SaveButton,
-  ServerError,
   SuccessBanner,
 } from './SettingsUI';
 
@@ -21,7 +20,6 @@ export default function NutritionistProfileTab() {
   const [city, setCity] = useState(profile?.city_el ?? '');
   const [phone, setPhone] = useState(profile?.phone ?? '');
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
-  const [serverError, setServerError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [updateNutritionistProfile, { loading }] =
     useUpdateNutritionistProfileMutation();
@@ -35,19 +33,13 @@ export default function NutritionistProfileTab() {
 
   const handleSave = async () => {
     setFieldErrors({});
-    setServerError(null);
     setSuccess(null);
 
     const result = await updateNutritionistProfile({
       variables: { data: { bio_el: bio, city_el: city, phone } },
     });
 
-    if (!result.data) {
-      setServerError(t('settings.saveError'));
-      return;
-    }
-
-    if (result.data.updateNutritionistProfile.errors) {
+    if (result.data?.updateNutritionistProfile.errors) {
       const errs: Record<string, string> = {};
       for (const e of result.data.updateNutritionistProfile.errors) {
         errs[e.field] = e.message;
@@ -85,7 +77,6 @@ export default function NutritionistProfileTab() {
           error={fieldErrors.phone}
         />
       </FieldGroup>
-      <ServerError message={serverError} />
       <SuccessBanner message={success} />
       <SaveButton onClick={handleSave} loading={loading} />
     </div>

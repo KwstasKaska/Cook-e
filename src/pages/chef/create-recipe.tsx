@@ -32,7 +32,6 @@ export default function CreateRecipe() {
   const [currentStep, setCurrentStep] = useState(1);
   const TOTAL_STEPS = 5;
 
-  const [serverError, setServerError] = useState('');
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const { data: ingredientsData } = useIngredientsQuery({
     skip: authLoading || !isAuthorized,
@@ -147,7 +146,6 @@ export default function CreateRecipe() {
   };
 
   const handleFinish = async () => {
-    setServerError('');
     setFieldErrors({});
 
     const validIngredients = form.ingredients.filter(
@@ -172,66 +170,60 @@ export default function CreateRecipe() {
       return;
     }
 
-    try {
-      let recipeImageUrl: string | undefined;
-      if (imageFile) {
-        recipeImageUrl = await uploadToCloudinary(imageFile);
-      }
+    let recipeImageUrl: string | undefined;
+    if (imageFile) {
+      recipeImageUrl = await uploadToCloudinary(imageFile);
+    }
 
-      const res = await createRecipe({
-        variables: {
-          data: {
-            title: form.title.trim(),
-            difficulty: form.difficulty as Difficulty,
-            prepTime: Number(form.prepTime),
-            cookTime: Number(form.cookTime),
-            ...(form.restTime &&
-              Number(form.restTime) > 0 && {
-                restTime: Number(form.restTime),
-              }),
-            ...(form.personalNote.trim() && {
-              chefComment: form.personalNote.trim(),
+    const res = await createRecipe({
+      variables: {
+        data: {
+          title: form.title.trim(),
+          difficulty: form.difficulty as Difficulty,
+          prepTime: Number(form.prepTime),
+          cookTime: Number(form.cookTime),
+          ...(form.restTime &&
+            Number(form.restTime) > 0 && { restTime: Number(form.restTime) }),
+          ...(form.personalNote.trim() && {
+            chefComment: form.personalNote.trim(),
+          }),
+          ...(form.summary.trim() && { description: form.summary.trim() }),
+          ...(form.category && { category: form.category as RecipeCategory }),
+          ...(form.cuisine.trim() && { foodEthnicity: form.cuisine.trim() }),
+          ...(recipeImageUrl && { recipeImage: recipeImageUrl }),
+          ...(selectedUtensilIds.length > 0 && {
+            utensilIds: selectedUtensilIds,
+          }),
+          ...(form.caloriesTotal &&
+            Number(form.caloriesTotal) > 0 && {
+              caloriesTotal: Number(form.caloriesTotal),
             }),
-            ...(form.summary.trim() && { description: form.summary.trim() }),
-            ...(form.category && { category: form.category as RecipeCategory }),
-            ...(form.cuisine.trim() && { foodEthnicity: form.cuisine.trim() }),
-            ...(recipeImageUrl && { recipeImage: recipeImageUrl }),
-            ...(selectedUtensilIds.length > 0 && {
-              utensilIds: selectedUtensilIds,
-            }),
-            ...(form.caloriesTotal &&
-              Number(form.caloriesTotal) > 0 && {
-                caloriesTotal: Number(form.caloriesTotal),
-              }),
-            ...(form.protein &&
-              Number(form.protein) > 0 && { protein: Number(form.protein) }),
-            ...(form.carbs &&
-              Number(form.carbs) > 0 && { carbs: Number(form.carbs) }),
-            ...(form.fat && Number(form.fat) > 0 && { fat: Number(form.fat) }),
-            ingredients: validIngredients.map((r) => ({
-              ingredientId: r.ingredientId,
-              quantity: r.quantity,
-              unit: r.unit,
-            })),
-            steps: validSteps.map((s) => ({ body: s.text.trim() })),
-          },
+          ...(form.protein &&
+            Number(form.protein) > 0 && { protein: Number(form.protein) }),
+          ...(form.carbs &&
+            Number(form.carbs) > 0 && { carbs: Number(form.carbs) }),
+          ...(form.fat && Number(form.fat) > 0 && { fat: Number(form.fat) }),
+          ingredients: validIngredients.map((r) => ({
+            ingredientId: r.ingredientId,
+            quantity: r.quantity,
+            unit: r.unit,
+          })),
+          steps: validSteps.map((s) => ({ body: s.text.trim() })),
         },
-      });
+      },
+    });
 
-      const result = res.data?.createRecipe;
-      if (result?.errors?.length) {
-        const mapped: Record<string, string> = {};
-        result.errors.forEach((e) => {
-          mapped[e.field] = e.message;
-        });
-        setFieldErrors(mapped);
-        return;
-      }
-      if (result?.recipe?.id) {
-        router.push(`/chef/recipes/${result.recipe.id}`);
-      }
-    } catch {
-      setServerError(t('chef.create_recipe.error_server'));
+    const result = res.data?.createRecipe;
+    if (result?.errors?.length) {
+      const mapped: Record<string, string> = {};
+      result.errors.forEach((e) => {
+        mapped[e.field] = e.message;
+      });
+      setFieldErrors(mapped);
+      return;
+    }
+    if (result?.recipe?.id) {
+      router.push(`/chef/recipes/${result.recipe.id}`);
     }
   };
 
@@ -269,7 +261,6 @@ export default function CreateRecipe() {
           <StepFive
             form={form}
             fieldErrors={fieldErrors}
-            serverError={serverError}
             selectedUtensilIds={selectedUtensilIds}
             onAddStep={addStep}
             onUpdateStep={updateStep}
@@ -355,7 +346,6 @@ export default function CreateRecipe() {
               </div>
             </div>
 
-            {/* Spine — desktop only */}
             <div className="hidden md:flex flex-col items-center justify-center w-8 bg-myBlue-100 flex-shrink-0">
               {[0, 1, 2].map((i) => (
                 <div
@@ -365,7 +355,6 @@ export default function CreateRecipe() {
               ))}
             </div>
 
-            {/* RIGHT panel — desktop only */}
             <div
               className="hidden md:flex flex-col p-5 md:w-1/2"
               style={{ backgroundColor: '#E8EEF5', minHeight: '500px' }}
@@ -375,7 +364,6 @@ export default function CreateRecipe() {
           </div>
         </div>
 
-        {/* Step dots */}
         <div className="mt-4 flex gap-2">
           {Array.from({ length: TOTAL_STEPS }).map((_, i) => (
             <div

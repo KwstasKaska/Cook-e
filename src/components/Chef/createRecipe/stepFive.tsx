@@ -2,12 +2,9 @@ import { useTranslation } from 'next-i18next';
 import { useUtensilsQuery } from '../../../generated/graphql';
 import { FormData } from './types';
 
-// ─── Step 5: Execution Steps + Utensils ──────────────────────────────────────
-
 interface StepFiveProps {
   form: FormData;
   fieldErrors: Record<string, string>;
-  serverError: string;
   selectedUtensilIds: number[];
   onAddStep: () => void;
   onUpdateStep: (id: number, value: string) => void;
@@ -18,7 +15,6 @@ interface StepFiveProps {
 export default function StepFive({
   form,
   fieldErrors,
-  serverError,
   selectedUtensilIds,
   onAddStep,
   onUpdateStep,
@@ -35,7 +31,7 @@ export default function StepFive({
         {t('chef.create_recipe.step5_title')}
       </h2>
 
-      <h3 className="mb-4 text-base  font-black">
+      <h3 className="mb-4 text-base font-black">
         {t('chef.create_recipe.execution_label')}
       </h3>
 
@@ -54,7 +50,7 @@ export default function StepFive({
               onChange={(e) => onUpdateStep(s.id, e.target.value)}
               placeholder={t('chef.create_recipe.step_placeholder')}
               rows={3}
-              className="flex-1 resize-none rounded-xl border-b border-gray-200 bg-gray-50 px-3 py-2 text-sm outline-none placeholder:text-gray-300  focus:border-gray-400"
+              className="flex-1 resize-none rounded-xl border-b border-gray-200 bg-gray-50 px-3 py-2 text-sm outline-none placeholder:text-gray-300 focus:border-gray-400"
             />
             {form.steps.length > 1 && (
               <button
@@ -84,15 +80,14 @@ export default function StepFive({
       <button
         type="button"
         onClick={onAddStep}
-        className="mt-4 rounded-full border px-5 py-2 text-sm font-semibold transition  border-myGrey-200 hover:bg-gray-50"
+        className="mt-4 rounded-full border px-5 py-2 text-sm font-semibold transition border-myGrey-200 hover:bg-gray-50"
       >
         {t('chef.create_recipe.add_step')}
       </button>
 
-      {/* Utensils */}
       {utensilsData?.utensils && utensilsData.utensils.length > 0 && (
         <div className="mt-6">
-          <h3 className="mb-3 text-base  font-black">
+          <h3 className="mb-3 text-base font-black">
             {t('chef.create_recipe.utensils_label')}
           </h3>
           <div className="flex flex-wrap gap-2">
@@ -117,10 +112,8 @@ export default function StepFive({
         </div>
       )}
 
-      {(serverError || fieldErrors.server) && (
-        <p className="mt-4 text-xs text-red-500">
-          {serverError || fieldErrors.server}
-        </p>
+      {fieldErrors.server && (
+        <p className="mt-4 text-xs text-red-500">{fieldErrors.server}</p>
       )}
     </div>
   );

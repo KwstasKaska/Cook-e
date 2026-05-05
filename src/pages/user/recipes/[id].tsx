@@ -149,35 +149,27 @@ function RecipeDetailContent() {
   const handleAddToCart = useCallback(
     async (ingredientId: number) => {
       setServerError('');
-      try {
-        await addToCart({ variables: { ingredientId } });
-        setAddedToCart((prev) => new Set(prev).add(ingredientId));
-        setTimeout(() => {
-          setAddedToCart((prev) => {
-            const next = new Set(prev);
-            next.delete(ingredientId);
-            return next;
-          });
-        }, 1500);
-      } catch {
-        setServerError(t('cart.addError'));
-      }
+      await addToCart({ variables: { ingredientId } });
+      setAddedToCart((prev) => new Set(prev).add(ingredientId));
+      setTimeout(() => {
+        setAddedToCart((prev) => {
+          const next = new Set(prev);
+          next.delete(ingredientId);
+          return next;
+        });
+      }, 1500);
     },
-    [addToCart, t],
+    [addToCart],
   );
 
   const handleToggleFavorite = async () => {
     setServerError('');
-    try {
-      if (isFavorited) {
-        await unsaveRecipe({ variables: { recipeId } });
-      } else {
-        await saveRecipe({ variables: { recipeId } });
-      }
-      await refetchFav();
-    } catch {
-      setServerError(t('recipes.errorGeneric'));
+    if (isFavorited) {
+      await unsaveRecipe({ variables: { recipeId } });
+    } else {
+      await saveRecipe({ variables: { recipeId } });
     }
+    await refetchFav();
   };
 
   const handleRate = async () => {
@@ -187,40 +179,28 @@ function RecipeDetailContent() {
       setRatingError(t('recipes.ratingScoreError'));
       return;
     }
-    try {
-      await rateRecipe({ variables: { recipeId, score: ratingScore } });
-      setRatingSuccess(t('recipes.ratingSuccess'));
-      setRatingScore(0);
-      await refetchRatings();
-      await refetchMyRating();
-    } catch {
-      setRatingError(t('recipes.errorGeneric'));
-    }
+    await rateRecipe({ variables: { recipeId, score: ratingScore } });
+    setRatingSuccess(t('recipes.ratingSuccess'));
+    setRatingScore(0);
+    await refetchRatings();
+    await refetchMyRating();
   };
 
   const handleDeleteRating = async () => {
     setRatingError('');
     setRatingSuccess('');
-    try {
-      await deleteRecipeRating({ variables: { recipeId } });
-      setRatingScore(0);
-      setRatingSuccess(t('recipes.ratingDeleted'));
-      await refetchRatings();
-      await refetchMyRating();
-    } catch {
-      setRatingError(t('recipes.errorGeneric'));
-    }
+    await deleteRecipeRating({ variables: { recipeId } });
+    setRatingScore(0);
+    setRatingSuccess(t('recipes.ratingDeleted'));
+    await refetchRatings();
+    await refetchMyRating();
   };
 
   const handleLogCooked = async () => {
     setServerError('');
-    try {
-      await logCookedRecipe({ variables: { recipeId } });
-      setCookedSuccess(true);
-      setTimeout(() => setCookedSuccess(false), 2000);
-    } catch {
-      setServerError(t('recipes.errorGeneric'));
-    }
+    await logCookedRecipe({ variables: { recipeId } });
+    setCookedSuccess(true);
+    setTimeout(() => setCookedSuccess(false), 2000);
   };
 
   const handleLoadMoreRatings = () => {
@@ -482,11 +462,9 @@ function RecipeDetailContent() {
                       {recipe.author.user.username[0].toUpperCase()}
                     </div>
                   )}
-
                   <span className="text-base font-bold text-gray-700 group-hover:underline transition">
                     {recipe.author.user.username}
                   </span>
-
                   <span className="inline-flex bg-myBlue-100 text-myBlue-200 items-center gap-1 rounded-full px-3 py-0.5 text-xs font-semibold">
                     {t('chef.recipe_detail.view_chef_profile')} →
                   </span>

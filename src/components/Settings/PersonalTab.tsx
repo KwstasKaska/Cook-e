@@ -1,13 +1,7 @@
 import { useState, useRef } from 'react';
 import { useTranslation } from 'next-i18next';
 import { useUpdateUserMutation } from '../../generated/graphql';
-import {
-  Field,
-  FieldGroup,
-  SaveButton,
-  ServerError,
-  SuccessBanner,
-} from './SettingsUI';
+import { Field, FieldGroup, SaveButton, SuccessBanner } from './SettingsUI';
 import { uploadToCloudinary } from '../../utils/uploadToCloudinary';
 
 export default function PersonalTab({
@@ -22,7 +16,6 @@ export default function PersonalTab({
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
-  const [serverError, setServerError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -38,7 +31,6 @@ export default function PersonalTab({
 
   const handleSave = async () => {
     setFieldErrors({});
-    setServerError(null);
     setSuccess(null);
 
     if (!usernameVal.trim()) {
@@ -46,35 +38,31 @@ export default function PersonalTab({
       return;
     }
 
-    try {
-      let imageUrl: string | undefined;
-      if (imageFile) {
-        imageUrl = await uploadToCloudinary(imageFile);
-      }
-
-      const result = await updateUser({
-        variables: {
-          data: {
-            username: usernameVal,
-            ...(imageUrl && { image: imageUrl }),
-          },
-        },
-      });
-
-      if (result.data?.updateUser.errors) {
-        const errs: Record<string, string> = {};
-        for (const e of result.data.updateUser.errors) {
-          errs[e.field] = e.message;
-        }
-        setFieldErrors(errs);
-        return;
-      }
-
-      setImageFile(null);
-      setSuccess(t('settings.saveSuccess'));
-    } catch {
-      setServerError(t('settings.saveError'));
+    let imageUrl: string | undefined;
+    if (imageFile) {
+      imageUrl = await uploadToCloudinary(imageFile);
     }
+
+    const result = await updateUser({
+      variables: {
+        data: {
+          username: usernameVal,
+          ...(imageUrl && { image: imageUrl }),
+        },
+      },
+    });
+
+    if (result.data?.updateUser.errors) {
+      const errs: Record<string, string> = {};
+      for (const e of result.data.updateUser.errors) {
+        errs[e.field] = e.message;
+      }
+      setFieldErrors(errs);
+      return;
+    }
+
+    setImageFile(null);
+    setSuccess(t('settings.saveSuccess'));
   };
 
   const avatarSrc = imagePreview ?? image ?? null;
@@ -143,7 +131,6 @@ export default function PersonalTab({
         />
       </FieldGroup>
 
-      <ServerError message={serverError} />
       <SuccessBanner message={success} />
       <SaveButton onClick={handleSave} loading={loading} />
     </div>

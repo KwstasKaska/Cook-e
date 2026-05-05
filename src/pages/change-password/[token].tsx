@@ -18,58 +18,47 @@ const ChangePassword: NextPage = () => {
   const router = useRouter();
   const [changePassword] = useChangePasswordMutation();
   const [tokenError, setTokenError] = useState('');
-  const [serverError, setServerError] = useState('');
   const { t } = useTranslation('common');
 
   return (
     <main className="flex min-h-screen items-center justify-center bg-myBeige-100">
       <div className="grid gap-4 rounded-[1.5625em] border-[5px] border-myBlue-200 bg-myBlue-200 p-8">
-        <h1 className="text-center  text-2xl font-bold text-white">
+        <h1 className="text-center text-2xl font-bold text-white">
           {t('settings.changePassword')}
         </h1>
 
         <Formik
           initialValues={{ newPassword: '' }}
           onSubmit={async (values, { setErrors }) => {
-            setServerError('');
             setTokenError('');
-            try {
-              const response = await changePassword({
-                variables: {
-                  token:
-                    typeof router.query.token === 'string'
-                      ? router.query.token
-                      : '',
-                  newPassword: values.newPassword,
-                },
-                update: (cache, { data }) => {
-                  cache.writeQuery<MeQuery>({
-                    query: MeDocument,
-                    data: {
-                      __typename: 'Query',
-                      me: data?.changePassword.user,
-                    },
-                  });
-                },
-              });
+            const response = await changePassword({
+              variables: {
+                token:
+                  typeof router.query.token === 'string'
+                    ? router.query.token
+                    : '',
+                newPassword: values.newPassword,
+              },
+              update: (cache, { data }) => {
+                cache.writeQuery<MeQuery>({
+                  query: MeDocument,
+                  data: {
+                    __typename: 'Query',
+                    me: data?.changePassword.user,
+                  },
+                });
+              },
+            });
 
-              if (response.data?.changePassword.errors) {
-                const errorMap = toErrorMap(
-                  response.data.changePassword.errors,
-                );
-                if ('token' in errorMap) {
-                  setTokenError(errorMap.token);
-                }
-                setErrors(errorMap);
-              } else if (response.data?.changePassword.user) {
-                const role =
-                  response.data.changePassword.user.role.toLowerCase();
-                router.push(`/${role}`);
-              } else {
-                setServerError(t('change_password.server_error'));
+            if (response.data?.changePassword.errors) {
+              const errorMap = toErrorMap(response.data.changePassword.errors);
+              if ('token' in errorMap) {
+                setTokenError(errorMap.token);
               }
-            } catch {
-              setServerError(t('change_password.server_error'));
+              setErrors(errorMap);
+            } else if (response.data?.changePassword.user) {
+              const role = response.data.changePassword.user.role.toLowerCase();
+              router.push(`/${role}`);
             }
           }}
         >
@@ -88,12 +77,6 @@ const ChangePassword: NextPage = () => {
                   <Link href="/" className="underline">
                     {t('change_password.token_error_link')}
                   </Link>
-                </p>
-              )}
-
-              {serverError && (
-                <p className="text-center text-sm font-bold text-red-400">
-                  {serverError}
                 </p>
               )}
 

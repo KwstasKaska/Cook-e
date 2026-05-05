@@ -92,33 +92,26 @@ const CalendarC: React.FC = () => {
       setServerError(t('nutr.selectTimeFirst'));
       return;
     }
-    try {
-      const result = await createAppointment({
-        variables: { data: { date: selectedDate, time } },
-      });
-      const errors = result.data?.createAppointment?.errors;
-      if (errors?.length) {
-        setServerError(errors[0].message);
-        return;
-      }
-      element.value = '';
-      setStart(0);
-      setEnd(4);
-      await refetchSlots();
-    } catch {
-      setServerError(t('nutr.serverError'));
+
+    const result = await createAppointment({
+      variables: { data: { date: selectedDate, time } },
+    });
+    const errors = result.data?.createAppointment?.errors;
+    if (errors?.length) {
+      setServerError(errors[0].message);
+      return;
     }
+    element.value = '';
+    setStart(0);
+    setEnd(4);
+    await refetchSlots();
   };
 
   const handleDelete = async (slotId: number) => {
     setServerError('');
-    try {
-      await deleteAppointment({ variables: { slotId } });
-      setStart((prev) => Math.max(prev - 1, 0));
-      await refetchSlots();
-    } catch {
-      setServerError(t('nutr.serverError'));
-    }
+    await deleteAppointment({ variables: { slotId } });
+    setStart((prev) => Math.max(prev - 1, 0));
+    await refetchSlots();
   };
 
   const handleLoadMore = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -195,7 +188,7 @@ const CalendarC: React.FC = () => {
 
             <form
               onSubmit={handleSubmit}
-              className="mt-4  mb-6 flex flex-col items-center gap-3"
+              className="mt-4 mb-6 flex flex-col items-center gap-3"
             >
               <label htmlFor="time" className="text-base font-bold">
                 {t('nutr.selectTime')}:{' '}

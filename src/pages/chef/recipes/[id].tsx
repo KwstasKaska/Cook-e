@@ -35,8 +35,6 @@ import RecipeMacrosCard from '../../../components/Chef/recipeDetail/RecipeMacros
 import ScrollToTopButton from '../../../components/Helper/ScrollToTopButton';
 import Stars from '../../../components/Helper/Stars';
 
-// Page
-
 export default function ChefSingleRecipe() {
   const { loading: authLoading, isAuthorized } = useIsChef();
   const { t, i18n } = useTranslation('common');
@@ -102,7 +100,6 @@ export default function ChefSingleRecipe() {
     }
   };
 
-  // ── Save ───────────────────────────────────────────────────────────────────
   const handleSave = async () => {
     if (!editForm || !recipe) return;
     setFieldErrors({});
@@ -126,87 +123,78 @@ export default function ChefSingleRecipe() {
       return;
     }
 
-    try {
-      let recipeImageUrl: string | undefined;
-      if (imageFile) {
-        recipeImageUrl = await uploadToCloudinary(imageFile);
-      } else if (editForm.recipeImage) {
-        recipeImageUrl = editForm.recipeImage;
-      }
-
-      const res = await updateRecipe({
-        variables: {
-          data: {
-            id: recipe.id,
-            ...(editForm.title.trim() && { title: editForm.title.trim() }),
-            ...(editForm.description.trim() && {
-              description: editForm.description.trim(),
-            }),
-            ...(editForm.chefComment.trim() && {
-              chefComment: editForm.chefComment.trim(),
-            }),
-            ...(recipeImageUrl && { recipeImage: recipeImageUrl }),
-            ...(editForm.difficulty && {
-              difficulty: editForm.difficulty as Difficulty,
-            }),
-            ...(editForm.prepTime && { prepTime: Number(editForm.prepTime) }),
-            ...(editForm.cookTime && { cookTime: Number(editForm.cookTime) }),
-            ...(editForm.restTime && { restTime: Number(editForm.restTime) }),
-            ...(editForm.foodEthnicity.trim() && {
-              foodEthnicity: editForm.foodEthnicity.trim(),
-            }),
-            ...(editForm.category && {
-              category: editForm.category as RecipeCategory,
-            }),
-            ...(editForm.caloriesTotal && {
-              caloriesTotal: Number(editForm.caloriesTotal),
-            }),
-            ...(editForm.protein && { protein: Number(editForm.protein) }),
-            ...(editForm.carbs && { carbs: Number(editForm.carbs) }),
-            ...(editForm.fat && { fat: Number(editForm.fat) }),
-            ingredients: validIngredients.map((r) => ({
-              ingredientId: r.ingredientId,
-              quantity: r.quantity,
-              unit: r.unit,
-            })),
-            steps: validSteps.map((s) => ({ body: s.body.trim() })),
-          },
-        },
-      });
-
-      const result = res.data?.updateRecipe;
-
-      if (result?.errors?.length) {
-        const mapped: Record<string, string> = {};
-        result.errors.forEach((e: { field: string; message: string }) => {
-          mapped[e.field] = e.message;
-        });
-        setFieldErrors(mapped);
-        return;
-      }
-
-      if (result?.recipe) {
-        setEditForm(buildEditForm(result.recipe, lang));
-      }
-
-      setImageFile(null);
-      setImagePreview(null);
-      setIsEditing(false);
-    } catch {
-      setServerError(t('chef.recipe_detail.error_server'));
+    let recipeImageUrl: string | undefined;
+    if (imageFile) {
+      recipeImageUrl = await uploadToCloudinary(imageFile);
+    } else if (editForm.recipeImage) {
+      recipeImageUrl = editForm.recipeImage;
     }
+
+    const res = await updateRecipe({
+      variables: {
+        data: {
+          id: recipe.id,
+          ...(editForm.title.trim() && { title: editForm.title.trim() }),
+          ...(editForm.description.trim() && {
+            description: editForm.description.trim(),
+          }),
+          ...(editForm.chefComment.trim() && {
+            chefComment: editForm.chefComment.trim(),
+          }),
+          ...(recipeImageUrl && { recipeImage: recipeImageUrl }),
+          ...(editForm.difficulty && {
+            difficulty: editForm.difficulty as Difficulty,
+          }),
+          ...(editForm.prepTime && { prepTime: Number(editForm.prepTime) }),
+          ...(editForm.cookTime && { cookTime: Number(editForm.cookTime) }),
+          ...(editForm.restTime && { restTime: Number(editForm.restTime) }),
+          ...(editForm.foodEthnicity.trim() && {
+            foodEthnicity: editForm.foodEthnicity.trim(),
+          }),
+          ...(editForm.category && {
+            category: editForm.category as RecipeCategory,
+          }),
+          ...(editForm.caloriesTotal && {
+            caloriesTotal: Number(editForm.caloriesTotal),
+          }),
+          ...(editForm.protein && { protein: Number(editForm.protein) }),
+          ...(editForm.carbs && { carbs: Number(editForm.carbs) }),
+          ...(editForm.fat && { fat: Number(editForm.fat) }),
+          ingredients: validIngredients.map((r) => ({
+            ingredientId: r.ingredientId,
+            quantity: r.quantity,
+            unit: r.unit,
+          })),
+          steps: validSteps.map((s) => ({ body: s.body.trim() })),
+        },
+      },
+    });
+
+    const result = res.data?.updateRecipe;
+
+    if (result?.errors?.length) {
+      const mapped: Record<string, string> = {};
+      result.errors.forEach((e: { field: string; message: string }) => {
+        mapped[e.field] = e.message;
+      });
+      setFieldErrors(mapped);
+      return;
+    }
+
+    if (result?.recipe) {
+      setEditForm(buildEditForm(result.recipe, lang));
+    }
+
+    setImageFile(null);
+    setImagePreview(null);
+    setIsEditing(false);
   };
 
-  // ── Delete ─────────────────────────────────────────────────────────────────
   const handleDelete = async () => {
     if (!recipe) return;
     if (!window.confirm(t('chef.recipe_detail.confirm_delete'))) return;
-    try {
-      await deleteRecipe({ variables: { id: recipe.id } });
-      router.push('/chef/recipes');
-    } catch {
-      setServerError(t('chef.recipe_detail.error_server'));
-    }
+    await deleteRecipe({ variables: { id: recipe.id } });
+    router.push('/chef/recipes');
   };
 
   const handleCancel = () => {
@@ -218,7 +206,6 @@ export default function ChefSingleRecipe() {
     setIsEditing(false);
   };
 
-  // ── Derived ────────────────────────────────────────────────────────────────
   const totalTime = recipe
     ? (recipe.prepTime || 0) + (recipe.cookTime || 0) + (recipe.restTime || 0)
     : 0;
@@ -233,7 +220,6 @@ export default function ChefSingleRecipe() {
       lang === 'el' ? 'labelEl' : 'labelEn'
     ] ?? '';
 
-  //  Loading / not found
   if (loading || !recipe || !editForm) {
     return (
       <div className="flex min-h-screen flex-col">
@@ -270,7 +256,6 @@ export default function ChefSingleRecipe() {
   return (
     <div className="flex min-h-screen flex-col">
       <ChefNavbar />
-
       <main className="flex flex-1 flex-col items-center px-4 py-8 md:px-8">
         <div className="w-full max-w-3xl overflow-hidden rounded-2xl bg-white shadow-2xl">
           <RecipeHeroImage
@@ -280,7 +265,6 @@ export default function ChefSingleRecipe() {
             lang={lang}
           />
 
-          {/* Action buttons */}
           <div className="px-6 pt-4 pb-2">
             <RecipeActionButtons
               isEditing={isEditing}
@@ -309,9 +293,7 @@ export default function ChefSingleRecipe() {
           )}
 
           <div className="flex flex-col gap-6 p-6 md:flex-row md:p-8">
-            {/* LEFT column */}
             <div className="flex-1 min-w-0">
-              {/* Stars */}
               <div className="mb-4 flex items-center gap-2">
                 <Stars rating={avgRating} />
                 <span className="text-sm text-gray-400">
@@ -321,7 +303,6 @@ export default function ChefSingleRecipe() {
                 </span>
               </div>
 
-              {/* Description card — now contains title, difficulty, description, comment, chef name */}
               <RecipeDescriptionCard
                 recipe={recipe}
                 lang={lang}
@@ -379,7 +360,6 @@ export default function ChefSingleRecipe() {
               )}
             </div>
 
-            {/* RIGHT column */}
             <div className="flex flex-col gap-4 md:w-56 md:flex-shrink-0">
               <RecipeTimeBreakdown
                 timeBreakdown={timeBreakdown}

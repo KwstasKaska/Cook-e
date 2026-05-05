@@ -45,12 +45,10 @@ function ChefProfileContent() {
   const chefId = parseInt(id as string, 10);
   const { openConversation } = useChatContext();
 
-  // ── Rating state
   const [ratingScore, setRatingScore] = useState(0);
   const [ratingError, setRatingError] = useState('');
   const [ratingSuccess, setRatingSuccess] = useState('');
 
-  // ── Queries
   const { data: chefData, loading: chefLoading } = useChefQuery({
     variables: { id: chefId },
     skip: isNaN(chefId),
@@ -84,11 +82,9 @@ function ChefProfileContent() {
 
   const chef = chefData?.chef;
 
-  // ── Mutations
   const [rateChef, { loading: submitting }] = useRateChefMutation();
   const [deleteChefRating] = useDeleteChefRatingMutation();
 
-  // ── Derived state
   const avgRating = avgData?.chefAverageRating ?? 0;
   const reviews = ratingsData?.chefRatings ?? [];
   const myRating = myRatingData?.myChefRating ?? null;
@@ -97,7 +93,6 @@ function ChefProfileContent() {
   const hasMoreReviews =
     reviews.length > 0 && reviews.length % RATINGS_LIMIT === 0;
 
-  // ── Handlers
   const handleRate = useCallback(async () => {
     setRatingError('');
     setRatingSuccess('');
@@ -105,34 +100,26 @@ function ChefProfileContent() {
       setRatingError(t('recipes.ratingScoreError'));
       return;
     }
-    try {
-      await rateChef({ variables: { chefId, score: ratingScore } });
-      setRatingSuccess(t('recipes.ratingSuccess'));
-      setRatingScore(0);
-      await refetchRatings();
-      await refetchMyRating();
-    } catch {
-      setRatingError(t('recipes.errorGeneric'));
-    }
+    await rateChef({ variables: { chefId, score: ratingScore } });
+    setRatingSuccess(t('recipes.ratingSuccess'));
+    setRatingScore(0);
+    await refetchRatings();
+    await refetchMyRating();
   }, [rateChef, chefId, ratingScore, refetchRatings, refetchMyRating, t]);
 
   const handleDeleteRating = useCallback(async () => {
     setRatingError('');
     setRatingSuccess('');
-    try {
-      await deleteChefRating({ variables: { chefId } });
-      setRatingScore(0);
-      setRatingSuccess(t('recipes.ratingDeleted'));
-      await refetchRatings();
-      await refetchMyRating();
-    } catch {
-      setRatingError(t('recipes.errorGeneric'));
-    }
+    await deleteChefRating({ variables: { chefId } });
+    setRatingScore(0);
+    setRatingSuccess(t('recipes.ratingDeleted'));
+    await refetchRatings();
+    await refetchMyRating();
   }, [deleteChefRating, chefId, refetchRatings, refetchMyRating, t]);
 
   if (chefLoading) {
     return (
-      <div className="flex min-h-screen  items-center justify-center">
+      <div className="flex min-h-screen items-center justify-center">
         <div className="h-10 w-10 animate-spin rounded-full border-4 border-myBlue-200 border-t-transparent" />
       </div>
     );
@@ -140,19 +127,18 @@ function ChefProfileContent() {
 
   if (!chef) {
     return (
-      <div className="flex min-h-screen  items-center justify-center">
+      <div className="flex min-h-screen items-center justify-center">
         <p className="text-white">{t('chef.recipe_detail.not_found')}</p>
       </div>
     );
   }
 
   return (
-    <div className="flex min-h-screen  flex-col">
+    <div className="flex min-h-screen flex-col">
       <Navbar />
       <main className="flex-1">
         <div className="relative overflow-hidden">
           <div className="relative z-10 mx-auto max-w-4xl px-6 pb-20 pt-10">
-            {/* Back */}
             <button
               onClick={() => router.back()}
               className="mb-8 flex items-center gap-2 text-sm font-bold transition hover:opacity-80 text-myYellow"
@@ -173,9 +159,7 @@ function ChefProfileContent() {
             </button>
 
             <div className="grid grid-cols-1 gap-10 md:grid-cols-[1fr_340px] md:items-start">
-              {/* ── LEFT */}
               <div className="flex flex-col gap-6">
-                {/* Avatar + name + message */}
                 <div className="flex items-center gap-5">
                   {chef.user?.image ? (
                     <img
@@ -228,16 +212,13 @@ function ChefProfileContent() {
                   </p>
                 )}
 
-                {/* Recipes grid — self-contained */}
                 <ChefContentGrid chefId={chefId} />
 
-                {/* Articles grid — self-contained, needs User.id not ChefProfile.id */}
                 {chef.user?.id && (
                   <ChefArticlesGrid chefUserId={chef.user.id} />
                 )}
               </div>
 
-              {/* ── RIGHT */}
               <div className="flex flex-col gap-4">
                 <ChefRateForm
                   myRating={myRating}
@@ -249,7 +230,6 @@ function ChefProfileContent() {
                   onSubmit={handleRate}
                   onDelete={handleDeleteRating}
                 />
-
                 <ChefReviewsList
                   reviews={reviews as any}
                   loading={ratingsLoading}

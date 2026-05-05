@@ -9,8 +9,8 @@ import {
 } from '../../../generated/graphql';
 
 interface Props {
-  nutritionistProfileId: number; // NutritionistProfile.id — used to query slots
-  nutritionistUserId: number; // User.id — used for accepted appointment gate check
+  nutritionistProfileId: number;
+  nutritionistUserId: number;
   hasAcceptedAppointment: boolean;
 }
 
@@ -60,24 +60,22 @@ export default function NutrBookingSection({ nutritionistProfileId }: Props) {
     if (!selectedSlotId) return;
     setServerError('');
     setSuccessMsg('');
-    try {
-      const result = await requestAppointment({
-        variables: { data: { slotId: selectedSlotId } },
-      });
-      if (result.errors) {
-        setServerError(t('nutritionists.bookError'));
-        return;
-      }
-      const gqlErrors = (result.data?.requestAppointment as any)?.errors;
-      if (gqlErrors?.length) {
-        setServerError(gqlErrors[0].message);
-        return;
-      }
-      setSuccessMsg(t('nutritionists.bookSuccess'));
-      setSelectedSlotId(null);
-    } catch {
+
+    const result = await requestAppointment({
+      variables: { data: { slotId: selectedSlotId } },
+    });
+
+    if (result.errors) {
       setServerError(t('nutritionists.bookError'));
+      return;
     }
+    const gqlErrors = (result.data?.requestAppointment as any)?.errors;
+    if (gqlErrors?.length) {
+      setServerError(gqlErrors[0].message);
+      return;
+    }
+    setSuccessMsg(t('nutritionists.bookSuccess'));
+    setSelectedSlotId(null);
   };
 
   return (
@@ -88,12 +86,11 @@ export default function NutrBookingSection({ nutritionistProfileId }: Props) {
         </h2>
       </div>
 
-      {/* Month selector */}
       <div className="mb-6 flex items-center gap-4 self-start text-pink-400">
         <button
           onClick={() => handleMonthChange(-1)}
           disabled={monthIndex === 0}
-          className=" transition-colors hover:text-gray-300 disabled:opacity-30"
+          className="transition-colors hover:text-gray-300 disabled:opacity-30"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -110,13 +107,11 @@ export default function NutrBookingSection({ nutritionistProfileId }: Props) {
             />
           </svg>
         </button>
-        <span className="text-base font-semibold capitalize  ">
-          {monthName}
-        </span>
+        <span className="text-base font-semibold capitalize">{monthName}</span>
         <button
           onClick={() => handleMonthChange(1)}
           disabled={monthIndex === 11}
-          className=" transition-colors hover:text-gray-300 disabled:opacity-30"
+          className="transition-colors hover:text-gray-300 disabled:opacity-30"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -135,7 +130,6 @@ export default function NutrBookingSection({ nutritionistProfileId }: Props) {
         </button>
       </div>
 
-      {/* Slots */}
       {slotsLoading ? (
         <div className="flex justify-center py-8">
           <div className="h-6 w-6 animate-spin rounded-full border-4 border-myBlue-200 border-t-transparent" />
