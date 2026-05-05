@@ -248,9 +248,9 @@ function CartContent({
                 <div key={category} className="mb-2">
                   <button
                     onClick={() => setOpenCategory(isOpen ? null : category)}
-                    className="w-full flex items-center justify-between rounded-2xl bg-white bg-opacity-10 px-4 py-3 text-left transition hover:bg-opacity-15"
+                    className="w-full flex items-center justify-between rounded-2xl bg-myBlue-100  px-4 py-3 text-left "
                   >
-                    <span className="text-sm font-bold text-white">
+                    <span className="text-sm font-bold text-myGrey-200">
                       {category}
                     </span>
                     <svg
