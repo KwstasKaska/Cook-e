@@ -23,8 +23,6 @@ import StepOne from '../../components/Chef/createRecipe/stepOne';
 import StepThree from '../../components/Chef/createRecipe/stepThree';
 import StepTwo from '../../components/Chef/createRecipe/stepTwo';
 
-//  Main page
-
 export default function CreateRecipe() {
   const { loading: authLoading, isAuthorized } = useIsChef();
   const { t, i18n } = useTranslation('common');
@@ -98,7 +96,6 @@ export default function CreateRecipe() {
     }
   };
 
-  //Ingredient helpers
   const addIngredient = () =>
     update('ingredients', [
       ...form.ingredients,
@@ -121,7 +118,6 @@ export default function CreateRecipe() {
       form.ingredients.filter((i) => i.id !== id),
     );
 
-  // ── Step helpers ───────────────────────────────────────────────────────────
   const addStep = () =>
     update('steps', [...form.steps, { id: Date.now(), text: '' }]);
 
@@ -137,13 +133,11 @@ export default function CreateRecipe() {
       form.steps.filter((s) => s.id !== id),
     );
 
-  // ── Utensil toggle ─────────────────────────────────────────────────────────
   const toggleUtensil = (id: number) =>
     setSelectedUtensilIds((prev) =>
       prev.includes(id) ? prev.filter((u) => u !== id) : [...prev, id],
     );
 
-  // ── Navigation ─────────────────────────────────────────────────────────────
   const handleNext = () => {
     if (currentStep < TOTAL_STEPS) setCurrentStep((s) => s + 1);
   };
@@ -152,7 +146,6 @@ export default function CreateRecipe() {
     if (currentStep > 1) setCurrentStep((s) => s - 1);
   };
 
-  // ── Submit ─────────────────────────────────────────────────────────────────
   const handleFinish = async () => {
     setServerError('');
     setFieldErrors({});
@@ -211,17 +204,10 @@ export default function CreateRecipe() {
                 caloriesTotal: Number(form.caloriesTotal),
               }),
             ...(form.protein &&
-              Number(form.protein) > 0 && {
-                protein: Number(form.protein),
-              }),
+              Number(form.protein) > 0 && { protein: Number(form.protein) }),
             ...(form.carbs &&
-              Number(form.carbs) > 0 && {
-                carbs: Number(form.carbs),
-              }),
-            ...(form.fat &&
-              Number(form.fat) > 0 && {
-                fat: Number(form.fat),
-              }),
+              Number(form.carbs) > 0 && { carbs: Number(form.carbs) }),
+            ...(form.fat && Number(form.fat) > 0 && { fat: Number(form.fat) }),
             ingredients: validIngredients.map((r) => ({
               ingredientId: r.ingredientId,
               quantity: r.quantity,
@@ -249,7 +235,6 @@ export default function CreateRecipe() {
     }
   };
 
-  // ── Step render ────────────────────────────────────────────────────────────
   const renderStep = () => {
     switch (currentStep) {
       case 1:
@@ -297,7 +282,13 @@ export default function CreateRecipe() {
     }
   };
 
-  // Render
+  const previewProps = {
+    form,
+    step: currentStep,
+    onBack: handleBack,
+    ingredientName,
+  };
+
   return (
     <div className="flex bg-myGrey-200 min-h-screen flex-col">
       <ChefNavbar />
@@ -307,7 +298,6 @@ export default function CreateRecipe() {
           {t('chef.create_recipe.page_title')}
         </h1>
 
-        {/* Split card */}
         <div
           className="w-full max-w-4xl overflow-hidden rounded-2xl shadow-2xl"
           style={{ minHeight: '500px' }}
@@ -320,6 +310,28 @@ export default function CreateRecipe() {
               <div className="flex-1 overflow-y-auto">{renderStep()}</div>
 
               <div className="mt-6 flex items-center gap-3 flex-shrink-0">
+                {currentStep > 1 && (
+                  <button
+                    type="button"
+                    onClick={handleBack}
+                    className="md:hidden flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full border border-gray-300 text-myGrey-200 transition hover:bg-gray-100"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-4 w-4"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M15 19l-7-7 7-7"
+                      />
+                    </svg>
+                  </button>
+                )}
                 {currentStep < TOTAL_STEPS ? (
                   <button
                     type="button"
@@ -353,17 +365,12 @@ export default function CreateRecipe() {
               ))}
             </div>
 
-            {/* RIGHT — live preview, desktop only */}
+            {/* RIGHT panel — desktop only */}
             <div
               className="hidden md:flex flex-col p-5 md:w-1/2"
               style={{ backgroundColor: '#E8EEF5', minHeight: '500px' }}
             >
-              <LivePreview
-                form={form}
-                step={currentStep}
-                onBack={handleBack}
-                ingredientName={ingredientName}
-              />
+              <LivePreview {...previewProps} />
             </div>
           </div>
         </div>

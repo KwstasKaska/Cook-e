@@ -2,8 +2,6 @@ import { useTranslation } from 'next-i18next';
 import { Difficulty } from '../../../generated/graphql';
 import { FormData, inputClass, labelClass } from './types';
 
-// ─── Step 2: Personal Note + Times + Difficulty + Macros ─────────────────────
-
 interface StepTwoProps {
   form: FormData;
   fieldErrors: Record<string, string>;
@@ -89,7 +87,7 @@ export default function StepTwo({ form, fieldErrors, onUpdate }: StepTwoProps) {
       <h3 className="mb-3 mt-6 text-base font-black">
         {t('chef.create_recipe.difficulty_label')}
       </h3>
-      <div className="flex gap-3">
+      <div className="flex flex-col gap-2 sm:flex-row sm:gap-3">
         {difficultyOptions.map(({ value, label }) => (
           <button
             key={value}

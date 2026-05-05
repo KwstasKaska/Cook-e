@@ -16,24 +16,18 @@ const DynamicCalendar = dynamic(() => import('react-calendar'), { ssr: false });
 
 export interface Appointment {
   id: number;
-  date: string; // ISO: YYYY-MM-DD
+  date: string;
   time: string;
   isAvailable: boolean;
   nutritionistId: number;
 }
 
-// ── Helpers ───────────────────────────────────────────────────────────────────
-
-// What goes to DB and into DateContext — always ISO
 const toISO = (d: Date): string => format(d, 'yyyy-MM-dd');
 
-// What the user sees — locale-aware
 const toDisplay = (isoDate: string, locale: Locale): string => {
   const [year, month, day] = isoDate.split('-').map(Number);
   return format(new Date(year, month - 1, day), 'dd MMMM yyyy', { locale });
 };
-
-// ── Component ────────────────────────────────────────────────────────────────
 
 const CalendarC: React.FC = () => {
   const { t, i18n } = useTranslation('common');
@@ -56,11 +50,8 @@ const CalendarC: React.FC = () => {
 
   useEffect(() => {
     if (!(value instanceof Date)) return;
-    // Store ISO in context — language-independent
     setSelectedDate(toISO(value));
   }, [value]);
-
-  // ── Queries & Mutations ───────────────────────────────────────────────────
 
   const { data: slotsData, refetch: refetchSlots } = useGetMyAppointmentsQuery({
     fetchPolicy: 'cache-and-network',
@@ -89,12 +80,10 @@ const CalendarC: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setServerError('');
-
     const element = e.currentTarget.elements.namedItem(
       'time',
     ) as HTMLInputElement;
     const time = element.value;
-
     if (!selectedDate) {
       setServerError(t('nutr.selectDateFirst'));
       return;
@@ -103,7 +92,6 @@ const CalendarC: React.FC = () => {
       setServerError(t('nutr.selectTimeFirst'));
       return;
     }
-
     try {
       const result = await createAppointment({
         variables: { data: { date: selectedDate, time } },
@@ -147,7 +135,6 @@ const CalendarC: React.FC = () => {
 
   if (!isClient) return null;
 
-  // Display version of selectedDate for the UI
   const displayDate = selectedDate
     ? toDisplay(selectedDate, dateFnsLocale)
     : '';
@@ -161,7 +148,7 @@ const CalendarC: React.FC = () => {
           locale={calendarLocale}
           className="lg:mt-12 lg:scale-125 xl:scale-150"
         />
-        <div className="mt-3 space-x-4 ">
+        <div className="mt-3 flex flex-wrap justify-center gap-3">
           <button
             className="rounded-full px-8 py-2.5 text-sm font-bold transition hover:opacity-90 bg-myRed text-white"
             onClick={handleCancel}
@@ -182,115 +169,112 @@ const CalendarC: React.FC = () => {
           <SliderAppointments />
         </div>
       ) : (
-        <div className="mt-8 lg:mt-24 xl:mt-0">
-          <div className="mx-auto my-6 min-h-fit max-w-[20em] rounded-xl border-2 border-myBlue-200">
-            <div className="rounded-t-xl">
-              {/* Header */}
-              <div className="relative rounded-t-md rounded-br-[5em] bg-myBlue-200 pb-48 text-base font-normal text-white">
-                <button onClick={handleSet}>
+        <div className="mt-8 w-full px-4 lg:mt-24 xl:mt-0">
+          <div className="mx-auto my-6 min-h-fit w-full max-w-[20em] rounded-xl border-2 border-myBlue-200">
+            <div className="flex flex-col gap-2 rounded-t-xl rounded-br-[5em] bg-myBlue-200 px-5 py-5 text-white">
+              <div className="flex items-center gap-3">
+                <button onClick={handleSet} className="flex-shrink-0">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
                     fill="currentColor"
-                    className="absolute top-5 left-4 h-6 w-6"
+                    className="h-6 w-6"
                   >
                     <path d="M11.03 3.97a.75.75 0 010 1.06l-6.22 6.22H21a.75.75 0 010 1.5H4.81l6.22 6.22a.75.75 0 11-1.06 1.06l-7.5-7.5a.75.75 0 010-1.06l7.5-7.5a.75.75 0 011.06 0z" />
                   </svg>
                 </button>
-                <h2 className="absolute left-20 top-5 text-base font-bold md:text-lg">
+                <h2 className="text-base font-bold md:text-lg">
                   {t('nutr.selectedDate')}
                 </h2>
-                <p className="absolute top-20 left-20 text-center font-normal">
-                  {displayDate}
-                </p>
-                <h2 className="absolute left-20 top-32 text-base font-bold md:text-lg">
-                  {t('nutr.registerAvailableHours')}
-                </h2>
               </div>
-
-              <form
-                onSubmit={handleSubmit}
-                className="mt-4 flex flex-col items-center gap-3"
-              >
-                <label htmlFor="time" className="text-base font-bold">
-                  {t('nutr.selectTime')}:{' '}
-                  <input
-                    type="time"
-                    className="form-input ml-2 cursor-pointer rounded-[14px] border-none outline outline-2 outline-myGrey-200 hover:shadow-3xl hover:outline-4"
-                    name="time"
-                    id="time"
-                  />
-                </label>
-                {serverError && (
-                  <p className="text-sm font-semibold text-myRed">
-                    {serverError}
-                  </p>
-                )}
-                <button
-                  type="submit"
-                  className="rounded-md bg-myBlue-200 px-5 py-1 text-white hover:bg-myBlue-100 hover:font-bold hover:text-black hover:shadow-3xl"
-                >
-                  {t('nutr.register')}
-                </button>
-              </form>
-
-              {slotsForDate.length > 0 && (
-                <div>
-                  <ul className="grid grid-flow-row items-center divide-y-2 divide-black text-center">
-                    {slotsForDate.slice(start, end).map((slot) => (
-                      <li
-                        key={slot.id}
-                        className="mt-4 flex h-full w-full items-center justify-between p-3 text-base hover:bg-myBlue-100 hover:shadow-3xl"
-                      >
-                        <span className="flex-1 text-center">{slot.time}</span>
-                        {slot.isAvailable ? (
-                          <button
-                            onClick={() => handleDelete(slot.id)}
-                            className="ml-2 shrink-0 rounded-full p-1  hover:bg-myRed hover:text-white hover:transition hover:duration-300"
-                            title={t('nutr.deleteTime')}
-                          >
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              viewBox="0 0 24 24"
-                              fill="currentColor"
-                              className="h-4 w-4"
-                            >
-                              <path
-                                fillRule="evenodd"
-                                d="M16.5 4.478v.227a48.816 48.816 0 013.878.512.75.75 0 11-.256 1.478l-.209-.035-1.005 13.07a3 3 0 01-2.991 2.77H8.084a3 3 0 01-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 01-.256-1.478A48.567 48.567 0 017.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 013.369 0c1.603.051 2.815 1.387 2.815 2.951zm-6.136-1.452a51.196 51.196 0 013.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 00-6 0v-.113c0-.794.609-1.428 1.364-1.452zm-.355 5.945a.75.75 0 10-1.5.058l.347 9a.75.75 0 101.499-.058l-.346-9zm5.48.058a.75.75 0 10-1.498-.058l-.347 9a.75.75 0 001.5.058l.345-9z"
-                                clipRule="evenodd"
-                              />
-                            </svg>
-                          </button>
-                        ) : (
-                          <span className="ml-2 shrink-0 rounded-full bg-myBlue-200 px-2 py-0.5 text-xs text-white">
-                            {t('nutr.booked')}
-                          </span>
-                        )}
-                      </li>
-                    ))}
-                  </ul>
-                  <div className="mx-2 flex flex-row gap-2">
-                    {start > 0 && (
-                      <button
-                        onClick={handleBack}
-                        className="my-5 w-full rounded-md bg-black py-1 text-white hover:shadow-3xl"
-                      >
-                        {t('nutr.back')}
-                      </button>
-                    )}
-                    {end < slotsForDate.length && (
-                      <button
-                        onClick={handleLoadMore}
-                        className="my-5 w-full rounded-md bg-myBlue-200 py-1 text-white hover:bg-myBlue-100 hover:font-bold hover:text-black hover:shadow-3xl"
-                      >
-                        {t('nutr.loadMore')}
-                      </button>
-                    )}
-                  </div>
-                </div>
-              )}
+              <p className="pl-9 font-normal">{displayDate}</p>
+              <h2 className="pl-9 text-base font-bold md:text-lg">
+                {t('nutr.registerAvailableHours')}
+              </h2>
             </div>
+
+            <form
+              onSubmit={handleSubmit}
+              className="mt-4  mb-6 flex flex-col items-center gap-3"
+            >
+              <label htmlFor="time" className="text-base font-bold">
+                {t('nutr.selectTime')}:{' '}
+                <input
+                  type="time"
+                  className="form-input ml-2 cursor-pointer rounded-[14px] border-none outline outline-2 outline-myGrey-200 hover:shadow-3xl hover:outline-4"
+                  name="time"
+                  id="time"
+                />
+              </label>
+              {serverError && (
+                <p className="text-sm font-semibold text-myRed">
+                  {serverError}
+                </p>
+              )}
+              <button
+                type="submit"
+                className="rounded-md mt-2 bg-myBlue-200 px-5 py-1 text-white hover:bg-myBlue-100 hover:font-bold hover:text-black hover:shadow-3xl"
+              >
+                {t('nutr.register')}
+              </button>
+            </form>
+
+            {slotsForDate.length > 0 && (
+              <div>
+                <ul className="grid grid-flow-row items-center divide-y-2 divide-black text-center">
+                  {slotsForDate.slice(start, end).map((slot) => (
+                    <li
+                      key={slot.id}
+                      className="mt-4 flex h-full w-full items-center justify-between p-3 text-base hover:bg-myBlue-100 hover:shadow-3xl"
+                    >
+                      <span className="flex-1 text-center">{slot.time}</span>
+                      {slot.isAvailable ? (
+                        <button
+                          onClick={() => handleDelete(slot.id)}
+                          className="ml-2 shrink-0 rounded-full p-1 hover:bg-myRed hover:text-white hover:transition hover:duration-300"
+                          title={t('nutr.deleteTime')}
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            fill="currentColor"
+                            className="h-4 w-4"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M16.5 4.478v.227a48.816 48.816 0 013.878.512.75.75 0 11-.256 1.478l-.209-.035-1.005 13.07a3 3 0 01-2.991 2.77H8.084a3 3 0 01-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 01-.256-1.478A48.567 48.567 0 017.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 013.369 0c1.603.051 2.815 1.387 2.815 2.951zm-6.136-1.452a51.196 51.196 0 013.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 00-6 0v-.113c0-.794.609-1.428 1.364-1.452zm-.355 5.945a.75.75 0 10-1.5.058l.347 9a.75.75 0 101.499-.058l-.346-9zm5.48.058a.75.75 0 10-1.498-.058l-.347 9a.75.75 0 001.5.058l.345-9z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                        </button>
+                      ) : (
+                        <span className="ml-2 shrink-0 rounded-full bg-myBlue-200 px-2 py-0.5 text-xs text-white">
+                          {t('nutr.booked')}
+                        </span>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+                <div className="mx-2 flex flex-row gap-2">
+                  {start > 0 && (
+                    <button
+                      onClick={handleBack}
+                      className="my-5 w-full rounded-md bg-black py-1 text-white hover:shadow-3xl"
+                    >
+                      {t('nutr.back')}
+                    </button>
+                  )}
+                  {end < slotsForDate.length && (
+                    <button
+                      onClick={handleLoadMore}
+                      className="my-5 w-full rounded-md bg-myBlue-200 py-1 text-white hover:bg-myBlue-100 hover:font-bold hover:text-black hover:shadow-3xl"
+                    >
+                      {t('nutr.loadMore')}
+                    </button>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       )}

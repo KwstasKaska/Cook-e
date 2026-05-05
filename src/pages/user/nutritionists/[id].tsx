@@ -106,70 +106,71 @@ function ProfileContent() {
             {t('nutritionists.back')}
           </button>
 
-          <div className="mb-6 flex items-start justify-between gap-4">
-            <div className="flex items-center gap-4">
-              <div className="h-16 w-16 flex-shrink-0 overflow-hidden rounded-full border-4 border-white shadow-lg bg-myBlue-100">
-                {image ? (
-                  <img
-                    src={image}
-                    alt={username}
-                    className="h-full w-full object-cover"
-                  />
-                ) : (
-                  <div className="flex h-full w-full items-center justify-center">
-                    <span className="text-xl font-bold text-white">
-                      {username[0]?.toUpperCase() ?? '?'}
-                    </span>
-                  </div>
-                )}
-              </div>
-              <div>
-                <h1 className="text-2xl font-bold italic text-white md:text-4xl">
-                  {username}
-                </h1>
-                {cityText && (
-                  <p className="mt-0.5 text-sm text-gray-300">{cityText}</p>
-                )}
-                {nutr.phone && (
-                  <p className="mt-0.5 text-sm text-gray-300">{nutr.phone}</p>
-                )}
-              </div>
+          {/* Header row */}
+          <div className="mb-4 flex items-center gap-4">
+            <div className="h-16 w-16 flex-shrink-0 overflow-hidden rounded-full border-4 border-white shadow-lg bg-myBlue-100">
+              {image ? (
+                <img
+                  src={image}
+                  alt={username}
+                  className="h-full w-full object-cover"
+                />
+              ) : (
+                <div className="flex h-full w-full items-center justify-center">
+                  <span className="text-xl font-bold text-white">
+                    {username[0]?.toUpperCase() ?? '?'}
+                  </span>
+                </div>
+              )}
             </div>
 
-            <div className="flex flex-col items-end gap-3">
-              {userId > 0 && (
-                <button
-                  onClick={() => openConversation(userId)}
-                  className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full shadow-md transition hover:opacity-90 bg-myBlue-200"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5 text-white"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M8 10h.01M12 10h.01M16 10h.01M21 16c0 1.1-.9 2-2 2H7l-4 4V6a2 2 0 012-2h14a2 2 0 012 2v10z"
-                    />
-                  </svg>
-                </button>
+            <div className="min-w-0 flex-1">
+              <h1 className="truncate text-2xl font-bold italic text-white md:text-4xl">
+                {username}
+              </h1>
+              {cityText && (
+                <p className="mt-0.5 text-sm text-gray-300">{cityText}</p>
               )}
-              <ShareButton
-                url={typeof window !== 'undefined' ? window.location.href : ''}
-                dark
-              />
+              {nutr.phone && (
+                <p className="mt-0.5 text-sm text-gray-300">{nutr.phone}</p>
+              )}
             </div>
+
+            {userId > 0 && (
+              <button
+                onClick={() => openConversation(userId)}
+                className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-myBlue-200 shadow-md transition hover:opacity-90"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5 text-white"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M8 10h.01M12 10h.01M16 10h.01M21 16c0 1.1-.9 2-2 2H7l-4 4V6a2 2 0 012-2h14a2 2 0 012 2v10z"
+                  />
+                </svg>
+              </button>
+            )}
           </div>
 
           {bioText && (
-            <p className="mb-10 max-w-xl text-sm leading-relaxed text-gray-300">
+            <p className="mb-4 max-w-xl text-sm leading-relaxed text-gray-300">
               {bioText}
             </p>
           )}
+
+          <div className="mb-8">
+            <ShareButton
+              url={typeof window !== 'undefined' ? window.location.href : ''}
+              dark
+            />
+          </div>
 
           <NutrArticlesGrid nutritionistId={userId} />
 

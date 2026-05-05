@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import ChefNavbar from '../../components/Chef/ChefNavbar';
@@ -19,6 +19,7 @@ export default function ChefIndex() {
   const lang = i18n.language;
   const { loading: authLoading, isAuthorized } = useIsChef();
   const router = useRouter();
+  const [activeIdx, setActiveIdx] = useState(0);
 
   const { data: recipesData, loading: recipesLoading } = useMyRecipesQuery({
     variables: { limit: 4, offset: 0 },
@@ -28,9 +29,13 @@ export default function ChefIndex() {
   if (authLoading || !isAuthorized) return null;
 
   const fanRecipes = recipesData?.myRecipes ?? [];
+  const count = fanRecipes.length;
+
+  const handlePrev = () => setActiveIdx((p) => (p - 1 + count) % count);
+  const handleNext = () => setActiveIdx((p) => (p + 1) % count);
 
   return (
-    <div className="flex min-h-screen  flex-col">
+    <div className="flex min-h-screen flex-col">
       <ChefNavbar />
 
       <main className="relative flex flex-1 flex-col overflow-hidden">
@@ -42,14 +47,14 @@ export default function ChefIndex() {
                 {t('chef.landing.tagline_pre')}
               </p>
               <div className="rounded-xl inline-block bg-myBlue-100 px-5 py-4">
-                <h1 className="text-4xl font-black italic leading-tight ">
+                <h1 className="text-4xl font-black italic leading-tight">
                   {t('chef.landing.tagline_bold')}
                 </h1>
               </div>
             </div>
           </div>
 
-          {/* Fanned cards */}
+          {/* Cards */}
           <div className="relative mt-8 flex flex-1 items-center justify-center pb-4">
             {recipesLoading ? (
               <p className="text-white opacity-60">{t('common.loading')}</p>
@@ -59,40 +64,110 @@ export default function ChefIndex() {
               </p>
             ) : (
               <>
-                {/* Mobile: horizontal scroll */}
-                <div className="flex gap-4 overflow-x-auto pb-4 md:hidden">
-                  {fanRecipes.map((recipe, idx) => (
-                    <div
-                      key={recipe.id}
-                      onClick={() => router.push(`/chef/recipes/${recipe.id}`)}
-                      className="flex-shrink-0 w-44 rounded-2xl overflow-hidden shadow-xl cursor-pointer transition-transform hover:scale-105"
-                      style={{
-                        backgroundColor: BG_COLORS[idx % BG_COLORS.length],
-                      }}
+                {/* Mobile: slider */}
+                <div className="flex items-center gap-3 md:hidden">
+                  {count > 1 && (
+                    <button
+                      onClick={handlePrev}
+                      className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full border-2 border-white text-white"
                     >
-                      <div className="p-3">
-                        <span className="text-xs text-gray-500">
-                          {recipe.category
-                            ? t(`recipe_category.${recipe.category}`)
-                            : ''}
-                        </span>
-                        <p className="mt-1 text-sm font-bold leading-tight">
-                          {pick(recipe.title_el, recipe.title_en, lang)}
-                        </p>
-                      </div>
-                      <div
-                        className="relative h-28 overflow-hidden rounded-xl mx-2 mb-2"
-                        style={{ width: 'calc(100% - 16px)' }}
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth={2.5}
                       >
-                        <Image
-                          src={recipe.recipeImage ?? '/images/food.jpg'}
-                          alt={pick(recipe.title_el, recipe.title_en, lang)}
-                          fill
-                          className="object-cover"
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M15 19l-7-7 7-7"
                         />
-                      </div>
+                      </svg>
+                    </button>
+                  )}
+
+                  <div
+                    onClick={() =>
+                      router.push(`/chef/recipes/${fanRecipes[activeIdx].id}`)
+                    }
+                    className="w-52 flex-shrink-0 cursor-pointer rounded-2xl overflow-hidden shadow-xl transition-transform hover:scale-105"
+                    style={{
+                      backgroundColor: BG_COLORS[activeIdx % BG_COLORS.length],
+                    }}
+                  >
+                    <div className="p-3">
+                      <span className="text-xs text-gray-500">
+                        {fanRecipes[activeIdx].category
+                          ? t(
+                              `recipe_category.${fanRecipes[activeIdx].category}`,
+                            )
+                          : ''}
+                      </span>
+                      <p className="mt-1 text-sm font-bold leading-tight">
+                        {pick(
+                          fanRecipes[activeIdx].title_el,
+                          fanRecipes[activeIdx].title_en,
+                          lang,
+                        )}
+                      </p>
                     </div>
-                  ))}
+                    <div
+                      className="relative mx-2 mb-2 h-36 overflow-hidden rounded-xl"
+                      style={{ width: 'calc(100% - 16px)' }}
+                    >
+                      <Image
+                        src={
+                          fanRecipes[activeIdx].recipeImage ??
+                          '/images/food.jpg'
+                        }
+                        alt={pick(
+                          fanRecipes[activeIdx].title_el,
+                          fanRecipes[activeIdx].title_en,
+                          lang,
+                        )}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                    {count > 1 && (
+                      <div className="mb-3 flex justify-center gap-1.5">
+                        {fanRecipes.map((_, i) => (
+                          <span
+                            key={i}
+                            className="h-1.5 w-1.5 rounded-full"
+                            style={{
+                              backgroundColor:
+                                i === activeIdx ? '#3F4756' : '#ffffff',
+                            }}
+                          />
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+                  {count > 1 && (
+                    <button
+                      onClick={handleNext}
+                      className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full border-2 border-white text-white"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth={2.5}
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M9 5l7 7-7 7"
+                        />
+                      </svg>
+                    </button>
+                  )}
                 </div>
 
                 {/* Desktop: fanned layout */}

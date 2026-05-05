@@ -136,18 +136,18 @@ export default function Navbar() {
             );
           })}
 
-          <div className="flex items-center gap-4 pt-2 border-t border-gray-600 w-full">
+          <div className="w-full border-t border-gray-600 pt-3 flex flex-col gap-3">
             {me && (
               <div className="flex items-center gap-2">
                 {me.image ? (
                   <img
                     src={me.image}
                     alt={me.username}
-                    className="h-7 w-7 rounded-full object-cover border-2 border-myGrey-200 shadow-sm"
+                    className="h-8 w-8 rounded-full object-cover border-2 border-myGrey-200 shadow-sm"
                   />
                 ) : (
                   <div
-                    className="flex h-7 w-7 items-center justify-center rounded-full border-2 bg-myBlue-200 border-myGrey-200 text-xs font-bold shadow-sm"
+                    className="flex h-8 w-8 items-center justify-center rounded-full border-2 bg-myBlue-200 border-myGrey-200 text-xs font-bold shadow-sm"
                     style={{ color: '#fff' }}
                   >
                     {me.username?.[0]?.toUpperCase() ?? '?'}
@@ -157,31 +157,37 @@ export default function Navbar() {
               </div>
             )}
 
-            <NavCartLink
-              onClick={() => setMenuOpen(false)}
-              className="hover:text-yellow-300"
-            />
-            <button
-              onClick={() => {
-                openWidget();
-                setMenuOpen(false);
-              }}
-              className="hover:text-yellow-300"
-            >
-              <ChatIcon />
-            </button>
-            <NavSettingsLink
-              onClick={() => setMenuOpen(false)}
-              className="hover:text-yellow-300 transition-colors duration-150"
-            />
-            <LanguageSwitcher dark />
+            {/* Row 1: icons */}
+            <div className="flex items-center gap-4">
+              <NavCartLink
+                onClick={() => setMenuOpen(false)}
+                className="hover:text-myBlue-200 transition-colors duration-150"
+              />
+              <button
+                onClick={() => {
+                  openWidget();
+                  setMenuOpen(false);
+                }}
+                className="hover:text-myBlue-200 transition-colors duration-150"
+              >
+                <ChatIcon />
+              </button>
+              <NavSettingsLink
+                onClick={() => setMenuOpen(false)}
+                className="hover:text-myBlue-200 transition-colors duration-150"
+              />
+            </div>
 
-            <button
-              onClick={handleLogout}
-              className="ml-auto rounded-full border border-myGrey-200 text-sm font-semibold px-4 py-1.5 hover:bg-myRed hover:border-myRed hover:text-white transition-colors"
-            >
-              {t('nav.logout')}
-            </button>
+            {/* Row 2: language + logout */}
+            <div className="flex items-center justify-between">
+              <LanguageSwitcher dark />
+              <button
+                onClick={handleLogout}
+                className="rounded-full border border-myGrey-200 text-sm font-semibold px-4 py-1.5 hover:bg-myRed hover:border-myRed hover:text-white transition-colors"
+              >
+                {t('nav.logout')}
+              </button>
+            </div>
           </div>
         </div>
       )}

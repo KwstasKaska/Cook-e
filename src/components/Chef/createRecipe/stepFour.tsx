@@ -2,8 +2,6 @@ import { useTranslation } from 'next-i18next';
 import { useIngredientsQuery } from '../../../generated/graphql';
 import { FormData, IngredientRow, UNIT_OPTIONS } from './types';
 
-// ─── Step 4: Ingredients ──────────────────────────────────────────────────────
-
 interface StepFourProps {
   form: FormData;
   fieldErrors: Record<string, string>;
@@ -45,9 +43,9 @@ export default function StepFour({
         {form.ingredients.map((ing) => (
           <div
             key={ing.id}
-            className="flex items-center gap-2 border-b border-gray-200 pb-2"
+            className="flex flex-col gap-1 border-b border-gray-200 pb-2"
           >
-            {/* Ingredient select */}
+            {/* Ingredient select — full width */}
             <select
               value={ing.ingredientId}
               onChange={(e) =>
@@ -57,7 +55,7 @@ export default function StepFour({
                   Number(e.target.value),
                 )
               }
-              className="flex-1 bg-transparent text-sm outline-none"
+              className="w-full bg-transparent text-sm outline-none"
               style={{ color: ing.ingredientId ? '#3F4756' : '#9CA3AF' }}
             >
               <option value={0}>
@@ -70,56 +68,54 @@ export default function StepFour({
               ))}
             </select>
 
-            {/* Quantity */}
-            <input
-              type="text"
-              value={ing.quantity}
-              onChange={(e) =>
-                onUpdateIngredient(ing.id, 'quantity', e.target.value)
-              }
-              placeholder="60"
-              className="w-12 text-my-g bg-transparent text-sm font-semibold outline-none placeholder:text-gray-300 text-center border-b border-gray-200"
-            />
-
-            {/* Unit */}
-            <select
-              value={ing.unit}
-              onChange={(e) =>
-                onUpdateIngredient(ing.id, 'unit', e.target.value)
-              }
-              className="w-16 bg-transparent text-sm outline-none"
-              style={{ color: ing.unit ? '#EAB308' : '#9CA3AF' }}
-            >
-              <option value="">{t('chef.create_recipe.unit_label')}</option>
-              {UNIT_OPTIONS.map((u) => (
-                <option key={u} value={u}>
-                  {u}
-                </option>
-              ))}
-            </select>
-
-            {/* Remove */}
-            {form.ingredients.length > 1 && (
-              <button
-                type="button"
-                onClick={() => onRemoveIngredient(ing.id)}
-                className="flex-shrink-0 text-gray-300 hover:text-red-400 transition-colors"
+            {/* Quantity + unit + remove on one row */}
+            <div className="flex items-center gap-2">
+              <input
+                type="text"
+                value={ing.quantity}
+                onChange={(e) =>
+                  onUpdateIngredient(ing.id, 'quantity', e.target.value)
+                }
+                placeholder="60"
+                className="w-12 bg-transparent text-sm font-semibold outline-none placeholder:text-gray-300 text-center border-b border-gray-200"
+              />
+              <select
+                value={ing.unit}
+                onChange={(e) =>
+                  onUpdateIngredient(ing.id, 'unit', e.target.value)
+                }
+                className="w-16 bg-transparent text-sm outline-none"
+                style={{ color: ing.unit ? '#EAB308' : '#9CA3AF' }}
               >
-                <svg
-                  className="h-4 w-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
+                <option value="">{t('chef.create_recipe.unit_label')}</option>
+                {UNIT_OPTIONS.map((u) => (
+                  <option key={u} value={u}>
+                    {u}
+                  </option>
+                ))}
+              </select>
+              {form.ingredients.length > 1 && (
+                <button
+                  type="button"
+                  onClick={() => onRemoveIngredient(ing.id)}
+                  className="ml-auto flex-shrink-0 text-gray-300 hover:text-red-400 transition-colors"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              </button>
-            )}
+                  <svg
+                    className="h-4 w-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
+              )}
+            </div>
           </div>
         ))}
       </div>

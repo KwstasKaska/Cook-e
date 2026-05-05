@@ -322,10 +322,7 @@ function RecipeSlider({
         </button>
       )}
 
-      <div
-        className="mt-20 w-full max-w-[260px] rounded-2xl shadow-xl overflow-visible"
-        style={{ backgroundColor: '#86EFAC' }}
-      >
+      <div className="mt-20 w-full bg-myBlue-100 max-w-[260px] rounded-2xl shadow-xl overflow-visible">
         <div
           className="relative flex justify-center"
           style={{ marginTop: -40 }}

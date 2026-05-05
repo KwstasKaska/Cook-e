@@ -3,8 +3,6 @@ import { useTranslation } from 'next-i18next';
 import { Difficulty } from '../../../generated/graphql';
 import { FormData, CATEGORY_OPTIONS } from './types';
 
-// ─── LivePreview
-
 interface LivePreviewProps {
   form: FormData;
   step: number;
