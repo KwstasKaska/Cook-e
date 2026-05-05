@@ -421,6 +421,15 @@
     "token_error_link": "Request a new one",
     "server_error": "Something went wrong. Please try again."
   },
+  "error": {
+    "username_length": "Username must be more than two characters",
+    "username_at": "Username cannot contain @",
+    "email_invalid": "Please enter a valid email",
+    "password_weak": "Password must be longer than 4 characters, include an uppercase letter and a special character",
+    "role_required": "Please select a user type",
+    "email_not_found": "No account found with this email.",
+    "wrong_password": "Wrong password."
+  },
 
   "common": {
     "read_more": "Read more",
@@ -446,7 +455,12 @@
     "role_label": "Role:",
     "role_user": "Member",
     "role_nutritionist": "Nutritionist",
-    "submit": "Create an account"
+    "submit": "Create an account",
+    "error_username_length": "Username must be more than two characters",
+    "error_username_at": "Username cannot contain @",
+    "error_email": "Please enter a valid email",
+    "error_password": "Password must be more than 4 characters, include an uppercase letter and a special character",
+    "error_role": "Please select a user type"
   },
   "login": {
     "title": "Welcome back!",
@@ -457,7 +471,9 @@
     "forgot_password": "Forgot your password?",
     "no_account": "Don't have an account yet?",
     "account": "Do you have an account?",
-    "create_account": "Create one"
+    "create_account": "Create one",
+    "error_email": "Email is required",
+    "error_password": "Password is required"
   },
   "forgot_password": {
     "success": "If an account exists with this email, you will be notified via email.",

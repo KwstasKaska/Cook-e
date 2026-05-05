@@ -45,12 +45,10 @@ const Login: NextPage = () => {
   return (
     <main className="flex bg-myGrey-200 min-h-screen w-full items-center justify-center px-4 py-12">
       <section className="w-full max-w-md rounded-3xl bg-white px-8 py-8">
-        {/* πάνω στοιχεία κουμπιού αρχικής και αλλαγής γλώσσας */}
         <div className="mb-8 flex items-center justify-between">
-          {/* Κουμπί για να πάς πίσω στην αρχική */}
           <Link
             href="/"
-            className="flex items-center  gap-1.5 text-xs font-semibold transition hover:opacity-70"
+            className="flex items-center gap-1.5 text-xs font-semibold transition hover:opacity-70"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -69,19 +67,22 @@ const Login: NextPage = () => {
             {t('nav.home')}
           </Link>
 
-          {/* ορίζω την αλλαγή γλώσσας σε σκούρο χρώμα για να φαίνεται η αντίθεση */}
           <LanguageSwitcher dark />
         </div>
 
-        {/* κείμενο καλωσορίσματος */}
         <div className="mb-6 text-center">
-          <h1 className="mb-1 text-2xl font-bold ">{t('login.title')}</h1>
+          <h1 className="mb-1 text-2xl font-bold">{t('login.title')}</h1>
         </div>
 
-        {/* φόρμα για εισαγωγή email και κωδικού */}
         <Formik
           initialValues={initialValues}
-          onSubmit={async (values: MyLoginFormValues, { setErrors }) => {
+          validate={(values) => {
+            const errors: Partial<MyLoginFormValues> = {};
+            if (!values.email) errors.email = t('login.error_email');
+            if (!values.password) errors.password = t('login.error_password');
+            return errors;
+          }}
+          onSubmit={async (values, { setErrors, setTouched }) => {
             const { email, password } = values;
             const response = await login({
               variables: { email, password },
@@ -93,7 +94,17 @@ const Login: NextPage = () => {
               },
             });
             if (response.data?.login.errors) {
-              setErrors(toErrorMap(response.data?.login.errors));
+              const errorMap = toErrorMap(response.data.login.errors);
+              const translated = Object.fromEntries(
+                Object.entries(errorMap).map(([k, v]) => [k, t(v)]),
+              );
+              setErrors(translated);
+              setTouched(
+                Object.fromEntries(
+                  Object.keys(translated).map((k) => [k, true]),
+                ),
+                false,
+              );
             } else if (response.data?.login.user) {
               if (typeof router.query.next === 'string') {
                 router.push(router.query.next);
@@ -104,7 +115,6 @@ const Login: NextPage = () => {
           }}
         >
           {({ isSubmitting }) => (
-            // χρησιμοποιώ το no validate για να πετάξει πρώτα τα δικά μου validation errors
             <Form noValidate className="flex flex-col gap-3">
               <InputField
                 type="email"
@@ -132,7 +142,7 @@ const Login: NextPage = () => {
               <button
                 type="button"
                 onClick={() => setForgotOpen(true)}
-                className="text-center opacity-75 text-sm font-normal underline "
+                className="text-center opacity-75 text-sm font-normal underline"
               >
                 {t('login.forgot_password')}
               </button>
@@ -143,7 +153,7 @@ const Login: NextPage = () => {
         <p className="mt-8 text-center text-sm">
           {t('login.no_account')}{' '}
           <Link
-            className="font-semibold  opacity-75 underline transition hover:opacity-80"
+            className="font-semibold opacity-75 underline transition hover:opacity-80"
             href="/register"
           >
             {t('login.create_account')}

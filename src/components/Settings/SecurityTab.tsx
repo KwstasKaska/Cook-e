@@ -1,120 +1,116 @@
-import { useState } from 'react';
 import { useTranslation } from 'next-i18next';
+import { Formik } from 'formik';
 import { useUpdateUserMutation } from '../../generated/graphql';
 import { Field, FieldGroup, SaveButton, SuccessBanner } from './SettingsUI';
 
 export default function SecurityTab() {
   const { t } = useTranslation('common');
-  const [currentPassword, setCurrentPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
-  const [success, setSuccess] = useState<string | null>(null);
-  const [updateUser, { loading }] = useUpdateUserMutation();
+  const [updateUser] = useUpdateUserMutation();
 
-  const handleSave = async () => {
-    setFieldErrors({});
-    setSuccess(null);
+  const validate = (values: {
+    currentPassword: string;
+    newPassword: string;
+    confirmPassword: string;
+  }) => {
+    const errors: Record<string, string> = {};
 
-    if (!currentPassword) {
-      setFieldErrors((p) => ({
-        ...p,
-        currentPassword: t('settings.currentPasswordRequired'),
-      }));
-      return;
-    }
-    if (!newPassword) {
-      setFieldErrors((p) => ({
-        ...p,
-        newPassword: t('settings.newPasswordRequired'),
-      }));
-      return;
-    }
-    if (!confirmPassword) {
-      setFieldErrors((p) => ({
-        ...p,
-        confirmPassword: t('settings.confirmPasswordRequired'),
-      }));
-      return;
-    }
-    if (newPassword !== confirmPassword) {
-      setFieldErrors((p) => ({
-        ...p,
-        confirmPassword: t('settings.passwordMismatch'),
-      }));
-      return;
-    }
-    if (newPassword.length <= 4) {
-      setFieldErrors((p) => ({
-        ...p,
-        newPassword: t('settings.passwordTooShort'),
-      }));
-      return;
-    }
-    if (!newPassword.match(/[A-Z]/)) {
-      setFieldErrors((p) => ({
-        ...p,
-        newPassword: t('settings.passwordNeedsUppercase'),
-      }));
-      return;
-    }
-    if (!newPassword.match(/[-!$%^&*()_+|~=`{}\[\]:";'<>?,.\/]/)) {
-      setFieldErrors((p) => ({
-        ...p,
-        newPassword: t('settings.passwordNeedsSpecial'),
-      }));
-      return;
-    }
+    if (!values.currentPassword)
+      errors.currentPassword = t('settings.currentPasswordRequired');
+    if (!values.newPassword)
+      errors.newPassword = t('settings.newPasswordRequired');
+    if (!values.confirmPassword)
+      errors.confirmPassword = t('settings.confirmPasswordRequired');
+    if (
+      values.newPassword &&
+      values.confirmPassword &&
+      values.newPassword !== values.confirmPassword
+    )
+      errors.confirmPassword = t('settings.passwordMismatch');
+    if (values.newPassword && values.newPassword.length <= 4)
+      errors.newPassword = t('settings.passwordTooShort');
+    if (values.newPassword && !values.newPassword.match(/[A-Z]/))
+      errors.newPassword = t('settings.passwordNeedsUppercase');
+    if (
+      values.newPassword &&
+      !values.newPassword.match(/[-!$%^&*()_+|~=`{}\[\]:";'<>?,.\/]/)
+    )
+      errors.newPassword = t('settings.passwordNeedsSpecial');
 
-    const result = await updateUser({
-      variables: { data: { currentPassword, newPassword } },
-    });
-
-    if (result.data?.updateUser.errors) {
-      const errs: Record<string, string> = {};
-      for (const e of result.data.updateUser.errors) {
-        errs[e.field] = e.message;
-      }
-      setFieldErrors(errs);
-      return;
-    }
-
-    setCurrentPassword('');
-    setNewPassword('');
-    setConfirmPassword('');
-    setSuccess(t('settings.saveSuccess'));
+    return errors;
   };
 
   return (
-    <div>
-      <FieldGroup title={t('settings.changePassword')}>
-        <Field
-          label={t('settings.currentPassword')}
-          type="password"
-          value={currentPassword}
-          onChange={setCurrentPassword}
-          placeholder="••••••••"
-          error={fieldErrors.currentPassword}
-        />
-        <Field
-          label={t('settings.newPassword')}
-          type="password"
-          value={newPassword}
-          onChange={setNewPassword}
-          placeholder="••••••••"
-          error={fieldErrors.newPassword}
-        />
-        <Field
-          label={t('settings.confirmPassword')}
-          type="password"
-          value={confirmPassword}
-          onChange={setConfirmPassword}
-          placeholder="••••••••"
-          error={fieldErrors.confirmPassword}
-        />
-      </FieldGroup>
-      <SuccessBanner message={success} />
-      <SaveButton onClick={handleSave} loading={loading} />
-    </div>
+    <Formik
+      initialValues={{
+        currentPassword: '',
+        newPassword: '',
+        confirmPassword: '',
+      }}
+      validate={validate}
+      onSubmit={async (values, { setErrors, setStatus, resetForm }) => {
+        setStatus(null);
+
+        const result = await updateUser({
+          variables: {
+            data: {
+              currentPassword: values.currentPassword,
+              newPassword: values.newPassword,
+            },
+          },
+        });
+
+        if (result.data?.updateUser.errors) {
+          const errs: Record<string, string> = {};
+          for (const e of result.data.updateUser.errors) {
+            errs[e.field] = e.message;
+          }
+          setErrors(errs);
+          return;
+        }
+
+        resetForm();
+        setStatus(t('settings.saveSuccess'));
+      }}
+    >
+      {({
+        values,
+        errors,
+        handleSubmit,
+        setFieldValue,
+        isSubmitting,
+        status,
+      }) => (
+        <div>
+          <FieldGroup title={t('settings.changePassword')}>
+            <Field
+              label={t('settings.currentPassword')}
+              type="password"
+              value={values.currentPassword}
+              onChange={(v) => setFieldValue('currentPassword', v)}
+              placeholder="••••••••"
+              error={errors.currentPassword}
+            />
+            <Field
+              label={t('settings.newPassword')}
+              type="password"
+              value={values.newPassword}
+              onChange={(v) => setFieldValue('newPassword', v)}
+              placeholder="••••••••"
+              error={errors.newPassword}
+            />
+            <Field
+              label={t('settings.confirmPassword')}
+              type="password"
+              value={values.confirmPassword}
+              onChange={(v) => setFieldValue('confirmPassword', v)}
+              placeholder="••••••••"
+              error={errors.confirmPassword}
+            />
+          </FieldGroup>
+          <SuccessBanner message={status} />
+          <SaveButton onClick={() => handleSubmit()} loading={isSubmitting} />
+        </div>
+      )}
+    </Formik>
   );
 }

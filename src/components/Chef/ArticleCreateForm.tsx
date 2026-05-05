@@ -28,22 +28,18 @@ export default function ArticleCreateForm({ onClose }: ArticleCreateFormProps) {
       return;
     }
 
-    try {
-      const imageUrl = await uploadToCloudinary(image);
+    const imageUrl = await uploadToCloudinary(image);
 
-      await createArticle({
-        variables: {
-          data: { title: title.trim(), text: text.trim(), image: imageUrl },
-        },
-        update: (cache) => {
-          cache.evict({ fieldName: 'articlesByChef' });
-        },
-      });
+    await createArticle({
+      variables: {
+        data: { title: title.trim(), text: text.trim(), image: imageUrl },
+      },
+      update: (cache) => {
+        cache.evict({ fieldName: 'articlesByChef' });
+      },
+    });
 
-      onClose();
-    } catch {
-      setError(t('nutr.create_article.error_upload'));
-    }
+    onClose();
   };
 
   const handleCancel = () => {
@@ -57,58 +53,55 @@ export default function ArticleCreateForm({ onClose }: ArticleCreateFormProps) {
   return (
     <div className="mb-4 rounded-2xl bg-myBlue-100 p-5 flex flex-col gap-4">
       <div className="flex flex-col gap-1">
-        <label className="text-xs font-bold  tracking-wide">
+        <label className="text-xs font-bold tracking-wide">
           {t('chef.profile.article_title')}
         </label>
         <input
           type="text"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          className="w-full  rounded-xl border border-gray-300 bg-white px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"
+          className="w-full rounded-xl border border-gray-300 bg-white px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"
         />
       </div>
 
-      {/* Body */}
       <div className="flex flex-col gap-1">
-        <label className="text-xs font-bold   tracking-wide">
+        <label className="text-xs font-bold tracking-wide">
           {t('chef.profile.article_text')}
         </label>
         <textarea
           value={text}
           onChange={(e) => setText(e.target.value)}
           rows={6}
-          className="w-full  rounded-xl border border-gray-300 bg-white px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400 resize-none"
+          className="w-full rounded-xl border border-gray-300 bg-white px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400 resize-none"
         />
       </div>
 
-      {/* Image */}
       <div className="flex flex-col gap-1">
-        <label className="text-xs font-bold   tracking-wide">
+        <label className="text-xs font-bold tracking-wide">
           {t('chef.profile.article_image_label')}
         </label>
         <input
           type="file"
           accept="image/*"
           onChange={(e) => setImage(e.target.files?.[0] ?? null)}
-          className="text-sm file:mr-3 file:rounded-full file:border-0 file:bg-white file:px-3 file:py-1 file:text-xs file:font-semibold file:cursor-pointer "
+          className="text-sm file:mr-3 file:rounded-full file:border-0 file:bg-white file:px-3 file:py-1 file:text-xs file:font-semibold file:cursor-pointer"
         />
         {image && <p className="text-xs text-gray-600">{image.name}</p>}
       </div>
 
       {error && <p className="text-xs text-red-600">{error}</p>}
 
-      {/* Actions */}
       <div className="flex gap-3">
         <button
           onClick={handleSubmit}
           disabled={loading}
-          className="rounded-full bg-myYellow  px-6 py-2 text-sm font-bold transition hover:opacity-90 disabled:opacity-50"
+          className="rounded-full bg-myYellow px-6 py-2 text-sm font-bold transition hover:opacity-90 disabled:opacity-50"
         >
           {loading ? t('common.loading') : t('chef.profile.article_submit')}
         </button>
         <button
           onClick={handleCancel}
-          className="rounded-full border  border-gray-400 px-6 py-2 text-sm font-semibold transition hover:bg-white/40"
+          className="rounded-full border border-gray-400 px-6 py-2 text-sm font-semibold transition hover:bg-white/40"
         >
           {t('common.cancel')}
         </button>

@@ -17,6 +17,31 @@ interface MyFormValues {
   role: string;
 }
 
+const validateForm = (
+  values: MyFormValues,
+  t: ReturnType<typeof useTranslation>['t'],
+) => {
+  const errors: Partial<MyFormValues> = {};
+
+  if (values.username.length <= 2)
+    errors.username = t('register.error_username_length');
+  else if (values.username.includes('@'))
+    errors.username = t('register.error_username_at');
+
+  if (!values.email.includes('@')) errors.email = t('register.error_email');
+
+  if (
+    values.password.length <= 4 ||
+    !values.password.match(/[A-Z]/) ||
+    !values.password.match(/[-!$%^&*()_+|~=`{}\[\]:";'<>?,.\/]/)
+  )
+    errors.password = t('register.error_password');
+
+  if (!values.role) errors.role = t('register.error_role');
+
+  return errors;
+};
+
 const Register: NextPage = () => {
   const router = useRouter();
   const [register] = useRegisterMutation();
@@ -40,11 +65,11 @@ const Register: NextPage = () => {
 
   return (
     <main className="flex bg-myGrey-200 min-h-screen w-full items-center justify-center px-4 py-12">
-      <section className="w-full max-w-md rounded-3xl bg-white px-8 py-8 ">
+      <section className="w-full max-w-md rounded-3xl bg-white px-8 py-8">
         <div className="mb-8 flex items-center justify-between">
           <Link
             href="/"
-            className="flex items-center gap-1.5 text-xs font-semibold text-gray-400 "
+            className="flex items-center gap-1.5 text-xs font-semibold text-gray-400"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -66,26 +91,21 @@ const Register: NextPage = () => {
         </div>
 
         <div className="mb-6 text-center">
-          <h1 className="mb-1 text-2xl font-bold ">{t('register.title')}</h1>
+          <h1 className="mb-1 text-2xl font-bold">{t('register.title')}</h1>
           <p className="text-sm text-gray-400">{t('register.subtitle')}</p>
         </div>
 
         <Formik
           initialValues={initialValues}
+          validate={(values) => validateForm(values, t)}
           onSubmit={async (values: MyFormValues, { setErrors }) => {
-            try {
-              const response = await register({
-                variables: { options: values },
-              });
-              if (response.data?.register.errors) {
-                setErrors(toErrorMap(response.data.register.errors));
-              } else if (response.data?.register.user) {
-                router.push('/');
-              } else {
-                setErrors({ username: t('change_password.server_error') });
-              }
-            } catch {
-              setErrors({ username: t('change_password.server_error') });
+            const response = await register({
+              variables: { options: values },
+            });
+            if (response.data?.register.errors) {
+              setErrors(toErrorMap(response.data.register.errors));
+            } else if (response.data?.register.user) {
+              router.push('/');
             }
           }}
         >
@@ -128,10 +148,10 @@ const Register: NextPage = () => {
               />
 
               <div className="mt-2">
-                <p className="mb-2 text-sm font-bold ">
+                <p className="mb-2 text-sm font-bold">
                   {t('register.role_label')}
                 </p>
-                <div role="group" className="flex flex-col gap-1.5 text-sm ">
+                <div role="group" className="flex flex-col gap-1.5 text-sm">
                   <label className="flex cursor-pointer items-center gap-2">
                     <Field type="radio" name="role" value="user" />
                     {t('register.role_user')}
@@ -166,7 +186,7 @@ const Register: NextPage = () => {
         <p className="mt-6 text-center text-sm text-gray-400">
           {t('login.account')}{' '}
           <Link
-            className="font-semibold  underline transition hover:opacity-80"
+            className="font-semibold underline transition hover:opacity-80"
             href="/login"
           >
             {t('login.submit')}

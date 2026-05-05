@@ -40,21 +40,13 @@ const TABS: Tab[] = [
     labelKey: 'settings.security',
     roles: ['USER', 'CHEF', 'NUTRITIONIST'],
   },
-  {
-    key: 'chef-profile',
-    labelKey: 'settings.chefProfile',
-    roles: ['CHEF'],
-  },
+  { key: 'chef-profile', labelKey: 'settings.chefProfile', roles: ['CHEF'] },
   {
     key: 'nutritionist-profile',
     labelKey: 'settings.nutritionistProfile',
     roles: ['NUTRITIONIST'],
   },
-  {
-    key: 'meal-plan',
-    labelKey: 'settings.mealPlan',
-    roles: ['USER'],
-  },
+  { key: 'meal-plan', labelKey: 'settings.mealPlan', roles: ['USER'] },
 ];
 
 export async function getServerSideProps({ locale }: { locale: string }) {
@@ -78,17 +70,13 @@ export default function SettingsPage() {
 
   const handleDeleteAccount = async () => {
     setDeleteError('');
-    try {
-      const result = await deleteUser();
-      if (!result.data?.deleteUser) {
-        setDeleteError(t('settings.deleteError'));
-        return;
-      }
-      await apolloClient.clearStore();
-      router.push('/login');
-    } catch {
+    const result = await deleteUser();
+    if (!result.data?.deleteUser) {
       setDeleteError(t('settings.deleteError'));
+      return;
     }
+    await apolloClient.clearStore();
+    router.push('/login');
   };
 
   if (authLoading || !isAuthorized || !me) return null;
@@ -231,7 +219,7 @@ export default function SettingsPage() {
             className="bg-white rounded-2xl shadow-2xl p-6 w-full max-w-sm mx-4"
             onClick={(e) => e.stopPropagation()}
           >
-            <h2 className="text-base font-bold text-center  mb-2">
+            <h2 className="text-base font-bold text-center mb-2">
               {t('settings.deleteConfirmTitle')}
             </h2>
             <p className="text-sm text-center text-gray-500 mb-6 leading-relaxed">
