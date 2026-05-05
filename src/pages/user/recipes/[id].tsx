@@ -57,7 +57,6 @@ function RecipeDetailContent() {
   const [ratingScore, setRatingScore] = useState(0);
   const [ratingError, setRatingError] = useState('');
   const [ratingSuccess, setRatingSuccess] = useState('');
-  const [serverError, setServerError] = useState('');
   const [cookedSuccess, setCookedSuccess] = useState(false);
   const stepsRef = useRef<HTMLDivElement>(null);
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -148,7 +147,6 @@ function RecipeDetailContent() {
 
   const handleAddToCart = useCallback(
     async (ingredientId: number) => {
-      setServerError('');
       await addToCart({ variables: { ingredientId } });
       setAddedToCart((prev) => new Set(prev).add(ingredientId));
       setTimeout(() => {
@@ -163,7 +161,6 @@ function RecipeDetailContent() {
   );
 
   const handleToggleFavorite = async () => {
-    setServerError('');
     if (isFavorited) {
       await unsaveRecipe({ variables: { recipeId } });
     } else {
@@ -197,7 +194,6 @@ function RecipeDetailContent() {
   };
 
   const handleLogCooked = async () => {
-    setServerError('');
     await logCookedRecipe({ variables: { recipeId } });
     setCookedSuccess(true);
     setTimeout(() => setCookedSuccess(false), 2000);
@@ -433,12 +429,6 @@ function RecipeDetailContent() {
                     )}
                   </div>
                 </div>
-              )}
-
-              {serverError && (
-                <p className="text-sm font-semibold text-red-400">
-                  {serverError}
-                </p>
               )}
             </div>
 

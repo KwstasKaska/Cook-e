@@ -45,7 +45,6 @@ export default function ChefSingleRecipe() {
 
   const [isEditing, setIsEditing] = useState(false);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
-  const [serverError, setServerError] = useState('');
   const [editForm, setEditForm] = useState<EditForm | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -103,7 +102,6 @@ export default function ChefSingleRecipe() {
   const handleSave = async () => {
     if (!editForm || !recipe) return;
     setFieldErrors({});
-    setServerError('');
 
     const validIngredients = editForm.ingredients.filter(
       (r) => r.ingredientId > 0 && r.quantity.trim() && r.unit.trim(),
@@ -199,7 +197,6 @@ export default function ChefSingleRecipe() {
 
   const handleCancel = () => {
     setFieldErrors({});
-    setServerError('');
     setImageFile(null);
     setImagePreview(null);
     if (recipe) setEditForm(buildEditForm(recipe, lang));
@@ -353,10 +350,6 @@ export default function ChefSingleRecipe() {
                 <p className="mt-2 text-xs text-red-500">
                   {fieldErrors.prepTime || fieldErrors.cookTime}
                 </p>
-              )}
-
-              {serverError && (
-                <p className="mt-4 text-xs text-red-500">{serverError}</p>
               )}
             </div>
 

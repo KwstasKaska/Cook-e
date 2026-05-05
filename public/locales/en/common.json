@@ -251,7 +251,6 @@
     "setContentFirst": "Please write the meal content first.",
     "selectDateFirst": "Please select a date first.",
     "selectTimeFirst": "Please select a time.",
-    "serverError": "Something went wrong. Please try again.",
     "booked": "Booked",
     "respondError": "Could not process your response. Please try again.",
     "messagePatients": "Message your patients",

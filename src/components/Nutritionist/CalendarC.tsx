@@ -3,6 +3,7 @@ import { useTranslation } from 'next-i18next';
 import dynamic from 'next/dynamic';
 import { format } from 'date-fns';
 import { el, enUS } from 'date-fns/locale';
+import { toast } from 'sonner';
 type Value = Date | [Date | null, Date | null] | null;
 import { DateContext } from '../Context';
 import SliderAppointments from './Helper/SliderAppointments';
@@ -40,7 +41,6 @@ const CalendarC: React.FC = () => {
   const [value, setValue] = useState<Value>(new Date());
   const [isShowCalendar, setIsShowCalendar] = useState<boolean>(true);
   const [isClient, setIsClient] = useState<boolean>(false);
-  const [serverError, setServerError] = useState<string>('');
   const [start, setStart] = useState<number>(0);
   const [end, setEnd] = useState<number>(4);
 
@@ -79,17 +79,16 @@ const CalendarC: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setServerError('');
     const element = e.currentTarget.elements.namedItem(
       'time',
     ) as HTMLInputElement;
     const time = element.value;
     if (!selectedDate) {
-      setServerError(t('nutr.selectDateFirst'));
+      toast.error(t('nutr.selectDateFirst'));
       return;
     }
     if (!time) {
-      setServerError(t('nutr.selectTimeFirst'));
+      toast.error(t('nutr.selectTimeFirst'));
       return;
     }
 
@@ -98,7 +97,7 @@ const CalendarC: React.FC = () => {
     });
     const errors = result.data?.createAppointment?.errors;
     if (errors?.length) {
-      setServerError(errors[0].message);
+      toast.error(errors[0].message);
       return;
     }
     element.value = '';
@@ -108,7 +107,6 @@ const CalendarC: React.FC = () => {
   };
 
   const handleDelete = async (slotId: number) => {
-    setServerError('');
     await deleteAppointment({ variables: { slotId } });
     setStart((prev) => Math.max(prev - 1, 0));
     await refetchSlots();
@@ -199,11 +197,6 @@ const CalendarC: React.FC = () => {
                   id="time"
                 />
               </label>
-              {serverError && (
-                <p className="text-sm font-semibold text-myRed">
-                  {serverError}
-                </p>
-              )}
               <button
                 type="submit"
                 className="rounded-md mt-2 bg-myBlue-200 px-5 py-1 text-white hover:bg-myBlue-100 hover:font-bold hover:text-black hover:shadow-3xl"

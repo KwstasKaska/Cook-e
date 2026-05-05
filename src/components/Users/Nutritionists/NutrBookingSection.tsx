@@ -3,6 +3,7 @@ import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
 import { format } from 'date-fns';
 import { el, enUS } from 'date-fns/locale';
+import { toast } from 'sonner';
 import {
   useAvailableSlotsQuery,
   useRequestAppointmentMutation,
@@ -27,8 +28,6 @@ export default function NutrBookingSection({ nutritionistProfileId }: Props) {
 
   const [monthIndex, setMonthIndex] = useState(new Date().getMonth());
   const [selectedSlotId, setSelectedSlotId] = useState<number | null>(null);
-  const [serverError, setServerError] = useState('');
-  const [successMsg, setSuccessMsg] = useState('');
 
   const { data: slotsData, loading: slotsLoading } = useAvailableSlotsQuery({
     variables: { nutritionistId: nutritionistProfileId },
@@ -58,23 +57,21 @@ export default function NutrBookingSection({ nutritionistProfileId }: Props) {
 
   const handleBook = async () => {
     if (!selectedSlotId) return;
-    setServerError('');
-    setSuccessMsg('');
 
     const result = await requestAppointment({
       variables: { data: { slotId: selectedSlotId } },
     });
 
     if (result.errors) {
-      setServerError(t('nutritionists.bookError'));
+      toast.error(t('nutritionists.bookError'));
       return;
     }
     const gqlErrors = (result.data?.requestAppointment as any)?.errors;
     if (gqlErrors?.length) {
-      setServerError(gqlErrors[0].message);
+      toast.error(gqlErrors[0].message);
       return;
     }
-    setSuccessMsg(t('nutritionists.bookSuccess'));
+    toast.success(t('nutritionists.bookSuccess'));
     setSelectedSlotId(null);
   };
 
@@ -158,15 +155,6 @@ export default function NutrBookingSection({ nutritionistProfileId }: Props) {
             );
           })}
         </div>
-      )}
-
-      {serverError && (
-        <p className="mb-3 text-sm font-semibold text-red-400">{serverError}</p>
-      )}
-      {successMsg && (
-        <p className="mb-3 text-sm font-semibold text-green-400">
-          {successMsg}
-        </p>
       )}
 
       <button
