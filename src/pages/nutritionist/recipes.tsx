@@ -6,6 +6,7 @@ import NutrNavbar from '../../components/Nutritionist/NutrNavbar';
 import useIsNutritionist from '../../utils/useIsNutr';
 import { useRecipesQuery } from '../../generated/graphql';
 import ScrollToTopButton from '../../components/Helper/ScrollToTopButton';
+import PaginationControls from '../../components/Helper/PaginationControls';
 import { pick } from '../../utils/pick';
 
 export async function getServerSideProps({ locale }: { locale: string }) {
@@ -123,25 +124,13 @@ function NutrRecipesContent() {
           </div>
         )}
 
-        {!search.trim() && (hasPrev || hasMore) && (
-          <div className="mt-10 flex justify-center gap-4">
-            {hasPrev && (
-              <button
-                onClick={() => setOffset((o) => o - LIMIT)}
-                className="rounded-full px-8 py-2.5 text-sm font-bold transition hover:opacity-90 bg-myBlue-100"
-              >
-                {t('common.prev')}
-              </button>
-            )}
-            {hasMore && (
-              <button
-                onClick={() => setOffset((o) => o + LIMIT)}
-                className="rounded-full px-8 py-2.5 text-sm font-bold transition hover:opacity-90 bg-myBlue-100"
-              >
-                {t('common.next')}
-              </button>
-            )}
-          </div>
+        {!loading && !search.trim() && (
+          <PaginationControls
+            hasPrev={hasPrev}
+            hasMore={hasMore}
+            onPrev={() => setOffset((o) => o - LIMIT)}
+            onNext={() => setOffset((o) => o + LIMIT)}
+          />
         )}
       </main>
 

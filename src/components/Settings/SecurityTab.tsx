@@ -62,7 +62,7 @@ export default function SecurityTab() {
         if (result.data?.updateUser.errors) {
           const errs: Record<string, string> = {};
           for (const e of result.data.updateUser.errors) {
-            errs[e.field] = e.message;
+            errs[e.field] = t(e.message);
           }
           setErrors(errs);
           return;

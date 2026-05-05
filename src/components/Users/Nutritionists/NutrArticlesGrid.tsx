@@ -2,11 +2,12 @@ import { useState } from 'react';
 import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
 import { useArticlesByNutritionistQuery } from '../../../generated/graphql';
+import PaginationControls from '../../Helper/PaginationControls';
 
 const LIMIT = 2;
 
 interface Props {
-  nutritionistId: number; // User.id of the nutritionist
+  nutritionistId: number;
 }
 
 export default function NutrArticlesGrid({ nutritionistId }: Props) {
@@ -74,25 +75,13 @@ export default function NutrArticlesGrid({ nutritionistId }: Props) {
         </div>
       )}
 
-      {!loading && (hasPrev || (hasMore && articles.length > 0)) && (
-        <div className="mt-6 flex justify-center gap-4">
-          {hasPrev && (
-            <button
-              onClick={() => setOffset((o) => o - LIMIT)}
-              className="rounded-full px-8 bg-myBlue-100 py-2 text-sm font-bold transition hover:opacity-90"
-            >
-              {t('common.prev')}
-            </button>
-          )}
-          {hasMore && articles.length > 0 && (
-            <button
-              onClick={() => setOffset((o) => o + LIMIT)}
-              className="rounded-full px-8 bg-myBlue-100 py-2 text-sm font-bold transition hover:opacity-90"
-            >
-              {t('common.next')}
-            </button>
-          )}
-        </div>
+      {!loading && (
+        <PaginationControls
+          hasPrev={hasPrev}
+          hasMore={hasMore && articles.length > 0}
+          onPrev={() => setOffset((o) => o - LIMIT)}
+          onNext={() => setOffset((o) => o + LIMIT)}
+        />
       )}
     </div>
   );

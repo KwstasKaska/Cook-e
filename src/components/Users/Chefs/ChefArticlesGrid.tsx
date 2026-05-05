@@ -2,11 +2,12 @@ import { useState } from 'react';
 import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
 import { useArticlesByChefQuery } from '../../../generated/graphql';
+import PaginationControls from '../../Helper/PaginationControls';
 
 const LIMIT = 2;
 
 interface Props {
-  chefUserId: number; // User.id of the chef (not ChefProfile.id)
+  chefUserId: number;
 }
 
 export default function ChefArticlesGrid({ chefUserId }: Props) {
@@ -27,7 +28,7 @@ export default function ChefArticlesGrid({ chefUserId }: Props) {
 
   return (
     <div className="mt-4">
-      <h2 className="mb-4 flex justify-center text-xl font-bold text-black">
+      <h2 className="mb-4 flex justify-center text-xl font-bold text-white">
         {t('chef.profile.articles')}
       </h2>
 
@@ -36,9 +37,7 @@ export default function ChefArticlesGrid({ chefUserId }: Props) {
           <div className="h-8 w-8 animate-spin rounded-full border-4 border-myBlue-200 border-t-transparent" />
         </div>
       ) : articles.length === 0 && offset === 0 ? (
-        <p className="text-sm text-gray-400">
-          {t('chef.profile.no_articles', 'No articles yet.')}
-        </p>
+        <p className="text-sm text-gray-400">{t('chef.profile.no_articles')}</p>
       ) : (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           {articles.map((article) => {
@@ -73,25 +72,13 @@ export default function ChefArticlesGrid({ chefUserId }: Props) {
         </div>
       )}
 
-      {!loading && (hasPrev || (hasMore && articles.length > 0)) && (
-        <div className="mt-6 flex justify-center gap-4">
-          {hasPrev && (
-            <button
-              onClick={() => setOffset((o) => o - LIMIT)}
-              className="rounded-full px-8 bg-myBlue-100 py-2 text-sm font-bold transition hover:opacity-90"
-            >
-              {t('common.prev')}
-            </button>
-          )}
-          {hasMore && articles.length > 0 && (
-            <button
-              onClick={() => setOffset((o) => o + LIMIT)}
-              className="rounded-full bg-myBlue-100 px-8 py-2 text-sm font-bold transition hover:opacity-90"
-            >
-              {t('common.next')}
-            </button>
-          )}
-        </div>
+      {!loading && (
+        <PaginationControls
+          hasPrev={hasPrev}
+          hasMore={hasMore && articles.length > 0}
+          onPrev={() => setOffset((o) => o - LIMIT)}
+          onNext={() => setOffset((o) => o + LIMIT)}
+        />
       )}
     </div>
   );

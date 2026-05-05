@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
 import { useRecipesByChefQuery } from '../../../generated/graphql';
+import PaginationControls from '../../Helper/PaginationControls';
 
 const LIMIT = 2;
 
@@ -27,7 +28,7 @@ export default function ChefContentGrid({ chefId }: Props) {
 
   return (
     <div>
-      <h2 className="mb-4 flex justify-center text-xl font-bold text-black">
+      <h2 className="mb-4 flex justify-center text-xl font-bold text-white">
         {t('chef.profile.recipes')}
       </h2>
 
@@ -36,9 +37,7 @@ export default function ChefContentGrid({ chefId }: Props) {
           <div className="h-8 w-8 animate-spin rounded-full border-4 border-myBlue-200 border-t-transparent" />
         </div>
       ) : recipes.length === 0 && offset === 0 ? (
-        <p className="text-sm text-gray-400">
-          {t('chef.profile.no_recipes', 'No recipes yet.')}
-        </p>
+        <p className="text-sm text-gray-400">{t('chef.landing.no_recipes')}</p>
       ) : (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           {recipes.map((recipe) => {
@@ -67,7 +66,7 @@ export default function ChefContentGrid({ chefId }: Props) {
                     {title}
                   </p>
                   {recipe.difficulty && (
-                    <p className="mt-1 text-xs  tracking-wide text-gray-500">
+                    <p className="mt-1 text-xs tracking-wide text-gray-500">
                       {recipe.difficulty}
                     </p>
                   )}
@@ -78,25 +77,13 @@ export default function ChefContentGrid({ chefId }: Props) {
         </div>
       )}
 
-      {!loading && (hasPrev || (hasMore && recipes.length > 0)) && (
-        <div className="mt-6 flex justify-center gap-4">
-          {hasPrev && (
-            <button
-              onClick={() => setOffset((o) => o - LIMIT)}
-              className="rounded-full px-8 py-2 bg-myBlue-100 text-sm font-bold transition hover:opacity-90"
-            >
-              {t('common.prev')}
-            </button>
-          )}
-          {hasMore && recipes.length > 0 && (
-            <button
-              onClick={() => setOffset((o) => o + LIMIT)}
-              className="rounded-full px-8 py-2 bg-myBlue-100 text-sm font-bold transition hover:opacity-90"
-            >
-              {t('common.next')}
-            </button>
-          )}
-        </div>
+      {!loading && (
+        <PaginationControls
+          hasPrev={hasPrev}
+          hasMore={hasMore && recipes.length > 0}
+          onPrev={() => setOffset((o) => o - LIMIT)}
+          onNext={() => setOffset((o) => o + LIMIT)}
+        />
       )}
     </div>
   );

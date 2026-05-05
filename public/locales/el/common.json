@@ -398,13 +398,7 @@
       "unit_label": "Μονάδα",
       "utensils_label": "Εργαλεία Κουζίνας",
       "saving": "Αποθήκευση...",
-      "error_title": "Εισήγαγε τίτλο για την συνταγή σου.",
-      "error_difficulty": "Επιλέξε επίπεδο δυσκολίας.",
-      "error_prep_time": "Εισήγαγε έγκυρο χρόνο προετοιμασίας.",
-      "error_cook_time": "Εισήγαγε έγκυρο χρόνο μαγειρέματος.",
-      "error_ingredients": "Προσθέσε τουλάχιστον ένα υλικό.",
-      "error_steps": "Προσθέσε τουλάχιστον ένα βήμα.",
-      "error_server": "Κάτι πήγε λάθος. Δοκιμάσε ξανά.",
+
       "macros_label": "Διατροφικά στοιχεία",
       "macros_hint": "ανά μερίδα",
       "calories": "Θερμίδες",
@@ -415,8 +409,7 @@
   },
   "change_password": {
     "token_error": "Αυτός ο σύνδεσμος έχει λήξει.",
-    "token_error_link": "Ζήτησε νέο",
-    "server_error": "Κάτι πήγε λάθος. Δοκίμασε ξανά."
+    "token_error_link": "Ζήτησε νέο"
   },
 
   "common": {
@@ -487,7 +480,10 @@
     "recipe_ingredients_required": "Απαιτείται τουλάχιστον ένα υλικό",
     "recipe_steps_required": "Απαιτείται τουλάχιστον ένα βήμα",
     "recipe_title_empty": "Ο τίτλος δεν μπορεί να είναι κενός",
-    "recipe_ingredients_min": "Απαιτούνται τουλάχιστον τρία υλικά"
+    "recipe_ingredients_min": "Απαιτούνται τουλάχιστον τρία υλικά",
+    "user_not_found": "Ο χρήστης δεν βρέθηκε.",
+    "current_password_required": "Εισάγετε τον τρέχοντα κωδικό σας.",
+    "current_password_wrong": "Λάθος κωδικός."
   },
   "index": {
     "login": "Σύνδεση",

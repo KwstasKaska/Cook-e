@@ -311,7 +311,6 @@
       "label_title": "Title",
       "macros": "Nutritional Info",
       "confirm_delete": "Are you sure you want to delete this recipe?",
-      "error_server": "Something went wrong. Please try again.",
       "view_chef_profile": "View chef profile"
     },
     "profile": {
@@ -399,13 +398,6 @@
       "unit_label": "Unit",
       "utensils_label": "Kitchen Utensils",
       "saving": "Saving...",
-      "error_title": "Please enter a title for your recipe.",
-      "error_difficulty": "Please select a difficulty level.",
-      "error_prep_time": "Please enter a valid prep time.",
-      "error_cook_time": "Please enter a valid cook time.",
-      "error_ingredients": "Add at least one ingredient.",
-      "error_steps": "Add at least one step.",
-      "error_server": "Something went wrong. Please try again.",
       "macros_label": "Nutritional info",
       "macros_hint": "per serving",
       "calories": "Calories",
@@ -416,8 +408,7 @@
   },
   "change_password": {
     "token_error": "This link has expired.",
-    "token_error_link": "Request a new one",
-    "server_error": "Something went wrong. Please try again."
+    "token_error_link": "Request a new one"
   },
   "error": {
     "username_length": "Username must be more than two characters",
@@ -442,7 +433,10 @@
     "recipe_ingredients_required": "At least one ingredient is required",
     "recipe_steps_required": "At least one step is required",
     "recipe_title_empty": "Title cannot be empty",
-    "recipe_ingredients_min": "At least three ingredients are required"
+    "recipe_ingredients_min": "At least three ingredients are required",
+    "user_not_found": "User not found.",
+    "current_password_required": "Enter your current password.",
+    "current_password_wrong": "Wrong password."
   },
 
   "common": {

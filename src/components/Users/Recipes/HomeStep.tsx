@@ -1,5 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'next-i18next';
+import PaginationControls from '../../Helper/PaginationControls';
 
 type FavRecipe = {
   id: number;
@@ -102,25 +103,13 @@ export default function HomeStep({
           </div>
         )}
 
-        {!favLoading && (hasPrev || hasMore) && (
-          <div className="mt-6 flex justify-center gap-4">
-            {hasPrev && onPrev && (
-              <button
-                onClick={onPrev}
-                className="rounded-full bg-myBlue-100 px-8 py-2 text-sm font-bold transition hover:opacity-90"
-              >
-                {t('common.prev')}
-              </button>
-            )}
-            {hasMore && onNext && (
-              <button
-                onClick={onNext}
-                className="rounded-full bg-myBlue-100 px-8 py-2 text-sm font-bold transition hover:opacity-90"
-              >
-                {t('common.next')}
-              </button>
-            )}
-          </div>
+        {!favLoading && (
+          <PaginationControls
+            hasPrev={hasPrev ?? false}
+            hasMore={hasMore ?? false}
+            onPrev={onPrev ?? (() => {})}
+            onNext={onNext ?? (() => {})}
+          />
         )}
       </div>
 

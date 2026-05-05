@@ -67,7 +67,6 @@ function RecipesContent() {
       fetchPolicy: 'network-only',
     });
 
-  // ── Derived data
   const allIngredients = ingredientsData?.ingredients ?? [];
   const allUtensils = utensilsData?.utensils ?? [];
   const favorites = favData?.myFavorites ?? [];
