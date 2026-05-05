@@ -138,7 +138,37 @@ export default function CreateRecipe() {
     );
 
   const handleNext = () => {
-    if (currentStep < TOTAL_STEPS) setCurrentStep((s) => s + 1);
+    const errs: Record<string, string> = {};
+
+    if (currentStep === 1) {
+      if (!form.title.trim()) errs.title = t('error.recipe_title_required');
+    }
+
+    if (currentStep === 2) {
+      if (!form.difficulty)
+        errs.difficulty = t('error.recipe_difficulty_required');
+      if (!form.prepTime || Number(form.prepTime) <= 0)
+        errs.prepTime = t('error.recipe_prep_time_invalid');
+      if (!form.cookTime || Number(form.cookTime) <= 0)
+        errs.cookTime = t('error.recipe_cook_time_invalid');
+    }
+
+    if (currentStep === 4) {
+      if (
+        form.ingredients.filter(
+          (r) => r.ingredientId > 0 && r.quantity.trim() && r.unit.trim(),
+        ).length === 0
+      )
+        errs.ingredients = t('error.recipe_ingredients_required');
+    }
+
+    if (Object.keys(errs).length > 0) {
+      setFieldErrors(errs);
+      return;
+    }
+
+    setFieldErrors({});
+    setCurrentStep((s) => s + 1);
   };
 
   const handleBack = () => {
@@ -153,20 +183,8 @@ export default function CreateRecipe() {
     );
     const validSteps = form.steps.filter((s) => s.text.trim());
 
-    const errs: Record<string, string> = {};
-    if (!form.title.trim()) errs.title = t('chef.create_recipe.error_title');
-    if (!form.difficulty)
-      errs.difficulty = t('chef.create_recipe.error_difficulty');
-    if (!form.prepTime || Number(form.prepTime) <= 0)
-      errs.prepTime = t('chef.create_recipe.error_prep_time');
-    if (!form.cookTime || Number(form.cookTime) <= 0)
-      errs.cookTime = t('chef.create_recipe.error_cook_time');
-    if (validIngredients.length === 0)
-      errs.ingredients = t('chef.create_recipe.error_ingredients');
-    if (validSteps.length === 0)
-      errs.steps = t('chef.create_recipe.error_steps');
-    if (Object.keys(errs).length > 0) {
-      setFieldErrors(errs);
+    if (!form.difficulty) {
+      setFieldErrors({ difficulty: t('error.recipe_difficulty_required') });
       return;
     }
 
@@ -217,7 +235,7 @@ export default function CreateRecipe() {
     if (result?.errors?.length) {
       const mapped: Record<string, string> = {};
       result.errors.forEach((e) => {
-        mapped[e.field] = e.message;
+        mapped[e.field] = t(e.message);
       });
       setFieldErrors(mapped);
       return;

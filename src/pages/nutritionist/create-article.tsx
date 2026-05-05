@@ -118,7 +118,6 @@ const CreateArticle: NextPage = () => {
                 </div>
               )}
 
-              {/* Image upload button overlay */}
               <label
                 htmlFor="article-image"
                 className="absolute bottom-3 right-3 flex cursor-pointer items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-bold shadow transition bg-myYellow hover:opacity-90"
@@ -148,9 +147,7 @@ const CreateArticle: NextPage = () => {
               />
             </div>
 
-            {/* Form fields */}
             <div className="p-6 md:p-8">
-              {/* Title */}
               <div className="mb-5">
                 <label
                   htmlFor="article-title"
@@ -168,7 +165,6 @@ const CreateArticle: NextPage = () => {
                 />
               </div>
 
-              {/* Body text */}
               <div className="mb-6">
                 <label
                   htmlFor="article-text"
@@ -186,14 +182,12 @@ const CreateArticle: NextPage = () => {
                 />
               </div>
 
-              {/* Error */}
               {error && (
                 <p className="mb-4 text-sm font-semibold text-red-500">
                   {error}
                 </p>
               )}
 
-              {/* Actions */}
               <div className="flex gap-3 justify-center">
                 <button
                   onClick={handleSubmit}

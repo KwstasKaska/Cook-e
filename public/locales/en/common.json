@@ -242,7 +242,6 @@
       "placeholder_text": "Write the content...",
       "upload_image": "Upload image",
       "submit": "Publish",
-
       "error_image": "Please add an image."
     },
     "nutr_recipes": "Chefs recipes",
@@ -435,7 +434,15 @@
     "appointment_date_required": "The date is required.",
     "appointment_time_required": "The time is required.",
     "email_required": "Email is required.",
-    "password_required": "Password is required."
+    "password_required": "Password is required.",
+    "recipe_title_required": "Title is required",
+    "recipe_difficulty_required": "Difficulty is required",
+    "recipe_prep_time_invalid": "Prep time is required",
+    "recipe_cook_time_invalid": "Cook time is required",
+    "recipe_ingredients_required": "At least one ingredient is required",
+    "recipe_steps_required": "At least one step is required",
+    "recipe_title_empty": "Title cannot be empty",
+    "recipe_ingredients_min": "At least three ingredients are required"
   },
 
   "common": {

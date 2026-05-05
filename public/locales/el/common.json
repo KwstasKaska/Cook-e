@@ -479,7 +479,15 @@
     "username_taken": "Αυτό το όνομα χρήστη χρησιμοποιείται ήδη",
     "email_taken": "Αυτό το email χρησιμοποιείται ήδη",
     "email_required": "Το email είναι υποχρεωτικό.",
-    "password_required": "Ο κωδικός είναι υποχρεωτικός."
+    "password_required": "Ο κωδικός είναι υποχρεωτικός.",
+    "recipe_title_required": "Ο τίτλος είναι υποχρεωτικός",
+    "recipe_difficulty_required": "Η δυσκολία είναι υποχρεωτική",
+    "recipe_prep_time_invalid": "Ο χρόνος προετοιμασίας είναι υποχρεωτικός",
+    "recipe_cook_time_invalid": "Ο χρόνος μαγειρέματος είναι υποχρεωτικός",
+    "recipe_ingredients_required": "Απαιτείται τουλάχιστον ένα υλικό",
+    "recipe_steps_required": "Απαιτείται τουλάχιστον ένα βήμα",
+    "recipe_title_empty": "Ο τίτλος δεν μπορεί να είναι κενός",
+    "recipe_ingredients_min": "Απαιτούνται τουλάχιστον τρία υλικά"
   },
   "index": {
     "login": "Σύνδεση",

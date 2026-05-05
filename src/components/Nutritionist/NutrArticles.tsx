@@ -26,7 +26,6 @@ const NutrArticles: React.FC = () => {
   return (
     <section id="section_1" className="flex min-h-screen flex-col">
       <div className="flex w-full flex-1 flex-col items-center justify-center gap-8 bg-myGrey-200 px-4 py-10 sm:px-6">
-        {/* Title */}
         <h1 className="bg-gradient-to-r from-[#B3D5F8] to-[#FFFFFF] bg-clip-text  text-3xl font-bold text-transparent md:text-5xl">
           {t('nutr.yourArticles')}
         </h1>
@@ -39,7 +38,6 @@ const NutrArticles: React.FC = () => {
           <p className="text-white">{t('nutr.noArticlesYet')}</p>
         )}
 
-        {/* Grid */}
         {!loading && articles.length > 0 && (
           <div className="w-full max-w-5xl">
             <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
@@ -79,7 +77,6 @@ const NutrArticles: React.FC = () => {
           </div>
         )}
 
-        {/* Prev / Next — outside grid block so Prev shows even on empty page */}
         {!loading && (hasPrev || (hasMore && articles.length > 0)) && (
           <div className="flex justify-center gap-4">
             {hasPrev && (
