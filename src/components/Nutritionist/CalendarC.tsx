@@ -139,19 +139,24 @@ const CalendarC: React.FC = () => {
           locale={calendarLocale}
           className="lg:mt-12 lg:scale-125 xl:scale-150"
         />
-        <div className="mt-3 flex flex-wrap justify-center gap-3">
-          <button
-            className="rounded-full px-8 py-2.5 text-sm font-bold transition hover:opacity-90 bg-myRed text-white"
-            onClick={handleCancel}
-          >
-            {t('nutr.cancel')}
-          </button>
-          <button
-            className="rounded-full px-8 py-2.5 text-sm font-bold transition hover:opacity-90 bg-myBlue-100 text-myGrey-200"
-            onClick={handleSet}
-          >
-            {t('nutr.setAvailability')}
-          </button>
+        <div className="flex flex-col items-center gap-2">
+          <div className="mt-3 flex flex-wrap justify-center gap-3">
+            <button
+              className="rounded-full px-8 py-2.5 text-sm font-bold transition hover:opacity-90 bg-myRed text-white"
+              onClick={handleCancel}
+            >
+              {t('nutr.cancel')}
+            </button>
+            <button
+              className="rounded-full px-8 py-2.5 text-sm font-bold transition hover:opacity-90 bg-myBlue-100 text-myGrey-200"
+              onClick={handleSet}
+            >
+              {t('nutr.setAvailability')}
+            </button>
+          </div>
+          <p className="max-w-xs text-center text-xs text-myGrey-200">
+            {t('nutr.setAvailabilityHint')}
+          </p>
         </div>
       </div>
 

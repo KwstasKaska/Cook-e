@@ -20,7 +20,7 @@
   "nutrnav": {
     "nutr_calendar": "Calendar",
     "nutr_appointments": "Appointment management",
-    "nutr_scheduler": "Nutrition plans"
+    "nutr_scheduler": "Nutritional plans"
   },
   "landing": {
     "nutritionTitle": "Nutritional info",
@@ -221,7 +221,7 @@
     "setContentPlaceholder": "Set the content for the day and type of meal you want",
     "nutr_settings": "Settings",
     "newArticle": "New article",
-    "noArticlesYet": "There haven't benn published any articles yet.",
+    "noArticlesYet": "There haven't been published any articles yet.",
     "create_article": {
       "label_title": "Title",
       "label_text": "Content",
@@ -238,16 +238,15 @@
     "selectTimeFirst": "Please select a time.",
     "booked": "Booked",
     "messagePatients": "Message your patients",
-
-    "clear": "Clear"
+    "clear": "Clear",
+    "calendarHint": "Here you can see booking requests from members for the dates and hours you have set. When you accept a request, you can create a meal plan for that member and chat with them directly.",
+    "setAvailabilityHint": "Use \"Set availability\" to add for the selected date the hours members can book with you.",
+    "noAppointmentsToday": "No appointments scheduled for today.",
+    "recipesHint": "Open a recipe and use the copy link button to share it via chat or include it in a meal plan."
   },
   "chef": {
     "more": "More",
-    "landing": {
-      "tagline_pre": "The culinary",
-      "tagline_bold": "authenticity of recipes",
-      "no_recipes": "You haven't created any recipes yet."
-    },
+
     "recipes": {
       "page_title": "My recipes",
       "categories_label": "Categories",

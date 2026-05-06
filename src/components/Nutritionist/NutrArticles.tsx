@@ -27,7 +27,7 @@ const NutrArticles: React.FC = () => {
   return (
     <section id="section_1" className="flex min-h-screen flex-col">
       <div className="flex w-full flex-1 flex-col items-center justify-center gap-8 bg-myGrey-200 px-4  sm:px-6">
-        <h1 className="bg-gradient-to-r from-[#B3D5F8] to-[#FFFFFF] bg-clip-text pb-16  text-3xl font-bold text-transparent md:text-5xl">
+        <h1 className="bg-gradient-to-r from-[#B3D5F8] to-[#FFFFFF] bg-clip-text   text-3xl font-bold text-transparent md:text-5xl">
           {t('nutr.yourArticles')}
         </h1>
 
@@ -36,7 +36,9 @@ const NutrArticles: React.FC = () => {
         )}
 
         {!loading && articles.length === 0 && offset === 0 && (
-          <p className="text-white">{t('nutr.noArticlesYet')}</p>
+          <p className=" max-w-sm px-6 pb-16 text-center text-sm text-white">
+            {t('nutr.noArticlesYet')}
+          </p>
         )}
 
         {!loading && articles.length > 0 && (

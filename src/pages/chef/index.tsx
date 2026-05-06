@@ -104,7 +104,6 @@ function ChefHomeContent() {
         </h1>
 
         <div className="w-full max-w-3xl rounded-2xl bg-myBeige-100 p-6 md:p-8">
-          {/* Avatar + username */}
           <div className="flex flex-col items-center mb-4">
             <div className="h-24 w-24 overflow-hidden rounded-full border-4 border-myGrey-200 shadow-lg bg-myBlue-100">
               {chefProfile?.user?.image ? (

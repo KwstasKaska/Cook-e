@@ -61,9 +61,12 @@ function NutrRecipesContent() {
 
       <main className="mx-auto w-full max-w-6xl px-4 pb-20 pt-12 sm:px-6">
         <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-          <h1 className="text-2xl font-bold text-white md:text-3xl">
-            {t('nutr.nutr_recipes')}
-          </h1>
+          <div>
+            <h1 className="text-2xl font-bold text-white md:text-3xl">
+              {t('nutr.nutr_recipes')}
+            </h1>
+            <p className="mt-1 text-sm text-white">{t('nutr.recipesHint')}</p>
+          </div>
           <input
             type="text"
             value={search}

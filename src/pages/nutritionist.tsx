@@ -63,8 +63,8 @@ const Nutritionist: NextPage = () => {
               </span>
             </div>
           )}
-          <h1 className="text-2xl font-bold md:text-4xl">
-            {t('nutr.welcome')}, <br /> Dr. {meData?.me?.username}
+          <h1 className="text-2xl text-black opacity-75 font-bold md:text-4xl">
+            {t('nutr.welcome')} Dr. {meData?.me?.username}
           </h1>
         </div>
 
@@ -82,6 +82,9 @@ const Nutritionist: NextPage = () => {
               <h2 className="mx-auto pt-16 text-center text-2xl font-bold md:text-4xl">
                 {t('nutr.searchAppointments')}
               </h2>
+              <p className="mx-auto mt-3 max-w-xl px-6 text-center text-sm text-myGrey-200">
+                {t('nutr.calendarHint')}
+              </p>
               <CalendarC />
             </div>
           </section>

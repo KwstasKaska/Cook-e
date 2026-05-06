@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import { useTranslation } from 'next-i18next';
+import { format } from 'date-fns';
 
 import coffee from '/public/images/coffee.jpg';
 import MyAppointments from './Helper/MyAppointments';
@@ -9,9 +10,9 @@ import {
   useGetAppointmentRequestsForNutritionistQuery,
 } from '../../generated/graphql';
 
-interface NutrAppointmentsProps {}
+const toISOToday = (): string => format(new Date(), 'yyyy-MM-dd');
 
-const NutrAppointments: React.FC<NutrAppointmentsProps> = ({}) => {
+const NutrAppointments: React.FC = () => {
   const { t } = useTranslation('common');
   const { openConversation } = useChatContext();
 
@@ -20,8 +21,10 @@ const NutrAppointments: React.FC<NutrAppointmentsProps> = ({}) => {
     fetchPolicy: 'network-only',
   });
 
+  const allRequests = requestsData?.getAppointmentRequestsForNutritionist ?? [];
+
   const acceptedClients = Object.values(
-    (requestsData?.getAppointmentRequestsForNutritionist ?? [])
+    allRequests
       .filter((req) => req.status === AppointmentStatus.Accepted && req.client)
       .reduce<Record<number, { id: number; username: string }>>((acc, req) => {
         const client = req.client!;
@@ -32,14 +35,26 @@ const NutrAppointments: React.FC<NutrAppointmentsProps> = ({}) => {
       }, {}),
   );
 
+  const todayISO = toISOToday();
+  const hasTodayAppointments = allRequests.some(
+    (req) =>
+      req.status === AppointmentStatus.Accepted && req.slot?.date === todayISO,
+  );
+
   return (
     <section
       id="section_3"
-      className="flex min-h-screen w-full flex-col items-center "
+      className="flex min-h-screen w-full flex-col items-center"
     >
       <h1 className="relative z-[2] pt-6 text-center text-2xl font-bold text-white hover:text-myRed md:text-4xl">
         {t('nutr.todayAppointments')}
       </h1>
+
+      {!hasTodayAppointments && (
+        <p className="mt-3 max-w-sm px-6 text-center text-sm text-white">
+          {t('nutr.noAppointmentsToday')}
+        </p>
+      )}
 
       <div className="relative flex flex-1 items-center justify-center py-10">
         <div className="block px-6">
@@ -51,7 +66,6 @@ const NutrAppointments: React.FC<NutrAppointmentsProps> = ({}) => {
           />
         </div>
 
-        {/* Phone mockup — always visible; negative margin pulls it over the image on lg+ */}
         <div className="relative z-10 lg:-ml-20">
           <MyAppointments
             customClassName={
@@ -65,7 +79,6 @@ const NutrAppointments: React.FC<NutrAppointmentsProps> = ({}) => {
         </div>
       </div>
 
-      {/* ── Message your patients ──────────────────────────────────────────── */}
       {acceptedClients.length > 0 && (
         <div className="mx-auto w-full max-w-xl px-6 pb-10">
           <h2 className="mb-4 text-center text-lg font-bold text-white">
