@@ -9,6 +9,7 @@ import {
 } from '../../generated/graphql';
 import { pick } from '../../utils/pick';
 import { uploadToCloudinary } from '../../utils/uploadToCloudinary';
+import DeleteConfirm from '../Helper/DeleteConfirm';
 
 type Props = {
   Navbar: React.ComponentType;
@@ -17,52 +18,10 @@ type Props = {
   showDate?: boolean;
 };
 
-const DeleteModal = ({
-  onConfirm,
-  onCancel,
-  loading,
-}: {
-  onConfirm: () => void;
-  onCancel: () => void;
-  loading: boolean;
-}) => {
-  const { t } = useTranslation('common');
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
-      <div className="absolute inset-0 bg-black/40" onClick={onCancel} />
-      <div className="relative z-10 w-full max-w-sm rounded-2xl bg-white p-8 shadow-2xl mx-4">
-        <h2 className="mb-4 text-center text-xl font-bold">
-          {t('chef.article.delete_confirm')}
-        </h2>
-        <p className="mb-6 text-center text-sm text-gray-500">
-          {t('chef.article.delete_confirm_text')}
-        </p>
-        <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
-          <button
-            onClick={onCancel}
-            className="w-full sm:w-auto rounded-full border border-gray-300 px-6 py-2 text-sm font-semibold text-gray-600 transition hover:bg-gray-50"
-          >
-            {t('common.cancel')}
-          </button>
-          <button
-            onClick={onConfirm}
-            disabled={loading}
-            className="w-full sm:w-auto rounded-full px-6 py-2 text-sm font-bold text-white transition hover:opacity-90 disabled:opacity-50"
-            style={{ backgroundColor: '#E53E3E' }}
-          >
-            {loading ? t('common.loading') : t('common.delete')}
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-};
-
 export default function ArticleSinglePage({
   Navbar,
   listCacheField,
   deleteRedirect,
-  showDate = false,
 }: Props) {
   const { t, i18n } = useTranslation('common');
   const lang = i18n.language;
@@ -184,10 +143,13 @@ export default function ArticleSinglePage({
       <Navbar />
 
       {showDeleteModal && (
-        <DeleteModal
+        <DeleteConfirm
+          title={t('chef.article.delete_confirm')}
+          confirmLabel={t('common.delete')}
+          cancelLabel={t('common.cancel')}
+          loading={deleteLoading}
           onConfirm={handleDelete}
           onCancel={() => setShowDeleteModal(false)}
-          loading={deleteLoading}
         />
       )}
 
@@ -354,14 +316,6 @@ export default function ArticleSinglePage({
                 </>
               ) : (
                 <>
-                  {showDate && (
-                    <p className="mb-2 text-xs text-gray-400">
-                      {new Date(article.createdAt).toLocaleDateString(
-                        lang === 'en' ? 'en-GB' : 'el-GR',
-                        { day: 'numeric', month: 'long', year: 'numeric' },
-                      )}
-                    </p>
-                  )}
                   <h1 className="mb-4 text-2xl font-bold leading-snug">
                     {pick(article.title_el, article.title_en, lang)}
                   </h1>

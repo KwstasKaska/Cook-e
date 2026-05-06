@@ -13,6 +13,7 @@ import ChefNavbar from '../components/Chef/ChefNavbar';
 import NutrNavbar from '../components/Nutritionist/NutrNavbar';
 import { useDeleteUserMutation } from '../generated/graphql';
 import { useApolloClient } from '@apollo/client';
+import DeleteConfirm from '../components/Helper/DeleteConfirm';
 
 type Role = 'CHEF' | 'USER' | 'NUTRITIONIST';
 
@@ -93,6 +94,17 @@ export default function SettingsPage() {
   return (
     <div className="min-h-screen">
       {renderNavbar()}
+
+      {showConfirm && (
+        <DeleteConfirm
+          title={t('settings.deleteConfirmTitle')}
+          confirmLabel={t('settings.deleteConfirmYes')}
+          cancelLabel={t('settings.deleteConfirmCancel')}
+          loading={deleting}
+          onConfirm={handleDeleteAccount}
+          onCancel={() => setShowConfirm(false)}
+        />
+      )}
 
       <div className="relative overflow-hidden min-h-screen">
         <div className="relative z-10 max-w-5xl mx-auto px-6 pt-10 pb-20">
@@ -208,50 +220,6 @@ export default function SettingsPage() {
           </div>
         </div>
       </div>
-
-      {showConfirm && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center"
-          style={{ backgroundColor: 'rgba(0, 0, 0, 0.55)' }}
-          onClick={() => !deleting && setShowConfirm(false)}
-        >
-          <div
-            className="bg-white rounded-2xl shadow-2xl p-6 w-full max-w-sm mx-4"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <h2 className="text-base font-bold text-center mb-2">
-              {t('settings.deleteConfirmTitle')}
-            </h2>
-            <p className="text-sm text-center text-gray-500 mb-6 leading-relaxed">
-              {t('settings.deleteConfirmMessage')}
-            </p>
-
-            <div className="flex flex-col gap-3 sm:flex-row">
-              <button
-                onClick={() => setShowConfirm(false)}
-                disabled={deleting}
-                className="w-full sm:w-auto flex-1 py-2.5 text-sm font-semibold rounded-full border-2 transition-colors disabled:opacity-50"
-                style={{ borderColor: '#D1D5DB', color: '#6B7280' }}
-              >
-                {t('settings.deleteConfirmCancel')}
-              </button>
-              <button
-                onClick={async () => {
-                  setShowConfirm(false);
-                  await handleDeleteAccount();
-                }}
-                disabled={deleting}
-                className="w-full sm:w-auto flex-1 py-2.5 text-sm font-semibold rounded-full text-white transition-colors hover:opacity-90 disabled:opacity-50"
-                style={{ backgroundColor: '#ED5B5B' }}
-              >
-                {deleting
-                  ? t('common.loading')
-                  : t('settings.deleteConfirmYes')}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

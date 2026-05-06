@@ -34,6 +34,7 @@ import RecipeCategoryCard from '../../../components/Chef/recipeDetail/RecipeCate
 import RecipeMacrosCard from '../../../components/Chef/recipeDetail/RecipeMacrosCard';
 import ScrollToTopButton from '../../../components/Helper/ScrollToTopButton';
 import Stars from '../../../components/Helper/Stars';
+import DeleteConfirm from '../../../components/Helper/DeleteConfirm';
 
 export default function ChefSingleRecipe() {
   const { loading: authLoading, isAuthorized } = useIsChef();
@@ -44,6 +45,7 @@ export default function ChefSingleRecipe() {
   const imageInputRef = useRef<HTMLInputElement>(null);
 
   const [isEditing, setIsEditing] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [editForm, setEditForm] = useState<EditForm | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -190,7 +192,6 @@ export default function ChefSingleRecipe() {
 
   const handleDelete = async () => {
     if (!recipe) return;
-    if (!window.confirm(t('chef.recipe_detail.confirm_delete'))) return;
     await deleteRecipe({ variables: { id: recipe.id } });
     router.push('/chef/recipes');
   };
@@ -253,6 +254,18 @@ export default function ChefSingleRecipe() {
   return (
     <div className="flex min-h-screen flex-col">
       <ChefNavbar />
+
+      {showDeleteModal && (
+        <DeleteConfirm
+          title={t('chef.recipe_detail.confirm_delete')}
+          confirmLabel={t('common.delete')}
+          cancelLabel={t('common.cancel')}
+          loading={deleting}
+          onConfirm={handleDelete}
+          onCancel={() => setShowDeleteModal(false)}
+        />
+      )}
+
       <main className="flex flex-1 flex-col items-center px-4 py-8 md:px-8">
         <div className="w-full max-w-3xl overflow-hidden rounded-2xl bg-white shadow-2xl">
           <RecipeHeroImage
@@ -270,35 +283,49 @@ export default function ChefSingleRecipe() {
               onEdit={() => setIsEditing(true)}
               onSave={handleSave}
               onCancel={handleCancel}
-              onDelete={handleDelete}
+              onDelete={() => setShowDeleteModal(true)}
             />
           </div>
 
           {isEditing && (
             <div className="px-6 pb-2">
               <label className="mb-1 block text-sm font-bold">
-                {t('chef.recipe_detail.no_image')}
+                {t('chef.article.image_label')}
               </label>
-              <input
-                ref={imageInputRef}
-                type="file"
-                accept="image/*"
-                onChange={handleImageChange}
-                className="text-sm text-gray-600"
-              />
+              <div>
+                <label
+                  htmlFor="recipe-image"
+                  className="inline-flex cursor-pointer items-center gap-1.5 rounded-full bg-myYellow px-4 py-1.5 text-xs font-bold transition hover:opacity-90"
+                >
+                  {t('chef.article.image_label')}
+                </label>
+                <input
+                  id="recipe-image"
+                  ref={imageInputRef}
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className="hidden"
+                />
+              </div>
+              {imageFile && (
+                <p className="mt-1 text-xs text-gray-500">{imageFile.name}</p>
+              )}
             </div>
           )}
 
           <div className="flex flex-col gap-6 p-6 md:flex-row md:p-8">
             <div className="flex-1 min-w-0">
-              <div className="mb-4 flex items-center gap-2">
-                <Stars rating={avgRating} />
-                <span className="text-sm text-gray-400">
-                  {totalRatings > 0
-                    ? `${avgRating.toFixed(1)} (${totalRatings})`
-                    : t('chef.recipe_detail.no_ratings_yet')}
-                </span>
-              </div>
+              {!isEditing && (
+                <div className="mb-4 flex items-center gap-2">
+                  <Stars rating={avgRating} />
+                  <span className="text-sm text-gray-400">
+                    {totalRatings > 0
+                      ? `${avgRating.toFixed(1)} (${totalRatings})`
+                      : t('chef.recipe_detail.no_ratings_yet')}
+                  </span>
+                </div>
+              )}
 
               <RecipeDescriptionCard
                 recipe={recipe}

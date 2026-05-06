@@ -195,7 +195,7 @@
     "deleteError": "Αδυναμία διαγραφής λογαριασμού",
     "deleteConfirmTitle": "Διαγραφή λογαριασμού",
     "deleteConfirmMessage": "Αυτή η ενέργεια είναι μόνιμη. Όλα τα δεδομένα σου θα διαγραφούν οριστικά.",
-    "deleteConfirmYes": "Ναι, διέγραψέ τον",
+    "deleteConfirmYes": "Διαγραφή",
     "deleteConfirmCancel": "Άκυρο"
   },
   "nutr": {
@@ -422,11 +422,7 @@
     "save": "Αποθήκευση",
     "saving": "Αποθήκευση...",
     "next": "Επόμενα",
-    "prev": "Προηγούμενα",
-    "deleteConfirmTitle": "Διαγραφή λογαριασμού",
-    "deleteConfirmMessage": "Αυτή η ενέργεια είναι μόνιμη. Όλα τα δεδομένα σου θα διαγραφούν οριστικά.",
-    "deleteConfirmYes": "Ναι, διέγραψέ τον",
-    "deleteConfirmCancel": "Άκυρο"
+    "prev": "Προηγούμενα"
   },
   "register": {
     "title": "Δημιουργία λογαριασμού",

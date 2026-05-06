@@ -195,8 +195,7 @@
     "noMealPlan": "No meal plan has been assigned yet.",
     "deleteError": "Error on deletion",
     "deleteConfirmTitle": "Delete account",
-    "deleteConfirmMessage": "This is permanent. All your data will be deleted and cannot be recovered.",
-    "deleteConfirmYes": "Yes, delete it",
+    "deleteConfirmYes": "Delete",
     "deleteConfirmCancel": "Cancel"
   },
   "nutr": {
@@ -342,7 +341,7 @@
     "article": {
       "not_found": "Article not found.",
       "delete_confirm": "Delete article",
-      "delete_confirm_text": "Are you sure you want to delete this article? This action cannot be undone.",
+
       "title_label": "Title",
       "text_label": "Content",
       "image_label": "Article image",
