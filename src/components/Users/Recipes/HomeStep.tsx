@@ -113,8 +113,7 @@ export default function HomeStep({
         )}
       </div>
 
-      <div className="flex flex-col items-center gap-3 pt-4">
-        <p className="text-gray-500 text-sm">{t('recipes.discoverPrompt')}</p>
+      <div className="flex flex-col items-center  pt-4">
         <button
           onClick={onStartPicker}
           className="flex items-center bg-myYellow gap-3 px-10 py-4 rounded-full font-bold text-base text-gray-800 hover:scale-105 transition-transform shadow-xl"
@@ -135,7 +134,6 @@ export default function HomeStep({
           </svg>
           {t('recipes.discoverBtn')}
         </button>
-        <p className="text-gray-400 text-xs">{t('recipes.discoverHint')}</p>
       </div>
     </div>
   );

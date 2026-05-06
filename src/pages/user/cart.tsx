@@ -114,9 +114,6 @@ function CartContent({
           <h2 className="text-white text-3xl md:text-4xl font-bold text-center mb-1">
             {t('cart.title')}
           </h2>
-          <p className="text-gray-300 text-sm text-center mb-10">
-            {t('cart.subtitle')}
-          </p>
 
           {loading ? (
             <div className="flex justify-center py-16">

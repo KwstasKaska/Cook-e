@@ -27,7 +27,7 @@
   },
   "nutrnav": {
     "nutr_calendar": "Ημερολόγιο",
-    "nutr_appointments": "Διαχείριση ραντεβού",
+    "nutr_appointments": "Διαχείριση επισκέψεων",
     "nutr_scheduler": "Διατροφικά πλάνα"
   },
   "day": {
@@ -70,9 +70,7 @@
     "subtitle": "Βρες συνταγές με βάση τα υλικά σου ή ανακάλυψε αγαπημένες.",
     "favourites": "Αγαπημένες συνταγές",
     "seeAll": "Όλες →",
-    "discoverPrompt": "Θέλεις να ανακαλύψεις νέες συνταγές;",
     "discoverBtn": "Ανακάλυψε συνταγές",
-    "discoverHint": "Πρόσθεσε υλικά και σκεύη για εξατομικευμένες προτάσεις",
     "backToSearch": "Πίσω",
     "resultsTitle": "Διάλεξε ανάμεσα στις προτεινόμενες συνταγές",
     "newSearch": "Νέα αναζήτηση",
@@ -117,7 +115,7 @@
   },
   "cart": {
     "title": "Το καλάθι μου",
-    "subtitle": "Λίστα αγορών για το σούπερ μάρκετ. Επίλεξε αυτά που έχεις ήδη.",
+
     "addIngredient": "Προσθήκη υλικού...",
     "items": "αντικείμενα",
     "clearSelected": "Καθαρισμός επιλεγμένων",
@@ -165,17 +163,10 @@
     "newPassword": "Νέος κωδικός",
     "confirmPassword": "Επιβεβαίωση νέου κωδικού",
     "chefPublicProfile": "Δημόσιο προφίλ μάγειρα",
-    "professionalTitle": "Επαγγελματικός τίτλος",
-    "professionalTitlePlaceholder": "π.χ. Executive Chef, Pastry Chef...",
+
     "chefBio": "Βιογραφικό μάγειρα",
     "chefBioPlaceholder": "Περίγραψε την εμπειρία και την εξειδίκευσή σου...",
-    "socialMedia": "Κοινωνικά δίκτυα",
-    "website": "Website",
     "nutritionistProfile": "Επαγγελματικό προφίλ",
-    "professionalDetails": "Επαγγελματικά στοιχεία",
-    "degreeTitle": "Τίτλος σπουδών",
-    "licenseNumber": "Αριθμός άδειας ασκήσεως",
-    "specialization": "Ειδικότητα",
     "saveSuccess": "Οι αλλαγές αποθηκεύτηκαν επιτυχώς.",
     "saveError": "Κάτι πήγε στραβά. Παρακαλώ δοκίμασε ξανά.",
     "usernameRequired": "Το όνομα χρήστη είναι υποχρεωτικό.",
@@ -188,7 +179,7 @@
     "passwordNeedsUppercase": "Ο κωδικός πρέπει να περιέχει τουλάχιστον ένα κεφαλαίο γράμμα.",
     "passwordNeedsSpecial": "Ο κωδικός πρέπει να περιέχει τουλάχιστον έναν ειδικό χαρακτήρα.",
     "mealPlan": "Το πλάνο μου",
-    "mealPlanBy": "Πλάνο διατροφής από τον/την",
+    "mealPlanBy": "Πλάνο διατροφής από:",
     "noMealPlan": "Δεν έχει ανατεθεί ακόμα πλάνο διατροφής.",
     "profilePicture": "Φωτογραφία προφίλ",
     "changePhoto": "Αλλαγή φωτογραφίας",
@@ -202,12 +193,12 @@
     "welcome": "Καλωσήρθες",
     "yourArticles": "Τα άρθρα σου",
     "articleImageAlt": "Εικόνα άρθρου",
-    "searchAppointments": "Αναζήτηση αιτημάτων ραντεβού",
-    "todayAppointments": "Σημερινά ραντεβού",
+    "searchAppointments": "Ημερολόγιο αιτημάτων",
+    "todayAppointments": "Σημερινές επισκέψεις",
     "coffeeImageAlt": "Εικόνα με καφέ",
-    "noAppointmentsFor": "Δεν υπάρχουν διαθέσιμα ραντεβού για τις",
+    "noAppointmentsFor": "Δεν υπάρχουν διαθέσιμες επισκέψεις για τις",
     "createNutritionPlan": "Δημιουργία πλάνου διατροφής",
-    "nutritionPlanFor": "Πλάνο διατροφής για το μέλος",
+    "nutritionPlanFor": "Πλάνο διατροφής για:",
     "mealsAndDays": "Γεύματα / ημέρες",
     "set": "Ορισμός",
     "preview": "Προεπισκόπηση",
@@ -221,8 +212,8 @@
     "register": "Καταχώρηση",
     "deleteTime": "Διαγραφή ώρας",
     "loadMore": "Περισσότερα",
-    "appointmentRequest": "Αίτηση για ραντεβού",
-    "noAppointmentRequestsFor": "Δεν υπάρχουν αιτήσεις για ραντεβού για την ημέρα:",
+    "appointmentRequest": "Αίτηση επίσκεψης",
+    "noAppointmentRequestsFor": "Δεν υπάρχουν αιτήσεις επισκέψεων για την ημέρα:",
     "profileImageAlt": "Εικόνα προφίλ",
     "accept": "Αποδοχή",
     "reject": "Απόρριψη",
@@ -245,15 +236,11 @@
     },
     "nutr_recipes": "Συνταγές μαγείρων",
     "selectUserFirst": "Παρακαλώ επιλέξτε μέλος πρώτα.",
-    "selectDayFirst": "Παρακαλώ επιλέξτε ημέρα πρώτα.",
-    "selectMealFirst": "Παρακαλώ επιλέξτε τύπο γεύματος πρώτα.",
     "setContentFirst": "Παρακαλώ γράψτε το περιεχόμενο γεύματος πρώτα.",
     "selectDateFirst": "Παρακαλώ επιλέξτε πρώτα ημερομηνία.",
     "selectTimeFirst": "Παρακαλώ επιλέξτε ώρα.",
     "booked": "Κρατημένο",
-    "respondError": "Δεν ήταν δυνατή η επεξεργασία της απάντησής σου. Παρακαλώ δοκιμάσε ξανά.",
     "messagePatients": "Επικοινώνησε με τους πελάτες σου",
-
     "clear": "Εκκαθάριση"
   },
   "chef": {
@@ -411,8 +398,6 @@
   },
 
   "common": {
-    "read_more": "περισσότερα",
-    "read_less": "λιγότερα",
     "loading": "Φόρτωση...",
     "no_results": "Δεν βρέθηκαν αποτελέσματα.",
     "back": "Πίσω",
@@ -421,8 +406,8 @@
     "edit": "Επεξεργασία",
     "save": "Αποθήκευση",
     "saving": "Αποθήκευση...",
-    "next": "Επόμενα",
-    "prev": "Προηγούμενα"
+    "next": "Επόμενo",
+    "prev": "Προηγούμενo"
   },
   "register": {
     "title": "Δημιουργία λογαριασμού",
