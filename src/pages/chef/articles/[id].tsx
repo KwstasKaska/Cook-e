@@ -1,14 +1,14 @@
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import ChefNavbar from '../../../components/Chef/ChefNavbar';
 import useIsChef from '../../../utils/useIsChef';
-import ArticleDetailView from '../../../components/Article/ArticleDetailView';
+import ArticleSinglePage from '../../../components/Article/ArticleSinglePage';
 
 export default function ArticleDetail() {
   const { loading: authLoading, isAuthorized } = useIsChef();
   if (authLoading || !isAuthorized) return null;
 
   return (
-    <ArticleDetailView
+    <ArticleSinglePage
       Navbar={ChefNavbar}
       listCacheField="articlesByChef"
       deleteRedirect="/chef/profile"

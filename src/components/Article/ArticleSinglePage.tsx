@@ -58,7 +58,7 @@ const DeleteModal = ({
   );
 };
 
-export default function ArticleDetailView({
+export default function ArticleSinglePage({
   Navbar,
   listCacheField,
   deleteRedirect,

@@ -1,13 +1,13 @@
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import NutrNavbar from '../../../components/Nutritionist/NutrNavbar';
 import useIsNutr from '../../../utils/useIsNutr';
-import ArticleDetailView from '../../../components/Article/ArticleDetailView';
+import ArticleSinglePage from '../../../components/Article/ArticleSinglePage';
 
 export default function NutrArticleDetail() {
   useIsNutr();
 
   return (
-    <ArticleDetailView
+    <ArticleSinglePage
       Navbar={NutrNavbar}
       listCacheField="myArticles"
       deleteRedirect="/nutritionist"
