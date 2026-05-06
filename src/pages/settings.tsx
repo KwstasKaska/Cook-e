@@ -226,11 +226,11 @@ export default function SettingsPage() {
               {t('settings.deleteConfirmMessage')}
             </p>
 
-            <div className="flex gap-3">
+            <div className="flex flex-col gap-3 sm:flex-row">
               <button
                 onClick={() => setShowConfirm(false)}
                 disabled={deleting}
-                className="flex-1 py-2.5 text-sm font-semibold rounded-full border-2 transition-colors disabled:opacity-50"
+                className="w-full sm:w-auto flex-1 py-2.5 text-sm font-semibold rounded-full border-2 transition-colors disabled:opacity-50"
                 style={{ borderColor: '#D1D5DB', color: '#6B7280' }}
               >
                 {t('settings.deleteConfirmCancel')}
@@ -241,7 +241,7 @@ export default function SettingsPage() {
                   await handleDeleteAccount();
                 }}
                 disabled={deleting}
-                className="flex-1 py-2.5 text-sm font-semibold rounded-full text-white transition-colors hover:opacity-90 disabled:opacity-50"
+                className="w-full sm:w-auto flex-1 py-2.5 text-sm font-semibold rounded-full text-white transition-colors hover:opacity-90 disabled:opacity-50"
                 style={{ backgroundColor: '#ED5B5B' }}
               >
                 {deleting

@@ -3,7 +3,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import ChefNavbar from '../../components/Chef/ChefNavbar';
 import Stars from '../../components/Helper/Stars';
-import ArticleCreateForm from '../../components/Chef/ArticleCreateForm';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
 import {
@@ -15,6 +14,7 @@ import {
 } from '../../generated/graphql';
 import useIsChef from '../../utils/useIsChef';
 import { pick } from '../../utils/pick';
+import ArticleForm from '../../components/Article/ArticleForm';
 
 type StarKey = 1 | 2 | 3 | 4 | 5;
 
@@ -25,7 +25,6 @@ export default function ChefProfile() {
 
   const [showCreateForm, setShowCreateForm] = useState(false);
 
-  // ── Data fetching
   const { data: profileData, loading: profileLoading } =
     useMyChefProfileQuery();
   const chefProfile = profileData?.myChefProfile;
@@ -100,7 +99,6 @@ export default function ChefProfile() {
         </h1>
 
         <div className="w-full max-w-3xl rounded-2xl bg-myBeige-100 p-6 md:p-8">
-          {/* Avatar + username — πάντα κεντραρισμένα */}
           <div className="flex flex-col items-center mb-4">
             <div className="h-24 border-myGrey-200 w-24 overflow-hidden rounded-full border-4 shadow-lg bg-myBlue-100">
               {chefProfile?.user?.image ? (
@@ -122,7 +120,6 @@ export default function ChefProfile() {
             </p>
           </div>
 
-          {/* Rating */}
           <div className="flex justify-center mb-4">
             <div className="flex flex-col items-center">
               <p className="mb-2 text-sm font-semibold">
@@ -148,7 +145,6 @@ export default function ChefProfile() {
             </div>
           </div>
 
-          {/* Bio */}
           <div
             className="mt-2 rounded-xl px-5 py-4"
             style={{ backgroundColor: '#D6C9A8' }}
@@ -167,7 +163,6 @@ export default function ChefProfile() {
             )}
           </div>
 
-          {/* Stats */}
           <div className="mt-6 flex items-center justify-center divide-x divide-gray-400">
             {stats.map((stat) => (
               <div key={stat.label} className="flex flex-col items-center px-8">
@@ -177,7 +172,6 @@ export default function ChefProfile() {
             ))}
           </div>
 
-          {/* Articles */}
           <div className="mt-8 mb-3 flex items-center justify-between">
             <h3 className="text-sm font-semibold">
               {t('chef.profile.articles')}
@@ -206,11 +200,15 @@ export default function ChefProfile() {
             )}
           </div>
 
-          {showCreateForm && userId && (
-            <ArticleCreateForm
-              chefUserId={userId}
-              onClose={() => setShowCreateForm(false)}
-            />
+          {showCreateForm && (
+            <div className="mb-4 rounded-2xl bg-myBlue-100 p-5">
+              <ArticleForm
+                rows={6}
+                onSuccess={() => setShowCreateForm(false)}
+                onCancel={() => setShowCreateForm(false)}
+                cacheEvictFields={['articlesByChef']}
+              />
+            </div>
           )}
 
           {articlesLoading ? (
