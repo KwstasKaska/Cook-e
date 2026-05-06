@@ -149,13 +149,12 @@ function HomeContent() {
         <div className="relative z-10 mx-auto max-w-6xl px-6 pb-10 pt-16">
           <div className="grid grid-cols-1  items-center gap-8 md:grid-cols-2">
             <div className="max-w-md mx-auto text-center text-white">
-              <h2 className=" mb-4 break-words text-2xl font-bold italic md:text-4xl">
+              <h2 className="mb-4  break-words text-2xl font-bold italic md:text-4xl">
                 {t('landing.weeklyRecipesTitle')}
               </h2>
-              <div className="sm:max-w-sm text-base leading-relaxed text-gray-200">
-                <p>{t('landing.weeklyRecipesDesc1')}</p>
-                <p>{t('landing.weeklyRecipesDesc3')}</p>
-              </div>
+              <p className="sm:max-w-sm break-words right text-base leading-relaxed text-gray-200">
+                {t('landing.weeklyRecipesDesc1')}
+              </p>
             </div>
 
             {topRatedLoading ? (

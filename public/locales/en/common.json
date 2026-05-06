@@ -23,22 +23,22 @@
     "nutr_scheduler": "Nutritional plans"
   },
   "landing": {
-    "nutritionTitle": "Nutritional info",
-    "nutritionDesc": "Track the nutritional values you consumed over the last week, summarized in the chart.",
     "energy": "Calories",
     "fat": "Fat",
     "protein": "Protein",
     "carbs": "Carbohydrates",
-    "cookCount": "times",
-    "weeklyRecipesTitle": "This week's recipes",
-    "weeklyRecipesDesc1": "The ratings of today's recipes are what made them get recommended.",
-    "weeklyRecipesDesc3": "Give them a try and let us know what you think!",
+    "cookCount": "recipes",
     "startCooking": "Start cooking!",
     "minutes": "minutes",
     "noCookedYet": "You haven't cooked any recipes yet.",
     "noRatingsTitle": "No ratings this week",
     "noRatingsDesc": "The community hasn't rated any recipes in the last 7 days. Try a recipe and leave your review!",
-    "noRatingsCta": "Browse recipes"
+    "noRatingsCta": "Browse recipes",
+    "nutritionTitle": "Your nutrition this week",
+    "nutritionDesc": "This chart tracks  the calories, fat, protein and carbs from every recipe you've logged as cooked in the last week. Open any recipe and tap the cook icon to log it — the numbers here update automatically.",
+
+    "weeklyRecipesTitle": "Top rated this week",
+    "weeklyRecipesDesc1": "These are the recipes the community has rated highest in the last 7 days."
   },
   "day": {
     "MONDAY": "Monday",
@@ -94,7 +94,10 @@
     "difficulty": "Difficulty",
     "favourites_more": "Load more",
     "ingredients": "Ingredients",
-    "copy": "Copy link"
+    "copy": "Copy link",
+    "recipeHint1": "Inside each recipe you can see the full ingredient list and add any missing ones directly to your cart. Tap the chef's name to visit their profile there you can his informations and send them a message.",
+    "recipeHint2": "Also rate it yourself, save it to your favourites, and mark it as cooked which updates the nutrition chart on your home page.",
+    "searchHint": "Select at least 3 ingredients you wanna use, then optionally pick your available utensils. Results include recipes you can make with exactly what you have, plus recipes that need at most 1 extra ingredient you don't have."
   },
   "ingredientCategories": {
     "title": "Ingredients",
@@ -139,9 +142,11 @@
     "availableTimes": "Available dates and times",
     "bookAppointment": "Book appointment",
     "noResults": "No nutritionists found.",
-    "noSlots": "No available time slots.",
     "bookError": "Something went wrong. Please try again.",
-    "bookSuccess": "Appointment booked successfully!"
+    "bookSuccess": "Appointment booked successfully!",
+    "noSlots": "This nutritionist hasn't set any available slots yet. Check back later or message him.",
+    "listHint1": "Inside each profile you'll find their articles, available appointment slots, and a share button. Once a nutritionist accepts your request, a chat icon appears on their profile so you can message them directly.",
+    "listHint2": "Any meal plan your nutritionist assigns to you will appear in your Settings page under the Meal plan tab."
   },
   "settings": {
     "title": "Settings",

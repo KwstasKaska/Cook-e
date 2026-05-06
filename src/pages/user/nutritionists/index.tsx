@@ -41,7 +41,7 @@ function ListView() {
     <div className="min-h-screen">
       <Navbar />
       <div className="relative z-10 mx-auto w-full max-w-5xl px-6 pb-20 pt-12">
-        <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <div className="mb-2 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <h1 className="text-2xl font-bold text-white md:text-3xl">
             {t('nutritionists.searchTitle')}
           </h1>
@@ -52,6 +52,15 @@ function ListView() {
             placeholder={t('nutritionists.searchPlaceholder')}
             className="w-full rounded-full border border-gray-200 bg-white px-5 py-2.5 text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-myBlue-200 md:w-64"
           />
+        </div>
+
+        <div className="mb-8 flex flex-col gap-1.5">
+          <p className="text-sm text-gray-300">
+            {t('nutritionists.listHint1')}
+          </p>
+          <p className="text-sm text-gray-300">
+            {t('nutritionists.listHint2')}
+          </p>
         </div>
 
         <h2 className="mb-6 text-center text-2xl font-bold text-white">

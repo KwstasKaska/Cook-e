@@ -45,7 +45,12 @@ export default function HomeStep({
         <h1 className="text-white text-3xl md:text-4xl font-bold mb-1">
           {t('recipes.title')}
         </h1>
-        <p className="text-gray-300 text-sm">{t('recipes.subtitle')}</p>
+        <p className=" text-sm opacity-80 text-white">
+          {t('recipes.recipeHint1')}
+        </p>
+        <p className="text-white opacity-80 text-sm mt-1">
+          {t('recipes.recipeHint2')}
+        </p>
       </div>
 
       <div className="mb-12">
@@ -113,7 +118,7 @@ export default function HomeStep({
         )}
       </div>
 
-      <div className="flex flex-col items-center  pt-4">
+      <div className="flex flex-col items-center pt-4 gap-3">
         <button
           onClick={onStartPicker}
           className="flex items-center bg-myYellow gap-3 px-10 py-4 rounded-full font-bold text-base text-gray-800 hover:scale-105 transition-transform shadow-xl"
@@ -134,6 +139,9 @@ export default function HomeStep({
           </svg>
           {t('recipes.discoverBtn')}
         </button>
+        <p className="max-w-sm text-center text-xs text-white">
+          {t('recipes.searchHint')}
+        </p>
       </div>
     </div>
   );
