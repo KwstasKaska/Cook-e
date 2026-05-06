@@ -221,7 +221,7 @@
     "setContentPlaceholder": "Set the content for the day and type of meal you want",
     "nutr_settings": "Settings",
     "newArticle": "New article",
-    "noArticlesYet": "You haven't published any articles yet.",
+    "noArticlesYet": "There haven't benn published any articles yet.",
     "create_article": {
       "label_title": "Title",
       "label_text": "Content",

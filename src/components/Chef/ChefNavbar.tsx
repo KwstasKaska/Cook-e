@@ -21,7 +21,6 @@ const ChefNavbar = () => {
 
   const navLinks = [
     { href: '/chef', label: t('nav.home') },
-    { href: '/chef/profile', label: t('chefnav.chef_profile') },
     { href: '/chef/recipes', label: t('chefnav.chef_recipes') },
     { href: '/chef/create-recipe', label: t('chefnav.chef_create') },
   ];

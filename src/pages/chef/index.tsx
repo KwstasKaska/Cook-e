@@ -2,230 +2,273 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import ChefNavbar from '../../components/Chef/ChefNavbar';
-
+import Stars from '../../components/Helper/Stars';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
-import { useMyRecipesQuery } from '../../generated/graphql';
-import { pick } from '../../utils/pick';
+import {
+  useMyChefProfileQuery,
+  useChefAverageRatingQuery,
+  useChefRatingsQuery,
+  useArticlesByChefQuery,
+  useMyRecipesCountQuery,
+} from '../../generated/graphql';
 import useIsChef from '../../utils/useIsChef';
-import { useRouter } from 'next/router';
+import { pick } from '../../utils/pick';
+import ArticleForm from '../../components/Article/ArticleForm';
 
-const BG_COLORS = ['#B3D5F8', '#FEF9C3', '#FCE4EC', '#DCFCE7'];
-const ROTATIONS = [-15, -5, 5, 15];
-const OFFSETS = [-180, -60, 60, 180];
+type StarKey = 1 | 2 | 3 | 4 | 5;
 
 export default function ChefIndex() {
+  const { loading: authLoading, isAuthorized } = useIsChef();
+  if (authLoading || !isAuthorized) return null;
+  return <ChefHomeContent />;
+}
+
+function ChefHomeContent() {
   const { t, i18n } = useTranslation('common');
   const lang = i18n.language;
-  const { loading: authLoading, isAuthorized } = useIsChef();
-  const router = useRouter();
-  const [activeIdx, setActiveIdx] = useState(0);
 
-  const { data: recipesData, loading: recipesLoading } = useMyRecipesQuery({
-    variables: { limit: 4, offset: 0 },
-    fetchPolicy: 'network-only',
+  const [showCreateForm, setShowCreateForm] = useState(false);
+
+  const { data: profileData, loading: profileLoading } =
+    useMyChefProfileQuery();
+  const chefProfile = profileData?.myChefProfile;
+  const chefProfileId = chefProfile?.id;
+  const userId = chefProfile?.user?.id;
+
+  const { data: avgData } = useChefAverageRatingQuery({
+    variables: { chefId: chefProfileId! },
+    skip: !chefProfileId,
   });
 
-  if (authLoading || !isAuthorized) return null;
+  const { data: ratingsData } = useChefRatingsQuery({
+    variables: { chefId: chefProfileId!, limit: 50, offset: 0 },
+    skip: !chefProfileId,
+  });
 
-  const fanRecipes = recipesData?.myRecipes ?? [];
-  const count = fanRecipes.length;
+  const { data: countData } = useMyRecipesCountQuery();
 
-  const handlePrev = () => setActiveIdx((p) => (p - 1 + count) % count);
-  const handleNext = () => setActiveIdx((p) => (p + 1) % count);
+  const {
+    data: articlesData,
+    loading: articlesLoading,
+    fetchMore: fetchMoreArticles,
+  } = useArticlesByChefQuery({
+    variables: { chefId: userId!, limit: 3, offset: 0 },
+    skip: !userId,
+  });
+
+  const averageRating = avgData?.chefAverageRating ?? 0;
+  const ratings = ratingsData?.chefRatings ?? [];
+  const totalRatings = ratings.length;
+  const articles = articlesData?.articlesByChef ?? [];
+  const recipesCount = countData?.myRecipesCount ?? 0;
+
+  const ratingCounts: Record<StarKey, number> = {
+    1: 0,
+    2: 0,
+    3: 0,
+    4: 0,
+    5: 0,
+  };
+  for (const r of ratings) {
+    const score = r.score as StarKey;
+    if (score >= 1 && score <= 5) ratingCounts[score]++;
+  }
+
+  const stats = [
+    { label: t('chef.profile.recipes'), value: recipesCount },
+    { label: t('chef.profile.articles'), value: articles.length },
+  ];
+
+  if (profileLoading) {
+    return (
+      <div className="flex min-h-screen flex-col">
+        <ChefNavbar />
+        <div className="flex flex-1 items-center justify-center">
+          <p className="text-white opacity-60">{t('common.loading')}</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex min-h-screen flex-col">
       <ChefNavbar />
 
-      <main className="relative flex flex-1 flex-col overflow-hidden">
-        <div className="relative z-10 flex flex-1 flex-col px-8 pt-10 md:px-16">
-          {/* Top row */}
-          <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
-            <div>
-              <p className="mb-2 text-2xl italic bg-myBlue-100">
-                {t('chef.landing.tagline_pre')}
+      <main className="flex flex-1 flex-col items-center px-4 py-8 md:px-8">
+        <h1
+          className="mb-6 text-3xl italic"
+          style={{ color: 'rgba(255,255,255,0.85)' }}
+        >
+          {t('chef.profile.page_title')}
+        </h1>
+
+        <div className="w-full max-w-3xl rounded-2xl bg-myBeige-100 p-6 md:p-8">
+          {/* Avatar + username */}
+          <div className="flex flex-col items-center mb-4">
+            <div className="h-24 w-24 overflow-hidden rounded-full border-4 border-myGrey-200 shadow-lg bg-myBlue-100">
+              {chefProfile?.user?.image ? (
+                <img
+                  src={chefProfile.user.image}
+                  alt={chefProfile.user.username ?? ''}
+                  className="h-full w-full object-cover"
+                />
+              ) : (
+                <div className="flex h-full w-full items-center justify-center">
+                  <span className="text-2xl font-bold">
+                    {chefProfile?.user?.username?.[0]?.toUpperCase() ?? '?'}
+                  </span>
+                </div>
+              )}
+            </div>
+            <p className="mt-2 text-lg font-bold">
+              {chefProfile?.user?.username ?? ''}
+            </p>
+          </div>
+
+          {/* Rating */}
+          <div className="flex justify-center mb-4">
+            <div className="flex flex-col items-center">
+              <p className="mb-2 text-sm font-semibold">
+                {t('chef.profile.user_rating')}
               </p>
-              <div className="rounded-xl inline-block bg-myBlue-100 px-5 py-4">
-                <h1 className="text-4xl font-black italic leading-tight">
-                  {t('chef.landing.tagline_bold')}
-                </h1>
-              </div>
+              {averageRating > 0 ? (
+                <>
+                  <div className="flex items-center gap-2 rounded-full border-2 border-gray-400 px-3 py-1.5">
+                    <Stars rating={averageRating} size="sm" />
+                    <span className="text-sm font-bold">
+                      {averageRating.toFixed(1)} / 5
+                    </span>
+                  </div>
+                  <p className="mt-1 text-xs text-gray-500">
+                    {totalRatings} {t('chef.profile.user_reviews')}
+                  </p>
+                </>
+              ) : (
+                <p className="text-sm text-gray-500">
+                  {t('chef.profile.no_ratings')}
+                </p>
+              )}
             </div>
           </div>
 
-          {/* Cards */}
-          <div className="relative mt-8 flex flex-1 items-center justify-center pb-4">
-            {recipesLoading ? (
-              <p className="text-white opacity-60">{t('common.loading')}</p>
-            ) : fanRecipes.length === 0 ? (
-              <p className="text-white opacity-60">
-                {t('chef.landing.no_recipes')}
+          {/* Bio */}
+          <div
+            className="mt-2 rounded-xl px-5 py-4"
+            style={{ backgroundColor: '#D6C9A8' }}
+          >
+            <p className="mb-1 text-xs font-bold tracking-wide">
+              {t('settings.bio')}
+            </p>
+            {chefProfile?.bio_el || chefProfile?.bio_en ? (
+              <p className="text-sm leading-relaxed">
+                {pick(chefProfile.bio_el ?? '', chefProfile.bio_en ?? '', lang)}
               </p>
             ) : (
-              <>
-                {/* Mobile: slider */}
-                <div className="flex items-center gap-3 md:hidden">
-                  {count > 1 && (
-                    <button
-                      onClick={handlePrev}
-                      className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full border-2 border-white text-white"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        strokeWidth={2.5}
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M15 19l-7-7 7-7"
-                        />
-                      </svg>
-                    </button>
-                  )}
-
-                  <div
-                    onClick={() =>
-                      router.push(`/chef/recipes/${fanRecipes[activeIdx].id}`)
-                    }
-                    className="w-52 flex-shrink-0 cursor-pointer rounded-2xl overflow-hidden shadow-xl transition-transform hover:scale-105"
-                    style={{
-                      backgroundColor: BG_COLORS[activeIdx % BG_COLORS.length],
-                    }}
-                  >
-                    <div className="p-3">
-                      <span className="text-xs text-gray-500">
-                        {fanRecipes[activeIdx].category
-                          ? t(
-                              `recipe_category.${fanRecipes[activeIdx].category}`,
-                            )
-                          : ''}
-                      </span>
-                      <p className="mt-1 text-sm font-bold leading-tight">
-                        {pick(
-                          fanRecipes[activeIdx].title_el,
-                          fanRecipes[activeIdx].title_en,
-                          lang,
-                        )}
-                      </p>
-                    </div>
-                    <div
-                      className="relative mx-2 mb-2 h-36 overflow-hidden rounded-xl"
-                      style={{ width: 'calc(100% - 16px)' }}
-                    >
-                      <Image
-                        src={
-                          fanRecipes[activeIdx].recipeImage ??
-                          '/images/food.jpg'
-                        }
-                        alt={pick(
-                          fanRecipes[activeIdx].title_el,
-                          fanRecipes[activeIdx].title_en,
-                          lang,
-                        )}
-                        fill
-                        className="object-cover"
-                      />
-                    </div>
-                    {count > 1 && (
-                      <div className="mb-3 flex justify-center gap-1.5">
-                        {fanRecipes.map((_, i) => (
-                          <span
-                            key={i}
-                            className="h-1.5 w-1.5 rounded-full"
-                            style={{
-                              backgroundColor:
-                                i === activeIdx ? '#3F4756' : '#ffffff',
-                            }}
-                          />
-                        ))}
-                      </div>
-                    )}
-                  </div>
-
-                  {count > 1 && (
-                    <button
-                      onClick={handleNext}
-                      className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full border-2 border-white text-white"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        strokeWidth={2.5}
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M9 5l7 7-7 7"
-                        />
-                      </svg>
-                    </button>
-                  )}
-                </div>
-
-                {/* Desktop: fanned layout */}
-                <div
-                  className="relative hidden md:block"
-                  style={{ width: '600px', height: '340px' }}
-                >
-                  {fanRecipes.map((recipe, idx) => (
-                    <div
-                      key={recipe.id}
-                      onClick={() => router.push(`/chef/recipes/${recipe.id}`)}
-                      className="absolute w-48 rounded-2xl overflow-hidden shadow-2xl cursor-pointer transition-transform hover:scale-105 hover:-translate-y-2"
-                      style={{
-                        backgroundColor: BG_COLORS[idx % BG_COLORS.length],
-                        transform: `rotate(${ROTATIONS[idx]}deg) translateX(${OFFSETS[idx]}px)`,
-                        zIndex: idx + 1,
-                        top: '20px',
-                        left: '50%',
-                        marginLeft: '-96px',
-                        transformOrigin: 'bottom center',
-                      }}
-                    >
-                      <div className="p-3">
-                        <span className="text-xs text-gray-500">
-                          {recipe.category
-                            ? t(`recipe_category.${recipe.category}`)
-                            : ''}
-                        </span>
-                        <p className="mt-1 text-sm font-bold leading-tight">
-                          {pick(recipe.title_el, recipe.title_en, lang)}
-                        </p>
-                      </div>
-                      <div
-                        className="relative mx-2 mb-2 overflow-hidden rounded-xl"
-                        style={{ height: '140px', width: 'calc(100% - 16px)' }}
-                      >
-                        <Image
-                          src={recipe.recipeImage ?? '/images/food.jpg'}
-                          alt={pick(recipe.title_el, recipe.title_en, lang)}
-                          fill
-                          className="object-cover"
-                        />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </>
+              <p className="text-sm italic text-gray-500">
+                {t('chef.profile.bio_placeholder')}
+              </p>
             )}
           </div>
 
-          <div className="flex justify-center pb-10">
-            <Link
-              href="/chef/recipes"
-              className="rounded-full px-10 bg-myBlue-100 py-3 text-sm font-bold transition hover:opacity-90"
-            >
-              {t('chef.more')}
-            </Link>
+          {/* Stats */}
+          <div className="mt-6 flex items-center justify-center divide-x divide-gray-400">
+            {stats.map((stat) => (
+              <div key={stat.label} className="flex flex-col items-center px-8">
+                <span className="text-sm text-gray-500">{stat.label}</span>
+                <span className="text-2xl font-bold">{stat.value}</span>
+              </div>
+            ))}
           </div>
+
+          {/* Articles */}
+          <div className="mt-8 mb-3 flex items-center justify-between">
+            <h3 className="text-sm font-semibold">
+              {t('chef.profile.articles')}
+            </h3>
+            {!showCreateForm && (
+              <button
+                onClick={() => setShowCreateForm(true)}
+                className="flex items-center gap-1.5 rounded-full px-4 py-1.5 text-xs font-bold transition bg-myYellow hover:opacity-90"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={2.5}
+                  stroke="currentColor"
+                  className="h-3.5 w-3.5"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M12 4.5v15m7.5-7.5h-15"
+                  />
+                </svg>
+                {t('chef.profile.create_article')}
+              </button>
+            )}
+          </div>
+
+          {showCreateForm && (
+            <div className="mb-4 rounded-2xl bg-myBlue-100 p-5">
+              <ArticleForm
+                rows={6}
+                onSuccess={() => setShowCreateForm(false)}
+                onCancel={() => setShowCreateForm(false)}
+                cacheEvictFields={['articlesByChef']}
+              />
+            </div>
+          )}
+
+          {articlesLoading ? (
+            <p className="text-center text-sm text-gray-500">
+              {t('common.loading')}
+            </p>
+          ) : articles.length === 0 ? (
+            <p className="text-center text-sm text-gray-500">
+              {t('chef.profile.no_articles')}
+            </p>
+          ) : (
+            <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
+              {articles.map((article) => (
+                <Link
+                  key={article.id}
+                  href={`/chef/articles/${article.id}`}
+                  className="cursor-pointer overflow-hidden rounded-xl transition hover:scale-105 bg-myBlue-100 hover:shadow-lg"
+                >
+                  <div className="relative h-28 w-full overflow-hidden">
+                    <Image
+                      src={article.image}
+                      alt={pick(article.title_el, article.title_en, lang)}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                  <div className="p-2">
+                    <p className="text-xs font-semibold leading-tight line-clamp-2">
+                      {pick(article.title_el, article.title_en, lang)}
+                    </p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          )}
+
+          {articles.length >= 6 && (
+            <div className="mt-4 flex justify-center">
+              <button
+                onClick={() =>
+                  fetchMoreArticles({
+                    variables: { chefId: userId!, offset: articles.length },
+                  })
+                }
+                className="rounded-full bg-myBlue-100 px-8 py-2 text-sm font-bold transition hover:opacity-90"
+              >
+                {t('chef.more')}
+              </button>
+            </div>
+          )}
         </div>
       </main>
     </div>
