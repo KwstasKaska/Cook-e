@@ -170,7 +170,7 @@ function HomeContent() {
                   {t('landing.noRatingsDesc')}
                 </p>
                 <Link
-                  href="/recipes"
+                  href="/user/recipes"
                   className="mt-2 rounded-xl border-2 border-gray-800 px-5 py-2 text-sm font-bold text-gray-800 transition-colors hover:bg-gray-800 hover:text-white"
                 >
                   {t('landing.noRatingsCta')}
