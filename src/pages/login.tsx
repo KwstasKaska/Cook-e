@@ -15,7 +15,6 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { GetServerSideProps } from 'next';
 import LanguageSwitcher from '../components/Helper/LanguageSwitcher';
-import ForgotPasswordModal from '../components/Helper/ForgotPasswordModal';
 
 interface MyLoginFormValues {
   email: string;
@@ -27,7 +26,6 @@ const Login: NextPage = () => {
   const [login] = useLoginMutation();
   const { t } = useTranslation('common');
   const { data, loading } = useMeQuery();
-  const [forgotOpen, setForgotOpen] = useState(false);
 
   useEffect(() => {
     if (!loading && data?.me) {
@@ -127,14 +125,6 @@ const Login: NextPage = () => {
               >
                 {isSubmitting ? t('common.saving') : t('login.submit')}
               </button>
-
-              <button
-                type="button"
-                onClick={() => setForgotOpen(true)}
-                className="text-center opacity-75 text-sm font-normal underline"
-              >
-                {t('login.forgot_password')}
-              </button>
             </Form>
           )}
         </Formik>
@@ -149,10 +139,6 @@ const Login: NextPage = () => {
           </Link>
         </p>
       </section>
-
-      {forgotOpen && (
-        <ForgotPasswordModal onClose={() => setForgotOpen(false)} />
-      )}
     </main>
   );
 };
