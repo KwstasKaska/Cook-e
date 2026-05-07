@@ -37,7 +37,6 @@ export default function RecipeDescriptionCard({
         </h1>
       )}
 
-      {/* ── Difficulty ── */}
       {isEditing ? (
         <div className="mb-3 flex flex-wrap gap-2">
           {DIFFICULTY_OPTIONS.map((opt) => (
@@ -62,7 +61,6 @@ export default function RecipeDescriptionCard({
         </p>
       ) : null}
 
-      {/* ── Description & chef comment ── */}
       {isEditing ? (
         <>
           <textarea
@@ -94,14 +92,6 @@ export default function RecipeDescriptionCard({
           )}
         </>
       )}
-
-      {/* ── Chef name ── */}
-      <div className="mt-3 flex items-center gap-3">
-        <div className="h-9 w-9 flex-shrink-0 rounded-full bg-gray-300" />
-        <span className="text-sm font-semibold">
-          {recipe.author?.user?.username ?? '—'}
-        </span>
-      </div>
     </div>
   );
 }
