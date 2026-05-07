@@ -39,6 +39,7 @@ export default function ChefRecipes() {
     variables: { category: activeCategory!, limit: 5, offset: 0 },
     skip: activeCategory === null,
     fetchPolicy: 'network-only',
+    nextFetchPolicy: 'cache-first',
   });
 
   const loading =

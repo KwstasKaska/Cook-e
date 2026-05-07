@@ -19,13 +19,11 @@ let apolloClient: ApolloClient<NormalizedCacheObject> | null = null;
 
 const appendPaginatedField = (): {
   keyArgs: false;
-  merge(existing: any[] | undefined, incoming: any[], options: any): any[];
+  merge(existing: any[] | undefined, incoming: any[]): any[];
 } => ({
   keyArgs: false,
-  merge(existing = [], incoming, { args }) {
-    if (!args || !args.offset || args.offset === 0) {
-      return incoming;
-    }
+  merge(existing = [], incoming) {
+    if (existing.length === 0) return incoming;
     const existingRefs = new Set(existing.map((e: any) => e.__ref));
     const newItems = incoming.filter((i: any) => !existingRefs.has(i.__ref));
     return [...existing, ...newItems];
@@ -36,13 +34,11 @@ const appendPaginatedFieldKeyed = (
   keyArgs: string[],
 ): {
   keyArgs: string[];
-  merge(existing: any[] | undefined, incoming: any[], options: any): any[];
+  merge(existing: any[] | undefined, incoming: any[]): any[];
 } => ({
   keyArgs,
-  merge(existing = [], incoming, { args }) {
-    if (!args || !args.offset || args.offset === 0) {
-      return incoming;
-    }
+  merge(existing = [], incoming) {
+    if (existing.length === 0) return incoming;
     const existingRefs = new Set(existing.map((e: any) => e.__ref));
     const newItems = incoming.filter((i: any) => !existingRefs.has(i.__ref));
     return [...existing, ...newItems];
