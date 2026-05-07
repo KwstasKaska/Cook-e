@@ -68,9 +68,6 @@ const Nutritionist: NextPage = () => {
           </h1>
         </div>
 
-        <div className="absolute left-[1.3em] top-[2em] -z-[1] h-[9em] w-[18em] -rotate-[13deg] rounded-[1em] bg-myGrey-100 md:left-28 md:scale-125 xl:left-48 xl:scale-150 2xl:left-64 2xl:top-20 2xl:scale-[2]" />
-        <div className="absolute left-[5em] top-[5em] -z-[2] h-[9em] w-[18em] -rotate-[13deg] rounded-[1em] bg-myBlue-100 md:left-48 md:scale-125 xl:left-72 xl:scale-150 2xl:top-40 2xl:left-[22em] 2xl:scale-[2]" />
-
         <NutrArticles />
 
         <DateContext.Provider value={{ selectedDate, setSelectedDate }}>
