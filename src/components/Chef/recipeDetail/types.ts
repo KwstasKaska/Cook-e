@@ -1,8 +1,6 @@
 import { Difficulty, RecipeCategory } from '../../../generated/graphql';
 import { pick } from '../../../utils/pick';
 
-// ─── Types ────────────────────────────────────────────────────────────────────
-
 export interface IngredientRow {
   ingredientId: number;
   quantity: string;
@@ -12,7 +10,7 @@ export interface IngredientRow {
 }
 
 export interface StepRow {
-  id: number; // required — buildEditForm always provides s.id; new rows use Date.now()
+  id: number;
   body: string;
 }
 
@@ -33,9 +31,8 @@ export interface EditForm {
   fat: string;
   ingredients: IngredientRow[];
   steps: StepRow[];
+  utensilIds: number[];
 }
-
-// ─── Constants ────────────────────────────────────────────────────────────────
 
 export const DIFFICULTY_OPTIONS: {
   value: Difficulty;
@@ -80,8 +77,6 @@ export const MACRO_FIELDS: {
   { field: 'fat', unit: 'g', labelKey: 'chef.create_recipe.fat' },
 ];
 
-// ─── Helper ───────────────────────────────────────────────────────────────────
-
 export function buildEditForm(recipe: any, lang: string): EditForm {
   return {
     title: pick(recipe.title_el, recipe.title_en, lang),
@@ -102,11 +97,10 @@ export function buildEditForm(recipe: any, lang: string): EditForm {
     restTime: String(recipe.restTime ?? ''),
     foodEthnicity: recipe.foodEthnicity ?? '',
     category: recipe.category ?? '',
-    caloriesTotal:
-      recipe.caloriesTotal != null ? String(recipe.caloriesTotal) : '',
-    protein: recipe.protein != null ? String(recipe.protein) : '',
-    carbs: recipe.carbs != null ? String(recipe.carbs) : '',
-    fat: recipe.fat != null ? String(recipe.fat) : '',
+    caloriesTotal: String(recipe.caloriesTotal ?? ''),
+    protein: String(recipe.protein ?? ''),
+    carbs: String(recipe.carbs ?? ''),
+    fat: String(recipe.fat ?? ''),
     ingredients: (recipe.recipeIngredients ?? []).map((ri: any) => ({
       ingredientId: ri.ingredientId,
       quantity: ri.quantity ?? '',
@@ -118,5 +112,6 @@ export function buildEditForm(recipe: any, lang: string): EditForm {
       id: s.id,
       body: pick(s.body_el, s.body_en, lang),
     })),
+    utensilIds: (recipe.utensils ?? []).map((u: any) => u.id),
   };
 }
