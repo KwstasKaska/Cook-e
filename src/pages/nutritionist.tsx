@@ -54,7 +54,7 @@ const Nutritionist: NextPage = () => {
               alt="profile"
               width={112}
               height={112}
-              className="row-span-2 max-h-14 max-w-[3.5rem] justify-self-end rounded-full object-cover object-top md:max-h-20 md:max-w-[5rem] xl:max-h-28 xl:max-w-[7rem]"
+              className="row-span-2 border border-white max-h-14 max-w-[3.5rem] justify-self-end rounded-full object-cover object-top md:max-h-20 md:max-w-[5rem] xl:max-h-28 xl:max-w-[7rem]"
             />
           ) : (
             <div className="row-span-2 flex max-h-14 max-w-[3.5rem] items-center justify-center justify-self-end rounded-full bg-myBlue-100 md:max-h-20 md:max-w-[5rem] xl:max-h-28 xl:max-w-[7rem] aspect-square">
