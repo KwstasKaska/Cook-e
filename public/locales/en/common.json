@@ -271,15 +271,15 @@
     },
     "recipe_detail": {
       "edit": "Edit",
-      "ingredients": "ingredients:",
+      "ingredients": "Ingredients:",
       "utensils": "utensils:",
-      "execution": "execution:",
+      "execution": "Execution:",
       "implementation_time": "Implementation time:",
       "prep_time": "preparation time:",
       "cook_time": "cooking time:",
       "rest_time": "resting time:",
       "difficulty": "Difficulty:",
-      "food_type": "food type",
+      "food_type": "Food type",
       "dish_type": "dish type",
       "cuisine": "cuisine",
       "occasion": "occasion",
@@ -296,9 +296,9 @@
       "placeholder_description": "Recipe description...",
       "placeholder_chef_comment": "A tip or note...",
       "label_title": "Title",
-      "macros": "Nutritional Info",
+      "macros": "Nutritional info",
       "confirm_delete": "Are you sure you want to delete this recipe?",
-      "view_chef_profile": "View chef profile"
+      "view_chef_profile": "View chef's profile"
     },
     "profile": {
       "page_title": "My profile",
@@ -383,14 +383,18 @@
       "search_ingredients": "Search ingredients...",
       "select_ingredient": "Select ingredient",
       "unit_label": "Unit",
-      "utensils_label": "Kitchen Utensils",
+      "utensils_label": "Kitchen utensils",
       "saving": "Saving...",
       "macros_label": "Nutritional info",
       "macros_hint": "per serving",
       "calories": "Calories",
       "protein": "Proteins",
       "carbs": "Carbohydrates",
-      "fat": "Fat"
+      "fat": "Fat",
+      "error_ingredients": "Add at least one ingredient.",
+      "error_steps": "Add at least one step.",
+      "error_prep_time": "Prep time must be greater than 0.",
+      "error_cook_time": "Cook time must be greater than 0."
     }
   },
   "change_password": {

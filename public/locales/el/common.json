@@ -298,9 +298,9 @@
       "placeholder_description": "Περιγραφή συνταγής...",
       "placeholder_chef_comment": "Σχόλιο ή συμβουλή...",
       "label_title": "Τίτλος",
-      "macros": "Διατροφικά Στοιχεία",
+      "macros": "Διατροφικά στοιχεία",
       "confirm_delete": "Είσαι σίγουρος ότι θέλεις να διαγράψεις αυτή τη συνταγή;",
-      "view_chef_profile": "Δες το προφίλ του chef"
+      "view_chef_profile": "Δες το προφίλ του μάγειρα"
     },
     "profile": {
       "page_title": "Το προφίλ μου",
@@ -385,15 +385,18 @@
       "search_ingredients": "Αναζήτηση υλικών...",
       "select_ingredient": "Επιλέξε υλικό",
       "unit_label": "Μονάδα",
-      "utensils_label": "Εργαλεία Κουζίνας",
+      "utensils_label": "Εργαλεία κουζίνας",
       "saving": "Αποθήκευση...",
-
       "macros_label": "Διατροφικά στοιχεία",
       "macros_hint": "ανά μερίδα",
       "calories": "Θερμίδες",
       "protein": "Πρωτεΐνες",
       "carbs": "Υδατάνθρακες",
-      "fat": "Λίπη"
+      "fat": "Λίπη",
+      "error_ingredients": "Πρόσθεσε τουλάχιστον ένα υλικό.",
+      "error_steps": "Πρόσθεσε τουλάχιστον ένα βήμα.",
+      "error_prep_time": "Ο χρόνος προετοιμασίας πρέπει να είναι μεγαλύτερος από 0.",
+      "error_cook_time": "Ο χρόνος μαγειρέματος πρέπει να είναι μεγαλύτερος από 0."
     }
   },
   "change_password": {

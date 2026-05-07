@@ -2,6 +2,7 @@ import React from 'react';
 import { useTranslation } from 'next-i18next';
 import { pick } from '../../../utils/pick';
 import { EditForm, StepRow } from './types';
+import { useUtensilsQuery } from '../../../generated/graphql';
 
 interface Props {
   recipe: any;
@@ -19,12 +20,15 @@ export default function RecipeStepsList({
   onUpdate,
 }: Props) {
   const { t } = useTranslation('common');
+  const { data: utensilsData } = useUtensilsQuery({ skip: !isEditing });
+  const allUtensils = utensilsData?.utensils ?? [];
 
   return (
     <div>
       <h3 className="mb-3 text-lg font-black">
         {t('chef.recipe_detail.execution')}
       </h3>
+
       {isEditing ? (
         <div className="flex flex-col gap-3">
           {editForm.steps.map((s: StepRow, i: number) => (
@@ -70,6 +74,7 @@ export default function RecipeStepsList({
               )}
             </div>
           ))}
+
           <button
             type="button"
             onClick={() =>
@@ -82,18 +87,74 @@ export default function RecipeStepsList({
           >
             + {t('chef.create_recipe.add_step')}
           </button>
+
+          {allUtensils.length > 0 && (
+            <div className="mt-4">
+              <h4 className="mb-3 text-base font-black">
+                {t('chef.create_recipe.utensils_label')}
+              </h4>
+              <div className="flex flex-wrap gap-2">
+                {allUtensils.map((u) => {
+                  const selected = editForm.utensilIds.includes(u.id);
+                  return (
+                    <button
+                      key={u.id}
+                      type="button"
+                      onClick={() => {
+                        const current = editForm.utensilIds;
+                        onUpdate(
+                          'utensilIds',
+                          selected
+                            ? current.filter((id) => id !== u.id)
+                            : [...current, u.id],
+                        );
+                      }}
+                      className="rounded-full px-4 py-1.5 text-sm font-semibold transition"
+                      style={{
+                        backgroundColor: selected ? '#EAB308' : '#F5F0D8',
+                        color: '#3F4756',
+                      }}
+                    >
+                      {lang === 'el' ? u.name_el : u.name_en}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </div>
       ) : (
-        <div className="flex flex-col gap-3">
-          {(recipe.steps ?? []).map((step: any, i: number) => (
-            <div key={i} className="flex items-start gap-3">
-              <div className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center border-myGrey-200 rounded-full border-2" />
-              <span className="text-sm text-gray-600">
-                {pick(step.body_el, step.body_en, lang)}
-              </span>
+        <>
+          <div className="flex flex-col gap-3">
+            {(recipe.steps ?? []).map((step: any, i: number) => (
+              <div key={i} className="flex items-start gap-3">
+                <div className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center border-myGrey-200 rounded-full border-2" />
+                <span className="text-sm text-gray-600">
+                  {pick(step.body_el, step.body_en, lang)}
+                </span>
+              </div>
+            ))}
+          </div>
+
+          {(recipe.utensils ?? []).length > 0 && (
+            <div className="mt-4">
+              <h4 className="mb-2 text-sm font-black">
+                {t('chef.create_recipe.utensils_label')}
+              </h4>
+              <div className="flex flex-wrap gap-2">
+                {recipe.utensils.map((u: any) => (
+                  <span
+                    key={u.id}
+                    className="rounded-full px-3 py-1 text-xs font-semibold"
+                    style={{ backgroundColor: '#F5F0D8', color: '#3F4756' }}
+                  >
+                    {lang === 'el' ? u.name_el : u.name_en}
+                  </span>
+                ))}
+              </div>
             </div>
-          ))}
-        </div>
+          )}
+        </>
       )}
     </div>
   );

@@ -1,6 +1,8 @@
 import { Difficulty, RecipeCategory } from '../../../generated/graphql';
 import { pick } from '../../../utils/pick';
 
+// ─── Types ────────────────────────────────────────────────────────────────────
+
 export interface IngredientRow {
   ingredientId: number;
   quantity: string;
@@ -10,7 +12,7 @@ export interface IngredientRow {
 }
 
 export interface StepRow {
-  id: number;
+  id: number; // required — buildEditForm always provides s.id; new rows use Date.now()
   body: string;
 }
 
@@ -33,6 +35,8 @@ export interface EditForm {
   steps: StepRow[];
   utensilIds: number[];
 }
+
+// ─── Constants ────────────────────────────────────────────────────────────────
 
 export const DIFFICULTY_OPTIONS: {
   value: Difficulty;
@@ -77,6 +81,8 @@ export const MACRO_FIELDS: {
   { field: 'fat', unit: 'g', labelKey: 'chef.create_recipe.fat' },
 ];
 
+// ─── Helper ───────────────────────────────────────────────────────────────────
+
 export function buildEditForm(recipe: any, lang: string): EditForm {
   return {
     title: pick(recipe.title_el, recipe.title_en, lang),
@@ -97,10 +103,11 @@ export function buildEditForm(recipe: any, lang: string): EditForm {
     restTime: String(recipe.restTime ?? ''),
     foodEthnicity: recipe.foodEthnicity ?? '',
     category: recipe.category ?? '',
-    caloriesTotal: String(recipe.caloriesTotal ?? ''),
-    protein: String(recipe.protein ?? ''),
-    carbs: String(recipe.carbs ?? ''),
-    fat: String(recipe.fat ?? ''),
+    caloriesTotal:
+      recipe.caloriesTotal != null ? String(recipe.caloriesTotal) : '',
+    protein: recipe.protein != null ? String(recipe.protein) : '',
+    carbs: recipe.carbs != null ? String(recipe.carbs) : '',
+    fat: recipe.fat != null ? String(recipe.fat) : '',
     ingredients: (recipe.recipeIngredients ?? []).map((ri: any) => ({
       ingredientId: ri.ingredientId,
       quantity: ri.quantity ?? '',

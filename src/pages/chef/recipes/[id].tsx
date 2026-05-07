@@ -14,7 +14,6 @@ import {
   useRecipeRatingsQuery,
 } from '../../../generated/graphql';
 import useIsChef from '../../../utils/useIsChef';
-import { pick } from '../../../utils/pick';
 import { uploadToCloudinary } from '../../../utils/uploadToCloudinary';
 
 import {
@@ -166,6 +165,7 @@ export default function ChefSingleRecipe() {
             unit: r.unit,
           })),
           steps: validSteps.map((s) => ({ body: s.body.trim() })),
+          utensilIds: editForm.utensilIds,
         },
       },
     });
@@ -345,21 +345,6 @@ export default function ChefSingleRecipe() {
                 ingredients={allIngredients}
                 onUpdate={update}
               />
-
-              {(recipe.utensils ?? []).length > 0 && (
-                <div className="mb-6">
-                  <h3 className="mb-3 text-lg font-black">
-                    {t('chef.recipe_detail.utensils')}
-                  </h3>
-                  <ol className="flex flex-col gap-1.5 list-decimal list-inside">
-                    {(recipe.utensils ?? []).map((u: any, i: number) => (
-                      <li key={i} className="text-sm text-gray-600">
-                        {pick(u.name_el, u.name_en, lang)}
-                      </li>
-                    ))}
-                  </ol>
-                </div>
-              )}
 
               <RecipeStepsList
                 recipe={recipe}
