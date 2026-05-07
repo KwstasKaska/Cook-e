@@ -63,7 +63,7 @@ const Nutritionist: NextPage = () => {
               </span>
             </div>
           )}
-          <h1 className="text-2xl text-black opacity-75 font-bold md:text-4xl">
+          <h1 className="text-2xl text-white  font-bold md:text-4xl">
             {t('nutr.welcome')} Dr. {meData?.me?.username}
           </h1>
         </div>
