@@ -136,7 +136,7 @@ function ProfileContent() {
               )}
             </div>
 
-            {userId > 0 && (
+            {hasAcceptedAppointment && userId > 0 && (
               <button
                 onClick={() => openConversation(userId)}
                 className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-myBlue-200 shadow-md transition hover:opacity-90"

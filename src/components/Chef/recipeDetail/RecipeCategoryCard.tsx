@@ -59,7 +59,7 @@ export default function RecipeCategoryCard({
                 ))}
               </div>
             ) : (
-              <p className="mt-0.5 border-b border-myYellow text-myBlue-200 pb-1 text-sm font-medium italic">
+              <p className="mt-0.5 border-b border-myBlue-200 text-myBlue-200 pb-1 text-sm font-medium italic">
                 {categoryLabel}
               </p>
             )}
