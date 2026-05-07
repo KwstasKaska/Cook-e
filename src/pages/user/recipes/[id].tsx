@@ -115,6 +115,7 @@ function RecipeDetailContent() {
   const chefComment = isEl ? recipe?.chefComment_el : recipe?.chefComment_en;
   const steps = [...(recipe?.steps ?? [])].sort((a, b) => a.id - b.id);
   const ingredients = recipe?.recipeIngredients ?? [];
+  const utensils = recipe?.utensils ?? [];
   const totalTime = (recipe?.prepTime ?? 0) + (recipe?.cookTime ?? 0);
 
   const fetchingMoreRatings = ratingsNetworkStatus === 3;
@@ -430,6 +431,25 @@ function RecipeDetailContent() {
                   </div>
                 </div>
               )}
+
+              {utensils.length > 0 && (
+                <div>
+                  <h2 className="mb-4 text-2xl font-bold text-white md:text-3xl">
+                    {t('chef.create_recipe.utensils_label')}
+                  </h2>
+                  <div className="flex flex-wrap gap-2">
+                    {utensils.map((u) => (
+                      <span
+                        key={u.id}
+                        className="rounded-full px-4 py-1.5 text-sm font-semibold"
+                        style={{ backgroundColor: '#F5F0D8', color: '#3F4756' }}
+                      >
+                        {isEl ? u.name_el : u.name_en}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
 
             <div className="min-w-0 overflow-hidden rounded-2xl bg-white shadow-xl md:sticky md:top-6">
@@ -478,9 +498,39 @@ function RecipeDetailContent() {
               )}
 
               <div className="px-6 py-4 border-b border-gray-100 flex flex-col gap-2">
-                {totalTime > 0 && (
+                {recipe.prepTime > 0 && (
                   <div className="flex justify-between text-sm">
-                    <span className="text-gray-400">
+                    <span className="">
+                      {t('chef.create_recipe.prep_time')}
+                    </span>
+                    <span className="font-semibold text-gray-700">
+                      {recipe.prepTime} {t('chef.recipe_detail.minutes')}
+                    </span>
+                  </div>
+                )}
+                {recipe.cookTime > 0 && (
+                  <div className="flex justify-between text-sm">
+                    <span className="">
+                      {t('chef.create_recipe.cook_time')}
+                    </span>
+                    <span className="font-semibold text-gray-700">
+                      {recipe.cookTime} {t('chef.recipe_detail.minutes')}
+                    </span>
+                  </div>
+                )}
+                {recipe.restTime != null && recipe.restTime > 0 && (
+                  <div className="flex justify-between text-sm">
+                    <span className="">
+                      {t('chef.create_recipe.rest_time')}
+                    </span>
+                    <span className="font-semibold text-gray-700">
+                      {recipe.restTime} {t('chef.recipe_detail.minutes')}
+                    </span>
+                  </div>
+                )}
+                {totalTime > 0 && (
+                  <div className="flex justify-between text-sm border-t border-gray-100 pt-2 mt-1">
+                    <span className="">
                       {t('chef.recipe_detail.implementation_time')}
                     </span>
                     <span className="font-semibold text-gray-700">
@@ -490,11 +540,21 @@ function RecipeDetailContent() {
                 )}
                 {recipe.difficulty && (
                   <div className="flex justify-between text-sm">
-                    <span className="text-gray-400">
+                    <span className="">
                       {t('chef.recipe_detail.difficulty')}
                     </span>
                     <span className="font-semibold text-gray-700">
                       {getDifficultyLabel(recipe.difficulty, t)}
+                    </span>
+                  </div>
+                )}
+                {recipe.foodEthnicity && (
+                  <div className="flex justify-between text-sm">
+                    <span className="">
+                      {t('chef.create_recipe.cuisine_label')}
+                    </span>
+                    <span className="font-semibold text-gray-700">
+                      {recipe.foodEthnicity}
                     </span>
                   </div>
                 )}
@@ -505,7 +565,7 @@ function RecipeDetailContent() {
                   <div className="mt-1 flex flex-col gap-1.5 border-t border-gray-100 pt-2">
                     {recipe.caloriesTotal != null && (
                       <div className="flex justify-between text-sm">
-                        <span className="text-gray-400">
+                        <span className="">
                           {t('chef.create_recipe.calories')}
                         </span>
                         <span className="font-semibold text-gray-700">
@@ -515,7 +575,7 @@ function RecipeDetailContent() {
                     )}
                     {recipe.protein != null && (
                       <div className="flex justify-between text-sm">
-                        <span className="text-gray-400">
+                        <span className="">
                           {t('chef.create_recipe.protein')}
                         </span>
                         <span className="font-semibold text-gray-700">
@@ -525,7 +585,7 @@ function RecipeDetailContent() {
                     )}
                     {recipe.carbs != null && (
                       <div className="flex justify-between text-sm">
-                        <span className="text-gray-400">
+                        <span className="">
                           {t('chef.create_recipe.carbs')}
                         </span>
                         <span className="font-semibold text-gray-700">
@@ -535,9 +595,7 @@ function RecipeDetailContent() {
                     )}
                     {recipe.fat != null && (
                       <div className="flex justify-between text-sm">
-                        <span className="text-gray-400">
-                          {t('chef.create_recipe.fat')}
-                        </span>
+                        <span className="">{t('chef.create_recipe.fat')}</span>
                         <span className="font-semibold text-gray-700">
                           {recipe.fat}g
                         </span>

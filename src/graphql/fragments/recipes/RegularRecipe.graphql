@@ -45,4 +45,9 @@ fragment RegularRecipe on Recipe {
       image
     }
   }
+  utensils {
+    id
+    name_el
+    name_en
+  }
 }

@@ -265,7 +265,6 @@ export type Mutation = {
   deleteRecipe: Scalars['Boolean']['output'];
   deleteRecipeRating: Scalars['Boolean']['output'];
   deleteUser: Scalars['Boolean']['output'];
-  forgotPassword: Scalars['Boolean']['output'];
   logCookedRecipe: CookedRecipe;
   login: UserResponse;
   logout: Scalars['Boolean']['output'];
@@ -366,11 +365,6 @@ export type MutationDeleteRecipeArgs = {
 
 export type MutationDeleteRecipeRatingArgs = {
   recipeId: Scalars['Int']['input'];
-};
-
-
-export type MutationForgotPasswordArgs = {
-  email: Scalars['String']['input'];
 };
 
 
@@ -1024,9 +1018,9 @@ export type RegularRecipeRatingFragment = { __typename?: 'RecipeRating', id: num
 
 export type TopRatedRecipeFragment = { __typename?: 'Recipe', id: number, title_el: string, title_en: string, recipeImage?: string | null, caloriesTotal?: number | null, prepTime: number, cookTime: number, difficulty: Difficulty, category?: RecipeCategory | null, author?: { __typename?: 'ChefProfile', user: { __typename?: 'User', username: string, image?: string | null } } | null };
 
-export type RegularRecipeFragment = { __typename?: 'Recipe', id: number, title_el: string, title_en: string, description_el?: string | null, description_en?: string | null, chefComment_el?: string | null, chefComment_en?: string | null, category?: RecipeCategory | null, recipeImage?: string | null, prepTime: number, cookTime: number, restTime?: number | null, difficulty: Difficulty, caloriesTotal?: number | null, protein?: number | null, carbs?: number | null, fat?: number | null, foodEthnicity?: string | null, authorId: number, createdAt: string, updatedAt: string, steps?: Array<{ __typename?: 'Step', id: number, body_el: string, body_en: string, recipeID: number }> | null, recipeIngredients?: Array<{ __typename?: 'RecipeIngredient', recipeId: number, ingredientId: number, quantity: string, unit: string, ingredient?: { __typename?: 'Ingredient', id: number, name_el: string, name_en: string, caloriesPer100g?: number | null } | null }> | null, author?: { __typename?: 'ChefProfile', user: { __typename?: 'User', id: number, username: string, image?: string | null } } | null };
+export type RegularRecipeFragment = { __typename?: 'Recipe', id: number, title_el: string, title_en: string, description_el?: string | null, description_en?: string | null, chefComment_el?: string | null, chefComment_en?: string | null, category?: RecipeCategory | null, recipeImage?: string | null, prepTime: number, cookTime: number, restTime?: number | null, difficulty: Difficulty, caloriesTotal?: number | null, protein?: number | null, carbs?: number | null, fat?: number | null, foodEthnicity?: string | null, authorId: number, createdAt: string, updatedAt: string, steps?: Array<{ __typename?: 'Step', id: number, body_el: string, body_en: string, recipeID: number }> | null, recipeIngredients?: Array<{ __typename?: 'RecipeIngredient', recipeId: number, ingredientId: number, quantity: string, unit: string, ingredient?: { __typename?: 'Ingredient', id: number, name_el: string, name_en: string, caloriesPer100g?: number | null } | null }> | null, author?: { __typename?: 'ChefProfile', user: { __typename?: 'User', id: number, username: string, image?: string | null } } | null, utensils?: Array<{ __typename?: 'Utensil', id: number, name_el: string, name_en: string }> | null };
 
-export type RegularRecipeResponseFragment = { __typename?: 'RecipeResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, recipe?: { __typename?: 'Recipe', id: number, title_el: string, title_en: string, description_el?: string | null, description_en?: string | null, chefComment_el?: string | null, chefComment_en?: string | null, category?: RecipeCategory | null, recipeImage?: string | null, prepTime: number, cookTime: number, restTime?: number | null, difficulty: Difficulty, caloriesTotal?: number | null, protein?: number | null, carbs?: number | null, fat?: number | null, foodEthnicity?: string | null, authorId: number, createdAt: string, updatedAt: string, steps?: Array<{ __typename?: 'Step', id: number, body_el: string, body_en: string, recipeID: number }> | null, recipeIngredients?: Array<{ __typename?: 'RecipeIngredient', recipeId: number, ingredientId: number, quantity: string, unit: string, ingredient?: { __typename?: 'Ingredient', id: number, name_el: string, name_en: string, caloriesPer100g?: number | null } | null }> | null, author?: { __typename?: 'ChefProfile', user: { __typename?: 'User', id: number, username: string, image?: string | null } } | null } | null };
+export type RegularRecipeResponseFragment = { __typename?: 'RecipeResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, recipe?: { __typename?: 'Recipe', id: number, title_el: string, title_en: string, description_el?: string | null, description_en?: string | null, chefComment_el?: string | null, chefComment_en?: string | null, category?: RecipeCategory | null, recipeImage?: string | null, prepTime: number, cookTime: number, restTime?: number | null, difficulty: Difficulty, caloriesTotal?: number | null, protein?: number | null, carbs?: number | null, fat?: number | null, foodEthnicity?: string | null, authorId: number, createdAt: string, updatedAt: string, steps?: Array<{ __typename?: 'Step', id: number, body_el: string, body_en: string, recipeID: number }> | null, recipeIngredients?: Array<{ __typename?: 'RecipeIngredient', recipeId: number, ingredientId: number, quantity: string, unit: string, ingredient?: { __typename?: 'Ingredient', id: number, name_el: string, name_en: string, caloriesPer100g?: number | null } | null }> | null, author?: { __typename?: 'ChefProfile', user: { __typename?: 'User', id: number, username: string, image?: string | null } } | null, utensils?: Array<{ __typename?: 'Utensil', id: number, name_el: string, name_en: string }> | null } | null };
 
 export type CreateAppointmentMutationVariables = Exact<{
   data: AddAppointmentInput;
@@ -1117,14 +1111,14 @@ export type CreateRecipeMutationVariables = Exact<{
 }>;
 
 
-export type CreateRecipeMutation = { __typename?: 'Mutation', createRecipe: { __typename?: 'RecipeResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, recipe?: { __typename?: 'Recipe', id: number, title_el: string, title_en: string, description_el?: string | null, description_en?: string | null, chefComment_el?: string | null, chefComment_en?: string | null, category?: RecipeCategory | null, recipeImage?: string | null, prepTime: number, cookTime: number, restTime?: number | null, difficulty: Difficulty, caloriesTotal?: number | null, protein?: number | null, carbs?: number | null, fat?: number | null, foodEthnicity?: string | null, authorId: number, createdAt: string, updatedAt: string, steps?: Array<{ __typename?: 'Step', id: number, body_el: string, body_en: string, recipeID: number }> | null, recipeIngredients?: Array<{ __typename?: 'RecipeIngredient', recipeId: number, ingredientId: number, quantity: string, unit: string, ingredient?: { __typename?: 'Ingredient', id: number, name_el: string, name_en: string, caloriesPer100g?: number | null } | null }> | null, author?: { __typename?: 'ChefProfile', user: { __typename?: 'User', id: number, username: string, image?: string | null } } | null } | null } };
+export type CreateRecipeMutation = { __typename?: 'Mutation', createRecipe: { __typename?: 'RecipeResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, recipe?: { __typename?: 'Recipe', id: number, title_el: string, title_en: string, description_el?: string | null, description_en?: string | null, chefComment_el?: string | null, chefComment_en?: string | null, category?: RecipeCategory | null, recipeImage?: string | null, prepTime: number, cookTime: number, restTime?: number | null, difficulty: Difficulty, caloriesTotal?: number | null, protein?: number | null, carbs?: number | null, fat?: number | null, foodEthnicity?: string | null, authorId: number, createdAt: string, updatedAt: string, steps?: Array<{ __typename?: 'Step', id: number, body_el: string, body_en: string, recipeID: number }> | null, recipeIngredients?: Array<{ __typename?: 'RecipeIngredient', recipeId: number, ingredientId: number, quantity: string, unit: string, ingredient?: { __typename?: 'Ingredient', id: number, name_el: string, name_en: string, caloriesPer100g?: number | null } | null }> | null, author?: { __typename?: 'ChefProfile', user: { __typename?: 'User', id: number, username: string, image?: string | null } } | null, utensils?: Array<{ __typename?: 'Utensil', id: number, name_el: string, name_en: string }> | null } | null } };
 
 export type UpdateRecipeMutationVariables = Exact<{
   data: UpdateRecipeInput;
 }>;
 
 
-export type UpdateRecipeMutation = { __typename?: 'Mutation', updateRecipe: { __typename?: 'RecipeResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, recipe?: { __typename?: 'Recipe', id: number, title_el: string, title_en: string, description_el?: string | null, description_en?: string | null, chefComment_el?: string | null, chefComment_en?: string | null, category?: RecipeCategory | null, recipeImage?: string | null, prepTime: number, cookTime: number, restTime?: number | null, difficulty: Difficulty, caloriesTotal?: number | null, protein?: number | null, carbs?: number | null, fat?: number | null, foodEthnicity?: string | null, authorId: number, createdAt: string, updatedAt: string, steps?: Array<{ __typename?: 'Step', id: number, body_el: string, body_en: string, recipeID: number }> | null, recipeIngredients?: Array<{ __typename?: 'RecipeIngredient', recipeId: number, ingredientId: number, quantity: string, unit: string, ingredient?: { __typename?: 'Ingredient', id: number, name_el: string, name_en: string, caloriesPer100g?: number | null } | null }> | null, author?: { __typename?: 'ChefProfile', user: { __typename?: 'User', id: number, username: string, image?: string | null } } | null } | null } };
+export type UpdateRecipeMutation = { __typename?: 'Mutation', updateRecipe: { __typename?: 'RecipeResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, recipe?: { __typename?: 'Recipe', id: number, title_el: string, title_en: string, description_el?: string | null, description_en?: string | null, chefComment_el?: string | null, chefComment_en?: string | null, category?: RecipeCategory | null, recipeImage?: string | null, prepTime: number, cookTime: number, restTime?: number | null, difficulty: Difficulty, caloriesTotal?: number | null, protein?: number | null, carbs?: number | null, fat?: number | null, foodEthnicity?: string | null, authorId: number, createdAt: string, updatedAt: string, steps?: Array<{ __typename?: 'Step', id: number, body_el: string, body_en: string, recipeID: number }> | null, recipeIngredients?: Array<{ __typename?: 'RecipeIngredient', recipeId: number, ingredientId: number, quantity: string, unit: string, ingredient?: { __typename?: 'Ingredient', id: number, name_el: string, name_en: string, caloriesPer100g?: number | null } | null }> | null, author?: { __typename?: 'ChefProfile', user: { __typename?: 'User', id: number, username: string, image?: string | null } } | null, utensils?: Array<{ __typename?: 'Utensil', id: number, name_el: string, name_en: string }> | null } | null } };
 
 export type DeleteRecipeMutationVariables = Exact<{
   id: Scalars['Int']['input'];
@@ -1194,13 +1188,6 @@ export type IsFavoritedQueryVariables = Exact<{
 
 
 export type IsFavoritedQuery = { __typename?: 'Query', isFavorited: boolean };
-
-export type ForgotPasswordMutationVariables = Exact<{
-  email: Scalars['String']['input'];
-}>;
-
-
-export type ForgotPasswordMutation = { __typename?: 'Mutation', forgotPassword: boolean };
 
 export type LoginMutationVariables = Exact<{
   email: Scalars['String']['input'];
@@ -1475,7 +1462,7 @@ export type MyRecipesQueryVariables = Exact<{
 }>;
 
 
-export type MyRecipesQuery = { __typename?: 'Query', myRecipes: Array<{ __typename?: 'Recipe', id: number, title_el: string, title_en: string, description_el?: string | null, description_en?: string | null, chefComment_el?: string | null, chefComment_en?: string | null, category?: RecipeCategory | null, recipeImage?: string | null, prepTime: number, cookTime: number, restTime?: number | null, difficulty: Difficulty, caloriesTotal?: number | null, protein?: number | null, carbs?: number | null, fat?: number | null, foodEthnicity?: string | null, authorId: number, createdAt: string, updatedAt: string, steps?: Array<{ __typename?: 'Step', id: number, body_el: string, body_en: string, recipeID: number }> | null, recipeIngredients?: Array<{ __typename?: 'RecipeIngredient', recipeId: number, ingredientId: number, quantity: string, unit: string, ingredient?: { __typename?: 'Ingredient', id: number, name_el: string, name_en: string, caloriesPer100g?: number | null } | null }> | null, author?: { __typename?: 'ChefProfile', user: { __typename?: 'User', id: number, username: string, image?: string | null } } | null }> };
+export type MyRecipesQuery = { __typename?: 'Query', myRecipes: Array<{ __typename?: 'Recipe', id: number, title_el: string, title_en: string, description_el?: string | null, description_en?: string | null, chefComment_el?: string | null, chefComment_en?: string | null, category?: RecipeCategory | null, recipeImage?: string | null, prepTime: number, cookTime: number, restTime?: number | null, difficulty: Difficulty, caloriesTotal?: number | null, protein?: number | null, carbs?: number | null, fat?: number | null, foodEthnicity?: string | null, authorId: number, createdAt: string, updatedAt: string, steps?: Array<{ __typename?: 'Step', id: number, body_el: string, body_en: string, recipeID: number }> | null, recipeIngredients?: Array<{ __typename?: 'RecipeIngredient', recipeId: number, ingredientId: number, quantity: string, unit: string, ingredient?: { __typename?: 'Ingredient', id: number, name_el: string, name_en: string, caloriesPer100g?: number | null } | null }> | null, author?: { __typename?: 'ChefProfile', user: { __typename?: 'User', id: number, username: string, image?: string | null } } | null, utensils?: Array<{ __typename?: 'Utensil', id: number, name_el: string, name_en: string }> | null }> };
 
 export type MyRecipesByCategoryQueryVariables = Exact<{
   category: RecipeCategory;
@@ -1484,7 +1471,7 @@ export type MyRecipesByCategoryQueryVariables = Exact<{
 }>;
 
 
-export type MyRecipesByCategoryQuery = { __typename?: 'Query', myRecipesByCategory: Array<{ __typename?: 'Recipe', id: number, title_el: string, title_en: string, description_el?: string | null, description_en?: string | null, chefComment_el?: string | null, chefComment_en?: string | null, category?: RecipeCategory | null, recipeImage?: string | null, prepTime: number, cookTime: number, restTime?: number | null, difficulty: Difficulty, caloriesTotal?: number | null, protein?: number | null, carbs?: number | null, fat?: number | null, foodEthnicity?: string | null, authorId: number, createdAt: string, updatedAt: string, steps?: Array<{ __typename?: 'Step', id: number, body_el: string, body_en: string, recipeID: number }> | null, recipeIngredients?: Array<{ __typename?: 'RecipeIngredient', recipeId: number, ingredientId: number, quantity: string, unit: string, ingredient?: { __typename?: 'Ingredient', id: number, name_el: string, name_en: string, caloriesPer100g?: number | null } | null }> | null, author?: { __typename?: 'ChefProfile', user: { __typename?: 'User', id: number, username: string, image?: string | null } } | null }> };
+export type MyRecipesByCategoryQuery = { __typename?: 'Query', myRecipesByCategory: Array<{ __typename?: 'Recipe', id: number, title_el: string, title_en: string, description_el?: string | null, description_en?: string | null, chefComment_el?: string | null, chefComment_en?: string | null, category?: RecipeCategory | null, recipeImage?: string | null, prepTime: number, cookTime: number, restTime?: number | null, difficulty: Difficulty, caloriesTotal?: number | null, protein?: number | null, carbs?: number | null, fat?: number | null, foodEthnicity?: string | null, authorId: number, createdAt: string, updatedAt: string, steps?: Array<{ __typename?: 'Step', id: number, body_el: string, body_en: string, recipeID: number }> | null, recipeIngredients?: Array<{ __typename?: 'RecipeIngredient', recipeId: number, ingredientId: number, quantity: string, unit: string, ingredient?: { __typename?: 'Ingredient', id: number, name_el: string, name_en: string, caloriesPer100g?: number | null } | null }> | null, author?: { __typename?: 'ChefProfile', user: { __typename?: 'User', id: number, username: string, image?: string | null } } | null, utensils?: Array<{ __typename?: 'Utensil', id: number, name_el: string, name_en: string }> | null }> };
 
 export type MyRecipesCountQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1511,7 +1498,7 @@ export type RecipeQueryVariables = Exact<{
 }>;
 
 
-export type RecipeQuery = { __typename?: 'Query', recipe?: { __typename?: 'Recipe', id: number, title_el: string, title_en: string, description_el?: string | null, description_en?: string | null, chefComment_el?: string | null, chefComment_en?: string | null, category?: RecipeCategory | null, recipeImage?: string | null, prepTime: number, cookTime: number, restTime?: number | null, difficulty: Difficulty, caloriesTotal?: number | null, protein?: number | null, carbs?: number | null, fat?: number | null, foodEthnicity?: string | null, authorId: number, createdAt: string, updatedAt: string, steps?: Array<{ __typename?: 'Step', id: number, body_el: string, body_en: string, recipeID: number }> | null, recipeIngredients?: Array<{ __typename?: 'RecipeIngredient', recipeId: number, ingredientId: number, quantity: string, unit: string, ingredient?: { __typename?: 'Ingredient', id: number, name_el: string, name_en: string, caloriesPer100g?: number | null } | null }> | null, author?: { __typename?: 'ChefProfile', user: { __typename?: 'User', id: number, username: string, image?: string | null } } | null } | null };
+export type RecipeQuery = { __typename?: 'Query', recipe?: { __typename?: 'Recipe', id: number, title_el: string, title_en: string, description_el?: string | null, description_en?: string | null, chefComment_el?: string | null, chefComment_en?: string | null, category?: RecipeCategory | null, recipeImage?: string | null, prepTime: number, cookTime: number, restTime?: number | null, difficulty: Difficulty, caloriesTotal?: number | null, protein?: number | null, carbs?: number | null, fat?: number | null, foodEthnicity?: string | null, authorId: number, createdAt: string, updatedAt: string, steps?: Array<{ __typename?: 'Step', id: number, body_el: string, body_en: string, recipeID: number }> | null, recipeIngredients?: Array<{ __typename?: 'RecipeIngredient', recipeId: number, ingredientId: number, quantity: string, unit: string, ingredient?: { __typename?: 'Ingredient', id: number, name_el: string, name_en: string, caloriesPer100g?: number | null } | null }> | null, author?: { __typename?: 'ChefProfile', user: { __typename?: 'User', id: number, username: string, image?: string | null } } | null, utensils?: Array<{ __typename?: 'Utensil', id: number, name_el: string, name_en: string }> | null } | null };
 
 export type RecipeDetailQueryVariables = Exact<{
   id: Scalars['Int']['input'];
@@ -1549,7 +1536,7 @@ export type RecipesQueryVariables = Exact<{
 }>;
 
 
-export type RecipesQuery = { __typename?: 'Query', recipes: Array<{ __typename?: 'Recipe', id: number, title_el: string, title_en: string, description_el?: string | null, description_en?: string | null, chefComment_el?: string | null, chefComment_en?: string | null, category?: RecipeCategory | null, recipeImage?: string | null, prepTime: number, cookTime: number, restTime?: number | null, difficulty: Difficulty, caloriesTotal?: number | null, protein?: number | null, carbs?: number | null, fat?: number | null, foodEthnicity?: string | null, authorId: number, createdAt: string, updatedAt: string, steps?: Array<{ __typename?: 'Step', id: number, body_el: string, body_en: string, recipeID: number }> | null, recipeIngredients?: Array<{ __typename?: 'RecipeIngredient', recipeId: number, ingredientId: number, quantity: string, unit: string, ingredient?: { __typename?: 'Ingredient', id: number, name_el: string, name_en: string, caloriesPer100g?: number | null } | null }> | null, author?: { __typename?: 'ChefProfile', user: { __typename?: 'User', id: number, username: string, image?: string | null } } | null }> };
+export type RecipesQuery = { __typename?: 'Query', recipes: Array<{ __typename?: 'Recipe', id: number, title_el: string, title_en: string, description_el?: string | null, description_en?: string | null, chefComment_el?: string | null, chefComment_en?: string | null, category?: RecipeCategory | null, recipeImage?: string | null, prepTime: number, cookTime: number, restTime?: number | null, difficulty: Difficulty, caloriesTotal?: number | null, protein?: number | null, carbs?: number | null, fat?: number | null, foodEthnicity?: string | null, authorId: number, createdAt: string, updatedAt: string, steps?: Array<{ __typename?: 'Step', id: number, body_el: string, body_en: string, recipeID: number }> | null, recipeIngredients?: Array<{ __typename?: 'RecipeIngredient', recipeId: number, ingredientId: number, quantity: string, unit: string, ingredient?: { __typename?: 'Ingredient', id: number, name_el: string, name_en: string, caloriesPer100g?: number | null } | null }> | null, author?: { __typename?: 'ChefProfile', user: { __typename?: 'User', id: number, username: string, image?: string | null } } | null, utensils?: Array<{ __typename?: 'Utensil', id: number, name_el: string, name_en: string }> | null }> };
 
 export type RecipesByCategoryQueryVariables = Exact<{
   category: RecipeCategory;
@@ -1558,7 +1545,7 @@ export type RecipesByCategoryQueryVariables = Exact<{
 }>;
 
 
-export type RecipesByCategoryQuery = { __typename?: 'Query', recipesByCategory: Array<{ __typename?: 'Recipe', id: number, title_el: string, title_en: string, description_el?: string | null, description_en?: string | null, chefComment_el?: string | null, chefComment_en?: string | null, category?: RecipeCategory | null, recipeImage?: string | null, prepTime: number, cookTime: number, restTime?: number | null, difficulty: Difficulty, caloriesTotal?: number | null, protein?: number | null, carbs?: number | null, fat?: number | null, foodEthnicity?: string | null, authorId: number, createdAt: string, updatedAt: string, steps?: Array<{ __typename?: 'Step', id: number, body_el: string, body_en: string, recipeID: number }> | null, recipeIngredients?: Array<{ __typename?: 'RecipeIngredient', recipeId: number, ingredientId: number, quantity: string, unit: string, ingredient?: { __typename?: 'Ingredient', id: number, name_el: string, name_en: string, caloriesPer100g?: number | null } | null }> | null, author?: { __typename?: 'ChefProfile', user: { __typename?: 'User', id: number, username: string, image?: string | null } } | null }> };
+export type RecipesByCategoryQuery = { __typename?: 'Query', recipesByCategory: Array<{ __typename?: 'Recipe', id: number, title_el: string, title_en: string, description_el?: string | null, description_en?: string | null, chefComment_el?: string | null, chefComment_en?: string | null, category?: RecipeCategory | null, recipeImage?: string | null, prepTime: number, cookTime: number, restTime?: number | null, difficulty: Difficulty, caloriesTotal?: number | null, protein?: number | null, carbs?: number | null, fat?: number | null, foodEthnicity?: string | null, authorId: number, createdAt: string, updatedAt: string, steps?: Array<{ __typename?: 'Step', id: number, body_el: string, body_en: string, recipeID: number }> | null, recipeIngredients?: Array<{ __typename?: 'RecipeIngredient', recipeId: number, ingredientId: number, quantity: string, unit: string, ingredient?: { __typename?: 'Ingredient', id: number, name_el: string, name_en: string, caloriesPer100g?: number | null } | null }> | null, author?: { __typename?: 'ChefProfile', user: { __typename?: 'User', id: number, username: string, image?: string | null } } | null, utensils?: Array<{ __typename?: 'Utensil', id: number, name_el: string, name_en: string }> | null }> };
 
 export type RecipesByChefQueryVariables = Exact<{
   chefId: Scalars['Int']['input'];
@@ -1567,7 +1554,7 @@ export type RecipesByChefQueryVariables = Exact<{
 }>;
 
 
-export type RecipesByChefQuery = { __typename?: 'Query', recipesByChef: Array<{ __typename?: 'Recipe', id: number, title_el: string, title_en: string, description_el?: string | null, description_en?: string | null, chefComment_el?: string | null, chefComment_en?: string | null, category?: RecipeCategory | null, recipeImage?: string | null, prepTime: number, cookTime: number, restTime?: number | null, difficulty: Difficulty, caloriesTotal?: number | null, protein?: number | null, carbs?: number | null, fat?: number | null, foodEthnicity?: string | null, authorId: number, createdAt: string, updatedAt: string, steps?: Array<{ __typename?: 'Step', id: number, body_el: string, body_en: string, recipeID: number }> | null, recipeIngredients?: Array<{ __typename?: 'RecipeIngredient', recipeId: number, ingredientId: number, quantity: string, unit: string, ingredient?: { __typename?: 'Ingredient', id: number, name_el: string, name_en: string, caloriesPer100g?: number | null } | null }> | null, author?: { __typename?: 'ChefProfile', user: { __typename?: 'User', id: number, username: string, image?: string | null } } | null }> };
+export type RecipesByChefQuery = { __typename?: 'Query', recipesByChef: Array<{ __typename?: 'Recipe', id: number, title_el: string, title_en: string, description_el?: string | null, description_en?: string | null, chefComment_el?: string | null, chefComment_en?: string | null, category?: RecipeCategory | null, recipeImage?: string | null, prepTime: number, cookTime: number, restTime?: number | null, difficulty: Difficulty, caloriesTotal?: number | null, protein?: number | null, carbs?: number | null, fat?: number | null, foodEthnicity?: string | null, authorId: number, createdAt: string, updatedAt: string, steps?: Array<{ __typename?: 'Step', id: number, body_el: string, body_en: string, recipeID: number }> | null, recipeIngredients?: Array<{ __typename?: 'RecipeIngredient', recipeId: number, ingredientId: number, quantity: string, unit: string, ingredient?: { __typename?: 'Ingredient', id: number, name_el: string, name_en: string, caloriesPer100g?: number | null } | null }> | null, author?: { __typename?: 'ChefProfile', user: { __typename?: 'User', id: number, username: string, image?: string | null } } | null, utensils?: Array<{ __typename?: 'Utensil', id: number, name_el: string, name_en: string }> | null }> };
 
 export type SuggestedRecipesQueryVariables = Exact<{
   ingredientIds: Array<Scalars['Int']['input']> | Scalars['Int']['input'];
@@ -1576,7 +1563,7 @@ export type SuggestedRecipesQueryVariables = Exact<{
 }>;
 
 
-export type SuggestedRecipesQuery = { __typename?: 'Query', suggestedRecipes: Array<{ __typename?: 'RecipeSuggestion', missingCount: number, recipe: { __typename?: 'Recipe', id: number, title_el: string, title_en: string, description_el?: string | null, description_en?: string | null, chefComment_el?: string | null, chefComment_en?: string | null, category?: RecipeCategory | null, recipeImage?: string | null, prepTime: number, cookTime: number, restTime?: number | null, difficulty: Difficulty, caloriesTotal?: number | null, protein?: number | null, carbs?: number | null, fat?: number | null, foodEthnicity?: string | null, authorId: number, createdAt: string, updatedAt: string, steps?: Array<{ __typename?: 'Step', id: number, body_el: string, body_en: string, recipeID: number }> | null, recipeIngredients?: Array<{ __typename?: 'RecipeIngredient', recipeId: number, ingredientId: number, quantity: string, unit: string, ingredient?: { __typename?: 'Ingredient', id: number, name_el: string, name_en: string, caloriesPer100g?: number | null } | null }> | null, author?: { __typename?: 'ChefProfile', user: { __typename?: 'User', id: number, username: string, image?: string | null } } | null }, missingIngredients: Array<{ __typename?: 'Ingredient', id: number, name_el: string, name_en: string }>, missingUtensils: Array<{ __typename?: 'Utensil', id: number, name_el: string, name_en: string }> }> };
+export type SuggestedRecipesQuery = { __typename?: 'Query', suggestedRecipes: Array<{ __typename?: 'RecipeSuggestion', missingCount: number, recipe: { __typename?: 'Recipe', id: number, title_el: string, title_en: string, description_el?: string | null, description_en?: string | null, chefComment_el?: string | null, chefComment_en?: string | null, category?: RecipeCategory | null, recipeImage?: string | null, prepTime: number, cookTime: number, restTime?: number | null, difficulty: Difficulty, caloriesTotal?: number | null, protein?: number | null, carbs?: number | null, fat?: number | null, foodEthnicity?: string | null, authorId: number, createdAt: string, updatedAt: string, steps?: Array<{ __typename?: 'Step', id: number, body_el: string, body_en: string, recipeID: number }> | null, recipeIngredients?: Array<{ __typename?: 'RecipeIngredient', recipeId: number, ingredientId: number, quantity: string, unit: string, ingredient?: { __typename?: 'Ingredient', id: number, name_el: string, name_en: string, caloriesPer100g?: number | null } | null }> | null, author?: { __typename?: 'ChefProfile', user: { __typename?: 'User', id: number, username: string, image?: string | null } } | null, utensils?: Array<{ __typename?: 'Utensil', id: number, name_el: string, name_en: string }> | null }, missingIngredients: Array<{ __typename?: 'Ingredient', id: number, name_el: string, name_en: string }>, missingUtensils: Array<{ __typename?: 'Utensil', id: number, name_el: string, name_en: string }> }> };
 
 export type TopRatedRecipesQueryVariables = Exact<{
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -1970,6 +1957,11 @@ export const RegularRecipeFragmentDoc = gql`
       username
       image
     }
+  }
+  utensils {
+    id
+    name_el
+    name_en
   }
 }
     `;
@@ -2762,37 +2754,6 @@ export type IsFavoritedQueryHookResult = ReturnType<typeof useIsFavoritedQuery>;
 export type IsFavoritedLazyQueryHookResult = ReturnType<typeof useIsFavoritedLazyQuery>;
 export type IsFavoritedSuspenseQueryHookResult = ReturnType<typeof useIsFavoritedSuspenseQuery>;
 export type IsFavoritedQueryResult = Apollo.QueryResult<IsFavoritedQuery, IsFavoritedQueryVariables>;
-export const ForgotPasswordDocument = gql`
-    mutation ForgotPassword($email: String!) {
-  forgotPassword(email: $email)
-}
-    `;
-export type ForgotPasswordMutationFn = Apollo.MutationFunction<ForgotPasswordMutation, ForgotPasswordMutationVariables>;
-
-/**
- * __useForgotPasswordMutation__
- *
- * To run a mutation, you first call `useForgotPasswordMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useForgotPasswordMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [forgotPasswordMutation, { data, loading, error }] = useForgotPasswordMutation({
- *   variables: {
- *      email: // value for 'email'
- *   },
- * });
- */
-export function useForgotPasswordMutation(baseOptions?: Apollo.MutationHookOptions<ForgotPasswordMutation, ForgotPasswordMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<ForgotPasswordMutation, ForgotPasswordMutationVariables>(ForgotPasswordDocument, options);
-      }
-export type ForgotPasswordMutationHookResult = ReturnType<typeof useForgotPasswordMutation>;
-export type ForgotPasswordMutationResult = Apollo.MutationResult<ForgotPasswordMutation>;
-export type ForgotPasswordMutationOptions = Apollo.BaseMutationOptions<ForgotPasswordMutation, ForgotPasswordMutationVariables>;
 export const LoginDocument = gql`
     mutation Login($email: String!, $password: String!) {
   login(email: $email, password: $password) {
