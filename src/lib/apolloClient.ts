@@ -32,6 +32,23 @@ const appendPaginatedField = (): {
   },
 });
 
+const appendPaginatedFieldKeyed = (
+  keyArgs: string[],
+): {
+  keyArgs: string[];
+  merge(existing: any[] | undefined, incoming: any[], options: any): any[];
+} => ({
+  keyArgs,
+  merge(existing = [], incoming, { args }) {
+    if (!args || !args.offset || args.offset === 0) {
+      return incoming;
+    }
+    const existingRefs = new Set(existing.map((e: any) => e.__ref));
+    const newItems = incoming.filter((i: any) => !existingRefs.has(i.__ref));
+    return [...existing, ...newItems];
+  },
+});
+
 const replaceField = (
   keyArgs: string[] = [],
 ): {
@@ -84,7 +101,7 @@ const createApolloClient = (headers: IncomingHttpHeaders | null = null) => {
             myRecipes: appendPaginatedField(),
             recipes: replaceField(['limit', 'offset']),
             recipesByChef: replaceField(['chefId', 'limit', 'offset']),
-            myRecipesByCategory: replaceField(['category', 'limit', 'offset']),
+            myRecipesByCategory: appendPaginatedFieldKeyed(['category']),
             recipesByCategory: replaceField(['category', 'limit', 'offset']),
             myFavorites: replaceField(['limit', 'offset']),
             myArticles: replaceField(['limit', 'offset']),
