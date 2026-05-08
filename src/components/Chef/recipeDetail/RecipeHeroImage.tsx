@@ -23,7 +23,7 @@ export default function RecipeHeroImage({
   return (
     <div className="relative h-56 md:h-72 w-full overflow-hidden bg-gray-200">
       <button
-        onClick={() => router.back()}
+        onClick={() => router.push('/chef/recipes')}
         className="absolute left-4 top-4 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-white shadow transition hover:bg-gray-100"
       >
         <svg
