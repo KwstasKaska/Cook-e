@@ -1,6 +1,5 @@
 import React, { useState, useMemo } from 'react';
 import ChefNavbar from '../../../components/Chef/ChefNavbar';
-
 import RecipeFeaturedCard from '../../../components/Chef/RecipeFeaturedCard';
 import RecipeCompactCard from '../../../components/Chef/RecipeCompactCard';
 import RecipeCategoryFilter from '../../../components/Chef/RecipeCategoryFilter';
@@ -16,26 +15,30 @@ import {
 } from '../../../generated/graphql';
 import { pick } from '../../../utils/pick';
 import useIsChef from '../../../utils/useIsChef';
+import PaginationControls from '../../../components/Helper/PaginationControls';
+
+const LIMIT = 5;
 
 export default function ChefRecipes() {
   const { loading: authLoading, isAuthorized } = useIsChef();
   const { t } = useTranslation('common');
   const router = useRouter();
   const lang = router.locale ?? 'el';
+
   const [activeCategory, setActiveCategory] = useState<RecipeCategory | null>(
     null,
   );
   const [search, setSearch] = useState('');
-  const [sort, setSort] = useState<'newest' | 'oldest' | 'alpha'>('newest');
+  const [offset, setOffset] = useState(0);
 
   const allRecipesQuery = useMyRecipesQuery({
-    variables: { limit: 5, offset: 0 },
+    variables: { limit: LIMIT, offset },
     skip: activeCategory !== null,
     fetchPolicy: 'network-only',
   });
 
   const categoryRecipesQuery = useMyRecipesByCategoryQuery({
-    variables: { category: activeCategory!, limit: 5, offset: 0 },
+    variables: { category: activeCategory!, limit: LIMIT, offset },
     skip: activeCategory === null,
     fetchPolicy: 'network-only',
   });
@@ -45,11 +48,6 @@ export default function ChefRecipes() {
       ? allRecipesQuery.loading
       : categoryRecipesQuery.loading;
 
-  const fetchingMore =
-    activeCategory === null
-      ? allRecipesQuery.networkStatus === 3
-      : categoryRecipesQuery.networkStatus === 3;
-
   const rawRecipes: Recipe[] = useMemo(() => {
     const list =
       activeCategory === null
@@ -58,70 +56,37 @@ export default function ChefRecipes() {
     return list as Recipe[];
   }, [activeCategory, allRecipesQuery.data, categoryRecipesQuery.data]);
 
-  const filtered = useMemo(() => {
-    let result = rawRecipes.filter((r) =>
-      pick(r.title_el, r.title_en, lang)
-        .toLowerCase()
-        .includes(search.toLowerCase()),
-    );
+  const filtered = useMemo(
+    () =>
+      rawRecipes.filter((r) =>
+        pick(r.title_el, r.title_en, lang)
+          .toLowerCase()
+          .includes(search.toLowerCase()),
+      ),
+    [rawRecipes, search, lang],
+  );
 
-    if (sort === 'newest') {
-      result = [...result].sort(
-        (a, b) =>
-          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
-      );
-    } else if (sort === 'oldest') {
-      result = [...result].sort(
-        (a, b) =>
-          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
-      );
-    } else if (sort === 'alpha') {
-      result = [...result].sort((a, b) =>
-        pick(a.title_el, a.title_en, lang).localeCompare(
-          pick(b.title_el, b.title_en, lang),
-          lang,
-        ),
-      );
-    }
+  const handleCategoryChange = (cat: RecipeCategory | null) => {
+    setActiveCategory(cat);
+    setOffset(0);
+  };
 
-    return result;
-  }, [rawRecipes, search, sort, lang]);
-
-  // Auth guard — after all hooks
   if (authLoading || !isAuthorized) return null;
 
   const featured = filtered[0] ?? null;
   const rest = filtered.slice(1);
 
-  const handleLoadMore = () => {
-    if (activeCategory === null) {
-      allRecipesQuery.fetchMore({
-        variables: { limit: 5, offset: rawRecipes.length },
-      });
-    } else {
-      categoryRecipesQuery.fetchMore({
-        variables: {
-          category: activeCategory,
-          limit: 5,
-          offset: rawRecipes.length,
-        },
-      });
-    }
-  };
-
-  // Show load more only if the last fetch returned a full page
-  const hasMore = rawRecipes.length > 0 && rawRecipes.length % 5 === 0;
+  const hasPrev = offset > 0;
+  const hasMore = rawRecipes.length === LIMIT;
 
   return (
-    <div className="flex min-h-screen  flex-col">
+    <div className="flex min-h-screen flex-col">
       <ChefNavbar />
 
       <main className="relative flex flex-1 flex-col items-center px-4 py-8 md:px-8">
         <h1
           className="relative z-10 mb-8 text-3xl italic"
-          style={{
-            color: 'rgba(255,255,255,0.85)',
-          }}
+          style={{ color: 'rgba(255,255,255,0.85)' }}
         >
           {t('chef.recipes.page_title')}
         </h1>
@@ -131,19 +96,13 @@ export default function ChefRecipes() {
             <h2 className="text-2xl font-bold">
               {t('chef.recipes.categories_label')}
             </h2>
-            <RecipeSearchBar
-              search={search}
-              sort={sort}
-              onSearchChange={setSearch}
-              onSortChange={setSort}
-            />
+            <RecipeSearchBar search={search} onSearchChange={setSearch} />
           </div>
 
-          {/* Body */}
           <div className="flex flex-col gap-6 md:flex-row">
             <RecipeCategoryFilter
               activeCategory={activeCategory}
-              onChange={setActiveCategory}
+              onChange={handleCategoryChange}
             />
 
             <div className="flex-1">
@@ -185,20 +144,15 @@ export default function ChefRecipes() {
                   )}
                 </div>
               )}
+
+              <PaginationControls
+                hasPrev={hasPrev}
+                hasMore={hasMore}
+                onPrev={() => setOffset((o) => o - LIMIT)}
+                onNext={() => setOffset((o) => o + LIMIT)}
+              />
             </div>
           </div>
-
-          {hasMore && (
-            <div className="mt-8 flex justify-center">
-              <button
-                onClick={handleLoadMore}
-                disabled={fetchingMore}
-                className="rounded-full  px-10 py-3 text-sm font-bold text-white transition hover:opacity-90 disabled:opacity-50"
-              >
-                {fetchingMore ? t('common.loading') : t('chef.more')}
-              </button>
-            </div>
-          )}
         </div>
       </main>
     </div>

@@ -98,15 +98,13 @@ const createApolloClient = (headers: IncomingHttpHeaders | null = null) => {
       typePolicies: {
         Query: {
           fields: {
-            myRecipes: appendPaginatedField(),
+            myRecipes: replaceField(['limit', 'offset']),
             recipes: replaceField(['limit', 'offset']),
             recipesByChef: replaceField(['chefId', 'limit', 'offset']),
             myRecipesByCategory: replaceField(['category', 'limit', 'offset']),
             recipesByCategory: replaceField(['category', 'limit', 'offset']),
             myFavorites: replaceField(['limit', 'offset']),
             myArticles: replaceField(['limit', 'offset']),
-            articles: appendPaginatedField(),
-            chefArticles: appendPaginatedField(),
             articlesByNutritionist: replaceField([
               'nutritionistId',
               'limit',
