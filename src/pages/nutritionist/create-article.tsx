@@ -18,7 +18,7 @@ const CreateArticle: NextPage = () => {
       <main className="flex flex-1 flex-col items-center px-4 py-8 md:px-8">
         <div className="w-full max-w-2xl">
           <button
-            onClick={() => router.back()}
+            onClick={() => router.push('/nutritionist')}
             className="mb-6 flex items-center gap-2 text-sm font-semibold transition hover:opacity-70"
             style={{ color: 'rgba(255,255,255,0.75)' }}
           >
@@ -43,7 +43,7 @@ const CreateArticle: NextPage = () => {
             <ArticleForm
               rows={10}
               onSuccess={() => router.push('/nutritionist')}
-              onCancel={() => router.back()}
+              onCancel={() => router.push('/nutritionist')}
               cacheEvictFields={['myArticles', 'articles']}
             />
           </div>

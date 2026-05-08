@@ -12,6 +12,7 @@ export default function ArticleDetail() {
       Navbar={ChefNavbar}
       listCacheField="articlesByChef"
       deleteRedirect="/chef/profile"
+      backHref="/chef/articles"
       showDate
     />
   );

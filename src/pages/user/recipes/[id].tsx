@@ -233,7 +233,7 @@ function RecipeDetailContent() {
           <div className="grid grid-cols-1 gap-8 md:grid-cols-[1fr_280px] lg:grid-cols-[1fr_320px] md:items-start">
             <div className="flex min-w-0 flex-col gap-6">
               <button
-                onClick={() => router.back()}
+                onClick={() => router.push('/user/recipes')}
                 className="flex w-fit items-center text-myYellow gap-2 text-sm font-bold transition hover:opacity-80"
               >
                 <svg
@@ -458,7 +458,11 @@ function RecipeDetailContent() {
             <div className="min-w-0 overflow-hidden rounded-2xl bg-white shadow-xl md:sticky md:top-6">
               {recipe.author?.user && (
                 <button
-                  onClick={() => router.push(`/user/chef/${recipe.authorId}`)}
+                  onClick={() =>
+                    router.push(
+                      `/user/chef/${recipe.authorId}?from=${recipe.id}`,
+                    )
+                  }
                   className="flex w-full flex-col items-center gap-2 px-6 pt-6 pb-4 group border-b border-gray-100"
                 >
                   {recipe.author.user.image ? (

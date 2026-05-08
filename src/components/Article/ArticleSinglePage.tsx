@@ -15,6 +15,7 @@ type Props = {
   Navbar: React.ComponentType;
   listCacheField: string;
   deleteRedirect: string;
+  backHref: string;
   showDate?: boolean;
 };
 
@@ -36,6 +37,7 @@ export default function ArticleSinglePage({
   const [editImagePreview, setEditImagePreview] = useState<string | null>(null);
   const [editError, setEditError] = useState('');
   const [isSaving, setIsSaving] = useState(false);
+  const isChef = router.pathname.startsWith('/chef');
 
   const { data, loading } = useArticleQuery({
     variables: { id: id! },
@@ -156,7 +158,7 @@ export default function ArticleSinglePage({
       <main className="flex flex-1 flex-col items-center px-4 py-8 md:px-8">
         <div className="w-full max-w-2xl">
           <button
-            onClick={() => router.back()}
+            onClick={() => router.push(isChef ? '/chef' : '/nutritionist')}
             className="mb-6 flex items-center gap-2 text-sm font-semibold transition hover:opacity-70"
             style={{ color: 'rgba(255,255,255,0.75)' }}
           >

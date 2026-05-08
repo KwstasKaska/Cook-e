@@ -59,39 +59,12 @@ function ArticleDetailContent() {
 
       <main className="flex flex-1 flex-col items-center px-4 py-8 md:px-8">
         <div className="w-full max-w-2xl">
-          {/* Back */}
-          <button
-            onClick={() => router.back()}
-            className="mb-6 flex items-center gap-2 text-sm font-semibold transition hover:opacity-70"
-            style={{ color: 'rgba(255,255,255,0.75)' }}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={2}
-              stroke="currentColor"
-              className="h-4 w-4"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
-              />
-            </svg>
-            {t('common.back')}
-          </button>
-
-          {/* Article card */}
           <div className="w-full overflow-hidden bg-myBeige-100 rounded-2xl shadow-xl">
-            {/* Hero image */}
             <div className="relative h-64 w-full">
               <Image src={heroSrc} alt={title} fill className="object-cover" />
             </div>
 
-            {/* Content */}
             <div className="p-6 md:p-8">
-              {/* Author + date */}
               <div className="mb-4 flex items-center gap-3">
                 {article.creator?.image ? (
                   <img

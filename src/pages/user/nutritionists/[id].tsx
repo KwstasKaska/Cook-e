@@ -106,7 +106,6 @@ function ProfileContent() {
             {t('nutritionists.back')}
           </button>
 
-          {/* Header row */}
           <div className="mb-4 flex items-center gap-4">
             <div className="h-16 w-16 flex-shrink-0 overflow-hidden rounded-full border-4 border-white shadow-lg bg-myBlue-100">
               {image ? (

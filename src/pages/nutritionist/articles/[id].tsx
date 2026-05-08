@@ -11,6 +11,7 @@ export default function NutrArticleDetail() {
       Navbar={NutrNavbar}
       listCacheField="myArticles"
       deleteRedirect="/nutritionist"
+      backHref="/nutritionist"
     />
   );
 }

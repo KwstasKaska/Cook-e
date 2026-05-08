@@ -282,6 +282,7 @@ export default function ChefSingleRecipe() {
             title_el={recipe.title_el}
             title_en={recipe.title_en}
             lang={lang}
+            backHref="/chef/recipes"
           />
 
           <div className="px-6 pt-4 pb-2">

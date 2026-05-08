@@ -140,7 +140,7 @@ function ChefProfileContent() {
         <div className="relative overflow-hidden">
           <div className="relative z-10 mx-auto max-w-4xl px-6 pb-20 pt-10">
             <button
-              onClick={() => router.back()}
+              onClick={() => router.push('/user/recipes')}
               className="mb-8 flex items-center gap-2 text-sm font-bold transition hover:opacity-80 text-myYellow"
             >
               <svg
@@ -155,7 +155,7 @@ function ChefProfileContent() {
                   clipRule="evenodd"
                 />
               </svg>
-              {t('recipes.backToSearch')}
+              {t('recipes.backToRecipes')}
             </button>
 
             <div className="grid grid-cols-1 gap-10 md:grid-cols-[1fr_340px] md:items-start">
