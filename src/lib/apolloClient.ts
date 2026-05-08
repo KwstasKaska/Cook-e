@@ -126,6 +126,7 @@ const createApolloClient = (headers: IncomingHttpHeaders | null = null) => {
               'offset',
             ]),
             myCart: replaceField([]),
+            myAppointmentRequests: replaceField([]),
           },
         },
       },
