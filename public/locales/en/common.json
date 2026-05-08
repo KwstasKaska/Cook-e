@@ -98,7 +98,7 @@
     "copy": "Copy link",
     "recipeHint1": "Inside each recipe you can see the full ingredient list and add any missing ones directly to your cart. Also rate it yourself, save it to your favourites, and mark it as cooked which updates the nutrition chart on your home page.",
     "recipeHint2": "Tap the chef's name to visit their profile there you can see their information and send them a message.",
-    "searchHint": "Select at least 3 ingredients you wanna use, then optionally pick your available utensils. Results include recipes you can make with exactly what you have, plus recipes that need at most 2 extra ingredients you don't have."
+    "searchHint": "Select at least 3 ingredients you wanna use, then optionally pick your available utensils. Results include recipes you can make with exactly what you have, plus recipes that need at most 3 extra ingredients you don't have."
   },
   "ingredientCategories": {
     "title": "Ingredients",

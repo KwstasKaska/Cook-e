@@ -68,7 +68,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
     });
   }
   if (networkError) {
-    toast.error('Network error — check your connection.');
+    toast.error('Πρόβλημα δικτύου');
   }
 });
 
