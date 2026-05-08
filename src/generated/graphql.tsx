@@ -487,7 +487,7 @@ export type NutritionistProfile = {
   bio_en?: Maybe<Scalars['String']['output']>;
   city_el?: Maybe<Scalars['String']['output']>;
   city_en?: Maybe<Scalars['String']['output']>;
-  id: Scalars['Float']['output'];
+  id: Scalars['Int']['output'];
   phone?: Maybe<Scalars['String']['output']>;
   user?: Maybe<User>;
 };
