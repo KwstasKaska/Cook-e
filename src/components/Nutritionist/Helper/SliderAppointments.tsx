@@ -41,6 +41,7 @@ const SliderAppointments: React.FC = () => {
     status: AppointmentStatus,
   ) => {
     await respondToAppointmentRequest({ variables: { requestId, status } });
+    setActiveIndex(0);
     await refetch();
   };
 
@@ -52,9 +53,6 @@ const SliderAppointments: React.FC = () => {
 
   const count = pendingRequests.length;
   const request = pendingRequests[activeIndex];
-
-  const handlePrev = () => setActiveIndex((i) => (i - 1 + count) % count);
-  const handleNext = () => setActiveIndex((i) => (i + 1) % count);
 
   if (count === 0) {
     return (
@@ -70,11 +68,11 @@ const SliderAppointments: React.FC = () => {
     : '';
 
   return (
-    <div className="lg:mt-16 lg:scale-125 xl:mt-16 flex items-center justify-center gap-3">
-      {count > 1 && (
+    <div className="lg:mt-16 lg:scale-125 xl:mt-16 flex items-center justify-center gap-2">
+      {count > 1 ? (
         <button
-          onClick={handlePrev}
-          className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-black text-white"
+          onClick={() => setActiveIndex((i) => (i - 1 + count) % count)}
+          className="text-myGrey-200 hover:text-myBlue-200 transition-colors"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -91,6 +89,8 @@ const SliderAppointments: React.FC = () => {
             />
           </svg>
         </button>
+      ) : (
+        <div className="w-5" />
       )}
 
       <div className="max-w-[17em] rounded-xl border-2 border-myBlue-200">
@@ -141,10 +141,10 @@ const SliderAppointments: React.FC = () => {
         </div>
       </div>
 
-      {count > 1 && (
+      {count > 1 ? (
         <button
-          onClick={handleNext}
-          className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-black text-white"
+          onClick={() => setActiveIndex((i) => (i + 1) % count)}
+          className="text-myGrey-200 hover:text-myBlue-200 transition-colors"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -161,6 +161,8 @@ const SliderAppointments: React.FC = () => {
             />
           </svg>
         </button>
+      ) : (
+        <div className="w-5" />
       )}
     </div>
   );
