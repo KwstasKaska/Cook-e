@@ -33,9 +33,19 @@ query MyAppointmentRequests {
   myAppointmentRequests {
     id
     status
+    requestedAt
     slot {
       id
+      date
+      time
       nutritionistId
+      nutritionistProfile {
+        user {
+          id
+          username
+          image
+        }
+      }
     }
   }
 }

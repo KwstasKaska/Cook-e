@@ -190,7 +190,14 @@
     "deleteError": "Error on deletion",
     "deleteConfirmTitle": "Delete account",
     "deleteConfirmYes": "Delete",
-    "deleteConfirmCancel": "Cancel"
+    "deleteConfirmCancel": "Cancel",
+    "appointments": "My appointments",
+    "noAppointments": "You have no appointment requests yet.",
+    "appointmentStatus": {
+      "pending": "Pending",
+      "accepted": "Accepted",
+      "rejected": "Rejected"
+    }
   },
   "nutr": {
     "welcome": "Welcome",

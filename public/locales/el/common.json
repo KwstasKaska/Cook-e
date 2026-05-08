@@ -192,7 +192,14 @@
     "deleteConfirmTitle": "Διαγραφή λογαριασμού",
     "deleteConfirmMessage": "Αυτή η ενέργεια είναι μόνιμη. Όλα τα δεδομένα σου θα διαγραφούν οριστικά.",
     "deleteConfirmYes": "Διαγραφή",
-    "deleteConfirmCancel": "Άκυρο"
+    "deleteConfirmCancel": "Άκυρο",
+    "appointments": "Τα ραντεβού μου",
+    "noAppointments": "Δεν έχεις κάνει ακόμα αίτηση για ραντεβού.",
+    "appointmentStatus": {
+      "pending": "Σε αναμονή",
+      "accepted": "Αποδεκτό",
+      "rejected": "Απορρίφθηκε"
+    }
   },
   "nutr": {
     "welcome": "Καλωσήρθες",

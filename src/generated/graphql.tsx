@@ -35,6 +35,7 @@ export type Appointment = {
   id: Scalars['Int']['output'];
   isAvailable: Scalars['Boolean']['output'];
   nutritionistId: Scalars['Float']['output'];
+  nutritionistProfile?: Maybe<NutritionistProfile>;
   time: Scalars['String']['output'];
 };
 
@@ -1317,7 +1318,7 @@ export type GetAppointmentRequestsForNutritionistQuery = { __typename?: 'Query',
 export type MyAppointmentRequestsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MyAppointmentRequestsQuery = { __typename?: 'Query', myAppointmentRequests: Array<{ __typename?: 'AppointmentRequest', id: number, status: AppointmentStatus, slot?: { __typename?: 'Appointment', id: number, nutritionistId: number } | null }> };
+export type MyAppointmentRequestsQuery = { __typename?: 'Query', myAppointmentRequests: Array<{ __typename?: 'AppointmentRequest', id: number, status: AppointmentStatus, requestedAt: string, slot?: { __typename?: 'Appointment', id: number, date: string, time: string, nutritionistId: number, nutritionistProfile?: { __typename?: 'NutritionistProfile', user?: { __typename?: 'User', id: number, username: string, image?: string | null } | null } | null } | null }> };
 
 export type ArticleQueryVariables = Exact<{
   id: Scalars['Int']['input'];
@@ -3386,9 +3387,19 @@ export const MyAppointmentRequestsDocument = gql`
   myAppointmentRequests {
     id
     status
+    requestedAt
     slot {
       id
+      date
+      time
       nutritionistId
+      nutritionistProfile {
+        user {
+          id
+          username
+          image
+        }
+      }
     }
   }
 }
