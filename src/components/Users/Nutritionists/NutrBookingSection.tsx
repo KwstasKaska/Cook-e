@@ -16,7 +16,7 @@ interface Props {
   hasAcceptedAppointment: boolean;
 }
 
-const PAGE_SIZE = 12;
+const PAGE_SIZE = 10;
 
 const toDisplay = (isoDate: string, locale: Locale): string => {
   const [year, month, day] = isoDate.split('-').map(Number);
@@ -35,10 +35,12 @@ export default function NutrBookingSection({ nutritionistProfileId }: Props) {
 
   const { data: slotsData, loading: slotsLoading } = useAvailableSlotsQuery({
     variables: { nutritionistId: nutritionistProfileId },
+    skip: !nutritionistProfileId,
     fetchPolicy: 'network-only',
   });
 
-  const [requestAppointment] = useRequestAppointmentMutation();
+  const [requestAppointment, { loading: requesting }] =
+    useRequestAppointmentMutation();
 
   const availableSlots = slotsData?.availableSlots ?? [];
 
@@ -142,27 +144,26 @@ export default function NutrBookingSection({ nutritionistProfileId }: Props) {
           <div className="h-6 w-6 animate-spin rounded-full border-4 border-myBlue-200 border-t-transparent" />
         </div>
       ) : visibleSlots.length === 0 ? (
-        <p className="text-sm text-gray-400">{t('nutritionists.noSlots')}</p>
+        <p className="mb-8 text-sm text-gray-300">
+          {t('nutritionists.noSlots')}
+        </p>
       ) : (
         <>
-          <div className="grid w-full grid-cols-2 gap-3 sm:grid-cols-3">
+          <div className="mb-8 flex flex-wrap justify-center gap-3">
             {paginatedSlots.map((slot) => {
-              const selected = selectedSlotId === slot.id;
+              const isSelected = selectedSlotId === slot.id;
               return (
                 <button
                   key={slot.id}
-                  onClick={() => setSelectedSlotId(selected ? null : slot.id)}
-                  className="flex flex-col items-center rounded-2xl border-2 px-4 py-3 text-sm font-semibold transition"
+                  onClick={() => setSelectedSlotId(isSelected ? null : slot.id)}
+                  className="rounded-full border-2 px-5 py-2.5 text-sm font-semibold transition-all duration-150"
                   style={{
-                    borderColor: selected ? '#377CC3' : '#E5E7EB',
-                    background: selected ? '#EBF4FF' : '#fff',
+                    backgroundColor: isSelected ? '#B3D5F8' : 'white',
+                    borderColor: isSelected ? '#377CC3' : '#3F4756',
                     color: '#3F4756',
                   }}
                 >
-                  <span>{toDisplay(slot.date, dateFnsLocale)}</span>
-                  <span className="mt-1 text-xs text-gray-500">
-                    {slot.time}
-                  </span>
+                  {toDisplay(slot.date, dateFnsLocale)} {slot.time}
                 </button>
               );
             })}
@@ -180,17 +181,21 @@ export default function NutrBookingSection({ nutritionistProfileId }: Props) {
               setSelectedSlotId(null);
             }}
           />
-
-          {selectedSlotId && (
-            <button
-              onClick={handleBook}
-              className="mt-6 rounded-full bg-myBlue-200 px-8 py-2.5 text-sm font-bold text-white transition hover:opacity-90"
-            >
-              {t('nutritionists.book')}
-            </button>
-          )}
         </>
       )}
+
+      <button
+        onClick={handleBook}
+        disabled={!selectedSlotId || requesting}
+        className="mt-6 rounded-full px-12 py-3.5 text-base font-bold text-white shadow-lg transition-opacity"
+        style={{
+          backgroundColor: '#377CC3',
+          opacity: !selectedSlotId || requesting ? 0.5 : 1,
+          cursor: !selectedSlotId || requesting ? 'not-allowed' : 'pointer',
+        }}
+      >
+        {requesting ? '...' : t('nutritionists.bookAppointment')}
+      </button>
     </div>
   );
 }
