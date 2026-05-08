@@ -92,7 +92,7 @@ function ListView() {
                       city={pick(nutr.city_el ?? '', nutr.city_en ?? '', lang)}
                       image={nutr.user?.image ?? null}
                       onClick={() =>
-                        router.push(`/user/nutritionists/${nutr.id}`)
+                        router.push(`/user/nutritionists/${nutr.user?.id}`)
                       }
                     />
                   ))}
