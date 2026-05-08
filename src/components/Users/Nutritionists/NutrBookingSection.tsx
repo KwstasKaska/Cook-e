@@ -16,7 +16,7 @@ interface Props {
   hasAcceptedAppointment: boolean;
 }
 
-const PAGE_SIZE = 14;
+const PAGE_SIZE = 10;
 
 const toDisplay = (isoDate: string, locale: Locale): string => {
   const [year, month, day] = isoDate.split('-').map(Number);
