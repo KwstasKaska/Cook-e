@@ -113,8 +113,6 @@ const createApolloClient = (headers: IncomingHttpHeaders | null = null) => {
             articlesByChef: replaceField(['chefId', 'limit', 'offset']),
             chefRatings: appendPaginatedFieldKeyed(['chefId']),
             recipeRatings: appendPaginatedFieldKeyed(['recipeId']),
-            myCookedRecipes: appendPaginatedField(),
-            chefs: appendPaginatedField(),
             nutritionists: appendPaginatedField(),
             myConversations: replaceField(['limit', 'offset']),
             getMyAppointments: replaceField(['limit', 'offset']),
