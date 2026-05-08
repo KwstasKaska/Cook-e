@@ -120,12 +120,12 @@ const SliderAppointments: React.FC = () => {
             </p>
           </div>
 
-          <div className="mt-8 mb-8 flex justify-center gap-4 font-normal">
+          <div className="mt-8 mb-8 flex justify-center px-6 gap-3 font-normal">
             <button
               onClick={() =>
                 handleRespond(request.id, AppointmentStatus.Accepted)
               }
-              className="rounded-xl bg-myBlue-200 px-5 text-white hover:scale-110 hover:outline hover:outline-2"
+              className="rounded-xl bg-myBlue-200 px-2 text-white hover:scale-110 hover:outline hover:outline-2"
             >
               {t('nutr.accept')}
             </button>
@@ -133,7 +133,7 @@ const SliderAppointments: React.FC = () => {
               onClick={() =>
                 handleRespond(request.id, AppointmentStatus.Rejected)
               }
-              className="rounded-xl border border-black bg-myGrey-100 px-5 hover:scale-110 hover:border-myRed hover:bg-myRed hover:text-white"
+              className="rounded-xl border border-black bg-myGrey-100 px-2 hover:scale-110 hover:border-myRed hover:bg-myRed hover:text-white"
             >
               {t('nutr.reject')}
             </button>
