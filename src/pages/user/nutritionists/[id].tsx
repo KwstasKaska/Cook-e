@@ -35,6 +35,7 @@ export default function NutrBookingSection({ nutritionistProfileId }: Props) {
 
   const { data: slotsData, loading: slotsLoading } = useAvailableSlotsQuery({
     variables: { nutritionistId: Math.round(nutritionistProfileId) },
+    skip: !nutritionistProfileId,
     fetchPolicy: 'network-only',
   });
 
