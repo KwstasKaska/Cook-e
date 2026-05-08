@@ -44,6 +44,23 @@ const replaceField = (
   },
 });
 
+const appendPaginatedFieldKeyed = (
+  keyArgs: string[],
+): {
+  keyArgs: string[];
+  merge(existing: any[] | undefined, incoming: any[], options: any): any[];
+} => ({
+  keyArgs,
+  merge(existing = [], incoming, { args }) {
+    if (!args || !args.offset || args.offset === 0) {
+      return incoming;
+    }
+    const existingRefs = new Set(existing.map((e: any) => e.__ref));
+    const newItems = incoming.filter((i: any) => !existingRefs.has(i.__ref));
+    return [...existing, ...newItems];
+  },
+});
+
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors) {
     graphQLErrors.forEach(({ message }) => {
@@ -96,8 +113,8 @@ const createApolloClient = (headers: IncomingHttpHeaders | null = null) => {
               'offset',
             ]),
             articlesByChef: replaceField(['chefId', 'limit', 'offset']),
-            chefRatings: appendPaginatedField(),
-            recipeRatings: appendPaginatedField(),
+            chefRatings: appendPaginatedFieldKeyed(['chefId']),
+            recipeRatings: appendPaginatedFieldKeyed(['recipeId']),
             myCookedRecipes: appendPaginatedField(),
             chefs: appendPaginatedField(),
             nutritionists: appendPaginatedField(),
