@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'next-i18next';
+import { useApolloClient } from '@apollo/client';
 import {
   useMyConversationsQuery,
   useConversationQuery,
@@ -17,6 +18,7 @@ type View = 'inbox' | 'thread';
 export default function ChatWidget({ currentUserId }: ChatWidgetProps) {
   const { t } = useTranslation('common');
   const { isOpen, closeWidget, pendingUserId, clearPending } = useChatContext();
+  const client = useApolloClient();
 
   const [view, setView] = useState<View>('inbox');
   const [activeConvoId, setActiveConvoId] = useState<number | null>(null);
@@ -83,6 +85,8 @@ export default function ChatWidget({ currentUserId }: ChatWidgetProps) {
 
       const convo = result.data?.startConversation?.conversation;
       if (convo) {
+        client.cache.evict({ id: `Conversation:${convo.id}` });
+        client.cache.gc();
         setActiveConvoId(convo.id);
         setView('thread');
         setSendError('');
@@ -105,6 +109,8 @@ export default function ChatWidget({ currentUserId }: ChatWidgetProps) {
   }
 
   function openThread(convoId: number) {
+    client.cache.evict({ id: `Conversation:${convoId}` });
+    client.cache.gc();
     setActiveConvoId(convoId);
     setView('thread');
     setSendError('');
@@ -169,11 +175,9 @@ export default function ChatWidget({ currentUserId }: ChatWidgetProps) {
           <span className="text-sm font-medium">
             {view === 'inbox'
               ? t('messages', 'Messages')
-              : thread
+              : thread && !threadLoading
                 ? getOtherParticipant(thread).username
-                : starting
-                  ? '...'
-                  : t('messages', 'Messages')}
+                : '...'}
           </span>
         </div>
         <button onClick={closeWidget} className="hover:opacity-70">
