@@ -26,9 +26,7 @@ const AppointmentsTab: React.FC = () => {
   const dateFnsLocale = i18n.language === 'el' ? el : enUS;
   const [page, setPage] = useState(0);
 
-  const { data, loading } = useMyAppointmentRequestsQuery({
-    fetchPolicy: 'network-only',
-  });
+  const { data, loading } = useMyAppointmentRequestsQuery();
   const all = data?.myAppointmentRequests ?? [];
 
   const totalPages = Math.ceil(all.length / LIMIT);
