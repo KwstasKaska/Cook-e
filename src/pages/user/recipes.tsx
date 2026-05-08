@@ -61,7 +61,7 @@ function RecipesContent() {
       variables: {
         ingredientIds: selectedIngredientIds,
         utensilIds: selectedUtensilIds,
-        maxMissing: 1,
+        maxMissing: 2,
       },
       skip: step !== 'results' || selectedIngredientIds.length === 0,
       fetchPolicy: 'network-only',

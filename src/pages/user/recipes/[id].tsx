@@ -23,6 +23,7 @@ import {
 import useIsUser from '../../../utils/useIsUser';
 import { getDifficultyLabel } from '../../../utils/recipeHelpers';
 import ShareButton from '../../../components/Helper/ShareButton';
+import { useApolloClient } from '@apollo/client';
 
 const RATINGS_LIMIT = 10;
 
@@ -48,7 +49,7 @@ function RecipeDetailContent() {
   const { id } = router.query;
   const recipeId = parseInt(id as string, 10);
   const isEl = router.locale === 'el';
-
+  const client = useApolloClient();
   const [activeTab, setActiveTab] = useState<DetailTab>('reviews');
   const [checkedIngredients, setCheckedIngredients] = useState<Set<number>>(
     new Set(),
@@ -180,6 +181,8 @@ function RecipeDetailContent() {
     await rateRecipe({ variables: { recipeId, score: ratingScore } });
     setRatingSuccess(t('recipes.ratingSuccess'));
     setRatingScore(0);
+    client.cache.evict({ fieldName: 'recipeRatings' });
+    client.cache.gc();
     await refetchRatings();
     await refetchMyRating();
   };
