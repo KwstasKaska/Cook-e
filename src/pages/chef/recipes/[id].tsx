@@ -83,7 +83,7 @@ export default function ChefSingleRecipe() {
 
   useEffect(() => {
     if (!recipe || initializedRef.current) return;
-    setEditForm(buildEditForm(recipe, lang));
+    setEditForm(buildEditForm(recipe));
     initializedRef.current = true;
   }, [recipe]);
 
@@ -182,7 +182,7 @@ export default function ChefSingleRecipe() {
     }
 
     if (result?.recipe) {
-      setEditForm(buildEditForm(result.recipe, lang));
+      setEditForm(buildEditForm(result.recipe));
     }
 
     setImageFile(null);
@@ -200,7 +200,7 @@ export default function ChefSingleRecipe() {
     setFieldErrors({});
     setImageFile(null);
     setImagePreview(null);
-    if (recipe) setEditForm(buildEditForm(recipe, lang));
+    if (recipe) setEditForm(buildEditForm(recipe));
     setIsEditing(false);
   };
 

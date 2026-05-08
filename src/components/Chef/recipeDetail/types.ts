@@ -1,7 +1,4 @@
 import { Difficulty, RecipeCategory } from '../../../generated/graphql';
-import { pick } from '../../../utils/pick';
-
-// ─── Types ────────────────────────────────────────────────────────────────────
 
 export interface IngredientRow {
   ingredientId: number;
@@ -12,7 +9,7 @@ export interface IngredientRow {
 }
 
 export interface StepRow {
-  id: number; // required — buildEditForm always provides s.id; new rows use Date.now()
+  id: number;
   body: string;
 }
 
@@ -35,8 +32,6 @@ export interface EditForm {
   steps: StepRow[];
   utensilIds: number[];
 }
-
-// ─── Constants ────────────────────────────────────────────────────────────────
 
 export const DIFFICULTY_OPTIONS: {
   value: Difficulty;
@@ -81,21 +76,11 @@ export const MACRO_FIELDS: {
   { field: 'fat', unit: 'g', labelKey: 'chef.create_recipe.fat' },
 ];
 
-// ─── Helper ───────────────────────────────────────────────────────────────────
-
-export function buildEditForm(recipe: any, lang: string): EditForm {
+export function buildEditForm(recipe: any): EditForm {
   return {
-    title: pick(recipe.title_el, recipe.title_en, lang),
-    description: pick(
-      recipe.description_el ?? '',
-      recipe.description_en ?? '',
-      lang,
-    ),
-    chefComment: pick(
-      recipe.chefComment_el ?? '',
-      recipe.chefComment_en ?? '',
-      lang,
-    ),
+    title: recipe.title_el,
+    description: recipe.description_el ?? '',
+    chefComment: recipe.chefComment_el ?? '',
     recipeImage: recipe.recipeImage ?? '',
     difficulty: recipe.difficulty ?? '',
     prepTime: String(recipe.prepTime ?? ''),
@@ -117,7 +102,7 @@ export function buildEditForm(recipe: any, lang: string): EditForm {
     })),
     steps: (recipe.steps ?? []).map((s: any) => ({
       id: s.id,
-      body: pick(s.body_el, s.body_en, lang),
+      body: s.body_el,
     })),
     utensilIds: (recipe.utensils ?? []).map((u: any) => u.id),
   };
