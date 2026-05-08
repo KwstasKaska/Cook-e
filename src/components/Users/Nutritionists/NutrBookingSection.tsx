@@ -8,12 +8,15 @@ import {
   useAvailableSlotsQuery,
   useRequestAppointmentMutation,
 } from '../../../generated/graphql';
+import PaginationControls from '../../Helper/PaginationControls';
 
 interface Props {
   nutritionistProfileId: number;
   nutritionistUserId: number;
   hasAcceptedAppointment: boolean;
 }
+
+const PAGE_SIZE = 10;
 
 const toDisplay = (isoDate: string, locale: Locale): string => {
   const [year, month, day] = isoDate.split('-').map(Number);
@@ -28,14 +31,14 @@ export default function NutrBookingSection({ nutritionistProfileId }: Props) {
 
   const [monthIndex, setMonthIndex] = useState(new Date().getMonth());
   const [selectedSlotId, setSelectedSlotId] = useState<number | null>(null);
+  const [page, setPage] = useState(0);
 
   const { data: slotsData, loading: slotsLoading } = useAvailableSlotsQuery({
     variables: { nutritionistId: nutritionistProfileId },
     fetchPolicy: 'network-only',
   });
 
-  const [requestAppointment, { loading: requesting }] =
-    useRequestAppointmentMutation();
+  const [requestAppointment] = useRequestAppointmentMutation();
 
   const availableSlots = slotsData?.availableSlots ?? [];
 
@@ -45,6 +48,12 @@ export default function NutrBookingSection({ nutritionistProfileId }: Props) {
     return !isNaN(slotDate.getTime()) && slotDate.getMonth() === monthIndex;
   });
 
+  const totalPages = Math.ceil(visibleSlots.length / PAGE_SIZE);
+  const paginatedSlots = visibleSlots.slice(
+    page * PAGE_SIZE,
+    (page + 1) * PAGE_SIZE,
+  );
+
   const monthName = new Date(2026, monthIndex).toLocaleString(
     isEl ? 'el-GR' : 'en-US',
     { month: 'long' },
@@ -53,6 +62,7 @@ export default function NutrBookingSection({ nutritionistProfileId }: Props) {
   const handleMonthChange = (delta: number) => {
     setMonthIndex((m) => Math.min(11, Math.max(0, m + delta)));
     setSelectedSlotId(null);
+    setPage(0);
   };
 
   const handleBook = async () => {
@@ -132,43 +142,55 @@ export default function NutrBookingSection({ nutritionistProfileId }: Props) {
           <div className="h-6 w-6 animate-spin rounded-full border-4 border-myBlue-200 border-t-transparent" />
         </div>
       ) : visibleSlots.length === 0 ? (
-        <p className="mb-8 text-sm text-gray-300">
-          {t('nutritionists.noSlots')}
-        </p>
+        <p className="text-sm text-gray-400">{t('nutritionists.noSlots')}</p>
       ) : (
-        <div className="mb-8 flex flex-wrap justify-center gap-3">
-          {visibleSlots.map((slot) => {
-            const isSelected = selectedSlotId === slot.id;
-            return (
-              <button
-                key={slot.id}
-                onClick={() => setSelectedSlotId(isSelected ? null : slot.id)}
-                className="rounded-full border-2 px-5 py-2.5 text-sm font-semibold transition-all duration-150"
-                style={{
-                  backgroundColor: isSelected ? '#B3D5F8' : 'white',
-                  borderColor: isSelected ? '#377CC3' : '#3F4756',
-                  color: '#3F4756',
-                }}
-              >
-                {toDisplay(slot.date, dateFnsLocale)} {slot.time}
-              </button>
-            );
-          })}
-        </div>
-      )}
+        <>
+          <div className="grid w-full grid-cols-2 gap-3 sm:grid-cols-3">
+            {paginatedSlots.map((slot) => {
+              const selected = selectedSlotId === slot.id;
+              return (
+                <button
+                  key={slot.id}
+                  onClick={() => setSelectedSlotId(selected ? null : slot.id)}
+                  className="flex flex-col items-center rounded-2xl border-2 px-4 py-3 text-sm font-semibold transition"
+                  style={{
+                    borderColor: selected ? '#377CC3' : '#E5E7EB',
+                    background: selected ? '#EBF4FF' : '#fff',
+                    color: '#3F4756',
+                  }}
+                >
+                  <span>{toDisplay(slot.date, dateFnsLocale)}</span>
+                  <span className="mt-1 text-xs text-gray-500">
+                    {slot.time}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
 
-      <button
-        onClick={handleBook}
-        disabled={!selectedSlotId || requesting}
-        className="rounded-full px-12 py-3.5 text-base font-bold text-white shadow-lg transition-opacity"
-        style={{
-          backgroundColor: '#377CC3',
-          opacity: !selectedSlotId || requesting ? 0.5 : 1,
-          cursor: !selectedSlotId || requesting ? 'not-allowed' : 'pointer',
-        }}
-      >
-        {requesting ? '...' : t('nutritionists.bookAppointment')}
-      </button>
+          <PaginationControls
+            hasPrev={page > 0}
+            hasMore={page < totalPages - 1}
+            onPrev={() => {
+              setPage((p) => p - 1);
+              setSelectedSlotId(null);
+            }}
+            onNext={() => {
+              setPage((p) => p + 1);
+              setSelectedSlotId(null);
+            }}
+          />
+
+          {selectedSlotId && (
+            <button
+              onClick={handleBook}
+              className="mt-6 rounded-full bg-myBlue-200 px-8 py-2.5 text-sm font-bold text-white transition hover:opacity-90"
+            >
+              {t('nutritionists.book')}
+            </button>
+          )}
+        </>
+      )}
     </div>
   );
 }
