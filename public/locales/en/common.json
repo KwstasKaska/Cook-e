@@ -255,7 +255,7 @@
     "calendarHint": "Here you can see booking requests from members for the dates and hours you have set. When you accept a request, you can create a meal plan for that member and chat with them directly.",
     "setAvailabilityHint": "Use \"Set availability\" to add for the selected date the hours members can book with you.",
     "noAppointmentsToday": "No appointments scheduled for today.",
-    "recipesHint": "Open a recipe and use the copy link button to share it via chat or include it in a meal plan. Also, in settings you can see your appointment requests situation"
+    "recipesHint": "Open a recipe and use the copy link button to share it via chat or include it in a meal plan."
   },
   "chef": {
     "more": "More",
