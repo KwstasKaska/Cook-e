@@ -52,17 +52,11 @@ export default function NutrArticlesGrid({ nutritionistId }: Props) {
                 style={{ backgroundColor: '#E9DEC5' }}
               >
                 <div className="relative h-32 w-full overflow-hidden">
-                  {article.image ? (
-                    <img
-                      src={article.image}
-                      alt={title}
-                      className="h-full w-full object-cover"
-                    />
-                  ) : (
-                    <div className="flex h-full w-full items-center justify-center bg-myBlue-100 text-4xl">
-                      📰
-                    </div>
-                  )}
+                  <img
+                    src={article.image}
+                    alt={title}
+                    className="h-full w-full object-cover"
+                  />
                 </div>
                 <div className="px-4 py-3">
                   <p className="line-clamp-2 text-sm font-bold leading-tight">
