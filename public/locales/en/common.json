@@ -147,7 +147,7 @@
     "bookSuccess": "Appointment booked successfully!",
     "noSlots": "This nutritionist hasn't set any available slots yet. Check back later or message him.",
     "listHint1": "Inside each profile you'll find their articles, available appointment slots, and a share button. Once a nutritionist accepts your request, a chat icon appears on their profile so you can message them directly.",
-    "listHint2": "Any meal plan your nutritionist assigns to you will appear in your Settings page under the Meal plan tab."
+    "listHint2": "Any meal plan your nutritionist assigns to you will appear in your 'Settings' page under the 'Meal plan' tab."
   },
   "settings": {
     "title": "Settings",
