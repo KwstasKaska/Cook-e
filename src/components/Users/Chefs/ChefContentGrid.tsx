@@ -49,7 +49,6 @@ export default function ChefContentGrid({ chefId }: Props) {
                 className="cursor-pointer overflow-hidden rounded-2xl shadow-lg transition bg-myBeige-100 hover:scale-[1.02] hover:shadow-xl"
               >
                 <div className="relative h-36 w-full overflow-hidden">
-                  recipe.recipeImage
                   <img
                     src={recipe.recipeImage!}
                     alt={title}
