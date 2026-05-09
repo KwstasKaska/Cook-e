@@ -254,7 +254,7 @@ function RecipeDetailContent() {
               <div className="relative min-w-0">
                 {recipe.category && (
                   <p className="mb-2 text-base text-myYellow font-bold">
-                    {recipe.category}
+                    {t(recipe.category.toLowerCase())}
                   </p>
                 )}
                 <div className="flex items-start justify-between gap-4">
