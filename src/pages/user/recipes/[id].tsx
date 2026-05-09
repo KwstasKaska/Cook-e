@@ -22,6 +22,7 @@ import {
 } from '../../../generated/graphql';
 import useIsUser from '../../../utils/useIsUser';
 import { getDifficultyLabel } from '../../../utils/recipeHelpers';
+import { getCategoryLabel } from '../../../utils/categoryLabel';
 import ShareButton from '../../../components/Helper/ShareButton';
 import { useApolloClient } from '@apollo/client';
 
@@ -44,7 +45,8 @@ export default function RecipeDetailPage() {
 }
 
 function RecipeDetailContent() {
-  const { t } = useTranslation('common');
+  const { t, i18n } = useTranslation('common');
+  const lang = i18n.language as 'el' | 'en';
   const router = useRouter();
   const { id } = router.query;
   const recipeId = parseInt(id as string, 10);
@@ -237,7 +239,7 @@ function RecipeDetailContent() {
               <div className="relative min-w-0">
                 {recipe.category && (
                   <p className="mb-2 text-base text-myYellow font-bold">
-                    {t(recipe.category.toLowerCase())}
+                    {getCategoryLabel(recipe.category, lang)}
                   </p>
                 )}
                 <div className="flex items-start justify-between gap-4">
