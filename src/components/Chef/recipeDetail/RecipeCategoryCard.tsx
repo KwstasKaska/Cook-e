@@ -1,13 +1,13 @@
 import React from 'react';
 import { useTranslation } from 'next-i18next';
 import { EditForm, CATEGORY_OPTIONS } from './types';
+import { getCategoryLabel } from '../../../utils/categoryLabel';
 
 interface Props {
   recipe: any;
-  lang: string;
+  lang: 'el' | 'en';
   isEditing: boolean;
   editForm: EditForm;
-  categoryLabel: string;
   onUpdate: (field: keyof EditForm, value: unknown) => void;
 }
 
@@ -16,7 +16,6 @@ export default function RecipeCategoryCard({
   lang,
   isEditing,
   editForm,
-  categoryLabel,
   onUpdate,
 }: Props) {
   const { t } = useTranslation('common');
@@ -54,13 +53,13 @@ export default function RecipeCategoryCard({
                         editForm.category === opt.value ? 'white' : '#3F4756',
                     }}
                   >
-                    {lang === 'el' ? opt.labelEl : opt.labelEn}
+                    {getCategoryLabel(opt.value, lang)}
                   </button>
                 ))}
               </div>
             ) : (
               <p className="mt-0.5 border-b border-myBlue-200 text-myBlue-200 pb-1 text-sm font-medium italic">
-                {categoryLabel}
+                {getCategoryLabel(recipe.category, lang)}
               </p>
             )}
           </div>

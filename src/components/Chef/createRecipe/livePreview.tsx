@@ -1,7 +1,8 @@
 import Image from 'next/image';
 import { useTranslation } from 'next-i18next';
 import { Difficulty } from '../../../generated/graphql';
-import { FormData, CATEGORY_OPTIONS } from './types';
+import { FormData } from './types';
+import { getCategoryLabel } from '../../../utils/categoryLabel';
 
 interface LivePreviewProps {
   form: FormData;
@@ -219,7 +220,6 @@ export default function LivePreview({
             </div>
           )}
 
-          {/* Category card */}
           {step >= 3 && (form.category || form.cuisine) && (
             <div className="rounded-xl border border-gray-200 p-2 bg-white">
               <p className="text-center text-xs font-bold mb-1">
@@ -231,11 +231,7 @@ export default function LivePreview({
                     {t('chef.recipe_detail.dish_type')}
                   </p>
                   <p className="text-xs text-myBlue-200 border-myBlue-100 font-medium italic border-b pb-0.5 mb-1">
-                    {lang === 'el'
-                      ? CATEGORY_OPTIONS.find((c) => c.value === form.category)
-                          ?.labelEl
-                      : CATEGORY_OPTIONS.find((c) => c.value === form.category)
-                          ?.labelEn}
+                    {getCategoryLabel(form.category, lang)}
                   </p>
                 </div>
               )}

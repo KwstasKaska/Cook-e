@@ -19,7 +19,6 @@ import { uploadToCloudinary } from '../../../utils/uploadToCloudinary';
 import {
   EditForm,
   DIFFICULTY_OPTIONS,
-  CATEGORY_OPTIONS,
   buildEditForm,
 } from '../../../components/Chef/recipeDetail/types';
 
@@ -222,11 +221,6 @@ export default function ChefSingleRecipe() {
       lang === 'el' ? 'labelEl' : 'labelEn'
     ] ?? '';
 
-  const categoryLabel =
-    CATEGORY_OPTIONS.find((c) => c.value === recipe?.category)?.[
-      lang === 'el' ? 'labelEl' : 'labelEn'
-    ] ?? '';
-
   if (loading || !recipe || !editForm) {
     return (
       <div className="flex min-h-screen flex-col">
@@ -388,7 +382,6 @@ export default function ChefSingleRecipe() {
                 lang={lang}
                 isEditing={isEditing}
                 editForm={editForm}
-                categoryLabel={categoryLabel}
                 onUpdate={update}
               />
               <RecipeMacrosCard

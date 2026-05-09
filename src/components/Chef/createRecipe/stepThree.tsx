@@ -1,7 +1,6 @@
 import { useTranslation } from 'next-i18next';
 import { FormData, CATEGORY_OPTIONS, inputClass } from './types';
-
-// ─── Step 3: Category + Cuisine + Summary ─────────────────────────────────────
+import { getCategoryLabel } from '../../../utils/categoryLabel';
 
 interface StepThreeProps {
   form: FormData;
@@ -36,7 +35,7 @@ export default function StepThree({ form, onUpdate }: StepThreeProps) {
               color: '#3F4756',
             }}
           >
-            {lang === 'el' ? opt.labelEl : opt.labelEn}
+            {getCategoryLabel(opt.value, lang)}
           </button>
         ))}
       </div>
