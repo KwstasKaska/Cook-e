@@ -49,27 +49,17 @@ export default function ChefContentGrid({ chefId }: Props) {
                 className="cursor-pointer overflow-hidden rounded-2xl shadow-lg transition bg-myBeige-100 hover:scale-[1.02] hover:shadow-xl"
               >
                 <div className="relative h-36 w-full overflow-hidden">
-                  {recipe.recipeImage ? (
-                    <img
-                      src={recipe.recipeImage}
-                      alt={title}
-                      className="h-full w-full object-cover"
-                    />
-                  ) : (
-                    <div className="flex h-full w-full bg-myBlue-100 items-center justify-center text-4xl">
-                      🍽️
-                    </div>
-                  )}
+                  recipe.recipeImage
+                  <img
+                    src={recipe.recipeImage!}
+                    alt={title}
+                    className="h-full w-full object-cover"
+                  />
                 </div>
                 <div className="px-4 py-3">
                   <p className="truncate text-sm font-bold leading-tight">
                     {title}
                   </p>
-                  {recipe.difficulty && (
-                    <p className="mt-1 text-xs tracking-wide text-gray-500">
-                      {recipe.difficulty}
-                    </p>
-                  )}
                 </div>
               </div>
             );

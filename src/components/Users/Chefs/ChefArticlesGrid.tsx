@@ -49,17 +49,12 @@ export default function ChefArticlesGrid({ chefUserId }: Props) {
                 className="cursor-pointer overflow-hidden rounded-2xl shadow-lg transition hover:scale-[1.02] bg-myBeige-100 hover:shadow-xl"
               >
                 <div className="relative h-36 w-full overflow-hidden">
-                  {article.image ? (
-                    <img
-                      src={article.image}
-                      alt={title}
-                      className="h-full w-full object-cover"
-                    />
-                  ) : (
-                    <div className="flex h-full w-full bg-myBlue-100 items-center justify-center text-4xl">
-                      📰
-                    </div>
-                  )}
+                  article.image
+                  <img
+                    src={article.image}
+                    alt={title}
+                    className="h-full w-full object-cover"
+                  />
                 </div>
                 <div className="px-4 py-3">
                   <p className="line-clamp-2 text-sm font-bold leading-tight">
