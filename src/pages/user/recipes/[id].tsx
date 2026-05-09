@@ -123,21 +123,6 @@ function RecipeDetailContent() {
   const hasMoreReviews =
     reviews.length > 0 && reviews.length % RATINGS_LIMIT === 0;
 
-  const handleScroll = () => {
-    if (!stepsRef.current) return;
-    const { scrollTop, scrollHeight, clientHeight } = stepsRef.current;
-    setScrollProgress(
-      scrollHeight > clientHeight
-        ? scrollTop / (scrollHeight - clientHeight)
-        : 0,
-    );
-  };
-
-  const currentStep = Math.min(
-    Math.round(scrollProgress * (steps.length - 1)) + 1,
-    steps.length,
-  );
-
   const toggleIngredient = (ingredientId: number) =>
     setCheckedIngredients((prev) => {
       const next = new Set(prev);
@@ -387,50 +372,20 @@ function RecipeDetailContent() {
                     {t('chef.recipe_detail.execution')}
                   </h2>
                   <div className="flex gap-4">
-                    <div
-                      ref={stepsRef}
-                      onScroll={handleScroll}
-                      className="flex flex-1 flex-col gap-6"
-                      style={{
-                        maxHeight: 480,
-                        overflowY: 'auto',
-                        scrollbarWidth: 'none',
-                      }}
-                    >
-                      {steps.map((step, i) => (
-                        <div key={step.id} className="flex gap-4">
-                          <div className="flex w-8 flex-shrink-0 flex-col items-center">
-                            <div className="flex h-6 w-6 items-center justify-center rounded-full bg-myYellow text-myGrey-200 text-xs font-bold">
-                              {i + 1}
-                            </div>
-                            {i < steps.length - 1 && (
-                              <div className="mt-2 flex-1 w-0.5 bg-yellow-400 opacity-30" />
-                            )}
-                          </div>
-                          <div className="flex-1 pb-2">
-                            <p className="text-sm text-white leading-relaxed md:text-base">
-                              {isEl ? step.body_el : step.body_en}
-                            </p>
+                    {steps.map((step, i) => (
+                      <div key={step.id} className="flex gap-4">
+                        <div className="flex w-8 flex-shrink-0 flex-col items-center">
+                          <div className="flex h-6 w-6 items-center justify-center rounded-full bg-myYellow text-myGrey-200 text-xs font-bold">
+                            {i + 1}
                           </div>
                         </div>
-                      ))}
-                    </div>
-                    {steps.length > 1 && (
-                      <div className="hidden flex-col items-center gap-2 md:flex">
-                        <div className="flex-1 w-1 rounded-full bg-white/20">
-                          <div
-                            className="w-1 rounded-full transition-all duration-150"
-                            style={{
-                              height: `${scrollProgress * 100}%`,
-                              backgroundColor: '#EAB308',
-                            }}
-                          />
+                        <div className="flex-1 pb-2">
+                          <p className="text-sm text-white leading-relaxed md:text-base">
+                            {isEl ? step.body_el : step.body_en}
+                          </p>
                         </div>
-                        <span className="text-xs text-white">
-                          {currentStep} / {steps.length}
-                        </span>
                       </div>
-                    )}
+                    ))}
                   </div>
                 </div>
               )}
