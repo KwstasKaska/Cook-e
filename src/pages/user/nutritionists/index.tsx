@@ -84,7 +84,7 @@ function ListView() {
                   {t('nutritionists.noResults')}
                 </div>
               ) : (
-                <div className="grid grid-cols-2 gap-x-4 gap-y-14 pt-6 md:grid-cols-3 lg:grid-cols-4">
+                <div className="grid grid-cols-2 gap-x-4 gap-y-16 pt-6 md:grid-cols-3 lg:grid-cols-4">
                   {filtered.map((nutr) => (
                     <NutrCard
                       key={nutr.id}
@@ -138,7 +138,7 @@ function NutrCard({
         )}
       </div>
       <div className="text-center">
-        <p className="mb-1 text-sm font-bold leading-tight text-gray-800">
+        <p className="mb-1 text-sm font-bold leading-tight text-gray-800 break-words text-center w-full">
           {username}
         </p>
         {city && <p className="text-xs text-gray-500">{city}</p>}
