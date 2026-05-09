@@ -1,4 +1,4 @@
-import { useRef, useState, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { useRouter } from 'next/router';
 import Navbar from '../../../components/Users/Navbar';
 import ScrollToTopButton from '../../../components/Helper/ScrollToTopButton';
@@ -59,8 +59,6 @@ function RecipeDetailContent() {
   const [ratingError, setRatingError] = useState('');
   const [ratingSuccess, setRatingSuccess] = useState('');
   const [cookedSuccess, setCookedSuccess] = useState(false);
-  const stepsRef = useRef<HTMLDivElement>(null);
-  const [scrollProgress, setScrollProgress] = useState(0);
 
   const { data: recipeData, loading: recipeLoading } = useRecipeQuery({
     variables: { id: recipeId },
