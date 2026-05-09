@@ -369,7 +369,7 @@ function RecipeDetailContent() {
                   <h2 className="mb-6 text-2xl font-bold text-white md:text-3xl">
                     {t('chef.recipe_detail.execution')}
                   </h2>
-                  <div className="flex gap-4">
+                  <div className="flex flex-col gap-4">
                     {steps.map((step, i) => (
                       <div key={step.id} className="flex gap-4">
                         <div className="flex w-8 flex-shrink-0 flex-col items-center">
