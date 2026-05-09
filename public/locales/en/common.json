@@ -35,9 +35,9 @@
     "noRatingsDesc": "The community hasn't rated any recipes in the last 7 days. Try a recipe and leave your review!",
     "noRatingsCta": "Browse recipes",
     "nutritionTitle": "Your nutrition this week",
-    "nutritionDesc": "This chart tracks  the calories, fat, protein and carbs from every recipe you've logged as cooked in the last week. Open any recipe and tap the cook icon to log it — the numbers here update automatically.",
+    "nutritionDesc": "This chart tracks calories, fat, protein and carbs from every recipe you've logged as cooked in the last week. Open any recipe and tap the 'cooked' icon to log it.",
 
-    "weeklyRecipesTitle": "Top rated this week",
+    "weeklyRecipesTitle": "Top rated recipes this week",
     "weeklyRecipesDesc1": "These are the recipes the community has rated highest in the last 7 days."
   },
   "day": {
@@ -452,7 +452,7 @@
   },
   "register": {
     "title": "Create an account",
-    "subtitle": "A culinary delight awaits you!  Complete your registration",
+    "subtitle": "A culinary delight awaits you!  Complete your registration.",
     "login_button": "Login",
     "username_placeholder": "Full name",
     "email_placeholder": "Email",
@@ -482,7 +482,7 @@
     "login": "Login",
     "register": "Register",
     "logout": "Logout",
-    "hero_title": "Your cooking experience is changing",
+    "hero_title": "Your cooking experience is changing!",
     "cta": "Get started",
     "role_chef_label": "Are you a chef?",
     "role_chef_desc": "Create your recipes and articles.",
