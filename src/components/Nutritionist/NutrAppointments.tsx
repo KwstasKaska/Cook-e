@@ -48,17 +48,17 @@ const NutrAppointments: React.FC = () => {
         {t('nutr.todayAppointments')}
       </h1>
 
-      <div className="relative flex flex-1 items-center justify-center gap-10 py-10">
+      <div className="relative flex flex-1 flex-col items-center justify-center gap-6 py-10 md:flex-row md:gap-10">
         {!hasTodayAppointments && (
-          <p className="max-w-xs text-center text-sm text-white">
+          <p className="text-center text-sm text-white md:max-w-xs">
             {t('nutr.noAppointmentsToday')}
           </p>
         )}
 
-        <div className="relative z-10">
+        <div className="relative z-10 w-full max-w-[22em] px-4 md:w-auto md:px-0">
           <MyAppointments
             customClassName={
-              'relative w-[19em] rounded-[2em] pt-4 min-h-[30em] bg-white shadow-2xl px-4 xl:bg-myGrey-100 transition duration-500 border-4 border-black'
+              'relative w-full rounded-[2em] pt-4 min-h-[30em] bg-white shadow-2xl px-4 xl:bg-myGrey-100 transition duration-500 border-4 border-black'
             }
             textColor="black"
             showAttrs={false}
