@@ -14,6 +14,7 @@ import LanguageSwitcher from '../components/Helper/LanguageSwitcher';
 import { pick } from '../utils/pick';
 import { recipeImageSrc } from '../utils/recipeHelpers';
 
+//Δηλώνω λόγω Typescript τι πεδία πρέπει να περιμένει το component για την κάρτα με την συνταγή που θα εμφανίζεται και αρχικοποιώ αυτή την κάρτα με τα στοιχεία και την σχεδίαση που θα αποτυπώνεται στον browser.
 interface RecipeCardProps {
   title: string;
   image: string;
@@ -53,10 +54,13 @@ const RecipeCard = ({
     </div>
   </div>
 );
-
+// Γίνεται client side fetching των δεδομένων προκειμένου να μην υπάρχει καθυστέρηση στην φόρτωση της σελίδας, δεδομένου οτι τα δεδομένα που θέλω να χρησιμοποιήσω εδώ δεν χρειάζονται απαραίτητα κάποιο διαδικάσία στον server για να προσθέσω extra φόρτωμα σε κάθε ανανέωση της σελίδας.
 const Index: NextPage = () => {
+  // για να κάνω track down ποια κάρτα θα εμφανίζεται στην διεπαφή των κινητών.
   const [slideIndex, setSlideIndex] = useState(0);
+  // βασικό μου mutation για να κάνει logout ο εκάστοτε χρήστης
   const [logout, { loading: logoutLoading }] = useLogoutMutation();
+  // το χρειάζομαι προκειμένου να καλέσω το resetStore μετά το logout για να μην μείνει στο cache του Apollo κάποιο δεδομένω χρήστη που δεν πρέπει.
   const apolloClient = useApolloClient();
   const { t, i18n } = useTranslation('common');
   const lang = i18n.language;

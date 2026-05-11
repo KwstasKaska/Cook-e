@@ -2,6 +2,7 @@ import { useTranslation } from 'next-i18next';
 
 type Suggestion = {
   missingCount: number;
+  missingUtensils: { id: number; name_el: string; name_en: string }[];
   recipe: {
     id: number;
     title_el: string;
@@ -12,7 +13,7 @@ type Suggestion = {
   };
 };
 
-function SuggestionCard({
+const SuggestionCard = ({
   suggestion,
   index,
   onClick,
@@ -22,7 +23,7 @@ function SuggestionCard({
   index: number;
   onClick: () => void;
   isEl: boolean;
-}) {
+}) => {
   const { t } = useTranslation('common');
   const recipe = suggestion.recipe;
   const title = isEl ? recipe.title_el : recipe.title_en;
@@ -39,17 +40,11 @@ function SuggestionCard({
       <div
         className={`absolute left-1/2 -translate-x-1/2 ${imgTop} ${imgSize} overflow-hidden rounded-full border-4 border-white shadow-xl bg-gray-100`}
       >
-        {recipe.recipeImage ? (
-          <img
-            src={recipe.recipeImage}
-            alt={title}
-            className="w-full h-full object-cover"
-          />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center text-3xl">
-            🍽️
-          </div>
-        )}
+        <img
+          src={recipe.recipeImage!}
+          alt={title}
+          className="w-full h-full object-cover"
+        />
       </div>
 
       <h3 className="text-center text-lg font-bold text-gray-800">{title}</h3>
@@ -69,9 +64,18 @@ function SuggestionCard({
           -{suggestion.missingCount} {t('recipes.missingIngredients')}
         </p>
       )}
+
+      {suggestion.missingUtensils.length > 0 && (
+        <p className="text-xs text-red-400 font-semibold">
+          {t('recipes.missingUtensils')}:{' '}
+          {suggestion.missingUtensils
+            .map((u) => (isEl ? u.name_el : u.name_en))
+            .join(', ')}
+        </p>
+      )}
     </div>
   );
-}
+};
 
 export default function ResultsStep({
   suggestions,
@@ -86,7 +90,6 @@ export default function ResultsStep({
   onSelectRecipe: (id: number) => void;
   onBack: () => void;
   onSearch: () => void;
-
   isEl: boolean;
 }) {
   const { t } = useTranslation('common');

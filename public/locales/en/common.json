@@ -82,6 +82,7 @@
     "noFavourites": "You haven't saved any recipes yet.",
     "noResults": "No recipes found with your ingredients.",
     "missingIngredients": "ingredients missing",
+    "missingUtensils": "utensils missing",
     "rateTitle": "Rate this recipe",
     "existingRating": "Your rating",
     "ratingSuccess": "Your rating has been saved!",

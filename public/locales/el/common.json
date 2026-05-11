@@ -81,6 +81,7 @@
     "noFavourites": "Δεν έχεις αποθηκεύσει συνταγές ακόμα.",
     "noResults": "Δεν βρέθηκαν συνταγές με τα υλικά σου.",
     "missingIngredients": "υλικά λείπουν",
+    "missingUtensils": "σκεύη λείπουν",
     "rateTitle": "Αξιολόγησε τη συνταγή",
     "existingRating": "Η αξιολόγησή σου",
     "ratingSuccess": "Η αξιολόγησή σου αποθηκεύτηκε!",
