@@ -1,8 +1,6 @@
-import Image from 'next/image';
 import { useTranslation } from 'next-i18next';
 import { format } from 'date-fns';
 
-import coffee from '/public/images/coffee.jpg';
 import MyAppointments from './Helper/MyAppointments';
 import { useChatContext } from '../Chat/ChatContext';
 import {
@@ -50,23 +48,14 @@ const NutrAppointments: React.FC = () => {
         {t('nutr.todayAppointments')}
       </h1>
 
-      {!hasTodayAppointments && (
-        <p className="mt-3 max-w-sm px-6 text-center text-sm text-white">
-          {t('nutr.noAppointmentsToday')}
-        </p>
-      )}
+      <div className="relative flex flex-1 items-center justify-center gap-10 py-10">
+        {!hasTodayAppointments && (
+          <p className="max-w-xs text-center text-sm text-white">
+            {t('nutr.noAppointmentsToday')}
+          </p>
+        )}
 
-      <div className="relative flex flex-1 items-center justify-center py-10">
-        <div className="block px-6">
-          <Image
-            src={coffee}
-            alt={t('nutr.coffeeImageAlt')}
-            priority
-            className="w-full max-w-[280px] py-10"
-          />
-        </div>
-
-        <div className="relative z-10 lg:-ml-20">
+        <div className="relative z-10">
           <MyAppointments
             customClassName={
               'relative w-[19em] rounded-[2em] pt-4 min-h-[30em] bg-white shadow-2xl px-4 xl:bg-myGrey-100 transition duration-500 border-4 border-black'
