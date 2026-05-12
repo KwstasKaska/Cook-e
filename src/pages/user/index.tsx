@@ -115,7 +115,7 @@ const HomeContent = () => {
 
             {apptLoading ? (
               <div className="flex flex-1 items-center justify-center py-8">
-                <div className="h-6 w-6 animate-spin rounded-full border-2 border-cookie-300 border-t-transparent" />
+                <div className="h-6 w-6  rounded-full border-2 border-cookie-400 border-t-transparent" />
               </div>
             ) : recentAppts.length === 0 ? (
               <p className="flex-1 text-myText-muted">
@@ -128,7 +128,7 @@ const HomeContent = () => {
                   return (
                     <div
                       key={req.id}
-                      className="flex items-center gap-3 rounded-2xl border-2 border-cookie-200 bg-surface px-4 py-3"
+                      className="flex items-center gap-3 rounded-2xl border-2 border-cookie-400 bg-surface px-4 py-3"
                     >
                       {nutr?.image ? (
                         <img
@@ -175,7 +175,7 @@ const HomeContent = () => {
 
             {planLoading ? (
               <div className="flex flex-1 items-center justify-center py-8">
-                <div className="h-6 w-6 animate-spin rounded-full border-2 border-cookie-300 border-t-transparent" />
+                <div className="h-6 w-6  rounded-full border-2 border-cookie-400 border-t-transparent" />
               </div>
             ) : snapshotMeals.length === 0 ? (
               <p className="flex-1 text-myText-muted">
@@ -223,7 +223,7 @@ const HomeContent = () => {
 
             {summaryLoading ? (
               <div className="flex flex-1 items-center justify-center py-8">
-                <div className="h-8 w-8  rounded-full border-4 border-cookie-300 border-t-transparent" />
+                <div className="h-8 w-8  rounded-full border-4 border-cookie-400 border-t-transparent" />
               </div>
             ) : (
               <div className="grid grid-cols-2 gap-x-6 gap-y-4">
@@ -242,7 +242,7 @@ const HomeContent = () => {
 
             {favLoading ? (
               <div className="flex flex-1 items-center justify-center py-8">
-                <div className="h-6 w-6 animate-spin rounded-full border-2 border-cookie-300 border-t-transparent" />
+                <div className="h-6 w-6  rounded-full border-2 border-cookie-400 border-t-transparent" />
               </div>
             ) : favorites.length === 0 ? (
               <p className="flex-1 text-myText-muted">
@@ -259,7 +259,7 @@ const HomeContent = () => {
                     <div
                       key={fav.id}
                       onClick={() => router.push(`/user/recipes/${recipe.id}`)}
-                      className="flex cursor-pointer flex-col items-center gap-2 rounded-2xl border-2 border-cookie-100 p-3 transition-shadow hover:shadow-md"
+                      className="flex cursor-pointer flex-col items-center gap-2 rounded-2xl border-2 border-cookie-400 p-3 transition-shadow hover:shadow-md"
                     >
                       <img
                         src={recipe.recipeImage!}

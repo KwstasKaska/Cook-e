@@ -32,7 +32,7 @@
     "noCookedYet": "You haven't cooked any recipes yet.",
     "noRatingsCta": "Browse recipes",
     "nutritionTitle": "Nutritional indo of the week",
-    "nutritionDesc": "This chart contains the summary of the nutritional info from every recipe you've logged as cooked in the last week from the equivalent field inside their page.",
+    "nutritionDesc": "This chart contains the summary of the nutritional info from every recipe you've logged as cooked in the last week from the equivalent field inside the recipe's page.",
 
     "weeklyRecipesTitle": "Top rated recipes this week",
     "weeklyRecipesDesc1": "These are the recipes the community has rated highest in the last 7 days."
@@ -91,9 +91,8 @@
     "favourites_more": "Load more",
     "ingredients": "Ingredients",
     "copy": "Copy link",
-    "recipeHint1": "Inside each recipe you can see the full ingredient list and add any missing ones directly to your cart. Also rate it yourself, save it to your favourites, and mark it as cooked which updates the nutrition chart on your home page.",
-    "recipeHint2": "Tap the chef's name to visit their profile. There you can see their information and send them a message.",
-    "searchHint": "Select at least 3 ingredients you wanna use, then optionally pick your available utensils. Results include recipes you can make with exactly what you have, plus recipes that need at most 3 extra ingredients you don't have."
+    "recipeHint1": "In order to search for a personalized recipes you have to insert at least 3 ingredients you want to use and if there are recipes that match these inserts or have at most 3 extra ingredients, then these will be shown.",
+    "recipeHint2": "Utensils dont make a difference, if you define some it just show you what utensils are missing from the suggested recipe."
   },
 
   "ingredientCategories": {

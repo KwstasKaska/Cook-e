@@ -101,7 +101,7 @@ export default function NutrBookingSection({ nutritionistProfileId }: Props) {
             />
           </svg>
         </button>
-        <span className="text-base  capitalize">{monthName}</span>
+        <span className="">{monthName}</span>
         <button
           onClick={() => handleMonthChange(1)}
           disabled={monthIndex === 11}
@@ -126,7 +126,7 @@ export default function NutrBookingSection({ nutritionistProfileId }: Props) {
 
       {slotsLoading ? (
         <div className="flex justify-center py-8">
-          <div className="h-6 w-6 animate-spin rounded-full border-4 border-cookie-300 border-t-transparent" />
+          <div className="h-6 w-6  rounded-full border-4 border-cookie-300 border-t-transparent" />
         </div>
       ) : visibleSlots.length === 0 ? (
         <p className="mb-8  text-myText-muted">{t('nutritionists.noSlots')}</p>

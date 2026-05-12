@@ -218,22 +218,24 @@ const RecipeDetailContent = () => {
           <div className="grid grid-cols-1 gap-8 md:grid-cols-[1fr_280px] lg:grid-cols-[1fr_320px] md:items-start">
             <div className="flex min-w-0 flex-col gap-6">
               <button
-                onClick={() => router.push('/user/recipes')}
-                className="flex w-fit items-center gap-2   text-myText-muted transition hover:opacity-80"
+                onClick={() => router.back()}
+                className="flex w-fit items-center gap-2 text-myText-muted transition hover:text-cookie-400"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
                   viewBox="0 0 24 24"
-                  fill="currentColor"
+                  strokeWidth={2}
+                  stroke="currentColor"
                   className="h-4 w-4"
                 >
                   <path
-                    fillRule="evenodd"
-                    d="M7.72 12.53a.75.75 0 010-1.06l7.5-7.5a.75.75 0 111.06 1.06L9.31 12l6.97 6.97a.75.75 0 11-1.06 1.06l-7.5-7.5z"
-                    clipRule="evenodd"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
                   />
                 </svg>
-                {t('recipes.backToSearch')}
+                {t('common.back')}
               </button>
 
               <div className="relative min-w-0">
@@ -342,7 +344,7 @@ const RecipeDetailContent = () => {
                             {ri.quantity} {ri.unit} {name}
                             <button
                               onClick={() => handleAddToCart(ingId)}
-                              className={`ml-6 border px-4 py0.5 border-cookie-400 rounded-xl transition ${
+                              className={`ml-6 border px-4 py-0.5 border-cookie-400 rounded-xl transition ${
                                 inCart
                                   ? 'text-myYellow'
                                   : 'hover:text-white hover:bg-cookie-400'
@@ -369,12 +371,12 @@ const RecipeDetailContent = () => {
                     {steps.map((step, i) => (
                       <div key={step.id} className="flex gap-4">
                         <div className="flex w-8 flex-shrink-0 flex-col items-center">
-                          <div className="flex h-6 w-6 items-center justify-center rounded-full bg-cookie-300   text-white">
+                          <div className="flex h-6 w-6 items-center justify-center rounded-full bg-cookie-300 text-white">
                             {i + 1}
                           </div>
                         </div>
                         <div className="flex-1 pb-2">
-                          <p className=" md:text-base">
+                          <p className="md:text-base">
                             {isEl ? step.body_el : step.body_en}
                           </p>
                         </div>
@@ -393,7 +395,7 @@ const RecipeDetailContent = () => {
                     {utensils.map((u) => (
                       <span
                         key={u.id}
-                        className="rounded-full border-2 border-cookie-400 px-4 py-1.5   "
+                        className="rounded-full border-2 border-cookie-400 px-4 py-1.5"
                       >
                         {isEl ? u.name_el : u.name_en}
                       </span>
@@ -406,11 +408,7 @@ const RecipeDetailContent = () => {
             <div className="min-w-0 overflow-hidden rounded-2xl bg-surface shadow-xl md:sticky md:top-6">
               {recipe.author?.user && (
                 <button
-                  onClick={() =>
-                    router.push(
-                      `/user/chef/${recipe.authorId}?from=${recipe.id}`,
-                    )
-                  }
+                  onClick={() => router.push(`/user/chef/${recipe.authorId}`)}
                   className="group flex w-full flex-col items-center gap-2 border-b border-cookie-400 px-6 pb-4 pt-6"
                 >
                   {recipe.author.user.image ? (
@@ -420,14 +418,14 @@ const RecipeDetailContent = () => {
                       className="h-20 w-20 rounded-full object-cover border-4 border-surface shadow"
                     />
                   ) : (
-                    <div className="flex h-20 w-20 items-center justify-center rounded-full border-4 border-surface bg-cookie-200   text-myText-heading shadow">
+                    <div className="flex h-20 w-20 items-center justify-center rounded-full border-4 border-surface bg-cookie-200 text-myText-heading shadow">
                       {recipe.author.user.username[0].toUpperCase()}
                     </div>
                   )}
-                  <span className="text-base  transition group-hover:underline">
+                  <span className="text-base transition group-hover:underline">
                     {recipe.author.user.username}
                   </span>
-                  <span className="inline-flex items-center gap-1 rounded-full bg-cookie-200 px-3 py-0.5   ">
+                  <span className="inline-flex items-center gap-1 rounded-full bg-cookie-200 px-3 py-0.5">
                     {t('chef.recipe_detail.view_chef_profile')} →
                   </span>
                 </button>
@@ -441,55 +439,53 @@ const RecipeDetailContent = () => {
 
               {description && (
                 <div className="border-b border-cookie-400 px-6 py-4">
-                  <p className="">{description}</p>
+                  <p>{description}</p>
                 </div>
               )}
 
               <div className="flex flex-col gap-2 border-b border-cookie-400 px-6 py-4">
                 {recipe.prepTime > 0 && (
-                  <div className="flex justify-between ">
+                  <div className="flex justify-between">
                     <span>{t('chef.create_recipe.prep_time')}</span>
-                    <span className=" ">
+                    <span>
                       {recipe.prepTime} {t('chef.recipe_detail.minutes')}
                     </span>
                   </div>
                 )}
                 {recipe.cookTime > 0 && (
-                  <div className="flex justify-between ">
+                  <div className="flex justify-between">
                     <span>{t('chef.create_recipe.cook_time')}</span>
-                    <span className=" ">
+                    <span>
                       {recipe.cookTime} {t('chef.recipe_detail.minutes')}
                     </span>
                   </div>
                 )}
                 {recipe.restTime != null && recipe.restTime > 0 && (
-                  <div className="flex justify-between ">
+                  <div className="flex justify-between">
                     <span>{t('chef.create_recipe.rest_time')}</span>
-                    <span className=" ">
+                    <span>
                       {recipe.restTime} {t('chef.recipe_detail.minutes')}
                     </span>
                   </div>
                 )}
                 {totalTime > 0 && (
-                  <div className="mt-1 flex justify-between border-b border-cookie-400 pb-4 ">
+                  <div className="mt-1 flex justify-between border-b border-cookie-400 pb-4">
                     <span>{t('chef.recipe_detail.implementation_time')}</span>
-                    <span className=" ">
+                    <span>
                       {totalTime} {t('chef.recipe_detail.minutes')}
                     </span>
                   </div>
                 )}
                 {recipe.difficulty && (
-                  <div className="flex justify-between ">
+                  <div className="flex justify-between">
                     <span>{t('chef.recipe_detail.difficulty')}</span>
-                    <span className=" ">
-                      {getDifficultyLabel(recipe.difficulty, t)}
-                    </span>
+                    <span>{getDifficultyLabel(recipe.difficulty, t)}</span>
                   </div>
                 )}
                 {recipe.foodEthnicity && (
-                  <div className="flex justify-between ">
+                  <div className="flex justify-between">
                     <span>{t('chef.create_recipe.cuisine_label')}</span>
-                    <span className=" ">{recipe.foodEthnicity}</span>
+                    <span>{recipe.foodEthnicity}</span>
                   </div>
                 )}
                 {(recipe.caloriesTotal != null ||
@@ -498,27 +494,27 @@ const RecipeDetailContent = () => {
                   recipe.fat != null) && (
                   <div className="mt-1 flex flex-col gap-1.5 border-t border-cookie-400 pt-2">
                     {recipe.caloriesTotal != null && (
-                      <div className="flex justify-between ">
+                      <div className="flex justify-between">
                         <span>{t('chef.create_recipe.calories')}</span>
-                        <span className=" ">{recipe.caloriesTotal} kcal</span>
+                        <span>{recipe.caloriesTotal} kcal</span>
                       </div>
                     )}
                     {recipe.protein != null && (
-                      <div className="flex justify-between ">
+                      <div className="flex justify-between">
                         <span>{t('chef.create_recipe.protein')}</span>
-                        <span className=" ">{recipe.protein}g</span>
+                        <span>{recipe.protein}g</span>
                       </div>
                     )}
                     {recipe.carbs != null && (
-                      <div className="flex justify-between ">
+                      <div className="flex justify-between">
                         <span>{t('chef.create_recipe.carbs')}</span>
-                        <span className=" ">{recipe.carbs}g</span>
+                        <span>{recipe.carbs}g</span>
                       </div>
                     )}
                     {recipe.fat != null && (
-                      <div className="flex justify-between ">
+                      <div className="flex justify-between">
                         <span>{t('chef.create_recipe.fat')}</span>
-                        <span className=" ">{recipe.fat}g</span>
+                        <span>{recipe.fat}g</span>
                       </div>
                     )}
                   </div>
@@ -566,7 +562,7 @@ const RecipeDetailContent = () => {
                     className={`flex h-10 w-10 items-center justify-center rounded-full transition ${
                       activeTab === tab
                         ? 'bg-cookie-300 text-white'
-                        : 'text-myText-muted hover:'
+                        : 'text-myText-muted'
                     }`}
                   >
                     <svg
@@ -589,7 +585,7 @@ const RecipeDetailContent = () => {
                 <button
                   onClick={handleToggleFavorite}
                   className={`flex h-10 w-10 items-center justify-center rounded-full transition ${
-                    isFavorited ? 'text-cookie-300' : 'text-myText-muted hover:'
+                    isFavorited ? 'text-cookie-300' : 'text-myText-muted'
                   }`}
                   title={t('recipes.favourites')}
                 >
