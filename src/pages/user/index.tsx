@@ -101,9 +101,11 @@ const HomeContent = () => {
       <Navbar />
 
       <div className="mx-auto max-w-3xl px-6 pb-16 pt-10">
-        <div className="mb-8 text-center">
-          <h1 className="mb-3 break-words">{t('landing.nutritionTitle')}</h1>
-          <p className="mx-auto max-w-xl leading-relaxed">
+        <div className="mb-8 ">
+          <h1 className="mb-3 text-center break-words">
+            {t('landing.nutritionTitle')}
+          </h1>
+          <p className="mx-auto text-left max-w-md ">
             {t('landing.nutritionDesc')}
           </p>
         </div>
@@ -142,7 +144,7 @@ const HomeContent = () => {
         </div>
 
         <div className="mt-16">
-          <h2 className="mb-8 text-center">{t('recipes.favourites')}</h2>
+          <h1 className="mb-8 text-center">{t('recipes.favourites')}</h1>
 
           {favLoading ? (
             <div className="flex justify-center py-10">
@@ -169,19 +171,13 @@ const HomeContent = () => {
                     onClick={() => router.push(`/user/recipes/${recipe.id}`)}
                     className="flex w-full max-w-[220px] cursor-pointer flex-col items-center gap-2 rounded-2xl bg-surface p-4 shadow-lg transition-shadow hover:shadow-xl"
                   >
-                    {recipe.recipeImage ? (
-                      <img
-                        src={recipe.recipeImage}
-                        alt={title}
-                        className="h-20 w-20 rounded-full border-4 border-cookie-200 object-cover shadow"
-                      />
-                    ) : (
-                      <div className="flex h-20 w-20 items-center justify-center rounded-full border-4 border-cookie-200 bg-cookie-100 text-3xl shadow">
-                        🍽️
-                      </div>
-                    )}
-                    <h5 className="text-center leading-tight">{title}</h5>
-                    <div className="flex items-center gap-2 text-xs text-myText-muted">
+                    <img
+                      src={recipe.recipeImage!}
+                      alt={title}
+                      className="h-20 w-20 rounded-full border-4 border-cookie-200 object-cover shadow"
+                    />
+                    <h5 className="text-center ">{title}</h5>
+                    <div className="flex items-center gap-2  text-myText-muted">
                       {totalTime > 0 && (
                         <span>
                           {totalTime} {t('landing.minutes')}

@@ -16,14 +16,14 @@ export default function ShareButton({ url, dark = false }: ShareButtonProps) {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const color = dark
-    ? 'text-gray-300 hover:text-white'
-    : 'text-myBlue-200 hover:text-myBlue-200/70';
-
   return (
     <button
       onClick={handleCopy}
-      className={`flex items-center gap-2 text-sm transition-colors ${color}`}
+      className={`flex items-center gap-2  transition-colors ${
+        dark
+          ? 'text-myText-base hover:text-myText-base'
+          : 'text-cookie-300 hover:text-cookie-400'
+      }`}
     >
       {copied ? (
         <svg

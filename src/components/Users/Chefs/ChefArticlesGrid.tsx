@@ -28,16 +28,16 @@ export default function ChefArticlesGrid({ chefUserId }: Props) {
 
   return (
     <div className="mt-4">
-      <h2 className="mb-4 flex justify-center text-xl font-bold text-white">
+      <h1 className="mb-4 flex justify-center  ">
         {t('chef.profile.articles')}
-      </h2>
+      </h1>
 
       {loading ? (
         <div className="flex justify-center py-8">
-          <div className="h-8 w-8 animate-spin rounded-full border-4 border-myBlue-200 border-t-transparent" />
+          <div className="h-8 w-8 animate-spin rounded-full border-4 border-cookie-400 border-t-transparent" />
         </div>
       ) : articles.length === 0 && offset === 0 ? (
-        <p className="text-sm text-gray-400">{t('chef.profile.no_articles')}</p>
+        <p className=" text-myText-muted">{t('chef.profile.no_articles')}</p>
       ) : (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           {articles.map((article) => {
@@ -46,9 +46,9 @@ export default function ChefArticlesGrid({ chefUserId }: Props) {
               <div
                 key={article.id}
                 onClick={() => router.push(`/user/articles/${article.id}`)}
-                className="cursor-pointer overflow-hidden rounded-2xl shadow-lg transition hover:scale-[1.02] bg-myBeige-100 hover:shadow-xl"
+                className="cursor-pointer overflow-hidden rounded-2xl bg-surface shadow-lg transition hover:scale-[1.02] hover:shadow-xl"
               >
-                <div className="relative h-36 w-full overflow-hidden">
+                <div className="relative h-24 w-full overflow-hidden">
                   <img
                     src={article.image}
                     alt={title}
@@ -56,9 +56,7 @@ export default function ChefArticlesGrid({ chefUserId }: Props) {
                   />
                 </div>
                 <div className="px-4 py-3">
-                  <p className="line-clamp-2 text-sm font-bold leading-tight">
-                    {title}
-                  </p>
+                  <p className="line-clamp-2">{title}</p>
                 </div>
               </div>
             );

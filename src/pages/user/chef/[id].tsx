@@ -37,7 +37,7 @@ export default function ChefProfilePage() {
   return <ChefProfileContent />;
 }
 
-function ChefProfileContent() {
+const ChefProfileContent = () => {
   const { t, i18n } = useTranslation('common');
   const lang = i18n.language;
   const router = useRouter();
@@ -120,7 +120,7 @@ function ChefProfileContent() {
   if (chefLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center">
-        <div className="h-10 w-10 animate-spin rounded-full border-4 border-myBlue-200 border-t-transparent" />
+        <div className="h-10 w-10 animate-spin rounded-full border-2 border-cookie-400 border-t-transparent" />
       </div>
     );
   }
@@ -128,7 +128,7 @@ function ChefProfileContent() {
   if (!chef) {
     return (
       <div className="flex min-h-screen items-center justify-center">
-        <p className="text-white">{t('chef.recipe_detail.not_found')}</p>
+        <p className="">{t('chef.recipe_detail.not_found')}</p>
       </div>
     );
   }
@@ -141,7 +141,7 @@ function ChefProfileContent() {
           <div className="relative z-10 mx-auto max-w-4xl px-6 pb-20 pt-10">
             <button
               onClick={() => router.push('/user/recipes')}
-              className="mb-8 flex items-center gap-2 text-sm font-bold transition hover:opacity-80 text-myYellow"
+              className="mb-8 flex items-center gap-2   text-myText-muted transition hover:opacity-80"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -165,17 +165,15 @@ function ChefProfileContent() {
                     <img
                       src={chef.user.image}
                       alt={chef.user.username}
-                      className="h-20 w-20 flex-shrink-0 rounded-full border-4 border-white object-cover shadow-xl"
+                      className="h-20 w-20 flex-shrink-0 rounded-full border-2 border-cookie-400 object-cover shadow-xl"
                     />
                   ) : (
-                    <div className="flex bg-myBlue-200 h-20 w-20 flex-shrink-0 items-center justify-center rounded-full border-4 border-white text-2xl font-bold text-white shadow-xl">
+                    <div className="flex h-20 w-20 flex-shrink-0 items-center justify-center rounded-full border-2 border-cookie-400 bg-cookie-200   text-myText-heading shadow-xl">
                       {chef.user?.username?.[0]?.toUpperCase()}
                     </div>
                   )}
                   <div className="flex flex-col gap-2">
-                    <h1 className="text-3xl font-bold italic text-white md:text-4xl">
-                      {chef.user?.username}
-                    </h1>
+                    <h1 className="">{chef.user?.username}</h1>
                     {avgRating > 0 && (
                       <StarRow
                         rating={avgRating}
@@ -185,7 +183,7 @@ function ChefProfileContent() {
                     {chef.user?.id && (
                       <button
                         onClick={() => openConversation(chef.user!.id)}
-                        className="flex w-fit items-center gap-2 rounded-full px-4 py-1.5 text-sm font-semibold text-white shadow transition-opacity hover:opacity-90 bg-myBlue-200"
+                        className="flex w-fit items-center gap-2 rounded-full bg-cookie-300 px-4 py-1.5   text-white shadow transition hover:bg-cookie-400"
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -207,7 +205,7 @@ function ChefProfileContent() {
                 </div>
 
                 {(chef.bio_el || chef.bio_en) && (
-                  <p className="max-w-lg text-sm leading-relaxed text-gray-300">
+                  <p className="max-w-lg">
                     {pick(chef.bio_el ?? '', chef.bio_en ?? '', lang)}
                   </p>
                 )}
@@ -253,4 +251,4 @@ function ChefProfileContent() {
       <ScrollToTopButton />
     </div>
   );
-}
+};

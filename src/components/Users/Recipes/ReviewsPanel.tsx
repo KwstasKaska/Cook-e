@@ -27,14 +27,14 @@ export default function ReviewsPanel({
 
   return (
     <div className="p-5">
-      <h3 className="mb-5 text-xl font-bold">{t('chef.rating.title')}</h3>
+      <h3 className="mb-5 ">{t('chef.rating.title')}</h3>
 
       {loading ? (
         <div className="flex justify-center py-8">
-          <div className="h-6 w-6 animate-spin rounded-full border-4 border-myBlue-200 border-t-transparent" />
+          <div className="h-6 w-6 animate-spin rounded-full border-4 border-cookie-400 border-t-transparent" />
         </div>
       ) : reviews.length === 0 ? (
-        <p className="text-sm text-gray-400">
+        <p className=" text-myText-muted">
           {t('chef.recipe_detail.no_ratings_yet')}
         </p>
       ) : (
@@ -42,24 +42,22 @@ export default function ReviewsPanel({
           {reviews.map((review) => (
             <div
               key={review.id}
-              className="border-b border-gray-100 pb-5 last:border-0"
+              className="border-b border-cookie-400 pb-5 last:border-0"
             >
               <div className="mb-2 flex items-center gap-3">
                 {review.user?.image ? (
                   <img
                     src={review.user.image}
                     alt={review.user.username}
-                    className="h-10 w-10 rounded-full object-cover flex-shrink-0"
+                    className="h-10 w-10 flex-shrink-0 border-2 border-cookie-400 rounded-full object-cover"
                   />
                 ) : (
-                  <div className="h-10 w-10 rounded-full flex-shrink-0 flex items-center justify-center bg-myBlue-200 text-white text-sm font-bold">
+                  <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-cookie-200   text-myText-heading">
                     {review.user?.username?.[0]?.toUpperCase() ?? '?'}
                   </div>
                 )}
                 <div>
-                  <p className="text-sm font-bold">
-                    {review.user?.username ?? '—'}
-                  </p>
+                  <p className=" ">{review.user?.username ?? '—'}</p>
                   <SmallStars rating={review.score} />
                 </div>
               </div>
@@ -70,7 +68,7 @@ export default function ReviewsPanel({
             <button
               onClick={onLoadMore}
               disabled={loadingMore}
-              className="mt-2 w-full rounded-xl py-1.5 text-xs font-bold transition hover:opacity-90 bg-myBlue-100 disabled:opacity-50"
+              className="mt-2 w-full rounded-xl border-2 border-cookie-400 py-1.5 transition hover:bg-cookie-400 hover:text-white disabled:opacity-50"
             >
               {loadingMore ? t('common.loading') : t('chef.more')}
             </button>

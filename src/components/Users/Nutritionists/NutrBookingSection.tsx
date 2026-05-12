@@ -8,15 +8,12 @@ import {
   useAvailableSlotsQuery,
   useRequestAppointmentMutation,
 } from '../../../generated/graphql';
-import PaginationControls from '../../Helper/PaginationControls';
 
 interface Props {
   nutritionistProfileId: number;
   nutritionistUserId: number;
   hasAcceptedAppointment: boolean;
 }
-
-const PAGE_SIZE = 10;
 
 const toDisplay = (isoDate: string, locale: Locale): string => {
   const [year, month, day] = isoDate.split('-').map(Number);
@@ -31,7 +28,6 @@ export default function NutrBookingSection({ nutritionistProfileId }: Props) {
 
   const [monthIndex, setMonthIndex] = useState(new Date().getMonth());
   const [selectedSlotId, setSelectedSlotId] = useState<number | null>(null);
-  const [page, setPage] = useState(0);
 
   const { data: slotsData, loading: slotsLoading } = useAvailableSlotsQuery({
     variables: { nutritionistId: nutritionistProfileId },
@@ -50,12 +46,6 @@ export default function NutrBookingSection({ nutritionistProfileId }: Props) {
     return !isNaN(slotDate.getTime()) && slotDate.getMonth() === monthIndex;
   });
 
-  const totalPages = Math.ceil(visibleSlots.length / PAGE_SIZE);
-  const paginatedSlots = visibleSlots.slice(
-    page * PAGE_SIZE,
-    (page + 1) * PAGE_SIZE,
-  );
-
   const monthName = new Date(2026, monthIndex).toLocaleString(
     isEl ? 'el-GR' : 'en-US',
     { month: 'long' },
@@ -64,7 +54,6 @@ export default function NutrBookingSection({ nutritionistProfileId }: Props) {
   const handleMonthChange = (delta: number) => {
     setMonthIndex((m) => Math.min(11, Math.max(0, m + delta)));
     setSelectedSlotId(null);
-    setPage(0);
   };
 
   const handleBook = async () => {
@@ -89,17 +78,13 @@ export default function NutrBookingSection({ nutritionistProfileId }: Props) {
 
   return (
     <div className="flex flex-col items-center">
-      <div className="mb-6 rounded-full border-2 border-gray-800 bg-gray-100 px-6 py-3">
-        <h2 className="text-center text-lg font-bold text-gray-800 md:text-xl">
-          {t('nutritionists.availableTimes')}
-        </h2>
-      </div>
+      <h1 className="mb-6">{t('nutritionists.availableTimes')}</h1>
 
-      <div className="mb-6 flex items-center gap-4 self-start text-pink-400">
+      <div className="mb-6 flex items-center gap-4 self-start">
         <button
           onClick={() => handleMonthChange(-1)}
           disabled={monthIndex === 0}
-          className="transition-colors hover:text-gray-300 disabled:opacity-30"
+          className="transition-colors hover:text-cookie-400 disabled:opacity-30"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -116,11 +101,11 @@ export default function NutrBookingSection({ nutritionistProfileId }: Props) {
             />
           </svg>
         </button>
-        <span className="text-base font-semibold capitalize">{monthName}</span>
+        <span className="text-base  capitalize">{monthName}</span>
         <button
           onClick={() => handleMonthChange(1)}
           disabled={monthIndex === 11}
-          className="transition-colors hover:text-gray-300 disabled:opacity-30"
+          className="transition-colors hover:text-cookie-400 disabled:opacity-30"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -141,58 +126,41 @@ export default function NutrBookingSection({ nutritionistProfileId }: Props) {
 
       {slotsLoading ? (
         <div className="flex justify-center py-8">
-          <div className="h-6 w-6 animate-spin rounded-full border-4 border-myBlue-200 border-t-transparent" />
+          <div className="h-6 w-6 animate-spin rounded-full border-4 border-cookie-300 border-t-transparent" />
         </div>
       ) : visibleSlots.length === 0 ? (
-        <p className="mb-8 text-sm text-gray-300">
-          {t('nutritionists.noSlots')}
-        </p>
+        <p className="mb-8  text-myText-muted">{t('nutritionists.noSlots')}</p>
       ) : (
         <>
           <div className="mb-8 flex flex-wrap justify-center gap-3">
-            {paginatedSlots.map((slot) => {
+            {visibleSlots.map((slot) => {
               const isSelected = selectedSlotId === slot.id;
               return (
                 <button
                   key={slot.id}
                   onClick={() => setSelectedSlotId(isSelected ? null : slot.id)}
-                  className="rounded-full border-2 px-5 py-2.5 text-sm font-semibold transition-all duration-150"
-                  style={{
-                    backgroundColor: isSelected ? '#B3D5F8' : 'white',
-                    borderColor: isSelected ? '#377CC3' : '#3F4756',
-                    color: '#3F4756',
-                  }}
+                  className={`rounded-full text-myText-base border-2 px-5 py-2.5   transition-all duration-150 ${
+                    isSelected
+                      ? 'border-cookie-400 bg-cookie-200 '
+                      : 'border-cookie-400 bg-surface '
+                  }`}
                 >
                   {toDisplay(slot.date, dateFnsLocale)} {slot.time}
                 </button>
               );
             })}
           </div>
-
-          <PaginationControls
-            hasPrev={page > 0}
-            hasMore={page < totalPages - 1}
-            onPrev={() => {
-              setPage((p) => p - 1);
-              setSelectedSlotId(null);
-            }}
-            onNext={() => {
-              setPage((p) => p + 1);
-              setSelectedSlotId(null);
-            }}
-          />
         </>
       )}
 
       <button
         onClick={handleBook}
         disabled={!selectedSlotId || requesting}
-        className="mt-6 rounded-full px-12 py-3.5 text-base font-bold text-white shadow-lg transition-opacity"
-        style={{
-          backgroundColor: '#377CC3',
-          opacity: !selectedSlotId || requesting ? 0.5 : 1,
-          cursor: !selectedSlotId || requesting ? 'not-allowed' : 'pointer',
-        }}
+        className={`mt-6 rounded-xl border-2 border-cookie-400 px-8 py-2.5  shadow-lg transition-opacity ${
+          !selectedSlotId || requesting
+            ? 'cursor-not-allowed   bg-cookie-400 opacity-50'
+            : 'hover:text-white hover:bg-cookie-400'
+        }`}
       >
         {requesting ? '...' : t('nutritionists.bookAppointment')}
       </button>

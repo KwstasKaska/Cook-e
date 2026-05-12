@@ -28,16 +28,14 @@ export default function ChefContentGrid({ chefId }: Props) {
 
   return (
     <div>
-      <h2 className="mb-4 flex justify-center text-xl font-bold text-white">
-        {t('chef.profile.recipes')}
-      </h2>
+      <h1 className="mb-4 flex justify-center">{t('chef.profile.recipes')}</h1>
 
       {loading ? (
         <div className="flex justify-center py-8">
-          <div className="h-8 w-8 animate-spin rounded-full border-4 border-myBlue-200 border-t-transparent" />
+          <div className="h-8 w-8 animate-spin rounded-full border-2 border-cookie-400 border-t-transparent" />
         </div>
       ) : recipes.length === 0 && offset === 0 ? (
-        <p className="text-sm text-gray-400">{t('chef.landing.no_recipes')}</p>
+        <p className="">{t('chef.landing.no_recipes')}</p>
       ) : (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           {recipes.map((recipe) => {
@@ -46,9 +44,9 @@ export default function ChefContentGrid({ chefId }: Props) {
               <div
                 key={recipe.id}
                 onClick={() => router.push(`/user/recipes/${recipe.id}`)}
-                className="cursor-pointer overflow-hidden rounded-2xl shadow-lg transition bg-myBeige-100 hover:scale-[1.02] hover:shadow-xl"
+                className="cursor-pointer overflow-hidden rounded-2xl bg-surface shadow-lg transition hover:scale-[1.02] hover:shadow-xl"
               >
-                <div className="relative h-36 w-full overflow-hidden">
+                <div className="relative h-24 w-full overflow-hidden">
                   <img
                     src={recipe.recipeImage!}
                     alt={title}
@@ -56,9 +54,7 @@ export default function ChefContentGrid({ chefId }: Props) {
                   />
                 </div>
                 <div className="px-4 py-3">
-                  <p className="truncate text-sm font-bold leading-tight">
-                    {title}
-                  </p>
+                  <p className="">{title}</p>
                 </div>
               </div>
             );

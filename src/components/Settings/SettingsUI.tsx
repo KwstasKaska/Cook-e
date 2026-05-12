@@ -82,7 +82,7 @@ export const SaveButton = ({
       <button
         onClick={onClick}
         disabled={loading}
-        className="mt-1 rounded-xl border-2 border-cookie-400 px-4 py-1.5  text-cookie-400 transition-colors hover:bg-cookie-400 hover:text-white disabled:opacity-60 disabled:cursor-not-allowed"
+        className="mt-1 rounded-xl border-2 border-cookie-400 px-4 py-1.5   transition-colors hover:bg-cookie-400 hover:text-white disabled:opacity-60 disabled:cursor-not-allowed"
       >
         {loading ? '...' : t('settings.save')}
       </button>

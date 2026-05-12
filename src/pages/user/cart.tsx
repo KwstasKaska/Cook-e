@@ -133,11 +133,7 @@ const CartContent = ({
                   return (
                     <div
                       key={item.id}
-                      className="flex items-center gap-3 rounded-2xl  px-3 py-3 bg-surface transition"
-                      style={{
-                        borderColor: isChecked ? '#C9955A' : '#EDD4B0',
-                        backgroundColor: isChecked ? '#F7EDE0' : undefined,
-                      }}
+                      className="flex border-2 border-cookie-400  items-center gap-3 rounded-2xl  px-3 py-3 bg-surface transition"
                     >
                       <button
                         onClick={() => toggleChecked(item.id)}
@@ -227,7 +223,7 @@ const CartContent = ({
                 <div key={category} className="mb-2">
                   <button
                     onClick={() => setOpenCategory(isOpen ? null : category)}
-                    className="w-full flex items-center justify-between rounded-2xl bg-surface px-4 py-3 text-left"
+                    className="w-full flex border border-cookie-400 items-center justify-between rounded-2xl bg-surface px-4 py-3 text-left"
                   >
                     <span className="">{category}</span>
                     <svg
@@ -248,7 +244,7 @@ const CartContent = ({
                   </button>
 
                   {isOpen && (
-                    <div className="grid grid-cols-1 gap-2 mt-2 sm:grid-cols-2 lg:grid-cols-3">
+                    <div className="grid grid-cols-1  gap-2 mt-2 sm:grid-cols-2 lg:grid-cols-3">
                       {ings.map((ing) => {
                         const alreadyIn = cartIngredientIds.has(ing.id);
                         const name = isEl ? ing.name_el : ing.name_en;
@@ -258,7 +254,7 @@ const CartContent = ({
                             key={ing.id}
                             onClick={() => !alreadyIn && handleAdd(ing.id)}
                             disabled={alreadyIn}
-                            className="flex items-center justify-between rounded-xl bg-surface  px-3 py-2.5 text-left transition"
+                            className="flex items-center border border-cookie-300 justify-between rounded-xl bg-surface  px-3 py-2.5 text-left transition"
                             style={{
                               opacity: alreadyIn ? 0.45 : 1,
                               cursor: alreadyIn ? 'default' : 'pointer',

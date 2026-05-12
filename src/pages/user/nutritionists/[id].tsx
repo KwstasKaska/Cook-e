@@ -27,7 +27,7 @@ export default function NutritionistProfilePage() {
   return <ProfileContent />;
 }
 
-function ProfileContent() {
+const ProfileContent = () => {
   const { t } = useTranslation('common');
   const router = useRouter();
   const lang = (router.locale ?? 'el') as 'el' | 'en';
@@ -57,7 +57,7 @@ function ProfileContent() {
       <div className="min-h-screen">
         <Navbar />
         <div className="flex justify-center pt-32">
-          <div className="h-8 w-8 animate-spin rounded-full border-4 border-myBlue-200 border-t-transparent" />
+          <div className="h-8 w-8 animate-spin rounded-full border-4 border-cookie-300 border-t-transparent" />
         </div>
       </div>
     );
@@ -67,7 +67,7 @@ function ProfileContent() {
     return (
       <div className="min-h-screen">
         <Navbar />
-        <p className="pt-32 text-center text-sm text-gray-300">
+        <p className="pt-32 text-center  text-myText-muted">
           {t('nutritionists.noResults')}
         </p>
       </div>
@@ -87,7 +87,7 @@ function ProfileContent() {
         <div className="relative z-10 mx-auto max-w-4xl px-6 pb-20 pt-10">
           <button
             onClick={() => router.push('/user/nutritionists')}
-            className="mb-6 flex items-center gap-1 text-sm text-gray-300 transition-colors hover:text-white"
+            className="mb-6 flex items-center gap-1  text-myText-muted transition-colors hover:text-myText-base"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -107,7 +107,7 @@ function ProfileContent() {
           </button>
 
           <div className="mb-4 flex items-center gap-4">
-            <div className="h-16 w-16 flex-shrink-0 overflow-hidden rounded-full border-4 border-white shadow-lg bg-myBlue-100">
+            <div className="h-16 w-16 flex-shrink-0 overflow-hidden rounded-full border-2 border-cookie-400 shadow-lg ">
               {image ? (
                 <img
                   src={image}
@@ -116,7 +116,7 @@ function ProfileContent() {
                 />
               ) : (
                 <div className="flex h-full w-full items-center justify-center">
-                  <span className="text-xl font-bold text-white">
+                  <span className="  text-myText-heading">
                     {username[0]?.toUpperCase() ?? '?'}
                   </span>
                 </div>
@@ -124,21 +124,15 @@ function ProfileContent() {
             </div>
 
             <div className="min-w-0 flex-1">
-              <h1 className="truncate text-2xl font-bold italic text-white md:text-4xl">
-                {username}
-              </h1>
-              {cityText && (
-                <p className="mt-0.5 text-sm text-gray-300">{cityText}</p>
-              )}
-              {nutr.phone && (
-                <p className="mt-0.5 text-sm text-gray-300">{nutr.phone}</p>
-              )}
+              <h1 className="truncate">{username}</h1>
+              {cityText && <p className="mt-0.5 ">{cityText}</p>}
+              {nutr.phone && <p className="mt-0.5  ">{nutr.phone}</p>}
             </div>
 
             {hasAcceptedAppointment && userId > 0 && (
               <button
                 onClick={() => openConversation(userId)}
-                className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-myBlue-200 shadow-md transition hover:opacity-90"
+                className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-cookie-300 shadow-md transition hover:opacity-90"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -158,11 +152,7 @@ function ProfileContent() {
             )}
           </div>
 
-          {bioText && (
-            <p className="mb-4 max-w-xl text-sm leading-relaxed text-gray-300">
-              {bioText}
-            </p>
-          )}
+          {bioText && <p className="mb-4 max-w-xl">{bioText}</p>}
 
           <div className="mb-8">
             <ShareButton
@@ -171,15 +161,14 @@ function ProfileContent() {
             />
           </div>
 
-          <NutrArticlesGrid nutritionistId={userId} />
-
           <NutrBookingSection
             nutritionistProfileId={nutr.id}
             nutritionistUserId={userId}
             hasAcceptedAppointment={hasAcceptedAppointment}
           />
+          <NutrArticlesGrid nutritionistId={userId} />
         </div>
       </div>
     </div>
   );
-}
+};

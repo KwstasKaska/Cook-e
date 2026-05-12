@@ -101,7 +101,7 @@ export default function PersonalTab({
           <div className="flex flex-col gap-1">
             <button
               onClick={() => fileInputRef.current?.click()}
-              className="rounded-xl border-2 border-cookie-400 text-cookie-400 px-4 py-0.5  font-bold transition hover:bg-cookie-400 hover:text-white"
+              className="rounded-xl border-2 border-cookie-400  px-4 py-0.5  font-bold transition hover:bg-cookie-400 hover:text-white"
             >
               {t('settings.changePhoto')}
             </button>

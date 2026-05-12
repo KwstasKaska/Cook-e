@@ -172,7 +172,7 @@ export default function IngredientStep({
             <div className="flex justify-center">
               <button
                 onClick={handleNext}
-                className="rounded-xl border-2  px-8 py-2.5  text-cookie-400 shadow-xl border-cookie-400 transition-transform hover:text-white hover:bg-cookie-400"
+                className="rounded-xl border-2  px-8 py-2.5 shadow-xl border-cookie-400 transition-transform hover:text-white hover:bg-cookie-400"
               >
                 {t('recipes.next')}
               </button>

@@ -71,7 +71,7 @@ const ChatList = () => {
                 <div className="mt-10 flex justify-center">
                   <button
                     onClick={handleLoadMore}
-                    className="rounded-full border-2 border-cookie-400 px-6 py-2   text-cookie-400 transition hover:bg-cookie-400 hover:text-white"
+                    className="rounded-full border-2 border-cookie-400 px-6 py-2  transition hover:bg-cookie-400 hover:text-white"
                   >
                     {t('chat.loadMore')}
                   </button>

@@ -20,7 +20,7 @@ export default function HomeStep({
       <div className="flex flex-col items-center gap-3 pt-4">
         <button
           onClick={onStartPicker}
-          className="flex items-center gap-3 rounded-xl border-2  px-8 py-4  text-cookie-400 shadow-xl border-cookie-400 transition-transform hover:text-white hover:bg-cookie-400"
+          className="flex items-center gap-3 rounded-xl border-2  px-8 py-4  shadow-xl border-cookie-400 transition-transform hover:text-white hover:bg-cookie-400"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

@@ -27,17 +27,15 @@ export default function NutrArticlesGrid({ nutritionistId }: Props) {
   const hasPrev = offset > 0;
 
   return (
-    <div className="mb-12">
-      <h2 className="mb-6 text-center text-xl font-bold text-white">
-        {t('chef.profile.articles')}
-      </h2>
+    <div className="mt-12">
+      <h1 className="mb-6 text-center">{t('chef.profile.articles')}</h1>
 
       {loading ? (
         <div className="flex justify-center py-6">
-          <div className="h-6 w-6 animate-spin rounded-full border-4 border-myBlue-200 border-t-transparent" />
+          <div className="h-6 w-6 animate-spin rounded-full border-4 border-cookie-300 border-t-transparent" />
         </div>
       ) : articles.length === 0 && offset === 0 ? (
-        <p className="text-center text-sm text-gray-300">
+        <p className="text-center  text-myText-muted">
           {t('chef.profile.no_articles')}
         </p>
       ) : (
@@ -48,8 +46,7 @@ export default function NutrArticlesGrid({ nutritionistId }: Props) {
               <div
                 key={article.id}
                 onClick={() => router.push(`/user/articles/${article.id}`)}
-                className="cursor-pointer overflow-hidden rounded-2xl shadow-lg transition hover:scale-[1.02] hover:shadow-xl"
-                style={{ backgroundColor: '#E9DEC5' }}
+                className="cursor-pointer overflow-hidden rounded-2xl bg-cookie-100 shadow-lg transition hover:scale-[1.02] hover:shadow-xl"
               >
                 <div className="relative h-32 w-full overflow-hidden">
                   <img
@@ -59,9 +56,7 @@ export default function NutrArticlesGrid({ nutritionistId }: Props) {
                   />
                 </div>
                 <div className="px-4 py-3">
-                  <p className="line-clamp-2 text-sm font-bold leading-tight">
-                    {title}
-                  </p>
+                  <p className="line-clamp-2">{title}</p>
                 </div>
               </div>
             );

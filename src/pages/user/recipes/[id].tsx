@@ -329,7 +329,7 @@ function RecipeDetailContent() {
                             </span>
                           </button>
                           <span
-                            className="text-sm leading-relaxed md:text-base"
+                            className=""
                             style={{
                               color: isChecked ? '#9CA3AF' : '#fff',
                               textDecoration: isChecked
@@ -380,7 +380,7 @@ function RecipeDetailContent() {
                           </div>
                         </div>
                         <div className="flex-1 pb-2">
-                          <p className="text-sm text-white leading-relaxed md:text-base">
+                          <p className="text-sm text-white  md:text-base">
                             {isEl ? step.body_el : step.body_en}
                           </p>
                         </div>
@@ -453,9 +453,7 @@ function RecipeDetailContent() {
 
               {description && (
                 <div className="px-6 py-4 border-b border-gray-100">
-                  <p className="text-sm text-gray-600 leading-relaxed">
-                    {description}
-                  </p>
+                  <p className="text-sm text-gray-600 ">{description}</p>
                 </div>
               )}
 

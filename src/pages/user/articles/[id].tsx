@@ -1,7 +1,6 @@
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import Navbar from '../../../components/Users/Navbar';
-import ScrollToTopButton from '../../../components/Helper/ScrollToTopButton';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
 import { useArticleQuery } from '../../../generated/graphql';
@@ -14,7 +13,7 @@ export default function ArticleDetailPage() {
   return <ArticleDetailContent />;
 }
 
-function ArticleDetailContent() {
+const ArticleDetailContent = () => {
   const { t, i18n } = useTranslation('common');
   const lang = i18n.language;
   const router = useRouter();
@@ -29,10 +28,10 @@ function ArticleDetailContent() {
 
   if (loading || !id) {
     return (
-      <div className="flex  min-h-screen flex-col">
+      <div className="flex min-h-screen flex-col">
         <Navbar />
         <div className="flex flex-1 items-center justify-center">
-          <div className="h-10 w-10 animate-spin rounded-full border-4 border-myBlue-200 border-t-transparent" />
+          <div className="h-10 w-10 animate-spin rounded-full border-4 border-cookie-400 border-t-transparent" />
         </div>
       </div>
     );
@@ -40,10 +39,10 @@ function ArticleDetailContent() {
 
   if (!article) {
     return (
-      <div className="flex  min-h-screen flex-col">
+      <div className="flex min-h-screen flex-col">
         <Navbar />
         <div className="flex flex-1 items-center justify-center">
-          <p className="text-white opacity-60">{t('chef.article.not_found')}</p>
+          <p className="text-myText-muted">{t('chef.article.not_found')}</p>
         </div>
       </div>
     );
@@ -54,15 +53,14 @@ function ArticleDetailContent() {
   const heroSrc = article.image ?? '/images/food.jpg';
 
   return (
-    <div className="flex  min-h-screen flex-col">
+    <div className="flex min-h-screen flex-col">
       <Navbar />
 
       <main className="flex flex-1 flex-col items-center px-4 py-8 md:px-8">
         <div className="w-full max-w-2xl">
           <button
             onClick={() => router.back()}
-            className="mb-6 flex items-center gap-2 text-sm font-semibold transition hover:opacity-70"
-            style={{ color: 'rgba(255,255,255,0.75)' }}
+            className="mb-6 flex items-center gap-2   text-myText-muted transition hover:opacity-70"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -81,8 +79,8 @@ function ArticleDetailContent() {
             {t('common.back')}
           </button>
 
-          <div className="w-full overflow-hidden bg-myBeige-100 rounded-2xl shadow-xl">
-            <div className="relative h-64 w-full">
+          <div className="w-full overflow-hidden rounded-2xl bg-surface shadow-xl">
+            <div className="relative h-48 w-full">
               <Image src={heroSrc} alt={title} fill className="object-cover" />
             </div>
 
@@ -95,15 +93,13 @@ function ArticleDetailContent() {
                     className="h-9 w-9 flex-shrink-0 rounded-full object-cover"
                   />
                 ) : (
-                  <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full text-sm font-bold text-white bg-myBlue-200">
+                  <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full text-myText-heading">
                     {article.creator?.username?.[0]?.toUpperCase() ?? '?'}
                   </div>
                 )}
                 <div>
-                  <p className="text-sm font-bold">
-                    {article.creator?.username ?? '—'}
-                  </p>
-                  <p className="text-xs text-gray-500">
+                  <p className=" ">{article.creator?.username ?? '—'}</p>
+                  <p className="">
                     {new Date(parseInt(article.createdAt)).toLocaleDateString(
                       lang === 'en' ? 'en-GB' : 'el-GR',
                       { day: 'numeric', month: 'long', year: 'numeric' },
@@ -112,23 +108,16 @@ function ArticleDetailContent() {
                 </div>
               </div>
 
-              <h1 className="mb-5 text-2xl  font-bold leading-snug">{title}</h1>
+              <h1 className="mb-5 ">{title}</h1>
 
-              <p
-                className="text-sm leading-relaxed whitespace-pre-line"
-                style={{ color: '#4A5568' }}
-              >
-                {text}
-              </p>
+              <p className="whitespace-pre-line ">{text}</p>
             </div>
           </div>
         </div>
       </main>
-
-      <ScrollToTopButton />
     </div>
   );
-}
+};
 
 export async function getServerSideProps({ locale }: { locale: string }) {
   return {

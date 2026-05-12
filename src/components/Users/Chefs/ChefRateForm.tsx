@@ -26,15 +26,15 @@ export default function ChefRateForm({
   const { t } = useTranslation('common');
 
   return (
-    <div className="rounded-2xl bg-white p-5 shadow-xl">
-      <h3 className="mb-4 text-lg font-bold">{t('recipes.rateChefTitle')}</h3>
+    <div className="rounded-2xl bg-surface p-5 shadow-xl">
+      <h3 className="mb-4 ">{t('recipes.rateChefTitle')}</h3>
 
       {myRating && (
-        <div className="mb-4 rounded-xl bg-myBlue-100 px-3 py-2 text-sm">
+        <div className="mb-4 rounded-xl bg-cookie-100 px-3 py-2 ">
           {t('recipes.existingRating')}: {myRating.score}/5
           <button
             onClick={onDelete}
-            className="ml-2 text-xs underline hover:no-underline"
+            className="ml-2  underline hover:no-underline"
           >
             {t('common.delete')}
           </button>
@@ -45,24 +45,17 @@ export default function ChefRateForm({
         <StarPicker value={ratingScore} onChange={onScoreChange} />
       </div>
 
-      {ratingError && (
-        <p className="mb-2 text-xs font-semibold text-red-500">{ratingError}</p>
-      )}
-      {ratingSuccess && (
-        <p className="mb-2 text-xs font-semibold text-green-500">
-          {ratingSuccess}
-        </p>
-      )}
+      {ratingError && <p className="mb-2   text-myRed">{ratingError}</p>}
+      {ratingSuccess && <p className="mb-2   text-herb-200">{ratingSuccess}</p>}
 
       <button
         onClick={onSubmit}
         disabled={submitting || ratingScore === 0}
-        className="w-full rounded-xl py-2 text-sm font-bold text-white transition"
-        style={{
-          backgroundColor: '#377CC3',
-          opacity: submitting || ratingScore === 0 ? 0.5 : 1,
-          cursor: submitting || ratingScore === 0 ? 'not-allowed' : 'pointer',
-        }}
+        className={`w-full rounded-xl py-1 border-2   transition ${
+          submitting || ratingScore === 0
+            ? 'cursor-not-allowed border-cookie-400  '
+            : 'hover:text-white hover:bg-cookie-400'
+        }`}
       >
         {submitting ? t('common.saving') : t('recipes.submitRating')}
       </button>
