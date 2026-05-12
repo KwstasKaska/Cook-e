@@ -1,6 +1,6 @@
 {
   "nav": {
-    "home": "My kitchen",
+    "home": "Overview",
     "recipes": "Find recipes",
     "nutritionists": "Nutritionists",
     "logout": "Logout",
@@ -26,13 +26,13 @@
     "fat": "Fat",
     "protein": "Protein",
     "carbs": "Carbohydrates",
-    "cookCount": "recipes",
+    "cookCount": "Cooked recipes",
     "startCooking": "Start cooking!",
     "minutes": "minutes",
     "noCookedYet": "You haven't cooked any recipes yet.",
     "noRatingsCta": "Browse recipes",
-    "nutritionTitle": "Your nutrition this week",
-    "nutritionDesc": "This chart tracks calories, fat, protein and carbs from every recipe you've logged as cooked in the last week. Open any recipe and tap the 'cooked' icon to log it.",
+    "nutritionTitle": "Nutritional indo of the week",
+    "nutritionDesc": "This chart contains nutritional info from every recipe you've logged as cooked in the last week. Open any recipe and tap the cooked icon to log it.",
 
     "weeklyRecipesTitle": "Top rated recipes this week",
     "weeklyRecipesDesc1": "These are the recipes the community has rated highest in the last 7 days."
@@ -63,11 +63,8 @@
     "VEGAN": "Vegan"
   },
   "recipes": {
-    "title": "Recipes",
-    "subtitle": "Find recipes based on your ingredients or discover favourites.",
+    "title": "Find personalized recipes",
     "favourites": "Favourite recipes",
-    "seeAll": "All →",
-    "discoverBtn": "Discover recipes",
     "backToSearch": "Back",
     "backToRecipes": "Back to search recipes",
     "resultsTitle": "Choose from the suggested recipes",

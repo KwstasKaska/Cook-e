@@ -19,16 +19,12 @@ export default function UtensilStep({
   utensils,
   selectedIds,
   onToggle,
-  onBack,
-  onSearch,
   loading,
   isEl,
 }: {
   utensils: Utensil[];
   selectedIds: number[];
   onToggle: (id: number) => void;
-  onBack: () => void;
-  onSearch: () => void;
   loading: boolean;
   isEl: boolean;
 }) {
@@ -52,110 +48,76 @@ export default function UtensilStep({
 
   const categoryKeys = useMemo(() => Array.from(grouped.keys()), [grouped]);
 
-  return (
-    <div className="min-h-screen">
-      <div className="max-w-3xl lg:max-w-5xl mx-auto px-6 pt-10 pb-24">
-        {loading ? (
-          <div className="flex justify-center py-16">
-            <div className="h-8 w-8 animate-spin rounded-full border-4 border-cookie-300 border-t-transparent" />
-          </div>
-        ) : (
-          <>
-            <div className="flex items-center gap-3 mb-6">
-              <button
-                onClick={onBack}
-                className="flex h-7 w-7 items-center justify-center rounded-full bg-cookie-200 transition"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                  className="h-4 w-4 text-myText-heading"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M7.72 12.53a.75.75 0 010-1.06l7.5-7.5a.75.75 0 111.06 1.06L9.31 12l6.97 6.97a.75.75 0 11-1.06 1.06l-7.5-7.5z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </button>
-              <h2 className="text-xl ">{t('utensils.title')}</h2>
-            </div>
-
-            <div className="flex flex-col gap-2">
-              {categoryKeys.map((catKey) => {
-                const isOpen = openCat === catKey;
-                const items = grouped.get(catKey) ?? [];
-
-                return (
-                  <div
-                    key={catKey}
-                    className="rounded-2xl bg-surface overflow-hidden"
-                    style={{
-                      border: isOpen
-                        ? '1.5px solid #C9955A'
-                        : '1.5px solid transparent',
-                    }}
-                  >
-                    <button
-                      onClick={() => setOpenCat(isOpen ? null : catKey)}
-                      className="w-full flex items-center justify-between px-5 py-3.5   transition"
-                    >
-                      <span>{getCatLabel(catKey)}</span>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth={2}
-                        className="h-4 w-4 transition-transform duration-200"
-                        style={{
-                          transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
-                        }}
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M19.5 8.25l-7.5 7.5-7.5-7.5"
-                        />
-                      </svg>
-                    </button>
-
-                    {isOpen && (
-                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 px-4 pb-4">
-                        {items.map((u) => {
-                          const sel = selectedIds.includes(u.id);
-                          const name = isEl ? u.name_el : u.name_en;
-                          return (
-                            <div
-                              key={u.id}
-                              onClick={() => onToggle(u.id)}
-                              className={`rounded-xl border border-cookie-400 px-4 py-3 cursor-pointer transition ${
-                                sel ? 'bg-cookie-200' : 'bg-surface'
-                              }`}
-                            >
-                              <p className="  truncate">{name}</p>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-
-            <div className="flex justify-center mt-8">
-              <button
-                onClick={onSearch}
-                className="rounded-xl border-2  px-8 py-2.5   shadow-xl border-cookie-400 transition-transform hover:text-white hover:bg-cookie-400"
-              >
-                {t('recipes.search')}
-              </button>
-            </div>
-          </>
-        )}
+  if (loading) {
+    return (
+      <div className="flex justify-center py-16">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-cookie-300 border-t-transparent" />
       </div>
+    );
+  }
+
+  return (
+    <div className="flex flex-col gap-2">
+      {categoryKeys.map((catKey) => {
+        const isOpen = openCat === catKey;
+        const items = grouped.get(catKey) ?? [];
+
+        return (
+          <div
+            key={catKey}
+            className="rounded-2xl bg-surface overflow-hidden"
+            style={{
+              border: isOpen
+                ? '1.5px solid #C9955A'
+                : '1.5px solid transparent',
+            }}
+          >
+            <button
+              onClick={() => setOpenCat(isOpen ? null : catKey)}
+              className="w-full flex items-center justify-between px-5 py-3.5 transition"
+            >
+              <span>{getCatLabel(catKey)}</span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2}
+                className="h-4 w-4 transition-transform duration-200"
+                style={{
+                  transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+                }}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M19.5 8.25l-7.5 7.5-7.5-7.5"
+                />
+              </svg>
+            </button>
+
+            {isOpen && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 px-4 pb-4">
+                {items.map((u) => {
+                  const sel = selectedIds.includes(u.id);
+                  const name = isEl ? u.name_el : u.name_en;
+                  return (
+                    <div
+                      key={u.id}
+                      onClick={() => onToggle(u.id)}
+                      className={`rounded-xl border border-cookie-400 px-4 py-3 cursor-pointer transition ${
+                        sel ? 'bg-cookie-200' : 'bg-surface'
+                      }`}
+                    >
+                      <p className="truncate">{name}</p>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        );
+      })}
     </div>
   );
 }

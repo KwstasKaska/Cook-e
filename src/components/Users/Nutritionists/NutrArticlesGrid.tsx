@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { useArticlesByNutritionistQuery } from '../../../generated/graphql';
 import PaginationControls from '../../Helper/PaginationControls';
 
-const LIMIT = 2;
+const LIMIT = 4;
 
 interface Props {
   nutritionistId: number;
@@ -46,9 +46,9 @@ export default function NutrArticlesGrid({ nutritionistId }: Props) {
               <div
                 key={article.id}
                 onClick={() => router.push(`/user/articles/${article.id}`)}
-                className="cursor-pointer overflow-hidden rounded-2xl bg-cookie-100 shadow-lg transition hover:scale-[1.02] hover:shadow-xl"
+                className="cursor-pointer overflow-hidden rounded-2xl bg-surface shadow-lg transition hover:scale-[1.02] hover:shadow-xl"
               >
-                <div className="relative h-32 w-full overflow-hidden">
+                <div className="relative h-24 w-full overflow-hidden">
                   <img
                     src={article.image}
                     alt={title}
