@@ -14,7 +14,7 @@ const NutrNavbar = () => {
     },
   ];
 
-  return <BaseNavbar links={links} bg="bg-cookie-100" />;
+  return <BaseNavbar links={links} />;
 };
 
 export default NutrNavbar;

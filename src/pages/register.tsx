@@ -1,22 +1,27 @@
-import { NextPage } from 'next';
-import Link from 'next/link';
+import { NextPage, GetServerSideProps } from 'next';
 import { useEffect } from 'react';
-import { useRegisterMutation, useMeQuery } from '../generated/graphql';
 import { useRouter } from 'next/router';
-import { toErrorMap } from '../utils/toErrorMap';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { GetServerSideProps } from 'next';
+import { useRegisterMutation, useMeQuery } from '../generated/graphql';
+import { toErrorMap } from '../utils/toErrorMap';
 import LanguageSwitcher from '../components/Helper/LanguageSwitcher';
 import Logo from '../components/Helper/Logo';
 
-interface MyFormValues {
+interface RegisterFormValues {
   username: string;
-  password: string;
   email: string;
+  password: string;
   role: string;
 }
+
+const initialValues: RegisterFormValues = {
+  username: '',
+  email: '',
+  password: '',
+  role: '',
+};
 
 const Register: NextPage = () => {
   const router = useRouter();
@@ -32,32 +37,23 @@ const Register: NextPage = () => {
 
   if (loading || data?.me) return null;
 
-  const initialValues: MyFormValues = {
-    username: '',
-    email: '',
-    password: '',
-    role: '',
-  };
-
   return (
-    <main className="flex bg-myGrey-200 min-h-screen w-full items-center justify-center px-4 py-12">
-      <section className="w-full max-w-md rounded-3xl bg-white px-8 py-8">
+    <main className="flex min-h-screen w-full items-center justify-center  px-4 py-12">
+      <section className="w-full max-w-md rounded-3xl bg-surface px-8 py-8">
         <div className="mb-8 flex items-center justify-between">
           <Logo />
           <LanguageSwitcher dark />
         </div>
 
         <div className="mb-6 text-center">
-          <h1 className="mb-1 text-2xl font-bold">{t('register.title')}</h1>
-          <p className="text-sm text-gray-400">{t('register.subtitle')}</p>
+          <h1 className="mb-1">{t('register.title')}</h1>
+          <p className="text-myText-muted">{t('register.subtitle')}</p>
         </div>
 
         <Formik
           initialValues={initialValues}
-          onSubmit={async (values: MyFormValues, { setErrors }) => {
-            const response = await register({
-              variables: { options: values },
-            });
+          onSubmit={async (values, { setErrors }) => {
+            const response = await register({ variables: { options: values } });
             if (response.data?.register.errors) {
               const errorMap = toErrorMap(response.data.register.errors);
               setErrors(
@@ -71,64 +67,62 @@ const Register: NextPage = () => {
           }}
         >
           {({ isSubmitting }) => (
-            <Form className="flex flex-col gap-3 text-sm text-black">
+            <Form className="flex flex-col gap-3">
               <Field
-                className="w-full rounded-xl border border-gray-200 px-4 py-2.5 placeholder:italic placeholder:text-myBlue-200 focus:outline-none"
                 type="text"
-                placeholder={t('register.username_placeholder')}
                 name="username"
+                placeholder={t('register.username_placeholder')}
+                className="w-full rounded-xl border border-cookie-200 px-4 py-1.5 text-myText-base placeholder:text-myText-muted focus:outline-none"
               />
               <ErrorMessage
                 name="username"
                 component="div"
-                className="text-center text-xs font-bold text-red-500"
+                className="text-center   text-myRed"
               />
 
               <Field
                 type="email"
-                placeholder={t('register.email_placeholder')}
-                className="w-full rounded-xl border border-gray-200 px-4 py-2.5 placeholder:italic placeholder:text-myBlue-200 focus:outline-none"
                 name="email"
+                placeholder={t('register.email_placeholder')}
+                className="w-full rounded-xl border border-cookie-200 px-4 py-1.5 text-myText-base placeholder:text-myText-muted focus:outline-none"
               />
               <ErrorMessage
                 name="email"
                 component="div"
-                className="text-center text-xs font-bold text-red-500"
+                className="text-center   text-myRed"
               />
 
               <Field
                 type="password"
-                placeholder={t('register.password_placeholder')}
-                className="w-full rounded-xl border border-gray-200 px-4 py-2.5 placeholder:italic placeholder:text-myBlue-200 focus:outline-none"
                 name="password"
+                placeholder={t('register.password_placeholder')}
+                className="w-full rounded-xl border border-cookie-200 px-4 py-1.5 text-myText-base placeholder:text-myText-muted focus:outline-none"
               />
               <ErrorMessage
                 name="password"
                 component="div"
-                className="whitespace-pre-line text-center text-xs font-bold text-red-500"
+                className="whitespace-pre-line text-center   text-myRed"
               />
 
               <div className="mt-2">
-                <p className="mb-2 text-sm font-bold">
-                  {t('register.role_label')}
-                </p>
-                <div role="group" className="flex flex-col gap-1.5 text-sm">
-                  <label className="flex cursor-pointer items-center gap-2">
+                <p className="mb-2 font-bold ">{t('register.role_label')}</p>
+                <div role="group" className="flex flex-col gap-1.5">
+                  <p className="flex cursor-pointer items-center gap-2">
                     <Field type="radio" name="role" value="user" />
                     {t('register.role_user')}
-                  </label>
-                  <label className="flex cursor-pointer items-center gap-2">
+                  </p>
+                  <p className="flex cursor-pointer items-center gap-2">
                     <Field type="radio" name="role" value="chef" />
                     Chef
-                  </label>
-                  <label className="flex cursor-pointer items-center gap-2">
+                  </p>
+                  <p className="flex cursor-pointer items-center gap-2">
                     <Field type="radio" name="role" value="nutritionist" />
                     {t('register.role_nutritionist')}
-                  </label>
+                  </p>
                   <ErrorMessage
                     name="role"
                     component="div"
-                    className="text-center text-xs font-bold text-red-500"
+                    className="text-center   text-myRed"
                   />
                 </div>
               </div>
@@ -136,7 +130,7 @@ const Register: NextPage = () => {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="mt-4 w-full cursor-pointer rounded-xl bg-myBlue-200 py-2.5 text-sm font-bold text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
+                className="mt-4 w-full rounded-xl bg-cookie-300 py-2.5   text-white transition hover:bg-cookie-400 disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {t('register.submit')}
               </button>
@@ -144,26 +138,24 @@ const Register: NextPage = () => {
           )}
         </Formik>
 
-        <p className="mt-6 text-center text-sm text-gray-400">
+        <p className="mt-6 text-center text-myText-muted">
           {t('login.account')}{' '}
-          <Link
-            className="font-semibold underline transition hover:opacity-80"
-            href="/login"
+          <button
+            onClick={() => router.push('/login')}
+            className="font-semibold text-myText-base underline transition hover:opacity-80"
           >
             {t('login.submit')}
-          </Link>
+          </button>
         </p>
       </section>
     </main>
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
-  return {
-    props: {
-      ...(await serverSideTranslations(locale ?? 'el', ['common'])),
-    },
-  };
-};
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
+  props: {
+    ...(await serverSideTranslations(locale ?? 'el', ['common'])),
+  },
+});
 
 export default Register;

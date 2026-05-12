@@ -16,10 +16,9 @@ export type NavLink =
 
 interface BaseNavbarProps {
   links: NavLink[];
-  bg?: string;
 }
 
-const BaseNavbar = ({ links, bg = 'bg-cookie-200' }: BaseNavbarProps) => {
+const BaseNavbar = ({ links }: BaseNavbarProps) => {
   const router = useRouter();
   const { t } = useTranslation('common');
   const [menuOpen, setMenuOpen] = useState(false);
@@ -69,14 +68,12 @@ const BaseNavbar = ({ links, bg = 'bg-cookie-200' }: BaseNavbarProps) => {
   if (loading) return null;
 
   return (
-    <nav
-      className={`w-full ${bg} px-6 py-3 flex items-center justify-between relative z-50`}
-    >
+    <nav className="w-full bg-cookie-200 px-6 py-0 flex items-stretch justify-between relative z-50 h-14">
       <div className="flex items-center gap-4">
         <Logo />
         {me && (
           <div className="hidden xl:flex items-center gap-4">
-            <span className="text-cookie-300 select-none">|</span>
+            <span className="text-cookie-300 select-none leading-none">|</span>
             <div className="flex items-center gap-2">
               {me.image ? (
                 <img
@@ -97,7 +94,7 @@ const BaseNavbar = ({ links, bg = 'bg-cookie-200' }: BaseNavbarProps) => {
         )}
       </div>
 
-      <div className="hidden xl:flex items-center gap-6">
+      <div className="hidden xl:flex text-myText-base items-center gap-6">
         {links.map((link) => {
           const active = isActive(link);
           const key = link.kind === 'href' ? link.href : link.sectionId;
@@ -117,7 +114,7 @@ const BaseNavbar = ({ links, bg = 'bg-cookie-200' }: BaseNavbarProps) => {
             <button
               key={key}
               onClick={() => handleClick(link)}
-              className="text-sm font-semibold tracking-wide transition-colors duration-150"
+              className=" tracking-wide transition-colors duration-150"
               style={linkStyle(active)}
             >
               {link.label}
@@ -132,7 +129,7 @@ const BaseNavbar = ({ links, bg = 'bg-cookie-200' }: BaseNavbarProps) => {
         <button
           onClick={handleLogout}
           disabled={logoutLoading}
-          className="rounded-full border border-myText-base px-4 py-0.5 text-sm font-semibold transition-colors duration-150 hover:bg-myRed hover:border-myRed hover:text-white disabled:opacity-50"
+          className="rounded-full border border-myText-base px-4 text-sm font-semibold leading-7 transition-colors duration-150 hover:bg-myRed hover:border-myRed hover:text-white disabled:opacity-50"
         >
           {t('nav.logout')}
         </button>
@@ -141,13 +138,11 @@ const BaseNavbar = ({ links, bg = 'bg-cookie-200' }: BaseNavbarProps) => {
       <HamburgerButton
         isOpen={menuOpen}
         onClick={() => setMenuOpen((v) => !v)}
-        className="xl:hidden p-2"
+        className="xl:hidden p-2 self-center"
       />
 
       {menuOpen && (
-        <div
-          className={`absolute ${bg} top-full left-0 w-full flex flex-col items-start px-6 py-4 gap-4 xl:hidden shadow-lg z-50`}
-        >
+        <div className="absolute bg-myText-base top-full left-0 w-full flex flex-col items-start px-6 py-4 gap-4 xl:hidden shadow-lg z-50">
           {me && (
             <div className="flex items-center gap-2 pb-3 w-full">
               {me.image ? (
@@ -204,7 +199,7 @@ const BaseNavbar = ({ links, bg = 'bg-cookie-200' }: BaseNavbarProps) => {
             <button
               onClick={handleLogout}
               disabled={logoutLoading}
-              className="rounded-full border border-myText-base px-4 py-0.5 text-sm font-semibold transition-colors hover:bg-myRed hover:border-myRed hover:text-white disabled:opacity-50"
+              className="rounded-full border border-myText-base px-4 text-sm font-semibold leading-7 transition-colors hover:bg-myRed hover:border-myRed hover:text-white disabled:opacity-50"
             >
               {t('nav.logout')}
             </button>

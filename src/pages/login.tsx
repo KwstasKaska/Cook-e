@@ -1,26 +1,26 @@
-import { NextPage } from 'next';
-import Link from 'next/link';
+import { NextPage, GetServerSideProps } from 'next';
 import { useEffect } from 'react';
+import { useRouter } from 'next/router';
+import { Form, Formik } from 'formik';
+import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import {
   MeDocument,
   MeQuery,
   useLoginMutation,
   useMeQuery,
 } from '../generated/graphql';
-import { Form, Formik } from 'formik';
 import { toErrorMap } from '../utils/toErrorMap';
-import { useRouter } from 'next/router';
 import InputField from '../components/InputField';
-import { useTranslation } from 'next-i18next';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { GetServerSideProps } from 'next';
 import LanguageSwitcher from '../components/Helper/LanguageSwitcher';
 import Logo from '../components/Helper/Logo';
 
-interface MyLoginFormValues {
+interface LoginFormValues {
   email: string;
   password: string;
 }
+
+const initialValues: LoginFormValues = { email: '', password: '' };
 
 const Login: NextPage = () => {
   const router = useRouter();
@@ -36,24 +36,15 @@ const Login: NextPage = () => {
 
   if (loading || data?.me) return null;
 
-  const initialValues: MyLoginFormValues = {
-    email: '',
-    password: '',
-  };
-
   return (
-    <main className="flex bg-myText-base min-h-screen w-full items-center justify-center px-4 py-12">
+    <main className="flex min-h-screen w-full items-center justify-center   px-4 py-12">
       <section className="w-full max-w-md rounded-3xl bg-surface px-8 py-8">
         <div className="mb-8 flex items-center justify-between">
           <Logo />
           <LanguageSwitcher dark />
         </div>
 
-        <div className="mb-6 text-center">
-          <h1 className="mb-1 text-2xl font-bold text-myText-heading">
-            {t('login.title')}
-          </h1>
-        </div>
+        <h1 className="mb-6 text-center">{t('login.title')}</h1>
 
         <Formik
           initialValues={initialValues}
@@ -90,21 +81,21 @@ const Login: NextPage = () => {
                 type="email"
                 name="email"
                 autoComplete="email"
-                className="w-full rounded-xl border border-cookie-200 px-4 py-2.5 placeholder:text-cookie-300 text-myText-base focus:outline-none"
+                className="w-full rounded-xl border border-cookie-200 px-4 py-1.5 text-myText-base placeholder:text-myText-muted focus:outline-none"
                 placeholder={t('login.username_placeholder')}
               />
               <InputField
                 type="password"
                 name="password"
                 autoComplete="current-password"
-                className="w-full rounded-xl border border-cookie-200 px-4 py-2.5 placeholder:text-cookie-300 text-myText-base focus:outline-none"
+                className="w-full rounded-xl border border-cookie-200 px-4 py-1.5 text-myText-base placeholder:text-myText-muted focus:outline-none"
                 placeholder={t('login.password_placeholder')}
               />
 
               <button
-                className="mt-1 w-full bg-cookie-300 rounded-xl py-2.5 text-sm font-semibold text-white transition hover:bg-cookie-400 disabled:cursor-not-allowed disabled:opacity-60"
                 type="submit"
                 disabled={isSubmitting}
+                className="mt-1 w-full rounded-xl bg-cookie-300 py-2.5 text-white transition hover:bg-cookie-400 disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {isSubmitting ? t('common.loading') : t('login.submit')}
               </button>
@@ -112,26 +103,24 @@ const Login: NextPage = () => {
           )}
         </Formik>
 
-        <p className="mt-8 text-center text-sm text-myText-muted">
+        <p className="mt-8 text-center text-myText-muted">
           {t('login.no_account')}{' '}
-          <Link
-            className="font-semibold text-myText-base underline transition hover:opacity-80"
-            href="/register"
+          <button
+            onClick={() => router.push('register')}
+            className=" text-myText-base underline transition hover:opacity-80"
           >
             {t('login.create_account')}
-          </Link>
+          </button>
         </p>
       </section>
     </main>
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
-  return {
-    props: {
-      ...(await serverSideTranslations(locale ?? 'el', ['common'])),
-    },
-  };
-};
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => ({
+  props: {
+    ...(await serverSideTranslations(locale ?? 'el', ['common'])),
+  },
+});
 
 export default Login;

@@ -71,7 +71,7 @@ export default function PersonalTab({
     <div>
       <FieldGroup title={t('settings.profilePicture')}>
         <div className="flex items-center gap-5">
-          <div className="h-20 w-20 flex-shrink-0 border-myGrey-100 overflow-hidden rounded-full border-2">
+          <div className="h-20 w-20 flex-shrink-0 overflow-hidden rounded-full border-2 border-cookie-400">
             {avatarSrc ? (
               <img
                 src={avatarSrc}
@@ -79,16 +79,13 @@ export default function PersonalTab({
                 className="h-full w-full object-cover"
               />
             ) : (
-              <div
-                className="flex h-full w-full items-center justify-center"
-                style={{ backgroundColor: '#E8EEF5' }}
-              >
+              <div className="flex h-full w-full items-center justify-center bg-cookie-100">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
                   strokeWidth={1.5}
-                  stroke="#377CC3"
+                  stroke="#C9955A"
                   className="h-8 w-8"
                 >
                   <path
@@ -104,12 +101,12 @@ export default function PersonalTab({
           <div className="flex flex-col gap-1">
             <button
               onClick={() => fileInputRef.current?.click()}
-              className="rounded-full border-2 border-myBlue-200 text-myBlue-200 px-5 py-2 text-xs font-bold transition hover:opacity-80"
+              className="rounded-xl border-2 border-cookie-400 text-cookie-400 px-4 py-0.5  font-bold transition hover:bg-cookie-400 hover:text-white"
             >
               {t('settings.changePhoto')}
             </button>
             {imageFile && (
-              <p className="text-xs text-gray-400">{imageFile.name}</p>
+              <p className=" text-myText-muted">{imageFile.name}</p>
             )}
           </div>
           <input

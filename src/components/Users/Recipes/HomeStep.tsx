@@ -40,34 +40,26 @@ export default function HomeStep({
   const { t } = useTranslation('common');
 
   return (
-    <div className="max-w-5xl mx-auto px-6 pt-10 pb-20">
+    <div className="mx-auto max-w-5xl px-6 pb-20 pt-10">
       <div className="mb-10">
-        <h1 className="text-white text-3xl md:text-4xl font-bold mb-1">
-          {t('recipes.title')}
-        </h1>
-        <p className=" text-sm opacity-80 text-white">
-          {t('recipes.recipeHint1')}
-        </p>
-        <p className="text-white opacity-80 text-sm mt-1">
-          {t('recipes.recipeHint2')}
-        </p>
+        <h1 className="mb-1 text-white">{t('recipes.title')}</h1>
+        <p className="text-white opacity-80">{t('recipes.recipeHint1')}</p>
+        <p className="mt-1 text-white opacity-80">{t('recipes.recipeHint2')}</p>
       </div>
 
       <div className="mb-12">
-        <div className="flex items-center justify-between mb-5">
-          <h2 className="text-white text-xl font-bold">
-            {t('recipes.favourites')}
-          </h2>
+        <div className="mb-5 flex items-center justify-between">
+          <h2 className="text-white">{t('recipes.favourites')}</h2>
         </div>
 
         {favLoading ? (
           <div className="flex justify-center py-8">
-            <div className="h-6 w-6 animate-spin rounded-full border-4 border-myBlue-200 border-t-transparent" />
+            <div className="h-6 w-6 animate-spin rounded-full border-4 border-cookie-300 border-t-transparent" />
           </div>
         ) : favorites.length === 0 && !hasPrev ? (
-          <p className="text-gray-400 text-sm">{t('recipes.noFavourites')}</p>
+          <p className="text-myText-muted">{t('recipes.noFavourites')}</p>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {favorites.map((fav) => {
               const recipe = fav.recipe;
               if (!recipe) return null;
@@ -77,7 +69,7 @@ export default function HomeStep({
                 <div
                   key={fav.id}
                   onClick={() => onSelectRecipe(recipe.id)}
-                  className="bg-white rounded-2xl shadow-md overflow-hidden hover:scale-105 transition-transform duration-200 cursor-pointer"
+                  className="cursor-pointer overflow-hidden rounded-2xl bg-surface shadow-md transition-transform duration-200 hover:scale-105"
                 >
                   <div className="relative h-32 w-full">
                     {recipe.recipeImage ? (
@@ -87,17 +79,15 @@ export default function HomeStep({
                         className="h-full w-full object-cover"
                       />
                     ) : (
-                      <div className="flex h-full w-full bg-myBlue-100 items-center justify-center text-4xl">
+                      <div className="flex h-full w-full items-center justify-center bg-cookie-100 text-4xl">
                         🍽️
                       </div>
                     )}
                   </div>
                   <div className="p-3">
-                    <h3 className="text-sm font-bold text-gray-800 leading-tight mb-2">
-                      {title}
-                    </h3>
+                    <h5 className="mb-2 leading-tight">{title}</h5>
                     {totalTime > 0 && (
-                      <span className="text-xs text-gray-400">
+                      <span className="text-xs text-myText-muted">
                         {totalTime} {t('landing.minutes')}
                       </span>
                     )}
@@ -118,14 +108,14 @@ export default function HomeStep({
         )}
       </div>
 
-      <div className="flex flex-col items-center pt-4 gap-3">
+      <div className="flex flex-col items-center gap-3 pt-4">
         <button
           onClick={onStartPicker}
-          className="flex items-center bg-myYellow gap-3 px-10 py-4 rounded-full font-bold text-base text-gray-800 hover:scale-105 transition-transform shadow-xl"
+          className="flex items-center gap-3 rounded-full bg-myYellow px-10 py-4 font-bold text-myText-heading shadow-xl transition-transform hover:scale-105"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="w-5 h-5"
+            className="h-5 w-5"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"

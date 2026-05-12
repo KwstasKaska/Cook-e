@@ -95,7 +95,7 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen ">
       {renderNavbar()}
 
       {showConfirm && (
@@ -111,16 +111,14 @@ export default function SettingsPage() {
 
       <div className="relative overflow-hidden min-h-screen">
         <div className="relative z-10 max-w-5xl mx-auto px-6 pt-10 pb-20">
-          <h1 className="text-white text-3xl font-bold mb-8">
-            {t('settings.title')}
-          </h1>
+          <h1 className="mb-8">{t('settings.title')}</h1>
 
           <div className="flex flex-col md:flex-row gap-6 items-start">
             <aside className="w-full md:w-56 flex-shrink-0">
               <nav>
                 <div
                   role="tablist"
-                  className="bg-white rounded-2xl shadow-md overflow-hidden"
+                  className="bg-surface rounded-2xl  border border-cookie-200 overflow-hidden"
                 >
                   {visibleTabs.map((tab) => {
                     const isActive = activeTab === tab.key;
@@ -132,11 +130,11 @@ export default function SettingsPage() {
                         aria-selected={isActive}
                         aria-controls={`tabpanel-${tab.key}`}
                         onClick={() => setActiveTab(tab.key)}
-                        className="w-full flex items-center gap-3 px-4 py-3.5 text-sm font-semibold text-left transition-colors border-l-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-myBlue-200"
+                        className="w-full flex items-center gap-3 px-4 py-3.5   text-left transition-colors border-l-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-cookie-300"
                         style={{
-                          borderLeftColor: isActive ? '#377CC3' : 'transparent',
-                          backgroundColor: isActive ? '#F0F7FF' : 'transparent',
-                          color: isActive ? '#377CC3' : '#3F4756',
+                          borderLeftColor: isActive ? '#C9955A' : 'transparent',
+                          backgroundColor: isActive ? '#F7EDE0' : 'transparent',
+                          color: isActive ? '#A0652A' : '#3D3529',
                         }}
                       >
                         <span>{t(tab.labelKey)}</span>
@@ -145,13 +143,12 @@ export default function SettingsPage() {
                   })}
                 </div>
 
-                <div className="mt-4 bg-white rounded-2xl shadow-md overflow-hidden">
+                <div className="mt-4 bg-surface rounded-2xl  border border-cookie-200 overflow-hidden">
                   <button
                     type="button"
                     onClick={() => setShowConfirm(true)}
                     disabled={deleting}
-                    className="w-full flex items-center gap-3 px-4 py-3.5 text-sm font-semibold text-left transition-colors hover:bg-red-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-400 disabled:opacity-50"
-                    style={{ color: '#ED5B5B' }}
+                    className="w-full flex items-center gap-3 px-4 py-3.5   text-left transition-colors text-myRed hover:bg-red-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-myRed disabled:opacity-50"
                   >
                     <span>
                       {deleting
@@ -160,9 +157,7 @@ export default function SettingsPage() {
                     </span>
                   </button>
                   {deleteError && (
-                    <p className="px-4 pb-3 text-xs text-red-500">
-                      {deleteError}
-                    </p>
+                    <p className="px-4 pb-3  text-myRed">{deleteError}</p>
                   )}
                 </div>
               </nav>
@@ -174,7 +169,7 @@ export default function SettingsPage() {
                   id="tabpanel-personal"
                   role="tabpanel"
                   tabIndex={0}
-                  className="bg-white rounded-2xl shadow-md p-6 md:p-8 focus:outline-none"
+                  className="bg-surface rounded-2xl  border border-cookie-200 p-6 md:p-8 focus:outline-none"
                 >
                   <PersonalTab username={me.username} image={me.image} />
                 </section>
@@ -184,7 +179,7 @@ export default function SettingsPage() {
                   id="tabpanel-security"
                   role="tabpanel"
                   tabIndex={0}
-                  className="bg-white rounded-2xl shadow-md p-6 md:p-8 focus:outline-none"
+                  className="bg-surface rounded-2xl  border border-cookie-200 p-6 md:p-8 focus:outline-none"
                 >
                   <SecurityTab />
                 </section>
@@ -194,7 +189,7 @@ export default function SettingsPage() {
                   id="tabpanel-chef-profile"
                   role="tabpanel"
                   tabIndex={0}
-                  className="bg-white rounded-2xl shadow-md p-6 md:p-8 focus:outline-none"
+                  className="bg-surface rounded-2xl  border border-cookie-200 p-6 md:p-8 focus:outline-none"
                 >
                   <ChefProfileTab />
                 </section>
@@ -204,7 +199,7 @@ export default function SettingsPage() {
                   id="tabpanel-nutritionist-profile"
                   role="tabpanel"
                   tabIndex={0}
-                  className="bg-white rounded-2xl shadow-md p-6 md:p-8 focus:outline-none"
+                  className="bg-surface rounded-2xl  border border-cookie-200 p-6 md:p-8 focus:outline-none"
                 >
                   <NutritionistProfileTab />
                 </section>
@@ -214,7 +209,7 @@ export default function SettingsPage() {
                   id="tabpanel-meal-plan"
                   role="tabpanel"
                   tabIndex={0}
-                  className="bg-white rounded-2xl shadow-md p-6 md:p-8 focus:outline-none"
+                  className="bg-surface rounded-2xl  border border-cookie-200 p-6 md:p-8 focus:outline-none"
                 >
                   <MealPlanTab />
                 </section>
@@ -224,7 +219,7 @@ export default function SettingsPage() {
                   id="tabpanel-appointments"
                   role="tabpanel"
                   tabIndex={0}
-                  className="bg-white rounded-2xl shadow-md p-6 md:p-8 focus:outline-none"
+                  className="bg-surface rounded-2xl  border border-cookie-200 p-6 md:p-8 focus:outline-none"
                 >
                   <AppointmentsTab />
                 </section>

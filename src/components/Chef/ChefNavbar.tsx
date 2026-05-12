@@ -14,7 +14,7 @@ const ChefNavbar = () => {
     },
   ];
 
-  return <BaseNavbar links={links} bg="bg-cookie-200" />;
+  return <BaseNavbar links={links} />;
 };
 
 export default ChefNavbar;

@@ -26,7 +26,7 @@ const MEAL_ORDER: MealType[] = [
 
 const MealPlanTab: React.FC = () => {
   const { t, i18n } = useTranslation('common');
-  const { data, loading } = useMyMealPlanQuery();
+  const { data } = useMyMealPlanQuery();
   const isEl = i18n.language === 'el';
   const [openDay, setOpenDay] = useState<string | null>(null);
 
@@ -42,14 +42,10 @@ const MealPlanTab: React.FC = () => {
     return map;
   }, [plan]);
 
-  if (loading) {
-    return <p className="text-sm text-gray-400">{t('common.loading')}</p>;
-  }
-
   if (plan.length === 0) {
     return (
       <div className="py-12 text-center">
-        <p className="text-sm text-gray-400">{t('settings.noMealPlan')}</p>
+        <p className="text-sm text-myText-muted">{t('settings.noMealPlan')}</p>
       </div>
     );
   }
@@ -58,7 +54,7 @@ const MealPlanTab: React.FC = () => {
     <div className="flex flex-col gap-10">
       {[...byNutritionist.entries()].map(([nutrName, entries]) => (
         <div key={nutrName}>
-          <p className="mb-3 text-sm font-semibold text-myBlue-200">
+          <p className="mb-3 text-sm font-semibold text-nutr-200">
             {t('settings.mealPlanBy')} {nutrName}
           </p>
 
@@ -76,16 +72,16 @@ const MealPlanTab: React.FC = () => {
               return (
                 <div
                   key={day}
-                  className="overflow-hidden rounded-2xl bg-myBlue-100"
+                  className="overflow-hidden rounded-2xl bg-cookie-100"
                   style={{
                     border: isOpen
-                      ? '1.5px solid #377CC3'
+                      ? '1.5px solid #C9955A'
                       : '1.5px solid transparent',
                   }}
                 >
                   <button
                     onClick={() => setOpenDay(isOpen ? null : key)}
-                    className="flex w-full items-center justify-between px-5 py-3.5 text-sm font-bold text-myGrey-200 transition"
+                    className="flex w-full items-center justify-between px-5 py-3.5 text-sm font-bold transition"
                   >
                     <span className="capitalize">{t(`day.${day}`)}</span>
                     <svg
@@ -108,7 +104,7 @@ const MealPlanTab: React.FC = () => {
                   </button>
 
                   {isOpen && (
-                    <div className="flex flex-col divide-y divide-myGrey-100 px-5 pb-4">
+                    <div className="flex flex-col divide-y divide-cookie-200 px-5 pb-4">
                       {MEAL_ORDER.map((mealType) => {
                         const entry = entries.find(
                           (e) => e.day === day && e.mealType === mealType,
@@ -120,12 +116,10 @@ const MealPlanTab: React.FC = () => {
 
                         return (
                           <div key={mealType} className="flex gap-4 py-3">
-                            <span className="w-28 flex-shrink-0 text-xs font-semibold capitalize text-myBlue-200">
+                            <span className="w-28 flex-shrink-0 text-xs font-semibold capitalize text-nutr-200">
                               {t(`meal.${mealType}`)}
                             </span>
-                            <p className="text-xs leading-relaxed text-myGrey-200">
-                              {comment}
-                            </p>
+                            <p className="text-xs leading-relaxed">{comment}</p>
                           </div>
                         );
                       })}

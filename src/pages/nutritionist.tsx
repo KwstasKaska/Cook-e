@@ -3,7 +3,6 @@ import NutrNavbar from '../components/Nutritionist/NutrNavbar';
 import CalendarC from '../components/Nutritionist/CalendarC';
 import NutrAppointments from '../components/Nutritionist/NutrAppointments';
 import { DateContext } from '../components/Context';
-import NutrScheduler from '../components/Nutritionist/NutrScheduler';
 import { GetServerSidePropsContext, NextPage } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
@@ -56,7 +55,6 @@ const Nutritionist: NextPage = () => {
           </section>
 
           <NutrAppointments />
-          <NutrScheduler />
         </DateContext.Provider>
       </main>
     </React.Fragment>

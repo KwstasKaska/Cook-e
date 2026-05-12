@@ -461,7 +461,7 @@
     "title": "Create an account",
     "subtitle": "A culinary delight awaits you!  Complete your registration.",
     "login_button": "Login",
-    "username_placeholder": "Full name",
+    "username_placeholder": "Username",
     "email_placeholder": "Email",
     "password_placeholder": "Password",
     "role_label": "Role:",

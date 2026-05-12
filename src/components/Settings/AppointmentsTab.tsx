@@ -16,8 +16,8 @@ const toDisplay = (isoDate: string, locale: Locale): string => {
 };
 
 const statusStyle: Record<AppointmentStatus, string> = {
-  [AppointmentStatus.Accepted]: 'bg-green-100 text-green-700',
-  [AppointmentStatus.Pending]: 'bg-myBlue-100 text-myBlue-200',
+  [AppointmentStatus.Accepted]: 'bg-herb-100 text-herb-200',
+  [AppointmentStatus.Pending]: 'bg-cookie-100 text-cookie-400',
   [AppointmentStatus.Rejected]: 'bg-red-100 text-myRed',
 };
 
@@ -33,13 +33,15 @@ const AppointmentsTab: React.FC = () => {
   const paginated = all.slice(page * LIMIT, page * LIMIT + LIMIT);
 
   if (loading) {
-    return <p className="text-sm text-gray-400">{t('common.loading')}</p>;
+    return <p className="text-sm text-myText-muted">{t('common.loading')}</p>;
   }
 
   if (all.length === 0) {
     return (
       <div className="py-12 text-center">
-        <p className="text-sm text-gray-400">{t('settings.noAppointments')}</p>
+        <p className="text-sm text-myText-muted">
+          {t('settings.noAppointments')}
+        </p>
       </div>
     );
   }
@@ -56,7 +58,7 @@ const AppointmentsTab: React.FC = () => {
         return (
           <div
             key={req.id}
-            className="flex flex-col gap-2 overflow-hidden rounded-2xl border-2 border-myGrey-100 px-4 py-4 sm:flex-row sm:items-center sm:justify-between"
+            className="flex flex-col gap-2 overflow-hidden rounded-2xl border-2 border-cookie-200 px-4 py-4 sm:flex-row sm:items-center sm:justify-between"
           >
             <div className="flex min-w-0 items-center gap-3">
               {nutr?.image ? (
@@ -66,13 +68,13 @@ const AppointmentsTab: React.FC = () => {
                   className="h-10 w-10 flex-shrink-0 rounded-full object-cover"
                 />
               ) : (
-                <div className="h-10 w-10 flex-shrink-0 rounded-full bg-myBlue-100" />
+                <div className="h-10 w-10 flex-shrink-0 rounded-full bg-cookie-200" />
               )}
               <div className="min-w-0">
                 <p className="truncate text-sm font-bold">
                   {nutr?.username ?? '—'}
                 </p>
-                <p className="truncate text-xs text-gray-500">
+                <p className="truncate text-xs text-myText-muted">
                   {date} · {time}
                 </p>
               </div>

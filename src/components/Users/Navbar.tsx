@@ -16,7 +16,7 @@ const Navbar = () => {
     { kind: 'href', href: '/user/cart', label: t('nav.cart') },
   ];
 
-  return <BaseNavbar links={links} bg="bg-cookie-200" />;
+  return <BaseNavbar links={links} />;
 };
 
 export default Navbar;
