@@ -32,7 +32,7 @@
     "noCookedYet": "You haven't cooked any recipes yet.",
     "noRatingsCta": "Browse recipes",
     "nutritionTitle": "Nutritional indo of the week",
-    "nutritionDesc": "This chart contains nutritional info from every recipe you've logged as cooked in the last week. Open any recipe and tap the cooked icon to log it.",
+    "nutritionDesc": "This chart contains the summary of the nutritional info from every recipe you've logged as cooked in the last week from the equivalent field inside their page.",
 
     "weeklyRecipesTitle": "Top rated recipes this week",
     "weeklyRecipesDesc1": "These are the recipes the community has rated highest in the last 7 days."
@@ -451,7 +451,9 @@
     "save": "Save",
     "saving": "Saving...",
     "next": "Next",
-    "prev": "Previous"
+    "prev": "Previous",
+    "seeAll": "All",
+    "seeAll2": "All"
   },
   "register": {
     "title": "Create an account",

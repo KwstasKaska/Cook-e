@@ -8,8 +8,6 @@ import PersonalTab from '../components/Settings/PersonalTab';
 import SecurityTab from '../components/Settings/SecurityTab';
 import ChefProfileTab from '../components/Settings/ChefProfileTab';
 import NutritionistProfileTab from '../components/Settings/NutritionistProfileTab';
-import MealPlanTab from '../components/Settings/MealPlanTab';
-import AppointmentsTab from '../components/Settings/AppointmentsTab';
 import ChefNavbar from '../components/Chef/ChefNavbar';
 import NutrNavbar from '../components/Nutritionist/NutrNavbar';
 import { useDeleteUserMutation } from '../generated/graphql';
@@ -49,8 +47,6 @@ const TABS: Tab[] = [
     labelKey: 'settings.nutritionistProfile',
     roles: ['NUTRITIONIST'],
   },
-  { key: 'meal-plan', labelKey: 'settings.mealPlan', roles: ['USER'] },
-  { key: 'appointments', labelKey: 'settings.appointments', roles: ['USER'] },
 ];
 
 export async function getServerSideProps({ locale }: { locale: string }) {
@@ -202,26 +198,6 @@ export default function SettingsPage() {
                   className="bg-surface rounded-2xl  border border-cookie-200 p-6 md:p-8 focus:outline-none"
                 >
                   <NutritionistProfileTab />
-                </section>
-              )}
-              {activeTab === 'meal-plan' && (
-                <section
-                  id="tabpanel-meal-plan"
-                  role="tabpanel"
-                  tabIndex={0}
-                  className="bg-surface rounded-2xl  border border-cookie-200 p-6 md:p-8 focus:outline-none"
-                >
-                  <MealPlanTab />
-                </section>
-              )}
-              {activeTab === 'appointments' && (
-                <section
-                  id="tabpanel-appointments"
-                  role="tabpanel"
-                  tabIndex={0}
-                  className="bg-surface rounded-2xl  border border-cookie-200 p-6 md:p-8 focus:outline-none"
-                >
-                  <AppointmentsTab />
                 </section>
               )}
             </main>
