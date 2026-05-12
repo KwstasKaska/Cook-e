@@ -58,24 +58,24 @@ export default function IngredientStep({
   };
 
   return (
-    <div className="min-h-screen bg-myGrey-200">
+    <div className="min-h-screen">
       <div className="max-w-3xl lg:max-w-5xl mx-auto px-6 pt-10 pb-24">
         {loading ? (
           <div className="flex justify-center py-16">
-            <div className="h-8 w-8 animate-spin rounded-full border-4 border-myBlue-200 border-t-transparent" />
+            <div className="h-8 w-8 animate-spin rounded-full border-4 border-cookie-300 border-t-transparent" />
           </div>
         ) : (
           <>
             <div className="flex items-center gap-3 mb-6">
               <button
                 onClick={onBack}
-                className="flex h-7 bg-myGrey-100  w-7 items-center justify-center rounded-full transition"
+                className="flex h-7 w-7 items-center justify-center rounded-full bg-cookie-200 transition"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
                   fill="currentColor"
-                  className="h-4 w-4"
+                  className="h-4 w-4 text-myText-heading"
                 >
                   <path
                     fillRule="evenodd"
@@ -84,9 +84,7 @@ export default function IngredientStep({
                   />
                 </svg>
               </button>
-              <h2 className="text-xl  font-bold text-white ">
-                {t('ingredientCategories.title')}
-              </h2>
+              <h2 className=" ">{t('ingredientCategories.title')}</h2>
             </div>
 
             <div className="flex flex-col gap-2">
@@ -97,16 +95,16 @@ export default function IngredientStep({
                 return (
                   <div
                     key={catName}
-                    className="rounded-2xl  bg-myBlue-100 overflow-hidden"
+                    className="rounded-2xl bg-surface overflow-hidden"
                     style={{
                       border: isOpen
-                        ? '1.5px solid #377CC3'
+                        ? '1.5px solid #C9955A'
                         : '1.5px solid transparent',
                     }}
                   >
                     <button
                       onClick={() => setOpenCat(isOpen ? null : catName)}
-                      className="w-full flex items-center justify-between px-5 py-3.5 text-sm font-bold text-myGrey-200 transition"
+                      className="w-full flex items-center justify-between px-5 py-3.5 transition"
                     >
                       <span>{getCatLabel(catName)}</span>
                       <svg
@@ -140,20 +138,14 @@ export default function IngredientStep({
                                 onToggle(item.id);
                                 setError(null);
                               }}
-                              className="rounded-xl px-4 py-3 cursor-pointer transition"
-                              style={{
-                                backgroundColor: sel ? '#377CC3' : '#323c4a',
-                              }}
+                              className={`rounded-xl px-4 py-3 cursor-pointer transition ${
+                                sel ? 'bg-cookie-200' : 'bg-cookie-100'
+                              }`}
                             >
-                              <p className="text-sm font-bold text-white truncate">
-                                {name}
-                              </p>
+                              <p className="  truncate">{name}</p>
                               {item.caloriesPer100g != null &&
                                 item.caloriesPer100g > 0 && (
-                                  <p
-                                    className="text-xs mt-0.5"
-                                    style={{ color: 'rgba(255,255,255,0.45)' }}
-                                  >
+                                  <p className=" mt-0.5 text-myText-muted">
                                     {item.caloriesPer100g} Kcal/100g
                                   </p>
                                 )}
@@ -169,9 +161,9 @@ export default function IngredientStep({
 
             <div className="text-center mt-6 mb-4 min-h-[1.5rem]">
               {error ? (
-                <p className="text-sm font-medium text-myRed">{error}</p>
+                <p className=" font-medium text-myRed">{error}</p>
               ) : selectedIds.length > 0 ? (
-                <p className="text-sm text-myBlue-100">
+                <p className=" text-myText-muted">
                   {selectedIds.length} {t('recipes.selectedIngredients')}
                 </p>
               ) : null}
@@ -180,7 +172,7 @@ export default function IngredientStep({
             <div className="flex justify-center">
               <button
                 onClick={handleNext}
-                className="rounded-full px-12 py-3 text-sm font-bold text-gray-800 transition bg-myYellow hover:scale-105"
+                className="rounded-xl border-2  px-8 py-2.5  text-cookie-400 shadow-xl border-cookie-400 transition-transform hover:text-white hover:bg-cookie-400"
               >
                 {t('recipes.next')}
               </button>

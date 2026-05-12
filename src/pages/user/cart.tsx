@@ -31,13 +31,13 @@ export default function CartPage() {
   return <CartContent isEl={isEl} t={t} />;
 }
 
-function CartContent({
+const CartContent = ({
   isEl,
   t,
 }: {
   isEl: boolean;
   t: ReturnType<typeof useTranslation>['t'];
-}) {
+}) => {
   const [checkedIds, setCheckedIds] = useState<Set<number>>(new Set());
   const [openCategory, setOpenCategory] = useState<string | null>(null);
 
@@ -106,22 +106,20 @@ function CartContent({
   const checkedCount = checkedIds.size;
 
   return (
-    <div className="min-h-screen bg-myGrey-200">
+    <div className="min-h-screen">
       <Navbar />
 
       <div className="relative min-h-screen">
         <div className="relative z-10 max-w-2xl mx-auto px-6 pt-14 pb-24">
-          <h2 className="text-white text-3xl md:text-4xl font-bold text-center mb-1">
-            {t('cart.title')}
-          </h2>
+          <h2 className="text-center mb-1">{t('cart.title')}</h2>
 
           {loading ? (
             <div className="flex justify-center py-16">
-              <div className="h-8 w-8 animate-spin rounded-full border-4 border-myBlue-200 border-t-transparent" />
+              <div className="h-8 w-8 animate-spin rounded-full border-2 border-cookie-300 border-t-transparent" />
             </div>
           ) : items.length === 0 ? (
-            <div className="rounded-2xl border-2 border-dashed border-gray-500 p-10 text-center mb-6">
-              <p className="text-gray-400">{t('cart.emptyCart')}</p>
+            <div className="rounded-2xl border-2  border-cookie-400 p-10 text-center mb-6">
+              <p className="text-myText-muted">{t('cart.emptyCart')}</p>
             </div>
           ) : (
             <>
@@ -135,21 +133,19 @@ function CartContent({
                   return (
                     <div
                       key={item.id}
-                      className="flex items-center gap-3 rounded-2xl border-2 px-3 py-3 bg-white transition"
+                      className="flex items-center gap-3 rounded-2xl  px-3 py-3 bg-surface transition"
                       style={{
-                        borderColor: isChecked ? '#B3D5F8' : '#EAEAEA',
-                        backgroundColor: isChecked
-                          ? 'rgba(179,213,248,0.15)'
-                          : 'white',
+                        borderColor: isChecked ? '#C9955A' : '#EDD4B0',
+                        backgroundColor: isChecked ? '#F7EDE0' : undefined,
                       }}
                     >
                       <button
                         onClick={() => toggleChecked(item.id)}
                         className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded border-2 transition"
                         style={{
-                          borderColor: isChecked ? '#377CC3' : '#3F4756',
+                          borderColor: isChecked ? '#C9955A' : '#9C9080',
                           backgroundColor: isChecked
-                            ? '#377CC3'
+                            ? '#C9955A'
                             : 'transparent',
                         }}
                       >
@@ -171,9 +167,9 @@ function CartContent({
                       </button>
 
                       <p
-                        className="flex-1 min-w-0 truncate text-sm font-bold md:text-base"
+                        className="flex-1 min-w-0 truncate "
                         style={{
-                          color: isChecked ? '#9CA3AF' : '#3F4756',
+                          color: isChecked ? '#9C9080' : '#3D3529',
                           textDecoration: isChecked ? 'line-through' : 'none',
                         }}
                       >
@@ -182,7 +178,7 @@ function CartContent({
 
                       <button
                         onClick={() => handleRemove(item.id)}
-                        className="flex-shrink-0 text-gray-300 transition hover:text-red-400"
+                        className="flex-shrink-0 text-myText-muted transition hover:text-myRed"
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -202,30 +198,18 @@ function CartContent({
                 })}
               </div>
 
-              <div className="mt-6 flex border-myGrey-100 items-center justify-between border-t-2 pt-5">
-                <p className="text-sm text-gray-400">
+              <div className="mt-6 flex border-cookie-400 items-center justify-between border-t-2 pt-5">
+                <p className="text-myText-muted">
                   {checkedCount}/{items.length} {t('cart.items')}
                 </p>
                 <button
                   onClick={handleClearChecked}
                   disabled={checkedCount === 0}
-                  className="rounded-full border-2 px-5 py-2 text-sm font-bold transition"
-                  style={{
-                    borderColor: checkedCount > 0 ? '#ED5B5B' : '#EAEAEA',
-                    color: checkedCount > 0 ? '#ED5B5B' : '#9CA3AF',
-                    cursor: checkedCount > 0 ? 'pointer' : 'not-allowed',
-                  }}
-                  onMouseEnter={(e) => {
-                    if (checkedCount > 0) {
-                      e.currentTarget.style.backgroundColor = '#ED5B5B';
-                      e.currentTarget.style.color = 'white';
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = 'transparent';
-                    e.currentTarget.style.color =
-                      checkedCount > 0 ? '#ED5B5B' : '#9CA3AF';
-                  }}
+                  className={`rounded-full border-2 px-5 py-2  transition ${
+                    checkedCount > 0
+                      ? 'border-myRed text-myRed hover:bg-myRed hover:text-white cursor-pointer'
+                      : 'border-cookie-400 text-myText-muted cursor-not-allowed'
+                  }`}
                 >
                   {t('cart.clearSelected')}
                 </button>
@@ -234,9 +218,7 @@ function CartContent({
           )}
 
           <div className="mt-10">
-            <h3 className="text-white text-xl font-bold mb-4">
-              {t('cart.browseIngredients')}
-            </h3>
+            <h3 className="mb-4">{t('cart.browseIngredients')}</h3>
 
             {[...ingredientsByCategory.entries()].map(([category, ings]) => {
               const isOpen = openCategory === category;
@@ -245,16 +227,14 @@ function CartContent({
                 <div key={category} className="mb-2">
                   <button
                     onClick={() => setOpenCategory(isOpen ? null : category)}
-                    className="w-full flex items-center justify-between rounded-2xl bg-myBlue-100  px-4 py-3 text-left "
+                    className="w-full flex items-center justify-between rounded-2xl bg-surface px-4 py-3 text-left"
                   >
-                    <span className="text-sm font-bold text-myGrey-200">
-                      {category}
-                    </span>
+                    <span className="">{category}</span>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24"
                       fill="currentColor"
-                      className="h-4 w-4 text-gray-300 transition-transform"
+                      className="h-4 w-4 text-myText-muted transition-transform"
                       style={{
                         transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
                       }}
@@ -278,21 +258,19 @@ function CartContent({
                             key={ing.id}
                             onClick={() => !alreadyIn && handleAdd(ing.id)}
                             disabled={alreadyIn}
-                            className="flex items-center justify-between rounded-xl bg-white px-3 py-2.5 text-left text-sm transition"
+                            className="flex items-center justify-between rounded-xl bg-surface  px-3 py-2.5 text-left transition"
                             style={{
                               opacity: alreadyIn ? 0.45 : 1,
                               cursor: alreadyIn ? 'default' : 'pointer',
                             }}
                           >
-                            <span className="font-semibold text-myGrey-200 truncate">
-                              {name}
-                            </span>
+                            <span className=" truncate">{name}</span>
                             {!alreadyIn && (
                               <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 viewBox="0 0 24 24"
                                 fill="currentColor"
-                                className="h-4 w-4 flex-shrink-0 ml-2 text-myBlue-200"
+                                className="h-4 w-4 flex-shrink-0 ml-2 text-cookie-300"
                               >
                                 <path
                                   fillRule="evenodd"
@@ -316,4 +294,4 @@ function CartContent({
       <ScrollToTopButton />
     </div>
   );
-}
+};

@@ -119,7 +119,7 @@
     "extraEquipment": "Extra Equipment"
   },
   "cart": {
-    "title": "My ingredients list",
+    "title": "My ingredients list for supermarket",
     "addIngredient": "Add ingredient...",
     "items": "ingredients",
     "clearSelected": "Clear selected",

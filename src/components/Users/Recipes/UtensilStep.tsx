@@ -53,24 +53,24 @@ export default function UtensilStep({
   const categoryKeys = useMemo(() => Array.from(grouped.keys()), [grouped]);
 
   return (
-    <div className="min-h-screen bg-myGrey-200">
+    <div className="min-h-screen">
       <div className="max-w-3xl lg:max-w-5xl mx-auto px-6 pt-10 pb-24">
         {loading ? (
           <div className="flex justify-center py-16">
-            <div className="h-8 w-8 animate-spin rounded-full border-4 border-myBlue-200 border-t-transparent" />
+            <div className="h-8 w-8 animate-spin rounded-full border-4 border-cookie-300 border-t-transparent" />
           </div>
         ) : (
           <>
             <div className="flex items-center gap-3 mb-6">
               <button
                 onClick={onBack}
-                className="flex h-7 w-7 bg-myGrey-100 items-center justify-center rounded-full transition"
+                className="flex h-7 w-7 items-center justify-center rounded-full bg-cookie-200 transition"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
                   fill="currentColor"
-                  className="h-4 w-4"
+                  className="h-4 w-4 text-myText-heading"
                 >
                   <path
                     fillRule="evenodd"
@@ -79,9 +79,7 @@ export default function UtensilStep({
                   />
                 </svg>
               </button>
-              <h2 className=" text-xl font-bold text-white">
-                {t('utensils.title')}
-              </h2>
+              <h2 className="text-xl ">{t('utensils.title')}</h2>
             </div>
 
             <div className="flex flex-col gap-2">
@@ -92,16 +90,16 @@ export default function UtensilStep({
                 return (
                   <div
                     key={catKey}
-                    className="rounded-2xl bg-myBlue-100 overflow-hidden"
+                    className="rounded-2xl bg-surface overflow-hidden"
                     style={{
                       border: isOpen
-                        ? '1.5px solid #377CC3'
+                        ? '1.5px solid #C9955A'
                         : '1.5px solid transparent',
                     }}
                   >
                     <button
                       onClick={() => setOpenCat(isOpen ? null : catKey)}
-                      className="w-full flex items-center justify-between px-5 py-3.5 text-sm font-bold text-myGrey-200 transition"
+                      className="w-full flex items-center justify-between px-5 py-3.5   transition"
                     >
                       <span>{getCatLabel(catKey)}</span>
                       <svg
@@ -132,14 +130,11 @@ export default function UtensilStep({
                             <div
                               key={u.id}
                               onClick={() => onToggle(u.id)}
-                              className="rounded-xl px-4 py-3 cursor-pointer transition"
-                              style={{
-                                backgroundColor: sel ? '#377CC3' : '#323c4a',
-                              }}
+                              className={`rounded-xl px-4 py-3 cursor-pointer transition ${
+                                sel ? 'bg-cookie-200' : 'bg-cookie-100'
+                              }`}
                             >
-                              <p className="text-sm font-bold text-white truncate">
-                                {name}
-                              </p>
+                              <p className="  truncate">{name}</p>
                             </div>
                           );
                         })}
@@ -153,7 +148,7 @@ export default function UtensilStep({
             <div className="flex justify-center mt-8">
               <button
                 onClick={onSearch}
-                className="rounded-full px-12 py-3 text-sm font-bold text-gray-800 transition hover:scale-105 bg-[#EAB308]"
+                className="rounded-xl border-2  px-8 py-2.5  text-cookie-400 shadow-xl border-cookie-400 transition-transform hover:text-white hover:bg-cookie-400"
               >
                 {t('recipes.search')}
               </button>

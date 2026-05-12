@@ -21,7 +21,7 @@ export default function ChatPage() {
   return <ChatList />;
 }
 
-function ChatList() {
+const ChatList = () => {
   const { t } = useTranslation('common');
   const { openConversation } = useChatContext();
 
@@ -41,24 +41,17 @@ function ChatList() {
     <div className="min-h-screen">
       <Navbar />
       <div className="relative z-10 mx-auto w-full max-w-5xl px-6 pb-20 pt-12">
-        <h1 className="mb-6 text-center text-2xl font-bold text-white md:text-3xl">
-          {t('chat.title')}
-        </h1>
+        <h1 className="mb-6 text-center ">{t('chat.title')}</h1>
 
         {loading ? (
           <div className="flex justify-center py-16">
-            <div className="h-8 w-8 animate-spin rounded-full border-4 border-myBlue-200 border-t-transparent" />
+            <div className="h-8 w-8 animate-spin rounded-2xl border-2 border-cookie-400" />
           </div>
         ) : (
           <div className="relative mx-auto md:px-8">
-            <div className="rounded-2xl bg-white px-4 pb-8 pt-2 shadow-lg">
-              <div className="flex justify-end pr-1 pb-1 pt-3">
-                <span className="text-sm text-gray-400">
-                  {users.length} {t('chat.usersCount')}
-                </span>
-              </div>
+            <div className="rounded-2xl bg-surface px-4 pb-8 pt-2 shadow-lg">
               {users.length === 0 ? (
-                <div className="py-12 text-center text-sm text-gray-400">
+                <div className="py-12 text-center  text-myText-muted">
                   {t('chat.noResults')}
                 </div>
               ) : (
@@ -78,7 +71,7 @@ function ChatList() {
                 <div className="mt-10 flex justify-center">
                   <button
                     onClick={handleLoadMore}
-                    className="rounded-full border border-myBlue-200 px-6 py-2 text-sm font-semibold text-myBlue-200 transition hover:bg-myBlue-200 hover:text-white"
+                    className="rounded-full border-2 border-cookie-400 px-6 py-2   text-cookie-400 transition hover:bg-cookie-400 hover:text-white"
                   >
                     {t('chat.loadMore')}
                   </button>
@@ -90,9 +83,9 @@ function ChatList() {
       </div>
     </div>
   );
-}
+};
 
-function UserCard({
+const UserCard = ({
   username,
   image,
   onClick,
@@ -100,32 +93,28 @@ function UserCard({
   username: string;
   image: string | null;
   onClick: () => void;
-}) {
-  return (
-    <div
-      className="relative cursor-pointer rounded-2xl border-2 border-black px-4 pb-4 pt-10 shadow-sm transition-transform duration-200 hover:scale-105"
-      onClick={onClick}
-    >
-      <div className="absolute -top-8 left-1/2 -translate-x-1/2">
-        {image ? (
-          <img
-            src={image}
-            alt={username}
-            className="h-16 w-16 rounded-full border-4 border-white object-cover shadow"
-          />
-        ) : (
-          <div className="flex h-16 w-16 items-center justify-center rounded-full border-4 border-white bg-myBlue-100 shadow">
-            <span className="text-xl font-bold text-white">
-              {username[0]?.toUpperCase() ?? '?'}
-            </span>
-          </div>
-        )}
-      </div>
-      <div className="text-center">
-        <p className="text-sm font-bold leading-tight text-gray-800">
-          {username}
-        </p>
-      </div>
+}) => (
+  <div
+    className="relative cursor-pointer rounded-2xl border-2 border-cookie-400 px-4 pb-4 pt-10 shadow-sm transition-transform duration-200 hover:scale-105"
+    onClick={onClick}
+  >
+    <div className="absolute -top-8 left-1/2 -translate-x-1/2">
+      {image ? (
+        <img
+          src={image}
+          alt={username}
+          className="h-16 w-16 rounded-full border-2 border-cookie-400 object-cover shadow"
+        />
+      ) : (
+        <div className="flex h-16 w-16 items-center justify-center rounded-full border-2 border-cookie-400 bg-cookie-200 shadow">
+          <span className="  text-myText-heading">
+            {username[0]?.toUpperCase() ?? '?'}
+          </span>
+        </div>
+      )}
     </div>
-  );
-}
+    <div className="text-center">
+      <p className="  leading-tight">{username}</p>
+    </div>
+  </div>
+);

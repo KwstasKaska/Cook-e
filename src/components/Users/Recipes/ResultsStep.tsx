@@ -35,10 +35,10 @@ const SuggestionCard = ({
   return (
     <div
       onClick={onClick}
-      className={`relative cursor-pointer rounded-2xl bg-white shadow-xl transition duration-300 hover:scale-105 ${topPad} px-6 pb-8 flex flex-col gap-3`}
+      className={`relative cursor-pointer rounded-2xl bg-surface shadow-xl transition duration-300 hover:scale-105 ${topPad} px-6 pb-8 flex flex-col gap-3`}
     >
       <div
-        className={`absolute left-1/2 -translate-x-1/2 ${imgTop} ${imgSize} overflow-hidden rounded-full border-4 border-white shadow-xl bg-gray-100`}
+        className={`absolute left-1/2 -translate-x-1/2 ${imgTop} ${imgSize} overflow-hidden rounded-full border-4 border-cookie-100 shadow-xl bg-cookie-100`}
       >
         <img
           src={recipe.recipeImage!}
@@ -47,26 +47,26 @@ const SuggestionCard = ({
         />
       </div>
 
-      <h3 className="text-center text-lg font-bold text-gray-800">{title}</h3>
+      <h3 className="text-center text-lg font-bold">{title}</h3>
 
       {recipe.difficulty && (
-        <p className="text-sm text-gray-600">{recipe.difficulty}</p>
+        <p className="text-sm text-myText-muted">{recipe.difficulty}</p>
       )}
 
       {recipe.author?.user?.username && (
-        <p className="mt-auto pt-4 text-sm text-gray-600">
+        <p className="mt-auto pt-4 text-sm text-myText-muted">
           {t('recipes.by')} {recipe.author.user.username}
         </p>
       )}
 
       {suggestion.missingCount > 0 && (
-        <p className="text-xs text-orange-500 font-semibold">
+        <p className="text-xs text-myYellow font-semibold">
           -{suggestion.missingCount} {t('recipes.missingIngredients')}
         </p>
       )}
 
       {suggestion.missingUtensils.length > 0 && (
-        <p className="text-xs text-red-400 font-semibold">
+        <p className="text-xs text-myRed font-semibold">
           {t('recipes.missingUtensils')}:{' '}
           {suggestion.missingUtensils
             .map((u) => (isEl ? u.name_el : u.name_en))
@@ -99,7 +99,7 @@ export default function ResultsStep({
       <div className="max-w-5xl mx-auto px-6 pt-10 pb-20">
         <button
           onClick={onBack}
-          className="flex items-center gap-2 text-sm font-bold mb-8 transition hover:opacity-80 text-myYellow"
+          className="flex items-center gap-2 text-sm font-bold mb-8 transition hover:opacity-80 text-cookie-300"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -116,16 +116,18 @@ export default function ResultsStep({
           {t('recipes.backToSearch')}
         </button>
 
-        <h2 className="text-center text-2xl font-bold text-white mb-24">
+        <h2 className="text-center text-2xl font-bold mb-24">
           {t('recipes.resultsTitle')}
         </h2>
 
         {loading ? (
           <div className="flex justify-center py-16">
-            <div className="h-10 w-10 animate-spin rounded-full border-4 border-white border-t-transparent" />
+            <div className="h-10 w-10 animate-spin rounded-full border-4 border-cookie-300 border-t-transparent" />
           </div>
         ) : suggestions.length === 0 ? (
-          <p className="text-center text-white">{t('recipes.noResults')}</p>
+          <p className="text-center text-myText-muted">
+            {t('recipes.noResults')}
+          </p>
         ) : (
           <>
             <div className="flex flex-col gap-16 md:hidden">
@@ -156,7 +158,7 @@ export default function ResultsStep({
         <div className="mt-16 flex justify-center">
           <button
             onClick={onSearch}
-            className="rounded-full border-2 bg-gray-500 border-white px-8 py-2 text-sm font-bold text-white transition hover:bg-white hover:text-gray-800"
+            className="rounded-xl border-2  px-8 py-2.5  text-cookie-400 shadow-xl border-cookie-400 transition-transform hover:text-white hover:bg-cookie-400"
           >
             {t('recipes.newSearch')}
           </button>

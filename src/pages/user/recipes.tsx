@@ -9,14 +9,11 @@ import ResultsStep from '../../components/Users/Recipes/ResultsStep';
 import {
   useIngredientsQuery,
   useUtensilsQuery,
-  useMyFavoritesQuery,
   useSuggestedRecipesQuery,
 } from '../../generated/graphql';
 import useIsUser from '../../utils/useIsUser';
 
 type Step = 'home' | 'ingredients' | 'utensils' | 'results';
-
-const FAV_LIMIT = 4;
 
 export async function getServerSideProps({ locale }: { locale: string }) {
   return {
@@ -32,7 +29,7 @@ export default function RecipesPage() {
   return <RecipesContent />;
 }
 
-function RecipesContent() {
+const RecipesContent = () => {
   const router = useRouter();
   const isEl = router.locale === 'el';
 
@@ -41,18 +38,11 @@ function RecipesContent() {
     [],
   );
   const [selectedUtensilIds, setSelectedUtensilIds] = useState<number[]>([]);
-  const [favOffset, setFavOffset] = useState(0);
 
-  // ── Queries
   const { data: ingredientsData, loading: ingredientsLoading } =
     useIngredientsQuery({ fetchPolicy: 'network-only' });
 
   const { data: utensilsData, loading: utensilsLoading } = useUtensilsQuery({
-    fetchPolicy: 'network-only',
-  });
-
-  const { data: favData, loading: favLoading } = useMyFavoritesQuery({
-    variables: { limit: FAV_LIMIT, offset: favOffset },
     fetchPolicy: 'network-only',
   });
 
@@ -69,11 +59,7 @@ function RecipesContent() {
 
   const allIngredients = ingredientsData?.ingredients ?? [];
   const allUtensils = utensilsData?.utensils ?? [];
-  const favorites = favData?.myFavorites ?? [];
   const suggestions = suggestedData?.suggestedRecipes ?? [];
-
-  const hasMore = favorites.length === FAV_LIMIT;
-  const hasPrev = favOffset > 0;
 
   const ingredientsByCategory = useMemo(() => {
     const map = new Map<string, typeof allIngredients>();
@@ -106,17 +92,7 @@ function RecipesContent() {
       <Navbar />
 
       {step === 'home' && (
-        <HomeStep
-          favorites={favorites}
-          favLoading={favLoading}
-          hasPrev={hasPrev}
-          hasMore={hasMore && favorites.length > 0}
-          onPrev={() => setFavOffset((o) => o - FAV_LIMIT)}
-          onNext={() => setFavOffset((o) => o + FAV_LIMIT)}
-          onStartPicker={() => setStep('ingredients')}
-          onSelectRecipe={goToDetail}
-          isEl={isEl}
-        />
+        <HomeStep onStartPicker={() => setStep('ingredients')} isEl={isEl} />
       )}
 
       {step === 'ingredients' && (
@@ -156,4 +132,4 @@ function RecipesContent() {
       )}
     </div>
   );
-}
+};
