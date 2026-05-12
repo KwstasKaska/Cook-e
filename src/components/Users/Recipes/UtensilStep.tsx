@@ -130,8 +130,8 @@ export default function UtensilStep({
                             <div
                               key={u.id}
                               onClick={() => onToggle(u.id)}
-                              className={`rounded-xl px-4 py-3 cursor-pointer transition ${
-                                sel ? 'bg-cookie-200' : 'bg-cookie-100'
+                              className={`rounded-xl border border-cookie-400 px-4 py-3 cursor-pointer transition ${
+                                sel ? 'bg-cookie-200' : 'bg-surface'
                               }`}
                             >
                               <p className="  truncate">{name}</p>
