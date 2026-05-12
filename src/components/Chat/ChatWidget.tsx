@@ -172,7 +172,7 @@ export default function ChatWidget({ currentUserId }: ChatWidgetProps) {
               </svg>
             </button>
           )}
-          <span className="text-sm font-medium">
+          <span className=" ">
             {view === 'inbox'
               ? t('messages', 'Messages')
               : thread && !threadLoading
@@ -201,17 +201,15 @@ export default function ChatWidget({ currentUserId }: ChatWidgetProps) {
       {view === 'inbox' && (
         <div className="flex-1 overflow-y-auto divide-y divide-gray-100">
           {startError && (
-            <p className="text-xs text-red-500 text-center px-3 py-2">
-              {startError}
-            </p>
+            <p className=" text-red-500 text-center px-3 py-2">{startError}</p>
           )}
           {inboxLoading && (
-            <p className="text-xs text-gray-400 text-center py-6">Loading...</p>
+            <p className=" text-gray-400 text-center py-6">Loading...</p>
           )}
           {!inboxLoading &&
             !inboxData?.myConversations?.length &&
             !startError && (
-              <p className="text-xs text-gray-400 text-center py-6">
+              <p className=" text-gray-400 text-center py-6">
                 {t('no_conversations', 'No conversations yet.')}
               </p>
             )}
@@ -231,14 +229,12 @@ export default function ChatWidget({ currentUserId }: ChatWidgetProps) {
                       className="w-full h-full object-cover"
                     />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center text-sm font-medium text-gray-500">
+                    <div className="w-full h-full flex items-center justify-center   text-gray-500">
                       {other.username[0].toUpperCase()}
                     </div>
                   )}
                 </div>
-                <p className="text-sm font-medium text-gray-800 truncate">
-                  {other.username}
-                </p>
+                <p className="  text-gray-800 truncate">{other.username}</p>
               </button>
             );
           })}
@@ -247,7 +243,7 @@ export default function ChatWidget({ currentUserId }: ChatWidgetProps) {
 
       {view === 'thread' && starting && (
         <div className="flex-1 flex items-center justify-center">
-          <p className="text-xs text-gray-400">Άνοιγμα συνομιλίας...</p>
+          <p className=" text-gray-400">Άνοιγμα συνομιλίας...</p>
         </div>
       )}
 
@@ -255,9 +251,7 @@ export default function ChatWidget({ currentUserId }: ChatWidgetProps) {
         <>
           <div className="flex-1 overflow-y-auto px-3 py-2 space-y-2">
             {threadLoading && (
-              <p className="text-xs text-gray-400 text-center py-4">
-                Loading...
-              </p>
+              <p className=" text-gray-400 text-center py-4">Loading...</p>
             )}
             {thread?.messages?.map((msg) => {
               const isMine = msg.senderId === currentUserId;
@@ -267,7 +261,7 @@ export default function ChatWidget({ currentUserId }: ChatWidgetProps) {
                   className={`flex ${isMine ? 'justify-end' : 'justify-start'}`}
                 >
                   <div
-                    className={`max-w-[70%] px-3 py-2 rounded-2xl text-sm break-words ${
+                    className={`max-w-[70%] px-3 py-2 rounded-2xl  break-words ${
                       isMine
                         ? 'bg-blue-600 text-white rounded-br-sm'
                         : 'bg-gray-100 text-gray-800 rounded-bl-sm'
@@ -281,9 +275,7 @@ export default function ChatWidget({ currentUserId }: ChatWidgetProps) {
             <div ref={messagesEndRef} />
           </div>
 
-          {sendError && (
-            <p className="text-xs text-red-500 px-3 pb-1">{sendError}</p>
-          )}
+          {sendError && <p className=" text-red-500 px-3 pb-1">{sendError}</p>}
 
           <div className="border-t border-gray-200 px-3 py-2 flex items-end gap-2 flex-shrink-0">
             <textarea
@@ -292,7 +284,7 @@ export default function ChatWidget({ currentUserId }: ChatWidgetProps) {
               onKeyDown={handleKeyDown}
               placeholder={t('type_message', 'Type a message…')}
               rows={1}
-              className="flex-1 resize-none text-sm border border-gray-200 rounded-lg px-2 py-1.5 focus:outline-none focus:border-blue-400"
+              className="flex-1 resize-none  border border-gray-200 rounded-lg px-2 py-1.5 focus:outline-none focus:border-blue-400"
             />
             <button
               onClick={handleSend}

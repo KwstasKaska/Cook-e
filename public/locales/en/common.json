@@ -30,8 +30,6 @@
     "startCooking": "Start cooking!",
     "minutes": "minutes",
     "noCookedYet": "You haven't cooked any recipes yet.",
-    "noRatingsTitle": "No ratings this week",
-    "noRatingsDesc": "The community hasn't rated any recipes in the last 7 days. Try a recipe and leave your review!",
     "noRatingsCta": "Browse recipes",
     "nutritionTitle": "Your nutrition this week",
     "nutritionDesc": "This chart tracks calories, fat, protein and carbs from every recipe you've logged as cooked in the last week. Open any recipe and tap the 'cooked' icon to log it.",
@@ -327,8 +325,8 @@
       "article_submit": "Publish article"
     },
     "rating": {
-      "title": "Member rating",
-      "reviews": "Member reviews",
+      "title": "Members ratings",
+      "reviews": "Members ratings",
       "stars_plural": "stars",
       "stars_singular": "star"
     },

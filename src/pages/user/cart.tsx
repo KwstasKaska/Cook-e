@@ -111,7 +111,7 @@ const CartContent = ({
 
       <div className="relative min-h-screen">
         <div className="relative z-10 max-w-2xl mx-auto px-6 pt-14 pb-24">
-          <h2 className="text-center mb-1">{t('cart.title')}</h2>
+          <h1 className="text-center mb-1">{t('cart.title')}</h1>
 
           {loading ? (
             <div className="flex justify-center py-16">

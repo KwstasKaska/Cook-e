@@ -142,7 +142,7 @@ const BaseNavbar = ({ links }: BaseNavbarProps) => {
       />
 
       {menuOpen && (
-        <div className="absolute bg-myText-base top-full left-0 w-full flex flex-col items-start px-6 py-4 gap-4 xl:hidden shadow-lg z-50">
+        <div className="absolute bg-cookie-200 top-full left-0 w-full flex flex-col items-start px-6 py-4 gap-4 xl:hidden shadow-lg z-50">
           {me && (
             <div className="flex items-center gap-2 pb-3 w-full">
               {me.image ? (
