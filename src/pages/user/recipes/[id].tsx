@@ -44,7 +44,7 @@ export default function RecipeDetailPage() {
   return <RecipeDetailContent />;
 }
 
-function RecipeDetailContent() {
+const RecipeDetailContent = () => {
   const { t, i18n } = useTranslation('common');
   const lang = i18n.language as 'el' | 'en';
   const router = useRouter();
@@ -197,7 +197,7 @@ function RecipeDetailContent() {
   if (recipeLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center">
-        <div className="h-10 w-10 animate-spin rounded-full border-4 border-myBlue-200 border-t-transparent" />
+        <div className="h-10 w-10 animate-spin rounded-full border-4 border-cookie-300 border-t-transparent" />
       </div>
     );
   }
@@ -205,7 +205,7 @@ function RecipeDetailContent() {
   if (!recipe) {
     return (
       <div className="flex min-h-screen items-center justify-center">
-        <p className="text-white">{t('chef.recipe_detail.not_found')}</p>
+        <p>{t('chef.recipe_detail.not_found')}</p>
       </div>
     );
   }
@@ -219,7 +219,7 @@ function RecipeDetailContent() {
             <div className="flex min-w-0 flex-col gap-6">
               <button
                 onClick={() => router.push('/user/recipes')}
-                className="flex w-fit items-center text-myYellow gap-2 text-sm font-bold transition hover:opacity-80"
+                className="flex w-fit items-center gap-2   text-myText-muted transition hover:opacity-80"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -238,39 +238,53 @@ function RecipeDetailContent() {
 
               <div className="relative min-w-0">
                 {recipe.category && (
-                  <p className="mb-2 text-base text-myYellow font-bold">
+                  <p className="mb-2">
                     {getCategoryLabel(recipe.category, lang)}
                   </p>
                 )}
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex flex-col gap-2">
-                    <h1 className="break-words text-3xl font-bold text-white md:text-4xl xl:text-5xl max-w-lg">
+                    <h1 className="max-w-lg break-words leading-tight">
                       {title}
                     </h1>
                     <ShareButton
+                      dark
                       url={
                         typeof window !== 'undefined'
                           ? window.location.href
                           : ''
                       }
                     />
+                    <button
+                      onClick={handleLogCooked}
+                      disabled={logging}
+                      className={`w-fit transition rounded-xl px-4 py-0.5 border-2 border-cookie-400 disabled:cursor-not-allowed disabled:opacity-50 ${
+                        cookedSuccess
+                          ? 'text-herb-200'
+                          : 'hover:text-white hover:bg-cookie-400'
+                      }`}
+                    >
+                      {cookedSuccess
+                        ? t('chef.recipe_detail.marked_as_cooked')
+                        : t('chef.recipe_detail.mark_as_cooked')}
+                    </button>
                   </div>
                   {recipe.recipeImage && (
-                    <div className="relative hidden h-48 w-48 flex-shrink-0 overflow-hidden rounded-full border-4 border-white shadow-xl md:block">
+                    <div className="relative hidden h-48 w-48 flex-shrink-0 overflow-hidden rounded-full border-4 border-surface shadow-xl md:block">
                       <img
                         src={recipe.recipeImage}
                         alt={title}
-                        className="w-full h-full object-cover"
+                        className="h-full w-full object-cover"
                       />
                     </div>
                   )}
                 </div>
                 {recipe.recipeImage && (
-                  <div className="relative mx-auto mt-4 h-40 w-40 overflow-hidden rounded-full border-4 border-white shadow-xl md:hidden">
+                  <div className="relative mx-auto mt-4 h-40 w-40 overflow-hidden rounded-full border-4 border-surface shadow-xl md:hidden">
                     <img
                       src={recipe.recipeImage}
                       alt={title}
-                      className="w-full h-full object-cover"
+                      className="h-full w-full object-cover"
                     />
                   </div>
                 )}
@@ -282,9 +296,7 @@ function RecipeDetailContent() {
 
               {ingredients.length > 0 && (
                 <div>
-                  <h2 className="mb-4 text-2xl font-bold text-white md:text-3xl">
-                    {t('ingredientCategories.title')}
-                  </h2>
+                  <h2 className="mb-4">{t('ingredientCategories.title')}</h2>
                   <div className="flex flex-col gap-2">
                     {ingredients.map((ri) => {
                       if (!ri.ingredient) return null;
@@ -304,13 +316,11 @@ function RecipeDetailContent() {
                             className="flex-shrink-0"
                           >
                             <span
-                              className="flex h-4 w-4 items-center justify-center rounded-full border-2 transition"
-                              style={{
-                                borderColor: isChecked ? '#EAB308' : '#6B7280',
-                                backgroundColor: isChecked
-                                  ? '#EAB308'
-                                  : 'transparent',
-                              }}
+                              className={`flex h-4 w-4 items-center justify-center rounded-full border-2 transition ${
+                                isChecked
+                                  ? 'border-cookie-300 bg-cookie-300'
+                                  : 'border-myText-muted'
+                              }`}
                             >
                               {isChecked && (
                                 <svg
@@ -328,37 +338,23 @@ function RecipeDetailContent() {
                               )}
                             </span>
                           </button>
-                          <span
-                            className=""
-                            style={{
-                              color: isChecked ? '#9CA3AF' : '#fff',
-                              textDecoration: isChecked
-                                ? 'line-through'
-                                : 'none',
-                            }}
-                          >
+                          <span className="flex-1">
                             {ri.quantity} {ri.unit} {name}
-                          </span>
-                          <button
-                            onClick={() => handleAddToCart(ingId)}
-                            className="transition"
-                            style={{ color: inCart ? '#EAB308' : '#6B7280' }}
-                          >
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              fill="none"
-                              viewBox="0 0 24 24"
-                              strokeWidth={1.5}
-                              stroke="white"
-                              className="h-4 w-4"
+                            <button
+                              onClick={() => handleAddToCart(ingId)}
+                              className={`ml-6 border px-4 py0.5 border-cookie-400 rounded-xl transition ${
+                                inCart
+                                  ? 'text-myYellow'
+                                  : 'hover:text-white hover:bg-cookie-400'
+                              }`}
                             >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"
-                              />
-                            </svg>
-                          </button>
+                              {inCart
+                                ? '✓'
+                                : isEl
+                                  ? 'Προσθήκη στη λίστα'
+                                  : 'Add to list'}
+                            </button>
+                          </span>
                         </div>
                       );
                     })}
@@ -368,19 +364,17 @@ function RecipeDetailContent() {
 
               {steps.length > 0 && (
                 <div>
-                  <h2 className="mb-6 text-2xl font-bold text-white md:text-3xl">
-                    {t('chef.recipe_detail.execution')}
-                  </h2>
+                  <h2 className="mb-6">{t('chef.recipe_detail.execution')}</h2>
                   <div className="flex flex-col gap-4">
                     {steps.map((step, i) => (
                       <div key={step.id} className="flex gap-4">
                         <div className="flex w-8 flex-shrink-0 flex-col items-center">
-                          <div className="flex h-6 w-6 items-center justify-center rounded-full bg-myYellow text-myGrey-200 text-xs font-bold">
+                          <div className="flex h-6 w-6 items-center justify-center rounded-full bg-cookie-300   text-white">
                             {i + 1}
                           </div>
                         </div>
                         <div className="flex-1 pb-2">
-                          <p className="text-sm text-white  md:text-base">
+                          <p className=" md:text-base">
                             {isEl ? step.body_el : step.body_en}
                           </p>
                         </div>
@@ -392,15 +386,14 @@ function RecipeDetailContent() {
 
               {utensils.length > 0 && (
                 <div>
-                  <h2 className="mb-4 text-2xl font-bold text-white md:text-3xl">
+                  <h2 className="mb-4">
                     {t('chef.create_recipe.utensils_label')}
                   </h2>
                   <div className="flex flex-wrap gap-2">
                     {utensils.map((u) => (
                       <span
                         key={u.id}
-                        className="rounded-full px-4 py-1.5 text-sm font-semibold"
-                        style={{ backgroundColor: '#F5F0D8', color: '#3F4756' }}
+                        className="rounded-full border-2 border-cookie-400 px-4 py-1.5   "
                       >
                         {isEl ? u.name_el : u.name_en}
                       </span>
@@ -410,7 +403,7 @@ function RecipeDetailContent() {
               )}
             </div>
 
-            <div className="min-w-0 overflow-hidden rounded-2xl bg-white shadow-xl md:sticky md:top-6">
+            <div className="min-w-0 overflow-hidden rounded-2xl bg-surface shadow-xl md:sticky md:top-6">
               {recipe.author?.user && (
                 <button
                   onClick={() =>
@@ -418,147 +411,114 @@ function RecipeDetailContent() {
                       `/user/chef/${recipe.authorId}?from=${recipe.id}`,
                     )
                   }
-                  className="flex w-full flex-col items-center gap-2 px-6 pt-6 pb-4 group border-b border-gray-100"
+                  className="group flex w-full flex-col items-center gap-2 border-b border-cookie-400 px-6 pb-4 pt-6"
                 >
                   {recipe.author.user.image ? (
                     <img
                       src={recipe.author.user.image}
                       alt={recipe.author.user.username}
-                      className="h-20 w-20 rounded-full object-cover border-4 border-gray-100 shadow"
+                      className="h-20 w-20 rounded-full object-cover border-4 border-surface shadow"
                     />
                   ) : (
-                    <div
-                      className="flex h-20 w-20 items-center justify-center rounded-full border-4 bg-myBlue-200 border-gray-100 text-2xl font-bold shadow"
-                      style={{ color: '#fff' }}
-                    >
+                    <div className="flex h-20 w-20 items-center justify-center rounded-full border-4 border-surface bg-cookie-200   text-myText-heading shadow">
                       {recipe.author.user.username[0].toUpperCase()}
                     </div>
                   )}
-                  <span className="text-base font-bold text-gray-700 group-hover:underline transition">
+                  <span className="text-base  transition group-hover:underline">
                     {recipe.author.user.username}
                   </span>
-                  <span className="inline-flex bg-myBlue-100 text-myBlue-200 items-center gap-1 rounded-full px-3 py-0.5 text-xs font-semibold">
+                  <span className="inline-flex items-center gap-1 rounded-full bg-cookie-200 px-3 py-0.5   ">
                     {t('chef.recipe_detail.view_chef_profile')} →
                   </span>
                 </button>
               )}
 
               {chefComment && (
-                <div className="px-6 py-4 border-b border-gray-100">
-                  <p className="text-sm italic text-gray-500 text-center">
-                    &ldquo;{chefComment}&rdquo;
-                  </p>
+                <div className="border-b border-cookie-400 px-6 py-4">
+                  <p className="text-center">&ldquo;{chefComment}&rdquo;</p>
                 </div>
               )}
 
               {description && (
-                <div className="px-6 py-4 border-b border-gray-100">
-                  <p className="text-sm text-gray-600 ">{description}</p>
+                <div className="border-b border-cookie-400 px-6 py-4">
+                  <p className="">{description}</p>
                 </div>
               )}
 
-              <div className="px-6 py-4 border-b border-gray-100 flex flex-col gap-2">
+              <div className="flex flex-col gap-2 border-b border-cookie-400 px-6 py-4">
                 {recipe.prepTime > 0 && (
-                  <div className="flex justify-between text-sm">
-                    <span className="">
-                      {t('chef.create_recipe.prep_time')}
-                    </span>
-                    <span className="font-semibold text-gray-700">
+                  <div className="flex justify-between ">
+                    <span>{t('chef.create_recipe.prep_time')}</span>
+                    <span className=" ">
                       {recipe.prepTime} {t('chef.recipe_detail.minutes')}
                     </span>
                   </div>
                 )}
                 {recipe.cookTime > 0 && (
-                  <div className="flex justify-between text-sm">
-                    <span className="">
-                      {t('chef.create_recipe.cook_time')}
-                    </span>
-                    <span className="font-semibold text-gray-700">
+                  <div className="flex justify-between ">
+                    <span>{t('chef.create_recipe.cook_time')}</span>
+                    <span className=" ">
                       {recipe.cookTime} {t('chef.recipe_detail.minutes')}
                     </span>
                   </div>
                 )}
                 {recipe.restTime != null && recipe.restTime > 0 && (
-                  <div className="flex justify-between text-sm">
-                    <span className="">
-                      {t('chef.create_recipe.rest_time')}
-                    </span>
-                    <span className="font-semibold text-gray-700">
+                  <div className="flex justify-between ">
+                    <span>{t('chef.create_recipe.rest_time')}</span>
+                    <span className=" ">
                       {recipe.restTime} {t('chef.recipe_detail.minutes')}
                     </span>
                   </div>
                 )}
                 {totalTime > 0 && (
-                  <div className="flex justify-between text-sm border-t border-gray-100 pt-2 mt-1">
-                    <span className="">
-                      {t('chef.recipe_detail.implementation_time')}
-                    </span>
-                    <span className="font-semibold text-gray-700">
+                  <div className="mt-1 flex justify-between border-b border-cookie-400 pb-4 ">
+                    <span>{t('chef.recipe_detail.implementation_time')}</span>
+                    <span className=" ">
                       {totalTime} {t('chef.recipe_detail.minutes')}
                     </span>
                   </div>
                 )}
                 {recipe.difficulty && (
-                  <div className="flex justify-between text-sm">
-                    <span className="">
-                      {t('chef.recipe_detail.difficulty')}
-                    </span>
-                    <span className="font-semibold text-gray-700">
+                  <div className="flex justify-between ">
+                    <span>{t('chef.recipe_detail.difficulty')}</span>
+                    <span className=" ">
                       {getDifficultyLabel(recipe.difficulty, t)}
                     </span>
                   </div>
                 )}
                 {recipe.foodEthnicity && (
-                  <div className="flex justify-between text-sm">
-                    <span className="">
-                      {t('chef.create_recipe.cuisine_label')}
-                    </span>
-                    <span className="font-semibold text-gray-700">
-                      {recipe.foodEthnicity}
-                    </span>
+                  <div className="flex justify-between ">
+                    <span>{t('chef.create_recipe.cuisine_label')}</span>
+                    <span className=" ">{recipe.foodEthnicity}</span>
                   </div>
                 )}
                 {(recipe.caloriesTotal != null ||
                   recipe.protein != null ||
                   recipe.carbs != null ||
                   recipe.fat != null) && (
-                  <div className="mt-1 flex flex-col gap-1.5 border-t border-gray-100 pt-2">
+                  <div className="mt-1 flex flex-col gap-1.5 border-t border-cookie-400 pt-2">
                     {recipe.caloriesTotal != null && (
-                      <div className="flex justify-between text-sm">
-                        <span className="">
-                          {t('chef.create_recipe.calories')}
-                        </span>
-                        <span className="font-semibold text-gray-700">
-                          {recipe.caloriesTotal} kcal
-                        </span>
+                      <div className="flex justify-between ">
+                        <span>{t('chef.create_recipe.calories')}</span>
+                        <span className=" ">{recipe.caloriesTotal} kcal</span>
                       </div>
                     )}
                     {recipe.protein != null && (
-                      <div className="flex justify-between text-sm">
-                        <span className="">
-                          {t('chef.create_recipe.protein')}
-                        </span>
-                        <span className="font-semibold text-gray-700">
-                          {recipe.protein}g
-                        </span>
+                      <div className="flex justify-between ">
+                        <span>{t('chef.create_recipe.protein')}</span>
+                        <span className=" ">{recipe.protein}g</span>
                       </div>
                     )}
                     {recipe.carbs != null && (
-                      <div className="flex justify-between text-sm">
-                        <span className="">
-                          {t('chef.create_recipe.carbs')}
-                        </span>
-                        <span className="font-semibold text-gray-700">
-                          {recipe.carbs}g
-                        </span>
+                      <div className="flex justify-between ">
+                        <span>{t('chef.create_recipe.carbs')}</span>
+                        <span className=" ">{recipe.carbs}g</span>
                       </div>
                     )}
                     {recipe.fat != null && (
-                      <div className="flex justify-between text-sm">
-                        <span className="">{t('chef.create_recipe.fat')}</span>
-                        <span className="font-semibold text-gray-700">
-                          {recipe.fat}g
-                        </span>
+                      <div className="flex justify-between ">
+                        <span>{t('chef.create_recipe.fat')}</span>
+                        <span className=" ">{recipe.fat}g</span>
                       </div>
                     )}
                   </div>
@@ -587,26 +547,27 @@ function RecipeDetailContent() {
                 />
               )}
 
-              <div className="flex items-center justify-around border-t border-gray-100 px-4 py-3">
-                {[
-                  {
-                    tab: 'reviews' as DetailTab,
-                    icon: 'M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z',
-                  },
-                  {
-                    tab: 'rate' as DetailTab,
-                    icon: 'M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z',
-                  },
-                ].map(({ tab, icon }) => (
+              <div className="flex items-center justify-around border-t border-cookie-400 px-4 py-3">
+                {(
+                  [
+                    {
+                      tab: 'reviews' as DetailTab,
+                      icon: 'M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z',
+                    },
+                    {
+                      tab: 'rate' as DetailTab,
+                      icon: 'M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z',
+                    },
+                  ] as const
+                ).map(({ tab, icon }) => (
                   <button
                     key={tab}
                     onClick={() => setActiveTab(tab)}
-                    className="flex h-10 w-10 items-center justify-center rounded-full transition"
-                    style={{
-                      backgroundColor:
-                        activeTab === tab ? '#EAB308' : 'transparent',
-                      color: activeTab === tab ? 'white' : '#9CA3AF',
-                    }}
+                    className={`flex h-10 w-10 items-center justify-center rounded-full transition ${
+                      activeTab === tab
+                        ? 'bg-cookie-300 text-white'
+                        : 'text-myText-muted hover:'
+                    }`}
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -627,8 +588,9 @@ function RecipeDetailContent() {
 
                 <button
                   onClick={handleToggleFavorite}
-                  className="flex h-10 w-10 items-center justify-center rounded-full transition"
-                  style={{ color: isFavorited ? '#EAB308' : '#9CA3AF' }}
+                  className={`flex h-10 w-10 items-center justify-center rounded-full transition ${
+                    isFavorited ? 'text-cookie-300' : 'text-myText-muted hover:'
+                  }`}
                   title={t('recipes.favourites')}
                 >
                   <svg
@@ -642,29 +604,6 @@ function RecipeDetailContent() {
                     <path d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z" />
                   </svg>
                 </button>
-
-                <button
-                  onClick={handleLogCooked}
-                  disabled={logging}
-                  className="flex h-10 w-10 items-center justify-center rounded-full transition"
-                  style={{ color: cookedSuccess ? '#86EFAC' : '#9CA3AF' }}
-                  title={t('recipes.logCooked')}
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="h-5 w-5"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
-                </button>
               </div>
             </div>
           </div>
@@ -673,4 +612,4 @@ function RecipeDetailContent() {
       <ScrollToTopButton />
     </div>
   );
-}
+};

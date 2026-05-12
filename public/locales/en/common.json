@@ -297,7 +297,9 @@
       "label_title": "Title",
       "macros": "Nutritional info",
       "confirm_delete": "Are you sure you want to delete this recipe?",
-      "view_chef_profile": "View chef's profile"
+      "view_chef_profile": "View chef's profile",
+      "mark_as_cooked": "Mark as cooked",
+      "marked_as_cooked": "Marked as cooked"
     },
     "profile": {
       "page_title": "My profile",
