@@ -169,7 +169,7 @@ function ChefProfileContent() {
                     />
                   ) : (
                     <div className="flex bg-myBlue-200 h-20 w-20 flex-shrink-0 items-center justify-center rounded-full border-4 border-white text-2xl font-bold text-white shadow-xl">
-                      {chef.user?.username?.[0]?.toUpperCase() ?? '?'}
+                      {chef.user?.username?.[0]?.toUpperCase()}
                     </div>
                   )}
                   <div className="flex flex-col gap-2">

@@ -11,10 +11,10 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { GetServerSideProps } from 'next';
 import LanguageSwitcher from '../components/Helper/LanguageSwitcher';
+import Logo from '../components/Helper/Logo';
 import { pick } from '../utils/pick';
 import { recipeImageSrc } from '../utils/recipeHelpers';
 
-//Δηλώνω λόγω Typescript τι πεδία πρέπει να περιμένει το component για την κάρτα με την συνταγή που θα εμφανίζεται και αρχικοποιώ αυτή την κάρτα με τα στοιχεία και την σχεδίαση που θα αποτυπώνεται στον browser.
 interface RecipeCardProps {
   title: string;
   image: string;
@@ -28,13 +28,13 @@ const RecipeCard = ({
   authorName,
   authorImage,
 }: RecipeCardProps) => (
-  <div className="grid w-full cursor-pointer grid-flow-row justify-items-center gap-2 rounded-[.9em] bg-myGrey-100 pb-[1.5em] shadow-2xl drop-shadow-2xl transition duration-300 hover:scale-105 hover:ease-in">
+  <div className="grid w-full grid-flow-row justify-items-center gap-2 rounded-[.9em] bg-surface pb-[1.5em] shadow-2xl drop-shadow-2xl">
     <img
       src={image}
       alt={title}
       className="-mt-[3em] h-[6em] w-[6em] rounded-full object-cover md:h-[7em] md:w-[7em]"
     />
-    <h1 className="px-2 text-center text-xs font-bold md:text-base">{title}</h1>
+    <h4 className="px-2 text-center text-xs md:text-base">{title}</h4>
 
     <div className="m-[0.65em] flex flex-row items-center gap-2">
       {authorImage ? (
@@ -44,23 +44,18 @@ const RecipeCard = ({
           className="h-[2em] w-[2em] rounded-[.5em] object-cover md:h-[3em] md:w-[3em]"
         />
       ) : (
-        <div className="flex h-[2em] w-[2em] items-center justify-center rounded-[.5em] bg-myBlue-200 text-xs font-bold text-white md:h-[3em] md:w-[3em]">
+        <div className="flex h-[2em] w-[2em] items-center justify-center rounded-[.5em] bg-cookie-300 text-xs font-bold text-white md:h-[3em] md:w-[3em]">
           {authorName.charAt(0).toUpperCase()}
         </div>
       )}
-      <p className="text-xs leading-[.8rem] text-black md:text-sm">
-        {authorName}
-      </p>
+      <p className="text-xs leading-[.8rem] md:text-sm">{authorName}</p>
     </div>
   </div>
 );
-// Γίνεται client side fetching των δεδομένων προκειμένου να μην υπάρχει καθυστέρηση στην φόρτωση της σελίδας, δεδομένου οτι τα δεδομένα που θέλω να χρησιμοποιήσω εδώ δεν χρειάζονται απαραίτητα κάποιο διαδικάσία στον server για να προσθέσω extra φόρτωμα σε κάθε ανανέωση της σελίδας.
+
 const Index: NextPage = () => {
-  // για να κάνω track down ποια κάρτα θα εμφανίζεται στην διεπαφή των κινητών.
   const [slideIndex, setSlideIndex] = useState(0);
-  // βασικό μου mutation για να κάνει logout ο εκάστοτε χρήστης
   const [logout, { loading: logoutLoading }] = useLogoutMutation();
-  // το χρειάζομαι προκειμένου να καλέσω το resetStore μετά το logout για να μην μείνει στο cache του Apollo κάποιο δεδομένω χρήστη που δεν πρέπει.
   const apolloClient = useApolloClient();
   const { t, i18n } = useTranslation('common');
   const lang = i18n.language;
@@ -111,33 +106,28 @@ const Index: NextPage = () => {
     }
   }
 
-  const cards = featuredRecipes.map((recipe) => {
-    const href = meData?.me
-      ? `/${meData.me.role.toLowerCase()}/recipes`
-      : '/login';
-
-    return (
-      <Link href={href} key={recipe.id}>
-        <RecipeCard
-          title={pick(recipe.title_el, recipe.title_en, lang)}
-          image={recipeImageSrc(recipe.recipeImage)}
-          authorName={recipe.author?.user?.username ?? '—'}
-          authorImage={recipe.author?.user?.image}
-        />
-      </Link>
-    );
-  });
+  const cards = featuredRecipes.map((recipe) => (
+    <RecipeCard
+      key={recipe.id}
+      title={pick(recipe.title_el, recipe.title_en, lang)}
+      image={recipeImageSrc(recipe.recipeImage)}
+      authorName={recipe.author?.user?.username ?? '—'}
+      authorImage={recipe.author?.user?.image}
+    />
+  ));
 
   return (
     <>
-      <div className="min-h-screen w-full bg-myGrey-100 md:grid md:grid-cols-2">
+      <div className="min-h-screen w-full bg-cookie-100 md:grid md:grid-cols-2">
         <div className="container h-full pt-[1em]">
           <div className="flex h-full flex-col items-center justify-center gap-5 px-6 py-10 md:px-[3.5em]">
-            <h1 className="text-center text-3xl font-bold leading-tight md:text-4xl">
+            <Logo />
+
+            <h1 className="text-center leading-tight">
               {t('index.hero_title')}
             </h1>
 
-            <div className="flex flex-col gap-3 text-center text-xs md:text-sm">
+            <div className="flex flex-col gap-3 text-center">
               <p>
                 <span className="font-semibold">
                   {t('index.role_user_label')}
@@ -160,14 +150,14 @@ const Index: NextPage = () => {
 
             <Link
               href={meData?.me ? `/${meData.me.role.toLowerCase()}` : '/login'}
-              className="rounded-full bg-myBlue-200 px-[3.5em] py-[.4em] text-sm font-bold text-white transition hover:bg-myRed"
+              className="rounded-full bg-cookie-300 px-[3.5em] py-[.4em] text-sm font-bold text-white transition hover:bg-cookie-400"
             >
               {t('index.cta')}
             </Link>
           </div>
         </div>
 
-        <section className="container mt-[3em] grid grid-flow-row gap-4 rounded-[3em] bg-myBlue-200 font-exo font-normal md:mt-0 md:rounded-none md:rounded-bl-[6em]">
+        <section className="container mt-[3em] grid grid-flow-row gap-4 rounded-[3em] bg-cookie-300 md:mt-0 md:rounded-none md:rounded-bl-[6em]">
           <div className="flex flex-row items-center justify-center px-4 pt-4">
             {body}
           </div>

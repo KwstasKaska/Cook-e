@@ -15,6 +15,7 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { GetServerSideProps } from 'next';
 import LanguageSwitcher from '../components/Helper/LanguageSwitcher';
+import Logo from '../components/Helper/Logo';
 
 interface MyLoginFormValues {
   email: string;
@@ -41,35 +42,17 @@ const Login: NextPage = () => {
   };
 
   return (
-    <main className="flex bg-myGrey-200 min-h-screen w-full items-center justify-center px-4 py-12">
-      <section className="w-full max-w-md rounded-3xl bg-white px-8 py-8">
+    <main className="flex bg-myText-base min-h-screen w-full items-center justify-center px-4 py-12">
+      <section className="w-full max-w-md rounded-3xl bg-surface px-8 py-8">
         <div className="mb-8 flex items-center justify-between">
-          <Link
-            href="/"
-            className="flex items-center gap-1.5 text-xs font-semibold transition hover:opacity-70"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={2}
-              stroke="currentColor"
-              className="h-3.5 w-3.5"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
-              />
-            </svg>
-            {t('nav.home')}
-          </Link>
-
+          <Logo />
           <LanguageSwitcher dark />
         </div>
 
         <div className="mb-6 text-center">
-          <h1 className="mb-1 text-2xl font-bold">{t('login.title')}</h1>
+          <h1 className="mb-1 text-2xl font-bold text-myText-heading">
+            {t('login.title')}
+          </h1>
         </div>
 
         <Formik
@@ -107,32 +90,32 @@ const Login: NextPage = () => {
                 type="email"
                 name="email"
                 autoComplete="email"
-                className="w-full rounded-xl border border-gray-200 px-4 py-2.5 placeholder:italic placeholder:text-myBlue-200 focus:outline-none"
+                className="w-full rounded-xl border border-cookie-200 px-4 py-2.5 placeholder:text-cookie-300 text-myText-base focus:outline-none"
                 placeholder={t('login.username_placeholder')}
               />
               <InputField
                 type="password"
                 name="password"
                 autoComplete="current-password"
-                className="w-full rounded-xl border border-gray-200 px-4 py-2.5 placeholder:italic placeholder:text-myBlue-200 focus:outline-none"
+                className="w-full rounded-xl border border-cookie-200 px-4 py-2.5 placeholder:text-cookie-300 text-myText-base focus:outline-none"
                 placeholder={t('login.password_placeholder')}
               />
 
               <button
-                className="mt-1 w-full bg-myBlue-200 rounded-xl py-2.5 text-sm font-semibold text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
+                className="mt-1 w-full bg-cookie-300 rounded-xl py-2.5 text-sm font-semibold text-white transition hover:bg-cookie-400 disabled:cursor-not-allowed disabled:opacity-60"
                 type="submit"
                 disabled={isSubmitting}
               >
-                {isSubmitting ? t('common.saving') : t('login.submit')}
+                {isSubmitting ? t('common.loading') : t('login.submit')}
               </button>
             </Form>
           )}
         </Formik>
 
-        <p className="mt-8 text-center text-sm">
+        <p className="mt-8 text-center text-sm text-myText-muted">
           {t('login.no_account')}{' '}
           <Link
-            className="font-semibold opacity-75 underline transition hover:opacity-80"
+            className="font-semibold text-myText-base underline transition hover:opacity-80"
             href="/register"
           >
             {t('login.create_account')}

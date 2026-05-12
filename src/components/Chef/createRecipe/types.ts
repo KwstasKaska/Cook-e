@@ -66,6 +66,6 @@ export const CATEGORY_OPTIONS: {
 ];
 
 export const inputClass =
-  'w-full border-b border-gray-300 bg-transparent py-2 text-sm outline-none focus:border-myBlue-200 transition placeholder:text-gray-300';
+  'w-full border-b border-gray-300 bg-transparent py-2 text-sm outline-none focus:border-cookie-300 transition placeholder:text-gray-300';
 
 export const labelClass = 'mb-1 block text-base font-black';

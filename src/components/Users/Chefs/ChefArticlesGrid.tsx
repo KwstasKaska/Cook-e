@@ -49,7 +49,6 @@ export default function ChefArticlesGrid({ chefUserId }: Props) {
                 className="cursor-pointer overflow-hidden rounded-2xl shadow-lg transition hover:scale-[1.02] bg-myBeige-100 hover:shadow-xl"
               >
                 <div className="relative h-36 w-full overflow-hidden">
-                  article.image
                   <img
                     src={article.image}
                     alt={title}

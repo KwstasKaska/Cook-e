@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
@@ -19,11 +19,12 @@ type Props = {
   showDate?: boolean;
 };
 
-export default function ArticleSinglePage({
+const ArticleSinglePage = ({
   Navbar,
   listCacheField,
   deleteRedirect,
-}: Props) {
+  backHref,
+}: Props) => {
   const { t, i18n } = useTranslation('common');
   const lang = i18n.language;
   const router = useRouter();
@@ -37,18 +38,18 @@ export default function ArticleSinglePage({
   const [editImagePreview, setEditImagePreview] = useState<string | null>(null);
   const [editError, setEditError] = useState('');
   const [isSaving, setIsSaving] = useState(false);
-  const isChef = router.pathname.startsWith('/chef');
 
   const { data, loading } = useArticleQuery({
     variables: { id: id! },
     skip: !id,
-    onCompleted: (d) => {
-      if (d.article) {
-        setEditTitle(d.article.title_el ?? '');
-        setEditText(d.article.text_el ?? '');
-      }
-    },
   });
+
+  useEffect(() => {
+    if (data?.article) {
+      setEditTitle(data.article.title_el ?? '');
+      setEditText(data.article.text_el ?? '');
+    }
+  }, [data]);
 
   const [updateArticle] = useUpdateArticleMutation({
     onCompleted: () => {
@@ -120,20 +121,22 @@ export default function ArticleSinglePage({
 
   if (loading || !id) {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center">
+      <div className="flex min-h-screen flex-col bg-surface">
         <Navbar />
-        <p className="text-white opacity-60 mt-20">{t('common.loading')}</p>
+        <div className="flex flex-1 items-center justify-center">
+          <div className="h-10 w-10 animate-spin rounded-full border-4 border-cookie-300 border-t-transparent" />
+        </div>
       </div>
     );
   }
 
   if (!article) {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center">
+      <div className="flex min-h-screen flex-col bg-surface">
         <Navbar />
-        <p className="text-white opacity-60 mt-20">
-          {t('chef.article.not_found')}
-        </p>
+        <div className="flex flex-1 items-center justify-center">
+          <p className=" text-myText-muted">{t('chef.article.not_found')}</p>
+        </div>
       </div>
     );
   }
@@ -141,7 +144,7 @@ export default function ArticleSinglePage({
   const heroSrc = editImagePreview ?? article.image;
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-screen flex-col bg-surface">
       <Navbar />
 
       {showDeleteModal && (
@@ -158,9 +161,8 @@ export default function ArticleSinglePage({
       <main className="flex flex-1 flex-col items-center px-4 py-8 md:px-8">
         <div className="w-full max-w-2xl">
           <button
-            onClick={() => router.push(isChef ? '/chef' : '/nutritionist')}
-            className="mb-6 flex items-center gap-2 text-sm font-semibold transition hover:opacity-70"
-            style={{ color: 'rgba(255,255,255,0.75)' }}
+            onClick={() => router.push(backHref)}
+            className="mb-6 flex items-center gap-2   text-myText-muted transition hover:opacity-70"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -179,19 +181,20 @@ export default function ArticleSinglePage({
             {t('common.back')}
           </button>
 
-          <div className="w-full rounded-2xl bg-myBeige-100 overflow-hidden shadow-xl">
+          <div className="w-full overflow-hidden rounded-2xl bg-cookie-100 shadow-xl">
             <div className="relative h-56 w-full">
               <Image
                 src={heroSrc}
                 alt={pick(article.title_el, article.title_en, lang)}
                 fill
+                sizes="(max-width: 768px) 100vw, 672px"
                 className="object-cover"
               />
               {!isEditing && (
                 <div className="absolute top-3 right-3 flex gap-2">
                   <button
                     onClick={() => setIsEditing(true)}
-                    className="flex items-center gap-1 rounded-full px-3 py-1.5 text-xs font-bold bg-myYellow shadow transition hover:opacity-90"
+                    className="flex items-center gap-1 rounded-full bg-myYellow px-4 py-0.5  shadow transition hover:opacity-90"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -211,8 +214,7 @@ export default function ArticleSinglePage({
                   </button>
                   <button
                     onClick={() => setShowDeleteModal(true)}
-                    className="flex items-center gap-1 rounded-full px-3 py-1.5 text-xs font-bold shadow transition hover:opacity-90"
-                    style={{ backgroundColor: '#E53E3E', color: 'white' }}
+                    className="flex items-center gap-1 rounded-full bg-myRed px-4 py-0.5  text-white "
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -238,66 +240,62 @@ export default function ArticleSinglePage({
               {isEditing ? (
                 <>
                   <div className="mb-4">
-                    <label className="mb-1 block text-xs font-semibold">
+                    <label className="mb-1 block">
                       {t('chef.article.title_label')}
                     </label>
                     <input
                       type="text"
                       value={editTitle}
                       onChange={(e) => setEditTitle(e.target.value)}
-                      className="w-full rounded-xl border border-gray-300 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                      className="w-full rounded-xl border border-cookie-200 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-cookie-300"
                     />
                   </div>
 
                   <div className="mb-4">
-                    <label className="mb-1 block text-xs font-semibold">
+                    <label className="mb-1 block">
                       {t('chef.article.text_label')}
                     </label>
                     <textarea
                       value={editText}
                       onChange={(e) => setEditText(e.target.value)}
                       rows={8}
-                      className="w-full rounded-xl border border-gray-300 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400 resize-none"
+                      className="w-full resize-none rounded-xl border border-cookie-200 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-cookie-300"
                     />
                   </div>
 
                   <div className="mb-6">
-                    <label className="mb-1 block text-xs font-semibold">
+                    <label className="mb-1 block">
                       {t('chef.article.image_label')}
                     </label>
-                    <div>
-                      <label
-                        htmlFor="edit-image"
-                        className="inline-flex cursor-pointer items-center gap-1.5 rounded-full bg-myYellow px-4 py-1.5 text-xs font-bold transition hover:opacity-90"
-                      >
-                        {t('chef.article.image_label')}
-                      </label>
-                      <input
-                        id="edit-image"
-                        type="file"
-                        accept="image/*"
-                        onChange={handleImageChange}
-                        className="hidden"
-                      />
-                    </div>
+                    <label
+                      htmlFor="edit-image"
+                      className="inline-flex cursor-pointer items-center gap-1.5 rounded-full bg-cookie-300 px-4 py-0.5   transition hover:bg-cookie-400"
+                    >
+                      {t('chef.article.image_label')}
+                    </label>
+                    <input
+                      id="edit-image"
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageChange}
+                      className="hidden"
+                    />
                     {editImageFile && (
-                      <p className="mt-1 text-xs text-gray-500">
+                      <p className="mt-1  text-myText-muted">
                         {editImageFile.name}
                       </p>
                     )}
                   </div>
 
                   {editError && (
-                    <p className="mb-4 text-center text-sm font-semibold text-red-500">
-                      {editError}
-                    </p>
+                    <p className="mb-4 text-center   text-myRed">{editError}</p>
                   )}
 
                   <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
                     <button
                       onClick={handleUpdate}
                       disabled={isSaving}
-                      className="w-full sm:w-auto rounded-full px-8 py-2.5 text-sm font-bold transition hover:opacity-90 bg-myYellow disabled:opacity-50"
+                      className="w-full rounded-full bg-cookie-300 px-4 py-0.5  transition hover:bg-cookie-400 disabled:opacity-50 sm:w-auto"
                     >
                       {isSaving ? t('common.loading') : t('common.save')}
                     </button>
@@ -310,7 +308,7 @@ export default function ArticleSinglePage({
                         setEditImagePreview(null);
                         setEditError('');
                       }}
-                      className="w-full sm:w-auto rounded-full border border-gray-400 px-8 py-2.5 text-sm font-semibold transition hover:bg-gray-100"
+                      className="w-full rounded-full border border-cookie-200 px-4 py-0.5 transition hover:bg-cookie-100 sm:w-auto"
                     >
                       {t('common.cancel')}
                     </button>
@@ -318,13 +316,10 @@ export default function ArticleSinglePage({
                 </>
               ) : (
                 <>
-                  <h1 className="mb-4 text-2xl font-bold leading-snug">
+                  <h2 className="mb-4">
                     {pick(article.title_el, article.title_en, lang)}
-                  </h1>
-                  <p
-                    className="text-sm leading-relaxed whitespace-pre-line"
-                    style={{ color: '#4A5568' }}
-                  >
+                  </h2>
+                  <p className="whitespace-pre-line">
                     {pick(article.text_el, article.text_en, lang)}
                   </p>
                 </>
@@ -335,4 +330,6 @@ export default function ArticleSinglePage({
       </main>
     </div>
   );
-}
+};
+
+export default ArticleSinglePage;

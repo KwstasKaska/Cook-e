@@ -1,10 +1,10 @@
 {
   "nav": {
-    "home": "Home",
-    "recipes": "Recipes",
+    "home": "My kitchen",
+    "recipes": "Find recipes",
     "nutritionists": "Nutritionists",
     "logout": "Logout",
-    "cart": "Cart",
+    "cart": "Supermarket list",
     "settings": "Settings",
     "tagline": "A food journey",
     "messages": "Messages",
@@ -12,7 +12,6 @@
     "chat": "Members communication"
   },
   "chefnav": {
-    "chef_home": "Home",
     "chef_profile": "Profile",
     "chef_recipes": "My recipes",
     "chef_create": "Create recipe"
@@ -72,7 +71,7 @@
     "seeAll": "All →",
     "discoverBtn": "Discover recipes",
     "backToSearch": "Back",
-    "backToRecipes": "Back to recipes",
+    "backToRecipes": "Back to search recipes",
     "resultsTitle": "Choose from the suggested recipes",
     "newSearch": "New search",
     "by": "By:",
@@ -101,6 +100,7 @@
     "recipeHint2": "Tap the chef's name to visit their profile. There you can see their information and send them a message.",
     "searchHint": "Select at least 3 ingredients you wanna use, then optionally pick your available utensils. Results include recipes you can make with exactly what you have, plus recipes that need at most 3 extra ingredients you don't have."
   },
+
   "ingredientCategories": {
     "title": "Ingredients",
     "vegetables": "Vegetables",
@@ -119,14 +119,11 @@
     "extraEquipment": "Extra Equipment"
   },
   "cart": {
-    "title": "My cart",
+    "title": "My ingredients list",
     "addIngredient": "Add ingredient...",
-    "items": "items",
+    "items": "ingredients",
     "clearSelected": "Clear selected",
-    "emptyCart": "Your cart is empty.",
-    "updateError": "Error updating item.",
-    "removeError": "Error removing item.",
-    "addError": "Error adding item.",
+    "emptyCart": "Your list is empty.",
     "browseIngredients": "Add ingredients"
   },
   "chat": {
@@ -153,7 +150,7 @@
   "settings": {
     "title": "Settings",
     "personalInfo": "Personal info",
-    "security": "Security",
+    "security": "Password",
     "chefProfile": "Chef profile",
     "deleteAccount": "Delete account",
     "save": "Save",
@@ -201,7 +198,6 @@
     }
   },
   "nutr": {
-    "welcome": "Welcome",
     "yourArticles": "Your articles",
     "articleImageAlt": "Article image",
     "searchAppointments": "Αppointment calendar",
@@ -403,7 +399,17 @@
       "error_ingredients": "Add at least one ingredient.",
       "error_steps": "Add at least one step.",
       "error_prep_time": "Prep time must be greater than 0.",
-      "error_cook_time": "Cook time must be greater than 0."
+      "error_cook_time": "Cook time must be greater than 0.",
+      "units": {
+        "g": "g",
+        "kg": "kg",
+        "ml": "ml",
+        "l": "l",
+        "τεμ.": "pcs.",
+        "φλ.": "cup",
+        "κ.σ.": "tbsp.",
+        "κ.γ.": "tsp."
+      }
     }
   },
   "change_password": {
@@ -464,7 +470,7 @@
     "submit": "Create an account"
   },
   "login": {
-    "title": "Welcome back!",
+    "title": "Welcome!",
     "form_title": "Login",
     "username_placeholder": "Email address",
     "password_placeholder": "Password",

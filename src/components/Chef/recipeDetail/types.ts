@@ -76,34 +76,41 @@ export const MACRO_FIELDS: {
   { field: 'fat', unit: 'g', labelKey: 'chef.create_recipe.fat' },
 ];
 
-export function buildEditForm(recipe: any): EditForm {
-  return {
-    title: recipe.title_el,
-    description: recipe.description_el ?? '',
-    chefComment: recipe.chefComment_el ?? '',
-    recipeImage: recipe.recipeImage ?? '',
-    difficulty: recipe.difficulty ?? '',
-    prepTime: String(recipe.prepTime ?? ''),
-    cookTime: String(recipe.cookTime ?? ''),
-    restTime: String(recipe.restTime ?? ''),
-    foodEthnicity: recipe.foodEthnicity ?? '',
-    category: recipe.category ?? '',
-    caloriesTotal:
-      recipe.caloriesTotal != null ? String(recipe.caloriesTotal) : '',
-    protein: recipe.protein != null ? String(recipe.protein) : '',
-    carbs: recipe.carbs != null ? String(recipe.carbs) : '',
-    fat: recipe.fat != null ? String(recipe.fat) : '',
-    ingredients: (recipe.recipeIngredients ?? []).map((ri: any) => ({
-      ingredientId: ri.ingredientId,
-      quantity: ri.quantity ?? '',
-      unit: ri.unit ?? '',
-      name_el: ri.ingredient?.name_el ?? '',
-      name_en: ri.ingredient?.name_en ?? '',
-    })),
-    steps: (recipe.steps ?? []).map((s: any) => ({
-      id: s.id,
-      body: s.body_el,
-    })),
-    utensilIds: (recipe.utensils ?? []).map((u: any) => u.id),
-  };
-}
+export const buildEditForm = (
+  recipe: any,
+  lang: 'el' | 'en' = 'el',
+): EditForm => ({
+  title: lang === 'en' ? recipe.title_en || recipe.title_el : recipe.title_el,
+  description:
+    lang === 'en'
+      ? recipe.description_en ?? recipe.description_el ?? ''
+      : recipe.description_el ?? '',
+  chefComment:
+    lang === 'en'
+      ? recipe.chefComment_en ?? recipe.chefComment_el ?? ''
+      : recipe.chefComment_el ?? '',
+  recipeImage: recipe.recipeImage ?? '',
+  difficulty: recipe.difficulty ?? '',
+  prepTime: String(recipe.prepTime ?? ''),
+  cookTime: String(recipe.cookTime ?? ''),
+  restTime: String(recipe.restTime ?? ''),
+  foodEthnicity: recipe.foodEthnicity ?? '',
+  category: recipe.category ?? '',
+  caloriesTotal:
+    recipe.caloriesTotal != null ? String(recipe.caloriesTotal) : '',
+  protein: recipe.protein != null ? String(recipe.protein) : '',
+  carbs: recipe.carbs != null ? String(recipe.carbs) : '',
+  fat: recipe.fat != null ? String(recipe.fat) : '',
+  ingredients: (recipe.recipeIngredients ?? []).map((ri: any) => ({
+    ingredientId: ri.ingredientId,
+    quantity: ri.quantity ?? '',
+    unit: ri.unit ?? '',
+    name_el: ri.ingredient?.name_el ?? '',
+    name_en: ri.ingredient?.name_en ?? '',
+  })),
+  steps: (recipe.steps ?? []).map((s: any) => ({
+    id: s.id,
+    body: lang === 'en' ? s.body_en || s.body_el : s.body_el,
+  })),
+  utensilIds: (recipe.utensils ?? []).map((u: any) => u.id),
+});

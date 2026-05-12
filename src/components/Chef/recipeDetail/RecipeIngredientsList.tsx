@@ -110,7 +110,7 @@ export default function RecipeIngredientsList({
                   <option value="">{t('chef.create_recipe.unit_label')}</option>
                   {UNIT_OPTIONS.map((u) => (
                     <option key={u} value={u}>
-                      {u}
+                      {t(`chef.create_recipe.units.${u}`)}
                     </option>
                   ))}
                 </select>
@@ -154,7 +154,10 @@ export default function RecipeIngredientsList({
           {(recipe.recipeIngredients ?? []).map((ri: any, i: number) => (
             <li key={i} className="text-sm text-gray-600">
               <span className="font-semibold">
-                {ri.quantity} {ri.unit}
+                {ri.quantity}{' '}
+                {t(`chef.create_recipe.units.${ri.unit}`, {
+                  defaultValue: ri.unit,
+                })}
               </span>{' '}
               {pick(
                 ri.ingredient?.name_el ?? '',

@@ -74,11 +74,7 @@ function ListView() {
         ) : (
           <div className="relative mx-auto md:px-8">
             <div className="rounded-2xl bg-white px-4 pb-8 pt-2 shadow-lg">
-              <div className="flex justify-end pr-1 pb-1 pt-3">
-                <span className="text-sm text-gray-400">
-                  {filtered.length} {t('nutritionists.showAll')}
-                </span>
-              </div>
+              <div className="flex justify-end pr-1 pb-1 pt-3"></div>
               {filtered.length === 0 ? (
                 <div className="py-12 text-center text-sm text-gray-400">
                   {t('nutritionists.noResults')}

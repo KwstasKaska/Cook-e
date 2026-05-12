@@ -1,24 +1,29 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [
-    // Or if using `src` directory:
-    './src/**/*.{js,ts,jsx,tsx}',
-  ],
+  content: ['./src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
       colors: {
-        myBlue: {
-          100: '#B3D5F8',
-          200: '#377CC3',
+        cookie: {
+          100: '#F7EDE0',
+          200: '#EDD4B0',
+          300: '#C9955A',
+          400: '#A0652A',
+        },
+        herb: {
+          100: '#EAF3EC',
+          200: '#5A9E6F',
+        },
+        nutr: {
+          200: '#5B9EC9',
+        },
+        myText: {
+          base: '#3D3529',
+          heading: '#1F1A14',
+          muted: '#9C9080',
         },
         myRed: '#ED5B5B',
-        myBeige: {
-          100: '#E9DEC5',
-        },
-        myGrey: {
-          100: '#EAEAEA',
-          200: '#3F4756',
-        },
+        surface: '#FFFDF9',
         myYellow: '#EAB308',
       },
 
@@ -26,22 +31,9 @@ module.exports = {
         sans: ['Inter', 'sans-serif'],
       },
 
-      fontSize: {
-        9: '0.5625rem',
-      },
-      borderRadius: {
-        registerLogin: '7.5rem',
-        registerImage: '3.75rem',
-      },
-
       container: {
         center: true,
         padding: '1rem',
-      },
-
-      boxShadow: {
-        '3xl':
-          'rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px',
       },
     },
   },

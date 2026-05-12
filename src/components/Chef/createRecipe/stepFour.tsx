@@ -90,7 +90,7 @@ export default function StepFour({
                 <option value="">{t('chef.create_recipe.unit_label')}</option>
                 {UNIT_OPTIONS.map((u) => (
                   <option key={u} value={u}>
-                    {u}
+                    {t(`chef.create_recipe.units.${u}`)}
                   </option>
                 ))}
               </select>

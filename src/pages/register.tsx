@@ -9,6 +9,7 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { GetServerSideProps } from 'next';
 import LanguageSwitcher from '../components/Helper/LanguageSwitcher';
+import Logo from '../components/Helper/Logo';
 
 interface MyFormValues {
   username: string;
@@ -42,26 +43,7 @@ const Register: NextPage = () => {
     <main className="flex bg-myGrey-200 min-h-screen w-full items-center justify-center px-4 py-12">
       <section className="w-full max-w-md rounded-3xl bg-white px-8 py-8">
         <div className="mb-8 flex items-center justify-between">
-          <Link
-            href="/"
-            className="flex items-center gap-1.5 text-xs font-semibold text-gray-400"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={2}
-              stroke="currentColor"
-              className="h-3.5 w-3.5"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
-              />
-            </svg>
-            {t('nav.home')}
-          </Link>
+          <Logo />
           <LanguageSwitcher dark />
         </div>
 

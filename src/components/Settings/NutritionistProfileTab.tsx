@@ -13,12 +13,13 @@ import {
 } from './SettingsUI';
 
 export default function NutritionistProfileTab() {
-  const { t } = useTranslation('common');
+  const { t, i18n } = useTranslation('common');
+  const lang = i18n.language as 'el' | 'en';
   const { data } = useMyNutritionistProfileQuery();
   const profile = data?.myNutritionistProfile;
-  const [bio, setBio] = useState(profile?.bio_el ?? '');
-  const [city, setCity] = useState(profile?.city_el ?? '');
-  const [phone, setPhone] = useState(profile?.phone ?? '');
+  const [bio, setBio] = useState('');
+  const [city, setCity] = useState('');
+  const [phone, setPhone] = useState('');
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [success, setSuccess] = useState<string | null>(null);
   const [updateNutritionistProfile, { loading }] =
@@ -26,10 +27,18 @@ export default function NutritionistProfileTab() {
 
   useEffect(() => {
     if (!profile) return;
-    setBio(profile.bio_el ?? '');
-    setCity(profile.city_el ?? '');
+    setBio(
+      lang === 'en'
+        ? profile.bio_en || profile.bio_el || ''
+        : profile.bio_el || '',
+    );
+    setCity(
+      lang === 'en'
+        ? profile.city_en || profile.city_el || ''
+        : profile.city_el || '',
+    );
     setPhone(profile.phone ?? '');
-  }, [profile]);
+  }, [profile, lang]);
 
   const handleSave = async () => {
     setFieldErrors({});

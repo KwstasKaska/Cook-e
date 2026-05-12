@@ -2,15 +2,11 @@ import React, { useEffect, useState } from 'react';
 import NutrNavbar from '../components/Nutritionist/NutrNavbar';
 import CalendarC from '../components/Nutritionist/CalendarC';
 import NutrAppointments from '../components/Nutritionist/NutrAppointments';
-import NutrArticles from '../components/Nutritionist/NutrArticles';
-import Image from 'next/image';
 import { DateContext } from '../components/Context';
-import ScrollToTopButton from '../components/Helper/ScrollToTopButton';
 import NutrScheduler from '../components/Nutritionist/NutrScheduler';
 import { GetServerSidePropsContext, NextPage } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
-import { useMeQuery } from '../generated/graphql';
 import useIsNutritionist from '../utils/useIsNutr';
 
 export const getServerSideProps = async (
@@ -28,7 +24,6 @@ const Nutritionist: NextPage = () => {
   const [selectedDate, setSelectedDate] = useState<string>('');
 
   const { loading, isAuthorized } = useIsNutritionist();
-  const { data: meData } = useMeQuery();
 
   useEffect(() => {
     const hash = window.location.hash.replace('#', '');
@@ -40,36 +35,10 @@ const Nutritionist: NextPage = () => {
 
   if (loading || !isAuthorized) return null;
 
-  const avatar = meData?.me?.image;
-  const initial = meData?.me?.username?.[0]?.toUpperCase() ?? '?';
-
   return (
     <React.Fragment>
       <NutrNavbar />
       <main className="relative">
-        <div className="grid grid-flow-col-dense justify-start pt-10 pb-6 pl-5 md:pl-20 xl:pl-32 gap-x-4">
-          {avatar ? (
-            <Image
-              src={avatar}
-              alt="profile"
-              width={112}
-              height={112}
-              className="row-span-2 border border-white max-h-14 max-w-[3.5rem] justify-self-end rounded-full object-cover object-top md:max-h-20 md:max-w-[5rem] xl:max-h-28 xl:max-w-[7rem]"
-            />
-          ) : (
-            <div className="row-span-2 flex max-h-14 max-w-[3.5rem] items-center justify-center justify-self-end rounded-full bg-myBlue-100 md:max-h-20 md:max-w-[5rem] xl:max-h-28 xl:max-w-[7rem] aspect-square">
-              <span className="text-xl font-bold md:text-2xl xl:text-3xl">
-                {initial}
-              </span>
-            </div>
-          )}
-          <h1 className="text-2xl text-white  font-bold md:text-4xl">
-            {t('nutr.welcome')} Dr. {meData?.me?.username}
-          </h1>
-        </div>
-
-        <NutrArticles />
-
         <DateContext.Provider value={{ selectedDate, setSelectedDate }}>
           <section
             id="section_2"
@@ -89,8 +58,6 @@ const Nutritionist: NextPage = () => {
           <NutrAppointments />
           <NutrScheduler />
         </DateContext.Provider>
-
-        <ScrollToTopButton />
       </main>
     </React.Fragment>
   );

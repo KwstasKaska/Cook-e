@@ -1,4 +1,3 @@
-// src/components/Helper/NavSettingsLink.tsx
 import Link from 'next/link';
 
 export const NavSettingsLink = ({
@@ -13,12 +12,12 @@ export const NavSettingsLink = ({
     onClick={onClick}
     className={
       className ??
-      'p-2 rounded  hover:text-myBlue-200 transition-colors duration-150'
+      'p-2 rounded text-myText-base hover:text-cookie-300 transition-colors duration-150'
     }
   >
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      className="w-6 h-6"
+      className="w-5 h-5"
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"

@@ -1,0 +1,252 @@
+import { useState, useMemo } from 'react';
+import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+
+import NutrNavbar from '../../components/Nutritionist/NutrNavbar';
+import useIsNutr from '../../utils/useIsNutr';
+import {
+  DayOfWeek,
+  MealType,
+  useGetAppointmentRequestsForNutritionistQuery,
+  useCreateMealSchedulerMutation,
+  AppointmentStatus,
+} from '../../generated/graphql';
+
+export const daysOfWeek: DayOfWeek[] = [
+  DayOfWeek.Monday,
+  DayOfWeek.Tuesday,
+  DayOfWeek.Wednesday,
+  DayOfWeek.Thursday,
+  DayOfWeek.Friday,
+  DayOfWeek.Saturday,
+  DayOfWeek.Sunday,
+];
+
+export const mealTypes: MealType[] = [
+  MealType.Breakfast,
+  MealType.Snack,
+  MealType.Lunch,
+  MealType.Afternoon,
+  MealType.Dinner,
+];
+
+export type CellInfo = Record<string, string>;
+
+const STICKY_W = 150;
+const COL_W = 170;
+
+const NutrSchedulerPage = () => {
+  const { loading: authLoading, isAuthorized } = useIsNutr();
+  if (authLoading || !isAuthorized) return null;
+  return <NutrSchedulerContent />;
+};
+
+const NutrSchedulerContent = () => {
+  const { t } = useTranslation('common');
+
+  const [cellInfo, setCellInfo] = useState<CellInfo>({});
+  const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
+  const [fieldError, setFieldError] = useState('');
+
+  const { data: reqData } = useGetAppointmentRequestsForNutritionistQuery();
+  const [createMealScheduler] = useCreateMealSchedulerMutation();
+
+  const acceptedClients = useMemo(() => {
+    const seen = new Set<number>();
+    const clients: { id: number; username: string }[] = [];
+    (reqData?.getAppointmentRequestsForNutritionist ?? []).forEach((r) => {
+      if (
+        r.status === AppointmentStatus.Accepted &&
+        r.client &&
+        !seen.has(r.client.id)
+      ) {
+        seen.add(r.client.id);
+        clients.push({ id: r.client.id, username: r.client.username });
+      }
+    });
+    return clients;
+  }, [reqData]);
+
+  const filledCells = Object.entries(cellInfo).filter(
+    ([, v]) => v.trim() !== '',
+  );
+
+  const updateCell = (day: DayOfWeek, meal: MealType, value: string) => {
+    setFieldError('');
+    setCellInfo((prev) => ({ ...prev, [`${day}-${meal}`]: value }));
+  };
+
+  const handleSubmit = async () => {
+    setFieldError('');
+
+    if (!selectedUserId) {
+      setFieldError(t('nutr.selectUserFirst'));
+      return;
+    }
+    if (filledCells.length === 0) {
+      setFieldError(t('nutr.setContentFirst'));
+      return;
+    }
+
+    for (const [key, comment] of filledCells) {
+      const [day, mealType] = key.split('-') as [DayOfWeek, MealType];
+      const result = await createMealScheduler({
+        variables: { userId: selectedUserId, day, mealType, comment },
+      });
+      if (result.data?.createMealScheduler.errors?.length) {
+        setFieldError(result.data.createMealScheduler.errors[0].message);
+        return;
+      }
+    }
+
+    setCellInfo({});
+  };
+
+  const stickyCell = (bg: string) => ({
+    position: 'sticky' as const,
+    left: 0,
+    width: STICKY_W,
+    minWidth: STICKY_W,
+    maxWidth: STICKY_W,
+    background: bg,
+    zIndex: 10,
+  });
+
+  return (
+    <div className="flex min-h-screen flex-col bg-cookie-100">
+      <NutrNavbar />
+
+      <main className="flex flex-1 flex-col items-center px-4 py-8 md:px-8">
+        <div className="w-full max-w-6xl">
+          <h1 className="mb-8 text-center">{t('nutr.createNutritionPlan')}</h1>
+
+          <div className="mb-6 flex items-center justify-center gap-3">
+            <label className="  uppercase tracking-wide text-myText-muted">
+              {t('nutr.selectUser')}
+            </label>
+            <select
+              value={selectedUserId ?? ''}
+              onChange={(e) => {
+                setSelectedUserId(
+                  e.target.value ? Number(e.target.value) : null,
+                );
+                setFieldError('');
+              }}
+              className="rounded-full border border-cookie-200 bg-white px-4 py-0.5   "
+            >
+              <option value="">{t('nutr.selectUser')}...</option>
+              {acceptedClients.map((c) => (
+                <option key={c.id} value={c.id}>
+                  {c.username}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="overflow-hidden rounded-2xl bg-white ">
+            <div className="relative w-full overflow-x-auto">
+              <table
+                className="border-collapse "
+                style={{
+                  tableLayout: 'fixed',
+                  minWidth: STICKY_W + daysOfWeek.length * COL_W,
+                }}
+              >
+                <colgroup>
+                  <col style={{ width: STICKY_W }} />
+                  {daysOfWeek.map((d) => (
+                    <col key={d} style={{ width: COL_W }} />
+                  ))}
+                </colgroup>
+
+                <thead>
+                  <tr className="bg-cookie-200">
+                    <th className="px-4 py-4 text-left bg-cookie-200  tracking-wide text-myText-muted">
+                      {t('nutr.mealsAndDays')}
+                    </th>
+                    {daysOfWeek.map((day) => (
+                      <th
+                        key={day}
+                        className="px-3 py-4 text-center tracking-wide"
+                      >
+                        {t(`day.${day}`)}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+
+                <tbody>
+                  {mealTypes.map((meal, i) => {
+                    const bg = i % 2 === 0 ? '#FFFDF9' : '#EDD4B0';
+                    return (
+                      <tr key={meal} style={{ background: bg }}>
+                        <td
+                          style={stickyCell(bg)}
+                          className="px-4 font-bold py-4 "
+                        >
+                          {t(`meal.${meal}`)}
+                        </td>
+                        {daysOfWeek.map((day) => {
+                          const key = `${day}-${meal}`;
+                          const val = cellInfo[key] ?? '';
+                          return (
+                            <td
+                              key={day}
+                              className="px-3 py-3 align-top"
+                              style={{ borderBottom: '1px solid #EDD4B0' }}
+                            >
+                              <textarea
+                                value={val}
+                                onChange={(e) =>
+                                  updateCell(day, meal, e.target.value)
+                                }
+                                placeholder="—"
+                                rows={3}
+                                className="w-full resize-none rounded-xl border px-3 py-2.5  "
+                              />
+                            </td>
+                          );
+                        })}
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div className="mt-6 flex flex-col items-center gap-3">
+            {fieldError && <p className="  text-myRed">{fieldError}</p>}
+            <div className="flex gap-3">
+              {filledCells.length > 0 && (
+                <button
+                  type="button"
+                  onClick={() => setCellInfo({})}
+                  className="rounded-full border border-cookie-200 px-4 py-0.5   text-myText-muted transition hover:bg-cookie-200"
+                >
+                  {t('nutr.clear')}
+                </button>
+              )}
+              <button
+                type="button"
+                onClick={handleSubmit}
+                disabled={filledCells.length === 0}
+                className="rounded-full bg-cookie-300 px-5 py-1   text-white transition hover:bg-cookie-400 disabled:opacity-40"
+              >
+                {t('nutr.set')}
+              </button>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  );
+};
+
+export const getServerSideProps = async ({ locale }: { locale: string }) => ({
+  props: {
+    ...(await serverSideTranslations(locale, ['common'])),
+  },
+});
+
+export default NutrSchedulerPage;

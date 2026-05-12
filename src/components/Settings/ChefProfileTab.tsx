@@ -7,7 +7,8 @@ import {
 import { FieldGroup, TextArea, SaveButton, SuccessBanner } from './SettingsUI';
 
 export default function ChefProfileTab() {
-  const { t } = useTranslation('common');
+  const { t, i18n } = useTranslation('common');
+  const lang = i18n.language as 'el' | 'en';
   const { data } = useMyChefProfileQuery();
   const [bio, setBio] = useState('');
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
@@ -15,10 +16,14 @@ export default function ChefProfileTab() {
   const [updateChefProfile, { loading }] = useUpdateChefProfileMutation();
 
   useEffect(() => {
-    if (data?.myChefProfile?.bio_el) {
-      setBio(data.myChefProfile.bio_el);
-    }
-  }, [data]);
+    const profile = data?.myChefProfile;
+    if (!profile) return;
+    setBio(
+      lang === 'en'
+        ? profile.bio_en || profile.bio_el || ''
+        : profile.bio_el || '',
+    );
+  }, [data, lang]);
 
   const handleSave = async () => {
     setFieldErrors({});

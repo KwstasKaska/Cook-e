@@ -10,12 +10,12 @@ interface ArticleFormProps {
   cacheEvictFields: string[];
 }
 
-export default function ArticleForm({
+const ArticleForm = ({
   rows = 8,
   onSuccess,
   onCancel,
   cacheEvictFields,
-}: ArticleFormProps) {
+}: ArticleFormProps) => {
   const { t } = useTranslation('common');
 
   const [title, setTitle] = useState('');
@@ -63,7 +63,7 @@ export default function ArticleForm({
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-1">
-        <label className="text-xs font-bold tracking-wide">
+        <label className=" tracking-wide">
           {t('nutr.create_article.label_title')}
         </label>
         <input
@@ -71,12 +71,12 @@ export default function ArticleForm({
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           placeholder={t('nutr.create_article.placeholder_title')}
-          className="w-full rounded-xl border border-gray-300 bg-white px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"
+          className="w-full rounded-xl border border-cookie-200 bg-white px-4 py-0.5 focus:outline-none focus:ring-2 focus:ring-cookie-300"
         />
       </div>
 
       <div className="flex flex-col gap-1">
-        <label className="text-xs font-bold tracking-wide">
+        <label className=" tracking-wide">
           {t('nutr.create_article.label_text')}
         </label>
         <textarea
@@ -84,18 +84,18 @@ export default function ArticleForm({
           onChange={(e) => setText(e.target.value)}
           placeholder={t('nutr.create_article.placeholder_text')}
           rows={rows}
-          className="w-full resize-none rounded-xl border border-gray-300 bg-white px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"
+          className="w-full resize-none rounded-xl border border-cookie-200 bg-white px-4 py-0.5  focus:outline-none focus:ring-2 focus:ring-cookie-300"
         />
       </div>
 
       <div className="flex flex-col gap-1">
-        <label className="text-xs font-bold tracking-wide">
+        <label className=" tracking-wide">
           {t('nutr.create_article.upload_image')}
         </label>
         <div>
           <label
             htmlFor="article-image"
-            className="inline-flex cursor-pointer items-center gap-1.5 rounded-full bg-myYellow px-4 py-1.5 text-xs font-bold transition hover:opacity-90"
+            className="inline-flex cursor-pointer items-center gap-1.5 rounded-full bg-cookie-300 px-4 py-0.5   transition hover:bg-cookie-400"
           >
             {t('nutr.create_article.upload_image')}
           </label>
@@ -107,31 +107,29 @@ export default function ArticleForm({
             className="hidden"
           />
         </div>
-        {image && <p className="text-xs text-gray-500">{image.name}</p>}
+        {image && <p className=" text-myText-muted">{image.name}</p>}
       </div>
 
-      {error && (
-        <p className="text-center text-xs font-semibold text-red-500">
-          {error}
-        </p>
-      )}
+      {error && <p className="text-center  text-myRed">{error}</p>}
 
-      <div className="flex flex-col sm:justify-center gap-3 sm:flex-row">
+      <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
         <button
           onClick={handleSubmit}
           disabled={loading}
-          className="w-full sm:w-auto rounded-full bg-myYellow px-6 py-2 text-sm font-bold transition hover:opacity-90 disabled:opacity-50"
+          className="w-full rounded-full bg-cookie-300 px-4 py-0.5    disabled:opacity-50 sm:w-auto"
         >
           {loading ? t('common.loading') : t('nutr.create_article.submit')}
         </button>
         <button
           onClick={handleCancel}
           disabled={loading}
-          className="w-full sm:w-auto rounded-full border border-gray-400 px-6 py-2 text-sm font-semibold transition hover:bg-gray-100 disabled:opacity-50"
+          className="w-full rounded-full border border-cookie-200 px-4 py-0.5   disabled:opacity-50 sm:w-auto"
         >
           {t('common.cancel')}
         </button>
       </div>
     </div>
   );
-}
+};
+
+export default ArticleForm;

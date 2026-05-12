@@ -1,4 +1,3 @@
-// utils/categoryLabel.ts
 import { CATEGORY_OPTIONS } from '../components/Chef/createRecipe/types';
 
 export const getCategoryLabel = (cat: string, lang: 'el' | 'en') => {

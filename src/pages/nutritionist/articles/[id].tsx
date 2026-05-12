@@ -3,23 +3,24 @@ import NutrNavbar from '../../../components/Nutritionist/NutrNavbar';
 import useIsNutr from '../../../utils/useIsNutr';
 import ArticleSinglePage from '../../../components/Article/ArticleSinglePage';
 
-export default function NutrArticleDetail() {
-  useIsNutr();
+const NutrArticleDetail = () => {
+  const { loading: authLoading, isAuthorized } = useIsNutr();
+  if (authLoading || !isAuthorized) return null;
 
   return (
     <ArticleSinglePage
       Navbar={NutrNavbar}
       listCacheField="myArticles"
-      deleteRedirect="/nutritionist"
-      backHref="/nutritionist"
+      deleteRedirect="/nutritionist/articles"
+      backHref="/nutritionist/articles"
     />
   );
-}
+};
 
-export async function getServerSideProps({ locale }: { locale: string }) {
-  return {
-    props: {
-      ...(await serverSideTranslations(locale, ['common'])),
-    },
-  };
-}
+export const getServerSideProps = async ({ locale }: { locale: string }) => ({
+  props: {
+    ...(await serverSideTranslations(locale, ['common'])),
+  },
+});
+
+export default NutrArticleDetail;
