@@ -5,8 +5,7 @@ const ChefNavbar = () => {
   const { t } = useTranslation('common');
 
   const links: NavLink[] = [
-    { kind: 'href', href: '/chef', label: t('chefnav.chef_profile') },
-    { kind: 'href', href: '/chef/recipes', label: t('chefnav.chef_recipes') },
+    { kind: 'href', href: '/chef', label: t('chefnav.chef_index') },
     {
       kind: 'href',
       href: '/chef/create-recipe',

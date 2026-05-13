@@ -11,7 +11,7 @@ export default function ArticleDetail() {
     <ArticleSinglePage
       Navbar={ChefNavbar}
       listCacheField="articlesByChef"
-      deleteRedirect="/chef/profile"
+      deleteRedirect="/chef/articles"
       backHref="/chef/articles"
       showDate
     />

@@ -1,5 +1,5 @@
 import { useTranslation } from 'next-i18next';
-import { FormData, CATEGORY_OPTIONS, inputClass } from './types';
+import { FormData, CATEGORY_OPTIONS } from './types';
 import { getCategoryLabel } from '../../../utils/categoryLabel';
 
 interface StepThreeProps {
@@ -38,20 +38,6 @@ export default function StepThree({ form, onUpdate }: StepThreeProps) {
             {getCategoryLabel(opt.value, lang)}
           </button>
         ))}
-      </div>
-
-      <div className="mb-4">
-        <label className="mb-1 block text-sm font-semibold">
-          {t('chef.create_recipe.cuisine_label')}
-        </label>
-        <input
-          type="text"
-          placeholder={t('chef.create_recipe.cuisine_placeholder')}
-          value={form.cuisine}
-          onChange={(e) => onUpdate('cuisine', e.target.value)}
-          className={inputClass}
-          style={{ color: '#EAB308' }}
-        />
       </div>
 
       <h3 className="mb-3 text-base font-black">

@@ -71,7 +71,7 @@ const ArticleForm = ({
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           placeholder={t('nutr.create_article.placeholder_title')}
-          className="w-full rounded-xl border border-cookie-200 bg-white px-4 py-0.5 focus:outline-none focus:ring-2 focus:ring-cookie-300"
+          className="w-full rounded-xl border-2 border-cookie-400 bg-white px-4 py-0.5 focus:outline-none focus:ring-2 focus:ring-cookie-300"
         />
       </div>
 
@@ -84,7 +84,7 @@ const ArticleForm = ({
           onChange={(e) => setText(e.target.value)}
           placeholder={t('nutr.create_article.placeholder_text')}
           rows={rows}
-          className="w-full resize-none rounded-xl border border-cookie-200 bg-white px-4 py-0.5  focus:outline-none focus:ring-2 focus:ring-cookie-300"
+          className="w-full resize-none rounded-xl border-2 border-cookie-400 bg-white px-4 py-0.5  focus:outline-none focus:ring-2 focus:ring-cookie-300"
         />
       </div>
 
@@ -95,7 +95,7 @@ const ArticleForm = ({
         <div>
           <label
             htmlFor="article-image"
-            className="inline-flex cursor-pointer items-center gap-1.5 rounded-full bg-cookie-300 px-4 py-0.5   transition hover:bg-cookie-400"
+            className="inline-flex cursor-pointer items-center gap-1.5 rounded-full hover:text-white border-2 border-cookie-400 px-4 py-0.5   transition hover:bg-cookie-400"
           >
             {t('nutr.create_article.upload_image')}
           </label>
@@ -116,14 +116,14 @@ const ArticleForm = ({
         <button
           onClick={handleSubmit}
           disabled={loading}
-          className="w-full rounded-full bg-cookie-300 px-4 py-0.5    disabled:opacity-50 sm:w-auto"
+          className="w-full rounded-full hover:text-white border-2 border-cookie-400 px-4 py-0.5 hover:bg-cookie-400    disabled:opacity-50 sm:w-auto"
         >
           {loading ? t('common.loading') : t('nutr.create_article.submit')}
         </button>
         <button
           onClick={handleCancel}
           disabled={loading}
-          className="w-full rounded-full border border-cookie-200 px-4 py-0.5   disabled:opacity-50 sm:w-auto"
+          className="w-full rounded-full border-2 text-myRed border-myRed hover:text-white hover:bg-myRed px-4 py-0.5   disabled:opacity-50 sm:w-auto"
         >
           {t('common.cancel')}
         </button>

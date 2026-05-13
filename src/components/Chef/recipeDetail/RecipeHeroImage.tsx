@@ -23,18 +23,18 @@ export default function RecipeHeroImage({
   const router = useRouter();
 
   return (
-    <div className="relative h-56 md:h-72 w-full overflow-hidden bg-gray-200">
+    <div className="relative h-56 w-full overflow-hidden bg-cookie-100 md:h-72">
       <button
         onClick={() => router.push(backHref)}
-        className="absolute left-4 top-4 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-white shadow transition hover:bg-gray-100"
+        className="absolute left-4 top-4 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-surface shadow transition hover:bg-cookie-100"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
           strokeWidth={2}
-          stroke="#3F4756"
-          className="h-4 w-4"
+          stroke="currentColor"
+          className="h-4 w-4 text-myText-base"
         >
           <path
             strokeLinecap="round"
@@ -51,7 +51,7 @@ export default function RecipeHeroImage({
           className="object-cover"
         />
       ) : (
-        <div className="flex h-full items-center justify-center text-gray-400 text-sm">
+        <div className="flex h-full items-center justify-center text-myText-muted">
           {t('chef.recipe_detail.no_image')}
         </div>
       )}

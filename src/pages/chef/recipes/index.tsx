@@ -1,12 +1,7 @@
-import React, { useState, useMemo } from 'react';
-import ChefNavbar from '../../../components/Chef/ChefNavbar';
-import RecipeFeaturedCard from '../../../components/Chef/RecipeFeaturedCard';
-import RecipeCompactCard from '../../../components/Chef/RecipeCompactCard';
-import RecipeCategoryFilter from '../../../components/Chef/RecipeCategoryFilter';
-import RecipeSearchBar from '../../../components/Chef/RecipeSearchBar';
+import { useState, useMemo } from 'react';
+import { useRouter } from 'next/router';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
-import { useRouter } from 'next/router';
 import {
   useMyRecipesQuery,
   useMyRecipesByCategoryQuery,
@@ -15,12 +10,21 @@ import {
 } from '../../../generated/graphql';
 import { pick } from '../../../utils/pick';
 import useIsChef from '../../../utils/useIsChef';
+import ChefNavbar from '../../../components/Chef/ChefNavbar';
+import RecipeFeaturedCard from '../../../components/Chef/RecipeFeaturedCard';
+import RecipeCompactCard from '../../../components/Chef/RecipeCompactCard';
+import RecipeCategoryFilter from '../../../components/Chef/RecipeCategoryFilter';
 import PaginationControls from '../../../components/Helper/PaginationControls';
 
 const LIMIT = 5;
 
 export default function ChefRecipes() {
   const { loading: authLoading, isAuthorized } = useIsChef();
+  if (authLoading || !isAuthorized) return null;
+  return <ChefRecipesContent />;
+}
+
+const ChefRecipesContent = () => {
   const { t } = useTranslation('common');
   const router = useRouter();
   const lang = router.locale ?? 'el';
@@ -28,7 +32,6 @@ export default function ChefRecipes() {
   const [activeCategory, setActiveCategory] = useState<RecipeCategory | null>(
     null,
   );
-  const [search, setSearch] = useState('');
   const [offset, setOffset] = useState(0);
 
   const allRecipesQuery = useMyRecipesQuery({
@@ -59,11 +62,9 @@ export default function ChefRecipes() {
   const filtered = useMemo(
     () =>
       rawRecipes.filter((r) =>
-        pick(r.title_el, r.title_en, lang)
-          .toLowerCase()
-          .includes(search.toLowerCase()),
+        pick(r.title_el, r.title_en, lang).toLowerCase(),
       ),
-    [rawRecipes, search, lang],
+    [rawRecipes, lang],
   );
 
   const handleCategoryChange = (cat: RecipeCategory | null) => {
@@ -71,33 +72,25 @@ export default function ChefRecipes() {
     setOffset(0);
   };
 
-  if (authLoading || !isAuthorized) return null;
-
   const featured = filtered[0] ?? null;
   const rest = filtered.slice(1);
-
   const hasPrev = offset > 0;
   const hasMore = rawRecipes.length === LIMIT;
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="min-h-screen">
       <ChefNavbar />
 
-      <main className="relative flex flex-1 flex-col items-center px-4 py-8 md:px-8">
-        <h1
-          className="relative z-10 mb-8 text-3xl italic"
-          style={{ color: 'rgba(255,255,255,0.85)' }}
+      <div className="mx-auto max-w-4xl px-6 pb-16 pt-10">
+        <button
+          onClick={() => router.push('/chef')}
+          className="mb-6 text-myText-muted hover:text-cookie-400"
         >
-          {t('chef.recipes.page_title')}
-        </h1>
+          ← {t('common.back')}
+        </button>
 
-        <div className="relative z-10 bg-white w-full max-w-4xl rounded-2xl p-6 md:p-8">
-          <div className="mb-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <h2 className="text-2xl font-bold">
-              {t('chef.recipes.categories_label')}
-            </h2>
-            <RecipeSearchBar search={search} onSearchChange={setSearch} />
-          </div>
+        <div className="rounded-2xl bg-surface p-6 shadow-lg md:p-8">
+          <h1 className="text-center mb-10">{t('chef.recipes.page_title')}</h1>
 
           <div className="flex flex-col gap-6 md:flex-row">
             <RecipeCategoryFilter
@@ -107,11 +100,11 @@ export default function ChefRecipes() {
 
             <div className="flex-1">
               {loading ? (
-                <p className="text-center text-gray-400 py-12">
-                  {t('common.loading')}
-                </p>
+                <div className="flex justify-center py-12">
+                  <div className="h-8 w-8 animate-spin rounded-full border-2 border-cookie-400 border-t-transparent" />
+                </div>
               ) : filtered.length === 0 ? (
-                <p className="text-center text-gray-400 py-12">
+                <p className="py-12 text-center text-myText-muted">
                   {t('chef.recipes.empty')}
                 </p>
               ) : (
@@ -145,19 +138,21 @@ export default function ChefRecipes() {
                 </div>
               )}
 
-              <PaginationControls
-                hasPrev={hasPrev}
-                hasMore={hasMore}
-                onPrev={() => setOffset((o) => o - LIMIT)}
-                onNext={() => setOffset((o) => o + LIMIT)}
-              />
+              <div className="mt-6">
+                <PaginationControls
+                  hasPrev={hasPrev}
+                  hasMore={hasMore}
+                  onPrev={() => setOffset((o) => o - LIMIT)}
+                  onNext={() => setOffset((o) => o + LIMIT)}
+                />
+              </div>
             </div>
           </div>
         </div>
-      </main>
+      </div>
     </div>
   );
-}
+};
 
 export async function getServerSideProps({ locale }: { locale: string }) {
   return {

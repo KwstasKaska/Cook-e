@@ -22,7 +22,6 @@ export interface EditForm {
   prepTime: string;
   cookTime: string;
   restTime: string;
-  foodEthnicity: string;
   category: RecipeCategory | '';
   caloriesTotal: string;
   protein: string;
@@ -94,7 +93,6 @@ export const buildEditForm = (
   prepTime: String(recipe.prepTime ?? ''),
   cookTime: String(recipe.cookTime ?? ''),
   restTime: String(recipe.restTime ?? ''),
-  foodEthnicity: recipe.foodEthnicity ?? '',
   category: recipe.category ?? '',
   caloriesTotal:
     recipe.caloriesTotal != null ? String(recipe.caloriesTotal) : '',

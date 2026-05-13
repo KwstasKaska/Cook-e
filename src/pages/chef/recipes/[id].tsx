@@ -164,9 +164,6 @@ export default function ChefSingleRecipe() {
           ...(editForm.prepTime && { prepTime: Number(editForm.prepTime) }),
           ...(editForm.cookTime && { cookTime: Number(editForm.cookTime) }),
           ...(editForm.restTime && { restTime: Number(editForm.restTime) }),
-          ...(editForm.foodEthnicity.trim() && {
-            foodEthnicity: editForm.foodEthnicity.trim(),
-          }),
           ...(editForm.category && {
             category: editForm.category as RecipeCategory,
           }),
@@ -237,7 +234,7 @@ export default function ChefSingleRecipe() {
       <div className="flex min-h-screen flex-col">
         <ChefNavbar />
         <main className="flex flex-1 items-center justify-center">
-          <p className="text-white text-sm">
+          <p className="text-myText-muted">
             {loading ? t('common.loading') : t('chef.recipe_detail.not_found')}
           </p>
         </main>
@@ -281,7 +278,7 @@ export default function ChefSingleRecipe() {
       )}
 
       <main className="flex flex-1 flex-col items-center px-4 py-8 md:px-8">
-        <div className="w-full max-w-3xl overflow-hidden rounded-2xl bg-white shadow-2xl">
+        <div className="w-full max-w-3xl overflow-hidden rounded-2xl bg-surface shadow-2xl">
           <RecipeHeroImage
             recipeImage={displayImage}
             title_el={recipe.title_el}
@@ -290,7 +287,7 @@ export default function ChefSingleRecipe() {
             backHref="/chef/recipes"
           />
 
-          <div className="px-6 pt-4 pb-2">
+          <div className="px-6 pb-2 pt-4">
             <RecipeActionButtons
               isEditing={isEditing}
               saving={saving}
@@ -304,13 +301,13 @@ export default function ChefSingleRecipe() {
 
           {isEditing && (
             <div className="px-6 pb-2">
-              <label className="mb-1 block text-sm font-bold">
+              <label className="mb-1 block ">
                 {t('chef.article.image_label')}
               </label>
               <div>
                 <label
                   htmlFor="recipe-image"
-                  className="inline-flex cursor-pointer items-center gap-1.5 rounded-full bg-myYellow px-4 py-1.5 text-xs font-bold transition hover:opacity-90"
+                  className="inline-flex cursor-pointer items-center gap-1.5 rounded-full bg-cookie-300 px-4 py-1.5  text-white transition hover:bg-cookie-400"
                 >
                   {t('chef.article.image_label')}
                 </label>
@@ -324,17 +321,17 @@ export default function ChefSingleRecipe() {
                 />
               </div>
               {imageFile && (
-                <p className="mt-1 text-xs text-gray-500">{imageFile.name}</p>
+                <p className="mt-1  text-myText-muted">{imageFile.name}</p>
               )}
             </div>
           )}
 
           <div className="flex flex-col gap-6 p-6 md:flex-row md:p-8">
-            <div className="flex-1 min-w-0">
+            <div className="min-w-0 flex-1">
               {!isEditing && (
                 <div className="mb-4 flex items-center gap-2">
                   <Stars rating={avgRating} />
-                  <span className="text-sm text-gray-400">
+                  <span className="text-myText-muted">
                     {totalRatings > 0
                       ? `${avgRating.toFixed(1)} (${totalRatings})`
                       : t('chef.recipe_detail.no_ratings_yet')}
@@ -370,11 +367,11 @@ export default function ChefSingleRecipe() {
               />
 
               {fieldErrors.steps && (
-                <p className="mt-2 text-xs text-red-500">{fieldErrors.steps}</p>
+                <p className="mt-2 text-myRed">{fieldErrors.steps}</p>
               )}
 
               {(fieldErrors.prepTime || fieldErrors.cookTime) && (
-                <p className="mt-2 text-xs text-red-500">
+                <p className="mt-2 text-myRed">
                   {fieldErrors.prepTime || fieldErrors.cookTime}
                 </p>
               )}

@@ -25,15 +25,13 @@ export default function RecipeStepsList({
 
   return (
     <div>
-      <h3 className="mb-3 text-lg font-black">
-        {t('chef.recipe_detail.execution')}
-      </h3>
+      <h3 className="mb-3">{t('chef.recipe_detail.execution')}</h3>
 
       {isEditing ? (
         <div className="flex flex-col gap-3">
           {editForm.steps.map((s: StepRow, i: number) => (
             <div key={i} className="flex items-start gap-2">
-              <div className="mt-2 h-5 bg-myGrey-200 w-5 flex-shrink-0 rounded-full flex items-center justify-center text-xs font-bold text-white">
+              <div className="mt-2 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-cookie-300   text-white">
                 {i + 1}
               </div>
               <textarea
@@ -44,7 +42,7 @@ export default function RecipeStepsList({
                   onUpdate('steps', updated);
                 }}
                 rows={2}
-                className="flex-1 resize-none rounded-lg border border-gray-200 bg-gray-50 px-2 py-1.5 text-sm outline-none focus:border-blue-300"
+                className="flex-1 resize-none rounded-lg border border-cookie-200 bg-cookie-100 px-2 py-1.5 outline-none focus:border-cookie-400"
               />
               {editForm.steps.length > 1 && (
                 <button
@@ -55,7 +53,7 @@ export default function RecipeStepsList({
                       editForm.steps.filter((_, idx) => idx !== i),
                     )
                   }
-                  className="mt-1.5 text-gray-300 hover:text-red-400 transition-colors flex-shrink-0"
+                  className="mt-1.5 flex-shrink-0 text-myText-muted transition hover:text-myRed"
                 >
                   <svg
                     className="h-4 w-4"
@@ -83,16 +81,14 @@ export default function RecipeStepsList({
                 { id: Date.now(), body: '' },
               ])
             }
-            className="mt-1 self-start rounded-full border px-4 py-1.5 text-xs font-semibold transition border-myGrey-200 hover:bg-gray-50"
+            className="mt-1 self-start rounded-full border-2 border-cookie-400 px-4 py-1.5  text-cookie-400 transition hover:bg-cookie-400 hover:text-white"
           >
             + {t('chef.create_recipe.add_step')}
           </button>
 
           {allUtensils.length > 0 && (
             <div className="mt-4">
-              <h4 className="mb-3 text-base font-black">
-                {t('chef.create_recipe.utensils_label')}
-              </h4>
+              <h4 className="mb-3">{t('chef.create_recipe.utensils_label')}</h4>
               <div className="flex flex-wrap gap-2">
                 {allUtensils.map((u) => {
                   const selected = editForm.utensilIds.includes(u.id);
@@ -109,11 +105,11 @@ export default function RecipeStepsList({
                             : [...current, u.id],
                         );
                       }}
-                      className="rounded-full px-4 py-1.5 text-sm font-semibold transition"
-                      style={{
-                        backgroundColor: selected ? '#EAB308' : '#F5F0D8',
-                        color: '#3F4756',
-                      }}
+                      className={`rounded-full px-4 py-1.5  transition ${
+                        selected
+                          ? 'bg-cookie-400 text-white'
+                          : 'bg-cookie-100 text-myText-base hover:bg-cookie-300 hover:text-white'
+                      }`}
                     >
                       {lang === 'el' ? u.name_el : u.name_en}
                     </button>
@@ -128,8 +124,8 @@ export default function RecipeStepsList({
           <div className="flex flex-col gap-3">
             {(recipe.steps ?? []).map((step: any, i: number) => (
               <div key={i} className="flex items-start gap-3">
-                <div className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center border-myGrey-200 rounded-full border-2" />
-                <span className="text-sm text-gray-600">
+                <div className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full border-2 border-cookie-400" />
+                <span className="text-myText-base">
                   {pick(step.body_el, step.body_en, lang)}
                 </span>
               </div>
@@ -138,15 +134,12 @@ export default function RecipeStepsList({
 
           {(recipe.utensils ?? []).length > 0 && (
             <div className="mt-4">
-              <h4 className="mb-2 text-sm font-black">
-                {t('chef.create_recipe.utensils_label')}
-              </h4>
+              <h4 className="mb-2">{t('chef.create_recipe.utensils_label')}</h4>
               <div className="flex flex-wrap gap-2">
                 {recipe.utensils.map((u: any) => (
                   <span
                     key={u.id}
-                    className="rounded-full px-3 py-1 text-xs font-semibold"
-                    style={{ backgroundColor: '#F5F0D8', color: '#3F4756' }}
+                    className="rounded-full bg-cookie-100 px-3 py-1  text-myText-base"
                   >
                     {lang === 'el' ? u.name_el : u.name_en}
                   </span>

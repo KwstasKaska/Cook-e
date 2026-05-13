@@ -28,7 +28,6 @@ export interface FormData {
   fat: string;
   // Step 3
   category: RecipeCategory | '';
-  cuisine: string;
   summary: string;
   // Step 4
   ingredients: IngredientRow[];

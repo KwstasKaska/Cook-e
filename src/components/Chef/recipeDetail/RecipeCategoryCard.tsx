@@ -20,19 +20,17 @@ export default function RecipeCategoryCard({
 }: Props) {
   const { t } = useTranslation('common');
 
-  if (!recipe.category && !recipe.foodEthnicity) return null;
+  if (!recipe.category) return null;
 
   return (
-    <div className="rounded-2xl border border-gray-200 p-4">
-      <h4 className="mb-3 text-center text-sm font-bold">
-        {t('chef.recipe_detail.food_type')}
-      </h4>
+    <div className="rounded-2xl border border-cookie-400 p-4">
+      <h4 className="mb-3 text-center ">{t('chef.recipe_detail.food_type')}</h4>
       <div className="flex flex-col gap-3">
         {recipe.category && (
           <div>
-            <p className="text-xs text-gray-500">
+            <span className="text-myText-muted">
               {t('chef.recipe_detail.dish_type')}
-            </p>
+            </span>
             {isEditing ? (
               <div className="mt-1 flex flex-wrap gap-1">
                 {CATEGORY_OPTIONS.map((opt) => (
@@ -45,39 +43,19 @@ export default function RecipeCategoryCard({
                         editForm.category === opt.value ? '' : opt.value,
                       )
                     }
-                    className="rounded-full px-2 py-0.5 text-xs font-semibold transition"
-                    style={{
-                      backgroundColor:
-                        editForm.category === opt.value ? '#377CC3' : '#E5E7EB',
-                      color:
-                        editForm.category === opt.value ? 'white' : '#3F4756',
-                    }}
+                    className={`rounded-full px-2 py-0.5   transition ${
+                      editForm.category === opt.value
+                        ? 'bg-cookie-400 text-white'
+                        : 'bg-cookie-100 text-myText-base hover:bg-cookie-300 hover:text-white'
+                    }`}
                   >
                     {getCategoryLabel(opt.value, lang)}
                   </button>
                 ))}
               </div>
             ) : (
-              <p className="mt-0.5 border-b border-myBlue-200 text-myBlue-200 pb-1 text-sm font-medium italic">
+              <p className="mt-0.5  border-cookie-400 pb-1   ">
                 {getCategoryLabel(recipe.category, lang)}
-              </p>
-            )}
-          </div>
-        )}
-        {recipe.foodEthnicity && (
-          <div>
-            <p className="text-xs text-gray-500">
-              {t('chef.recipe_detail.cuisine')}
-            </p>
-            {isEditing ? (
-              <input
-                value={editForm.foodEthnicity}
-                onChange={(e) => onUpdate('foodEthnicity', e.target.value)}
-                className="mt-0.5 w-full border-b pb-1 text-sm font-medium italic outline-none border-myYellow text-myBlue-200"
-              />
-            ) : (
-              <p className="mt-0.5 text-sm font-medium italic text-myBlue-200">
-                {recipe.foodEthnicity}
               </p>
             )}
           </div>

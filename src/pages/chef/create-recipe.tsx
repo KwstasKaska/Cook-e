@@ -53,7 +53,6 @@ export default function CreateRecipe() {
     carbs: '',
     fat: '',
     category: '',
-    cuisine: '',
     summary: '',
     ingredients: [
       { id: 1, ingredientId: 0, quantity: '', unit: '' },
@@ -207,7 +206,6 @@ export default function CreateRecipe() {
           }),
           ...(form.summary.trim() && { description: form.summary.trim() }),
           ...(form.category && { category: form.category as RecipeCategory }),
-          ...(form.cuisine.trim() && { foodEthnicity: form.cuisine.trim() }),
           ...(recipeImageUrl && { recipeImage: recipeImageUrl }),
           ...(selectedUtensilIds.length > 0 && {
             utensilIds: selectedUtensilIds,

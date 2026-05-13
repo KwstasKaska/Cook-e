@@ -220,7 +220,7 @@ export default function LivePreview({
             </div>
           )}
 
-          {step >= 3 && (form.category || form.cuisine) && (
+          {step >= 3 && form.category && (
             <div className="rounded-xl border border-gray-200 p-2 bg-white">
               <p className="text-center text-xs font-bold mb-1">
                 {t('chef.recipe_detail.food_type')}
@@ -232,19 +232,6 @@ export default function LivePreview({
                   </p>
                   <p className="text-xs text-myBlue-200 border-myBlue-100 font-medium italic border-b pb-0.5 mb-1">
                     {getCategoryLabel(form.category, lang)}
-                  </p>
-                </div>
-              )}
-              {form.cuisine && (
-                <div>
-                  <p className="text-xs text-gray-500">
-                    {t('chef.recipe_detail.cuisine')}
-                  </p>
-                  <p
-                    className="text-xs font-medium italic"
-                    style={{ color: '#377CC3' }}
-                  >
-                    {form.cuisine}
                   </p>
                 </div>
               )}

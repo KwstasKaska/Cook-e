@@ -22,17 +22,12 @@ export default function RecipeMacrosCard({
   if (!hasMacros && !isEditing) return null;
 
   return (
-    <div className="rounded-2xl border border-gray-200 p-4">
-      <h4 className="mb-3 text-center text-sm font-bold">
-        {t('chef.recipe_detail.macros')}
-      </h4>
+    <div className="rounded-2xl border border-cookie-400 p-4">
+      <h4 className="mb-3 text-center ">{t('chef.recipe_detail.macros')}</h4>
       <div className="flex flex-col gap-2">
         {MACRO_FIELDS.map(({ field, unit, labelKey }) => (
-          <div
-            key={field}
-            className="flex items-center justify-between text-xs"
-          >
-            <span className="text-gray-500">{t(labelKey)}</span>
+          <div key={field} className="flex items-center justify-between">
+            <span className="text-myText-muted">{t(labelKey)}</span>
             {isEditing ? (
               <div className="flex items-center gap-1">
                 <input
@@ -40,12 +35,12 @@ export default function RecipeMacrosCard({
                   min={0}
                   value={editForm[field]}
                   onChange={(e) => onUpdate(field, e.target.value)}
-                  className="w-16 rounded border border-gray-200 px-2 py-0.5 text-right text-myBlue-200 text-xs font-semibold outline-none"
+                  className="w-16 rounded border border-cookie-400 px-2 py-0.5 text-right   outline-none focus:border-cookie-400"
                 />
-                <span className="text-gray-400">{unit}</span>
+                <span className="text-myText-muted">{unit}</span>
               </div>
             ) : (
-              <span className="font-semibold text-myBlue-200">
+              <span className=" ">
                 {recipe[field] ?? '—'} {unit}
               </span>
             )}

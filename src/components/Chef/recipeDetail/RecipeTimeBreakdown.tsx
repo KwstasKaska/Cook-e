@@ -26,25 +26,25 @@ export default function RecipeTimeBreakdown({
   const { t } = useTranslation('common');
 
   return (
-    <div className="rounded-2xl border border-gray-200 p-4">
-      <h4 className="mb-3 text-center text-sm font-bold">
+    <div className="rounded-2xl border border-cookie-400 p-4">
+      <h4 className="mb-3 text-center ">
         {t('chef.recipe_detail.implementation_time')} {totalTime}{' '}
         {t('chef.recipe_detail.minutes')}
       </h4>
       <div className="flex flex-col gap-2">
         {timeBreakdown.map(({ label, field, value }) => (
           <div key={field} className="flex items-center justify-between gap-2">
-            <span className="text-xs">{label}</span>
+            <span className="text-myText-muted">{label}</span>
             {isEditing ? (
               <input
                 type="number"
                 min={0}
                 value={editForm[field]}
                 onChange={(e) => onUpdate(field, e.target.value)}
-                className="w-16 rounded border border-gray-200 px-2 py-0.5 text-right text-xs font-semibold text-myBlue-200  outline-none"
+                className="w-16 rounded border border-cookie-400 px-2 py-0.5 text-right   outline-none focus:border-cookie-400"
               />
             ) : (
-              <span className="flex-shrink-0 text-myBlue-200 text-xs font-semibold">
+              <span className="flex-shrink-0  ">
                 {value ?? 0} {t('chef.recipe_detail.minutes')}
               </span>
             )}

@@ -533,12 +533,6 @@ const RecipeDetailContent = () => {
                     <span>{getDifficultyLabel(recipe.difficulty, t)}</span>
                   </div>
                 )}
-                {recipe.foodEthnicity && (
-                  <div className="flex justify-between">
-                    <span>{t('chef.create_recipe.cuisine_label')}</span>
-                    <span>{recipe.foodEthnicity}</span>
-                  </div>
-                )}
                 {(recipe.caloriesTotal != null ||
                   recipe.protein != null ||
                   recipe.carbs != null ||

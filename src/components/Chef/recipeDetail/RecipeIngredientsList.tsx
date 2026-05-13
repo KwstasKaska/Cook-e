@@ -66,22 +66,20 @@ export default function RecipeIngredientsList({
 
   return (
     <div className="mb-6">
-      <h3 className="mb-3 text-lg font-black">
-        {t('chef.recipe_detail.ingredients')}
-      </h3>
+      <h3 className="mb-3">{t('chef.recipe_detail.ingredients')}</h3>
 
       {isEditing ? (
         <div className="flex flex-col gap-3">
           {editForm.ingredients.map((ing: IngredientRow, i: number) => (
             <div
               key={i}
-              className="flex flex-col gap-1 border-b border-gray-100 pb-2"
+              className="flex flex-col gap-1 border-b border-cookie-100 pb-2"
             >
               <select
                 value={ing.ingredientId}
                 onChange={(e) => handleSelect(i, Number(e.target.value))}
-                className="w-full bg-transparent text-sm outline-none"
-                style={{ color: ing.ingredientId ? '#3F4756' : '#9CA3AF' }}
+                className="w-full bg-transparent outline-none"
+                style={{ color: ing.ingredientId ? undefined : '#9C9080' }}
               >
                 <option value={0}>
                   {t('chef.create_recipe.select_ingredient')}
@@ -99,13 +97,13 @@ export default function RecipeIngredientsList({
                   value={ing.quantity}
                   onChange={(e) => updateRow(i, { quantity: e.target.value })}
                   placeholder="60"
-                  className="w-12 bg-transparent text-sm font-semibold outline-none placeholder:text-gray-300 text-center border-b border-gray-200"
+                  className="w-12 border-b border-cookie-200 bg-transparent text-center  outline-none placeholder:text-myText-muted"
                 />
                 <select
                   value={ing.unit}
                   onChange={(e) => updateRow(i, { unit: e.target.value })}
-                  className="w-16 bg-transparent text-sm outline-none"
-                  style={{ color: ing.unit ? '#3F4756' : '#9CA3AF' }}
+                  className="w-16 bg-transparent outline-none"
+                  style={{ color: ing.unit ? undefined : '#9C9080' }}
                 >
                   <option value="">{t('chef.create_recipe.unit_label')}</option>
                   {UNIT_OPTIONS.map((u) => (
@@ -118,7 +116,7 @@ export default function RecipeIngredientsList({
                   <button
                     type="button"
                     onClick={() => removeRow(i)}
-                    className="ml-auto flex-shrink-0 text-gray-300 hover:text-red-400 transition-colors"
+                    className="ml-auto flex-shrink-0 text-myText-muted transition hover:text-myRed"
                   >
                     <svg
                       className="h-4 w-4"
@@ -139,21 +137,21 @@ export default function RecipeIngredientsList({
             </div>
           ))}
 
-          {fieldError && <p className="text-xs text-red-500">{fieldError}</p>}
+          {fieldError && <p className="text-myRed">{fieldError}</p>}
 
           <button
             type="button"
             onClick={addRow}
-            className="mt-1 rounded-full border border-myGrey-200 px-5 py-2 text-sm font-semibold transition hover:bg-gray-50 w-full sm:w-auto"
+            className="mt-1 w-full rounded-full border-2 border-cookie-400 px-5 py-2  text-cookie-400 transition hover:bg-cookie-400 hover:text-white sm:w-auto"
           >
             {t('chef.create_recipe.add_ingredient')}
           </button>
         </div>
       ) : (
-        <ol className="flex flex-col gap-1.5 list-decimal list-inside">
+        <div className="flex list-decimal list-inside flex-col gap-1.5">
           {(recipe.recipeIngredients ?? []).map((ri: any, i: number) => (
-            <li key={i} className="text-sm text-gray-600">
-              <span className="font-semibold">
+            <span key={i} className="text-myText-base">
+              <span className="">
                 {ri.quantity}{' '}
                 {t(`chef.create_recipe.units.${ri.unit}`, {
                   defaultValue: ri.unit,
@@ -164,9 +162,9 @@ export default function RecipeIngredientsList({
                 ri.ingredient?.name_en ?? '',
                 lang,
               )}
-            </li>
+            </span>
           ))}
-        </ol>
+        </div>
       )}
     </div>
   );
