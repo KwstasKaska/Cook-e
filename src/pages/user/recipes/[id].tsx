@@ -46,6 +46,40 @@ export default function RecipeDetailPage() {
   return <RecipeDetailContent />;
 }
 
+const CartIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth={2}
+    className="h-4 w-4"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"
+    />
+  </svg>
+);
+
+const CheckIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth={2.5}
+    className="h-4 w-4"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M4.5 12.75l6 6 9-13.5"
+    />
+  </svg>
+);
+
 const RecipeDetailContent = () => {
   const { t, i18n } = useTranslation('common');
   const lang = i18n.language as 'el' | 'en';
@@ -236,7 +270,9 @@ const RecipeDetailContent = () => {
       <main className="flex-1">
         <div className="mx-auto max-w-6xl px-4 py-10 md:px-8 md:py-16">
           <div className="grid grid-cols-1 gap-8 md:grid-cols-[1fr_280px] lg:grid-cols-[1fr_320px] md:items-start">
-            <div className="flex min-w-0 flex-col gap-6">
+            {/* LEFT COLUMN */}
+            <div className="flex min-w-0 flex-col gap-8">
+              {/* Back */}
               <button
                 onClick={() => router.back()}
                 className="flex w-fit items-center gap-2 text-myText-muted transition hover:text-cookie-400"
@@ -258,35 +294,26 @@ const RecipeDetailContent = () => {
                 {t('common.back')}
               </button>
 
-              <div className="relative min-w-0">
+              {/* Title block */}
+              <div className="flex min-w-0 flex-col gap-3">
                 {recipe.category && (
-                  <p className="mb-2">
+                  <p className="text-sm text-myText-muted">
                     {getCategoryLabel(recipe.category, lang)}
                   </p>
                 )}
-                <div className="flex items-start justify-between gap-4">
-                  <div className="flex flex-col gap-2">
-                    <h1 className="max-w-lg break-words leading-tight">
-                      {title}
-                    </h1>
-                    {avgRating > 0 && (
-                      <StarRow
-                        rating={avgRating}
-                        ratingCount={reviews.length}
-                      />
-                    )}
-                    <ShareButton
-                      dark
-                      url={
-                        typeof window !== 'undefined'
-                          ? window.location.href
-                          : ''
-                      }
-                    />
-                  </div>
-                </div>
+                <h1 className="max-w-lg break-words leading-tight">{title}</h1>
+                {avgRating > 0 && (
+                  <StarRow rating={avgRating} ratingCount={reviews.length} />
+                )}
+                <ShareButton
+                  dark
+                  url={
+                    typeof window !== 'undefined' ? window.location.href : ''
+                  }
+                />
               </div>
 
+              {/* Cook state */}
               {cookState === 'undo' ? (
                 <div className="flex items-center gap-2">
                   <span className="rounded-xl border-2 border-herb-200 bg-herb-200 px-4 py-0.5 text-white">
@@ -305,7 +332,7 @@ const RecipeDetailContent = () => {
                   disabled={logging || cookState === 'done'}
                   className={`w-fit rounded-xl border-2 border-cookie-400 px-4 py-0.5 transition disabled:cursor-not-allowed disabled:opacity-50 ${
                     cookState === 'done'
-                      ? 'bg-herb-200 text-white border-herb-200'
+                      ? 'border-herb-200 bg-herb-200 text-white'
                       : 'hover:bg-cookie-400 hover:text-white'
                   }`}
                 >
@@ -315,10 +342,16 @@ const RecipeDetailContent = () => {
                 </button>
               )}
 
+              {/* Description — shown here on mobile since sidebar is below */}
+              {description && (
+                <p className="text-myText-muted md:hidden">{description}</p>
+              )}
+
+              {/* Ingredients */}
               {ingredients.length > 0 && (
                 <div>
                   <h2 className="mb-4">{t('ingredientCategories.title')}</h2>
-                  <div className="flex flex-col gap-2">
+                  <div className="flex flex-col divide-y divide-cookie-200">
                     {ingredients.map((ri) => {
                       if (!ri.ingredient) return null;
                       const ingId = ri.ingredientId;
@@ -330,8 +363,9 @@ const RecipeDetailContent = () => {
                       return (
                         <div
                           key={ingId}
-                          className="flex items-center gap-2 py-1"
+                          className="flex items-center gap-3 py-2.5"
                         >
+                          {/* Checkbox */}
                           <button
                             onClick={() => toggleIngredient(ingId)}
                             className="flex-shrink-0"
@@ -359,21 +393,32 @@ const RecipeDetailContent = () => {
                               )}
                             </span>
                           </button>
-                          <span className="flex-1">
+
+                          {/* Name */}
+                          <span
+                            className={`flex-1 transition ${
+                              isChecked ? 'text-myText-muted line-through' : ''
+                            }`}
+                          >
                             {ri.quantity} {ri.unit} {name}
-                            <button
-                              onClick={() => handleAddToCart(ingId)}
-                              className={`ml-6 rounded-xl border border-cookie-400 px-4 py-0.5 transition ${
-                                inCart
-                                  ? 'text-myYellow'
-                                  : 'hover:bg-cookie-400 hover:text-white'
-                              }`}
-                            >
-                              {inCart
-                                ? t('recipes.cart.addedToCart')
-                                : t('recipes.cart.addToList')}
-                            </button>
                           </span>
+
+                          {/* Cart icon button */}
+                          <button
+                            onClick={() => !inCart && handleAddToCart(ingId)}
+                            title={
+                              inCart
+                                ? t('recipes.cart.addedToCart')
+                                : t('recipes.cart.addToList')
+                            }
+                            className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border-2 transition ${
+                              inCart
+                                ? 'border-herb-200 bg-herb-200 text-white'
+                                : 'border-cookie-400 text-cookie-400 hover:bg-cookie-400 hover:text-white'
+                            }`}
+                          >
+                            {inCart ? <CheckIcon /> : <CartIcon />}
+                          </button>
                         </div>
                       );
                     })}
@@ -381,6 +426,7 @@ const RecipeDetailContent = () => {
                 </div>
               )}
 
+              {/* Steps */}
               {steps.length > 0 && (
                 <div>
                   <h2 className="mb-6">{t('chef.recipe_detail.execution')}</h2>
@@ -393,9 +439,7 @@ const RecipeDetailContent = () => {
                           </div>
                         </div>
                         <div className="flex-1 pb-2">
-                          <p className="md:text-base">
-                            {isEl ? step.body_el : step.body_en}
-                          </p>
+                          <p>{isEl ? step.body_el : step.body_en}</p>
                         </div>
                       </div>
                     ))}
@@ -403,6 +447,7 @@ const RecipeDetailContent = () => {
                 </div>
               )}
 
+              {/* Utensils */}
               {utensils.length > 0 && (
                 <div>
                   <h2 className="mb-4">
@@ -422,6 +467,7 @@ const RecipeDetailContent = () => {
               )}
             </div>
 
+            {/* RIGHT SIDEBAR */}
             <div className="min-w-0 overflow-hidden rounded-2xl bg-surface shadow-xl md:sticky md:top-6">
               {recipe.author?.user && (
                 <button
@@ -455,7 +501,7 @@ const RecipeDetailContent = () => {
               )}
 
               {description && (
-                <div className="border-b border-cookie-400 px-6 py-4">
+                <div className="hidden border-b border-cookie-400 px-6 py-4 md:block">
                   <p>{description}</p>
                 </div>
               )}
