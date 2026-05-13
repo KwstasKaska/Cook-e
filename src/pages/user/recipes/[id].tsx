@@ -192,10 +192,6 @@ const RecipeDetailContent = () => {
     const res = await logCookedRecipe({ variables: { recipeId } });
     const logId = res.data?.logCookedRecipe?.id ?? null;
     setLastCookId(logId);
-    setCookState('confirm');
-  };
-
-  const handleConfirmCooked = () => {
     setCookState('undo');
     undoTimerRef.current = setTimeout(() => {
       setLastCookId(null);
@@ -206,13 +202,6 @@ const RecipeDetailContent = () => {
 
   const handleUndoCooked = async () => {
     if (undoTimerRef.current) clearTimeout(undoTimerRef.current);
-    if (lastCookId !== null)
-      await deleteCookLog({ variables: { id: lastCookId } });
-    setLastCookId(null);
-    setCookState('idle');
-  };
-
-  const handleCancelCooked = async () => {
     if (lastCookId !== null)
       await deleteCookLog({ variables: { id: lastCookId } });
     setLastCookId(null);
@@ -316,22 +305,7 @@ const RecipeDetailContent = () => {
                 )}
               </div>
 
-              {cookState === 'confirm' ? (
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={handleConfirmCooked}
-                    className="rounded-xl border-2 border-herb-200 px-4 py-0.5 text-herb-200 transition hover:bg-herb-200 hover:text-white"
-                  >
-                    {t('common.yes')}
-                  </button>
-                  <button
-                    onClick={handleCancelCooked}
-                    className="rounded-xl border-2 border-myRed px-4 py-0.5 text-myRed transition hover:bg-myRed hover:text-white"
-                  >
-                    {t('common.no')}
-                  </button>
-                </div>
-              ) : cookState === 'undo' ? (
+              {cookState === 'undo' ? (
                 <div className="flex items-center gap-2">
                   <span className="rounded-xl border-2 border-herb-200 bg-herb-200 px-4 py-0.5 text-white">
                     {t('chef.recipe_detail.marked_as_cooked')}
