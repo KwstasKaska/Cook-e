@@ -284,25 +284,7 @@ const RecipeDetailContent = () => {
                       }
                     />
                   </div>
-                  {recipe.recipeImage && (
-                    <div className="relative hidden h-48 w-48 flex-shrink-0 overflow-hidden rounded-full border-4 border-surface shadow-xl md:block">
-                      <img
-                        src={recipe.recipeImage}
-                        alt={title}
-                        className="h-full w-full object-cover"
-                      />
-                    </div>
-                  )}
                 </div>
-                {recipe.recipeImage && (
-                  <div className="relative mx-auto mt-4 h-40 w-40 overflow-hidden rounded-full border-4 border-surface shadow-xl md:hidden">
-                    <img
-                      src={recipe.recipeImage}
-                      alt={title}
-                      className="h-full w-full object-cover"
-                    />
-                  </div>
-                )}
               </div>
 
               {cookState === 'undo' ? (
