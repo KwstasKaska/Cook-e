@@ -12,6 +12,7 @@ import {
   useIngredientsQuery,
   useRecipeAverageRatingQuery,
   useRecipeRatingsQuery,
+  useMyChefProfileQuery,
 } from '../../../generated/graphql';
 import useIsChef from '../../../utils/useIsChef';
 import { uploadToCloudinary } from '../../../utils/uploadToCloudinary';
@@ -51,9 +52,13 @@ export default function ChefSingleRecipe() {
 
   const initializedRef = useRef(false);
 
+  const { data: profileData, loading: profileLoading } =
+    useMyChefProfileQuery();
+  const myChefId = profileData?.myChefProfile?.id;
+
   const { data, loading } = useRecipeDetailQuery({
     variables: { id: id! },
-    skip: !router.isReady || !id,
+    skip: !router.isReady || !id || !myChefId,
     fetchPolicy: 'network-only',
   });
 
@@ -87,6 +92,11 @@ export default function ChefSingleRecipe() {
   }, [recipe]);
 
   if (authLoading || !isAuthorized) return null;
+
+  if (recipe && myChefId && recipe.authorId !== myChefId) {
+    router.replace('/chef/recipes');
+    return null;
+  }
 
   const update = (field: keyof EditForm, value: unknown) =>
     setEditForm((prev) => (prev ? { ...prev, [field]: value } : prev));
@@ -229,7 +239,7 @@ export default function ChefSingleRecipe() {
       lang === 'el' ? 'labelEl' : 'labelEn'
     ] ?? '';
 
-  if (loading || !recipe || !editForm) {
+  if (loading || profileLoading || !recipe || !editForm) {
     return (
       <div className="flex min-h-screen flex-col">
         <ChefNavbar />
@@ -301,13 +311,13 @@ export default function ChefSingleRecipe() {
 
           {isEditing && (
             <div className="px-6 pb-2">
-              <label className="mb-1 block ">
+              <label className="mb-1 block">
                 {t('chef.article.image_label')}
               </label>
               <div>
                 <label
                   htmlFor="recipe-image"
-                  className="inline-flex cursor-pointer items-center gap-1.5 rounded-full bg-cookie-300 px-4 py-1.5  text-white transition hover:bg-cookie-400"
+                  className="inline-flex cursor-pointer items-center gap-1.5 rounded-full bg-cookie-300 px-4 py-1.5 text-white transition hover:bg-cookie-400"
                 >
                   {t('chef.article.image_label')}
                 </label>
@@ -321,7 +331,7 @@ export default function ChefSingleRecipe() {
                 />
               </div>
               {imageFile && (
-                <p className="mt-1  text-myText-muted">{imageFile.name}</p>
+                <p className="mt-1 text-myText-muted">{imageFile.name}</p>
               )}
             </div>
           )}

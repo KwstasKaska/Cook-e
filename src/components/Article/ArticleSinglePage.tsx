@@ -6,6 +6,7 @@ import {
   useArticleQuery,
   useUpdateArticleMutation,
   useDeleteArticleMutation,
+  useMeQuery,
 } from '../../generated/graphql';
 import { pick } from '../../utils/pick';
 import { uploadToCloudinary } from '../../utils/uploadToCloudinary';
@@ -39,9 +40,12 @@ const ArticleSinglePage = ({
   const [editError, setEditError] = useState('');
   const [isSaving, setIsSaving] = useState(false);
 
+  const { data: meData, loading: meLoading } = useMeQuery();
+  const myUserId = meData?.me?.id;
+
   const { data, loading } = useArticleQuery({
     variables: { id: id! },
-    skip: !id,
+    skip: !id || !myUserId,
   });
 
   useEffect(() => {
@@ -67,6 +71,11 @@ const ArticleSinglePage = ({
   });
 
   const article = data?.article;
+
+  if (article && myUserId && article.creatorId !== myUserId) {
+    router.replace(backHref);
+    return null;
+  }
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] ?? null;
@@ -119,7 +128,7 @@ const ArticleSinglePage = ({
     });
   };
 
-  if (loading || !id) {
+  if (loading || meLoading || !id) {
     return (
       <div className="flex min-h-screen flex-col bg-surface">
         <Navbar />
@@ -135,7 +144,7 @@ const ArticleSinglePage = ({
       <div className="flex min-h-screen flex-col bg-surface">
         <Navbar />
         <div className="flex flex-1 items-center justify-center">
-          <p className=" text-myText-muted">{t('chef.article.not_found')}</p>
+          <p className="text-myText-muted">{t('chef.article.not_found')}</p>
         </div>
       </div>
     );
@@ -162,7 +171,7 @@ const ArticleSinglePage = ({
         <div className="w-full max-w-2xl">
           <button
             onClick={() => router.push(backHref)}
-            className="mb-6 flex items-center gap-2   text-myText-muted transition hover:opacity-70"
+            className="mb-6 flex items-center gap-2 text-myText-muted transition hover:opacity-70"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -194,13 +203,13 @@ const ArticleSinglePage = ({
                 <div className="absolute top-3 right-3 flex gap-2">
                   <button
                     onClick={() => setIsEditing(true)}
-                    className="flex items-center gap-1 rounded-xl bg-myYellow px-4 py-0.5  shadow transition hover:opacity-90"
+                    className="flex items-center gap-1 rounded-xl bg-myYellow px-4 py-0.5 shadow transition hover:opacity-90"
                   >
                     {t('common.edit')}
                   </button>
                   <button
                     onClick={() => setShowDeleteModal(true)}
-                    className="flex items-center gap-1 rounded-xl bg-myRed px-4 py-0.5  text-white "
+                    className="flex items-center gap-1 rounded-xl bg-myRed px-4 py-0.5 text-white"
                   >
                     {t('common.delete')}
                   </button>
@@ -241,7 +250,7 @@ const ArticleSinglePage = ({
                     </label>
                     <label
                       htmlFor="edit-image"
-                      className="inline-flex cursor-pointer items-center gap-1.5 rounded-full border-2 border-cookie-400 px-4 py-0.5   transition hover:text-white hover:bg-cookie-400"
+                      className="inline-flex cursor-pointer items-center gap-1.5 rounded-full border-2 border-cookie-400 px-4 py-0.5 transition hover:bg-cookie-400 hover:text-white"
                     >
                       {t('chef.article.image_label')}
                     </label>
@@ -253,21 +262,21 @@ const ArticleSinglePage = ({
                       className="hidden"
                     />
                     {editImageFile && (
-                      <p className="mt-1  text-myText-muted">
+                      <p className="mt-1 text-myText-muted">
                         {editImageFile.name}
                       </p>
                     )}
                   </div>
 
                   {editError && (
-                    <p className="mb-4 text-center   text-myRed">{editError}</p>
+                    <p className="mb-4 text-center text-myRed">{editError}</p>
                   )}
 
                   <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
                     <button
                       onClick={handleUpdate}
                       disabled={isSaving}
-                      className="w-full rounded-xl border-2 border-cookie-400 px-4 py-0.5  transition hover:text-white hover:bg-cookie-400 disabled:opacity-50 sm:w-auto"
+                      className="w-full rounded-xl border-2 border-cookie-400 px-4 py-0.5 transition hover:bg-cookie-400 hover:text-white disabled:opacity-50 sm:w-auto"
                     >
                       {isSaving ? t('common.loading') : t('common.save')}
                     </button>
@@ -280,7 +289,7 @@ const ArticleSinglePage = ({
                         setEditImagePreview(null);
                         setEditError('');
                       }}
-                      className="w-full rounded-xl border-2 text-myRed border-myRed px-4 py-0.5 transition hover:bg-myRed hover:text-white sm:w-auto"
+                      className="w-full rounded-xl border-2 border-myRed px-4 py-0.5 text-myRed transition hover:bg-myRed hover:text-white sm:w-auto"
                     >
                       {t('common.cancel')}
                     </button>
