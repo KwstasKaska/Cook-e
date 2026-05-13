@@ -1,6 +1,6 @@
-import React from 'react';
-import { useTranslation } from 'next-i18next';
 import { RecipeCategory } from '../../generated/graphql';
+import { getCategoryLabel } from '../../utils/categoryLabel';
+import { useRouter } from 'next/router';
 
 const CATEGORIES: RecipeCategory[] = [
   RecipeCategory.Meat,
@@ -21,7 +21,8 @@ export default function RecipeCategoryFilter({
   activeCategory,
   onChange,
 }: Props) {
-  const { t } = useTranslation('common');
+  const router = useRouter();
+  const lang = (router.locale ?? 'el') as 'el' | 'en';
 
   return (
     <div className="flex flex-row flex-wrap gap-2 md:flex-col md:w-36 md:flex-none">
@@ -29,14 +30,13 @@ export default function RecipeCategoryFilter({
         <button
           key={cat}
           onClick={() => onChange(activeCategory === cat ? null : cat)}
-          className="rounded-full border px-4 py-2 text-sm font-medium transition"
-          style={{
-            backgroundColor: activeCategory === cat ? '#3F4756' : 'white',
-            borderColor: '#3F4756',
-            color: activeCategory === cat ? 'white' : '#3F4756',
-          }}
+          className={`rounded-full border-2 px-4 py-2 transition ${
+            activeCategory === cat
+              ? 'border-cookie-400 bg-cookie-400 text-white'
+              : 'border-cookie-400 text-cookie-400 hover:bg-cookie-400 hover:text-white'
+          }`}
         >
-          {t(`recipe_category.${cat}`)}
+          {getCategoryLabel(cat, lang)}
         </button>
       ))}
     </div>

@@ -317,7 +317,7 @@ const CreateRecipeContent = () => {
               <button
                 type="button"
                 onClick={handleNext}
-                className="flex-1 rounded-full bg-cookie-300 py-2.5 text-white transition hover:bg-cookie-400"
+                className="flex-1 rounded-xl border-2 border-cookie-400 px-5 py-1.5 hover:text-white transition hover:bg-cookie-400"
               >
                 {t('chef.create_recipe.next_btn')}
               </button>
@@ -326,7 +326,7 @@ const CreateRecipeContent = () => {
                 type="button"
                 onClick={handleFinish}
                 disabled={loading}
-                className="flex-1 rounded-full bg-cookie-300 py-2.5 text-white transition hover:bg-cookie-400 disabled:opacity-50"
+                className="flex-1 rounded-xl border-2 border-cookie-400 px-5 py-1.5 hover:text-white transition hover:bg-cookie-400 disabled:opacity-50"
               >
                 {loading
                   ? t('chef.create_recipe.saving')

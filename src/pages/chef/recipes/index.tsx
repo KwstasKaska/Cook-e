@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
@@ -6,17 +6,15 @@ import {
   useMyRecipesQuery,
   useMyRecipesByCategoryQuery,
   RecipeCategory,
-  Recipe,
 } from '../../../generated/graphql';
 import { pick } from '../../../utils/pick';
+import { totalDuration, recipeImageSrc } from '../../../utils/recipeHelpers';
 import useIsChef from '../../../utils/useIsChef';
 import ChefNavbar from '../../../components/Chef/ChefNavbar';
-import RecipeFeaturedCard from '../../../components/Chef/RecipeFeaturedCard';
-import RecipeCompactCard from '../../../components/Chef/RecipeCompactCard';
 import RecipeCategoryFilter from '../../../components/Chef/RecipeCategoryFilter';
 import PaginationControls from '../../../components/Helper/PaginationControls';
 
-const LIMIT = 5;
+const LIMIT = 9;
 
 export default function ChefRecipes() {
   const { loading: authLoading, isAuthorized } = useIsChef();
@@ -51,101 +49,106 @@ const ChefRecipesContent = () => {
       ? allRecipesQuery.loading
       : categoryRecipesQuery.loading;
 
-  const rawRecipes: Recipe[] = useMemo(() => {
-    const list =
-      activeCategory === null
-        ? allRecipesQuery.data?.myRecipes ?? []
-        : categoryRecipesQuery.data?.myRecipesByCategory ?? [];
-    return list as Recipe[];
-  }, [activeCategory, allRecipesQuery.data, categoryRecipesQuery.data]);
-
-  const filtered = useMemo(
-    () =>
-      rawRecipes.filter((r) =>
-        pick(r.title_el, r.title_en, lang).toLowerCase(),
-      ),
-    [rawRecipes, lang],
-  );
+  const recipes =
+    activeCategory === null
+      ? allRecipesQuery.data?.myRecipes ?? []
+      : categoryRecipesQuery.data?.myRecipesByCategory ?? [];
 
   const handleCategoryChange = (cat: RecipeCategory | null) => {
     setActiveCategory(cat);
     setOffset(0);
   };
 
-  const featured = filtered[0] ?? null;
-  const rest = filtered.slice(1);
   const hasPrev = offset > 0;
-  const hasMore = rawRecipes.length === LIMIT;
+  const hasMore = recipes.length === LIMIT;
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-cookie-100">
       <ChefNavbar />
 
-      <div className="mx-auto max-w-4xl px-6 pb-16 pt-10">
+      <div className="mx-auto max-w-5xl px-6 pb-16 pt-10">
         <button
           onClick={() => router.push('/chef')}
-          className="mb-6 text-myText-muted hover:text-cookie-400"
+          className="mb-6 flex items-center gap-2 text-myText-muted transition hover:text-cookie-400"
         >
-          ← {t('common.back')}
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={2}
+            stroke="currentColor"
+            className="h-4 w-4"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
+            />
+          </svg>
+          {t('common.back')}
         </button>
 
-        <div className="rounded-2xl bg-surface p-6 shadow-lg md:p-8">
-          <h1 className="text-center mb-10">{t('chef.recipes.page_title')}</h1>
+        <h1 className="mb-8 text-center">{t('chef.recipes.page_title')}</h1>
 
-          <div className="flex flex-col gap-6 md:flex-row">
-            <RecipeCategoryFilter
-              activeCategory={activeCategory}
-              onChange={handleCategoryChange}
-            />
+        <div className="flex flex-col gap-6 md:flex-row">
+          <RecipeCategoryFilter
+            activeCategory={activeCategory}
+            onChange={handleCategoryChange}
+          />
 
-            <div className="flex-1">
-              {loading ? (
-                <div className="flex justify-center py-12">
-                  <div className="h-8 w-8 animate-spin rounded-full border-2 border-cookie-400 border-t-transparent" />
-                </div>
-              ) : filtered.length === 0 ? (
-                <p className="py-12 text-center text-myText-muted">
-                  {t('chef.recipes.empty')}
-                </p>
-              ) : (
-                <div className="flex flex-col gap-4 md:flex-row">
-                  {featured && (
-                    <div className="md:w-1/2">
-                      <RecipeFeaturedCard
-                        recipe={featured}
-                        lang={lang}
-                        onClick={() =>
-                          router.push(`/chef/recipes/${featured.id}`)
-                        }
-                      />
-                    </div>
-                  )}
-                  {rest.length > 0 && (
-                    <div className="flex flex-col gap-3 md:w-1/2">
-                      {rest.map((recipe) => (
-                        <RecipeCompactCard
-                          key={recipe.id}
-                          recipe={recipe}
-                          lang={lang}
-                          onClick={() =>
-                            router.push(`/chef/recipes/${recipe.id}`)
-                          }
+          <div className="flex-1">
+            {loading ? (
+              <div className="flex justify-center py-12">
+                <div className="h-8 w-8 animate-spin rounded-full border-2 border-cookie-400 border-t-transparent" />
+              </div>
+            ) : recipes.length === 0 ? (
+              <p className="py-12 text-center text-myText-muted">
+                {t('chef.recipes.empty')}
+              </p>
+            ) : (
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {recipes.map((recipe) => {
+                  const title = pick(recipe.title_el, recipe.title_en, lang);
+                  const duration = totalDuration(
+                    recipe.prepTime,
+                    recipe.cookTime,
+                    recipe.restTime,
+                  );
+                  return (
+                    <div
+                      key={recipe.id}
+                      onClick={() => router.push(`/chef/recipes/${recipe.id}`)}
+                      className="cursor-pointer overflow-hidden rounded-2xl bg-surface shadow-lg transition hover:scale-[1.02] hover:shadow-xl"
+                    >
+                      <div className="h-32 w-full overflow-hidden">
+                        <img
+                          src={recipeImageSrc(recipe.recipeImage)}
+                          alt={title}
+                          className="h-full w-full object-cover"
                         />
-                      ))}
+                      </div>
+                      <div className="px-4 py-3 flex flex-col gap-1">
+                        <p className="font-medium line-clamp-2">{title}</p>
+                        <p className="text-myText-muted">
+                          {duration} {t('chef.recipes.minutes')}
+                        </p>
+                      </div>
                     </div>
-                  )}
-                </div>
-              )}
+                  );
+                })}
+              </div>
+            )}
 
+            {!loading && (
               <div className="mt-6">
                 <PaginationControls
                   hasPrev={hasPrev}
-                  hasMore={hasMore}
+                  hasMore={hasMore && recipes.length > 0}
                   onPrev={() => setOffset((o) => o - LIMIT)}
                   onNext={() => setOffset((o) => o + LIMIT)}
                 />
               </div>
-            </div>
+            )}
           </div>
         </div>
       </div>

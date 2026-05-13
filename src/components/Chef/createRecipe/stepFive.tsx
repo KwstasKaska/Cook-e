@@ -78,7 +78,7 @@ export default function StepFive({
       <button
         type="button"
         onClick={onAddStep}
-        className="mt-4 rounded-full border-2 border-cookie-400 px-5 py-2 text-cookie-400 transition hover:bg-cookie-400 hover:text-white"
+        className="mt-4 rounded-xl border-2 border-cookie-400 px-5 py-1.5 text-cookie-400 transition hover:bg-cookie-400 hover:text-white"
       >
         {t('chef.create_recipe.add_step')}
       </button>
