@@ -1,4 +1,14 @@
-import { RecipeCategory } from '../generated/graphql';
+import { Difficulty, RecipeCategory } from '../generated/graphql';
+
+export const DIFFICULTY_OPTIONS: {
+  value: Difficulty;
+  labelEl: string;
+  labelEn: string;
+}[] = [
+  { value: Difficulty.Easy, labelEl: 'Εύκολο', labelEn: 'Easy' },
+  { value: Difficulty.Medium, labelEl: 'Μέτριο', labelEn: 'Medium' },
+  { value: Difficulty.Difficult, labelEl: 'Δύσκολο', labelEn: 'Difficult' },
+];
 
 export const CATEGORY_OPTIONS: {
   value: RecipeCategory;

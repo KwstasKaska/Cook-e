@@ -1,7 +1,8 @@
 import React from 'react';
 import { useTranslation } from 'next-i18next';
 import { pick } from '../../../utils/pick';
-import { EditForm, DIFFICULTY_OPTIONS } from './types';
+import { EditForm } from './types';
+import { DIFFICULTY_OPTIONS } from '../../../utils/recipeUtils';
 
 interface Props {
   recipe: any;

@@ -1,6 +1,6 @@
 import { useTranslation } from 'next-i18next';
 import { Difficulty } from '../../../generated/graphql';
-import { FormData, inputClass, labelClass } from './types';
+import { FormData, inputClass } from './types';
 
 interface StepTwoProps {
   form: FormData;
@@ -43,13 +43,13 @@ export default function StepTwo({ form, fieldErrors, onUpdate }: StepTwoProps) {
 
   return (
     <div>
-      <h2 className="mb-5 text-2xl font-black text-myYellow">
+      <h2 className="mb-5 text-myYellow">
         {t('chef.create_recipe.step2_title')}
       </h2>
 
-      <label className={labelClass}>
+      <h3 className="mb-3 mt-6">
         {t('chef.create_recipe.personal_tip_label')}
-      </label>
+      </h3>
       <input
         type="text"
         placeholder={t('chef.create_recipe.personal_tip_placeholder')}
@@ -58,67 +58,57 @@ export default function StepTwo({ form, fieldErrors, onUpdate }: StepTwoProps) {
         className={inputClass}
       />
 
-      {/* Times */}
-      <h3 className="mb-3 mt-6 text-base font-black">
-        {t('chef.create_recipe.total_time_label')}
-      </h3>
+      <h3 className="mb-3 mt-6">{t('chef.create_recipe.total_time_label')}</h3>
       <div className="flex flex-col gap-3">
         {timeFields.map(({ label, field }) => (
           <div key={field} className="flex items-center justify-between gap-4">
-            <span className="text-sm">{label}</span>
+            <span>{label}</span>
             <input
               type="number"
               min={0}
               value={form[field]}
               onChange={(e) => onUpdate(field, e.target.value)}
               placeholder={`10 ${t('chef.create_recipe.minutes')}`}
-              className="w-28 border-b border-gray-300 bg-transparent py-1 text-sm outline-none text-right font-semibold text-myYellow"
+              className="w-28 border-b border-cookie-200 bg-transparent py-1 outline-none text-right   focus:border-cookie-400 transition"
             />
           </div>
         ))}
       </div>
       {(fieldErrors.prepTime || fieldErrors.cookTime) && (
-        <p className="mt-1 text-xs text-red-500">
+        <p className="mt-1 text-myRed">
           {fieldErrors.prepTime || fieldErrors.cookTime}
         </p>
       )}
 
-      {/* Difficulty */}
-      <h3 className="mb-3 mt-6 text-base font-black">
-        {t('chef.create_recipe.difficulty_label')}
-      </h3>
+      <h3 className="mb-3 mt-6">{t('chef.create_recipe.difficulty_label')}</h3>
       <div className="flex flex-col gap-2 sm:flex-row sm:gap-3">
         {difficultyOptions.map(({ value, label }) => (
           <button
             key={value}
             type="button"
             onClick={() => onUpdate('difficulty', value)}
-            className="rounded-full px-5 py-2 text-sm font-semibold transition"
-            style={{
-              backgroundColor:
-                form.difficulty === value ? '#EAB308' : '#F5F0D8',
-              color: '#3F4756',
-            }}
+            className={`rounded-full px-5 py-2 transition ${
+              form.difficulty === value
+                ? 'bg-cookie-400 text-white'
+                : 'bg-cookie-100 text-myText-base hover:bg-cookie-200'
+            }`}
           >
             {label}
           </button>
         ))}
       </div>
       {fieldErrors.difficulty && (
-        <p className="mt-1 text-xs text-red-500">{fieldErrors.difficulty}</p>
+        <p className="mt-1 text-myRed">{fieldErrors.difficulty}</p>
       )}
 
-      {/* Macros */}
-      <h3 className="mb-1 mt-6 text-base font-black">
-        {t('chef.create_recipe.macros_label')}
-      </h3>
-      <p className="mb-3 text-xs text-gray-400">
+      <h3 className="mb-1 mt-6">{t('chef.create_recipe.macros_label')}</h3>
+      <p className="mb-3 text-myText-muted">
         {t('chef.create_recipe.macros_hint')}
       </p>
       <div className="flex flex-col gap-3">
         {macroFields.map(({ label, field, unit }) => (
           <div key={field} className="flex items-center justify-between gap-4">
-            <span className="text-sm">{label}</span>
+            <span>{label}</span>
             <div className="flex items-center gap-1">
               <input
                 type="number"
@@ -126,9 +116,9 @@ export default function StepTwo({ form, fieldErrors, onUpdate }: StepTwoProps) {
                 value={form[field]}
                 onChange={(e) => onUpdate(field, e.target.value)}
                 placeholder="0"
-                className="w-24 border-b border-gray-300 bg-transparent py-1 text-sm outline-none text-right font-semibold text-myYellow"
+                className="w-24 border-b border-cookie-200 bg-transparent py-1 outline-none text-right   focus:border-cookie-400 transition"
               />
-              <span className="text-xs text-gray-400">{unit}</span>
+              <span className="text-myText-muted">{unit}</span>
             </div>
           </div>
         ))}

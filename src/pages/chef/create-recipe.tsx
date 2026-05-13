@@ -7,7 +7,6 @@ import {
   Difficulty,
   RecipeCategory,
   useCreateRecipeMutation,
-  useIngredientsQuery,
 } from '../../generated/graphql';
 import useIsChef from '../../utils/useIsChef';
 import {
@@ -16,7 +15,6 @@ import {
 } from '../../components/Chef/createRecipe/types';
 import { uploadToCloudinary } from '../../utils/uploadToCloudinary';
 
-import LivePreview from '../../components/Chef/createRecipe/livePreview';
 import StepFive from '../../components/Chef/createRecipe/stepFive';
 import StepFour from '../../components/Chef/createRecipe/stepFour';
 import StepOne from '../../components/Chef/createRecipe/stepOne';
@@ -25,17 +23,18 @@ import StepTwo from '../../components/Chef/createRecipe/stepTwo';
 
 export default function CreateRecipe() {
   const { loading: authLoading, isAuthorized } = useIsChef();
-  const { t, i18n } = useTranslation('common');
-  const lang = i18n.language as 'el' | 'en';
+  if (authLoading || !isAuthorized) return null;
+  return <CreateRecipeContent />;
+}
+
+const CreateRecipeContent = () => {
+  const { t } = useTranslation('common');
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [currentStep, setCurrentStep] = useState(1);
   const TOTAL_STEPS = 5;
 
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
-  const { data: ingredientsData } = useIngredientsQuery({
-    skip: authLoading || !isAuthorized,
-  });
   const [createRecipe, { loading }] = useCreateRecipeMutation();
   const [selectedUtensilIds, setSelectedUtensilIds] = useState<number[]>([]);
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -65,14 +64,6 @@ export default function CreateRecipe() {
       { id: 3, text: '' },
     ],
   });
-
-  if (authLoading || !isAuthorized) return null;
-
-  const ingredientName = (id: number) => {
-    const found = ingredientsData?.ingredients.find((i) => i.id === id);
-    if (!found) return '';
-    return lang === 'el' ? found.name_el : found.name_en;
-  };
 
   const update = (field: keyof FormData, value: unknown) =>
     setForm((prev) => ({ ...prev, [field]: value }));
@@ -289,114 +280,65 @@ export default function CreateRecipe() {
     }
   };
 
-  const previewProps = {
-    form,
-    step: currentStep,
-    onBack: handleBack,
-    ingredientName,
-  };
-
   return (
-    <div className="flex bg-myGrey-200 min-h-screen flex-col">
+    <div className="min-h-screen bg-cookie-100 flex flex-col">
       <ChefNavbar />
 
-      <main className="flex flex-1 flex-col items-center px-4 py-6 md:px-8">
-        <h1 className="mb-6 text-3xl italic text-white">
-          {t('chef.create_recipe.page_title')}
-        </h1>
+      <main className="flex flex-1 flex-col items-center px-4 py-10">
+        <h1 className="mb-8">{t('chef.create_recipe.page_title')}</h1>
 
-        <div
-          className="w-full max-w-4xl overflow-hidden rounded-2xl shadow-2xl"
-          style={{ minHeight: '500px' }}
-        >
-          <div
-            className="flex flex-col md:flex-row"
-            style={{ minHeight: '500px' }}
-          >
-            <div className="flex flex-col justify-between bg-white p-7 md:w-1/2">
-              <div className="flex-1 overflow-y-auto">{renderStep()}</div>
+        <div className="w-full max-w-xl rounded-2xl bg-surface shadow-xl p-7">
+          <div className="overflow-y-auto">{renderStep()}</div>
 
-              <div className="mt-6 flex items-center gap-3 flex-shrink-0">
-                {currentStep > 1 && (
-                  <button
-                    type="button"
-                    onClick={handleBack}
-                    className="md:hidden flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full border border-gray-300 text-myGrey-200 transition hover:bg-gray-100"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-4 w-4"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth={2}
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M15 19l-7-7 7-7"
-                      />
-                    </svg>
-                  </button>
-                )}
-                {currentStep < TOTAL_STEPS ? (
-                  <button
-                    type="button"
-                    onClick={handleNext}
-                    className="flex-1 rounded-full bg-myGrey-200 py-2.5 text-sm font-bold text-white transition hover:opacity-90"
-                  >
-                    {t('chef.create_recipe.next_btn')}
-                  </button>
-                ) : (
-                  <button
-                    type="button"
-                    onClick={handleFinish}
-                    disabled={loading}
-                    className="flex-1 rounded-full bg-myGrey-200 py-2.5 text-sm font-bold text-white transition hover:opacity-90 disabled:opacity-50"
-                  >
-                    {loading
-                      ? t('chef.create_recipe.saving')
-                      : t('chef.create_recipe.finish_btn')}
-                  </button>
-                )}
-              </div>
-            </div>
-
-            <div className="hidden md:flex flex-col items-center justify-center w-8 bg-myBlue-100 flex-shrink-0">
-              {[0, 1, 2].map((i) => (
-                <div
-                  key={i}
-                  className="my-2 h-6 w-4 bg-myGrey-200 opacity-40 rounded-full"
-                />
-              ))}
-            </div>
-
-            <div
-              className="hidden md:flex flex-col p-5 md:w-1/2"
-              style={{ backgroundColor: '#E8EEF5', minHeight: '500px' }}
-            >
-              <LivePreview {...previewProps} />
-            </div>
+          <div className="mt-8 flex items-center gap-3">
+            {currentStep > 1 && (
+              <button
+                type="button"
+                onClick={handleBack}
+                className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full border-2 border-cookie-400 text-cookie-400 transition hover:bg-cookie-400 hover:text-white"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-4 w-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M15 19l-7-7 7-7"
+                  />
+                </svg>
+              </button>
+            )}
+            {currentStep < TOTAL_STEPS ? (
+              <button
+                type="button"
+                onClick={handleNext}
+                className="flex-1 rounded-full bg-cookie-300 py-2.5 text-white transition hover:bg-cookie-400"
+              >
+                {t('chef.create_recipe.next_btn')}
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={handleFinish}
+                disabled={loading}
+                className="flex-1 rounded-full bg-cookie-300 py-2.5 text-white transition hover:bg-cookie-400 disabled:opacity-50"
+              >
+                {loading
+                  ? t('chef.create_recipe.saving')
+                  : t('chef.create_recipe.finish_btn')}
+              </button>
+            )}
           </div>
-        </div>
-
-        <div className="mt-4 flex gap-2">
-          {Array.from({ length: TOTAL_STEPS }).map((_, i) => (
-            <div
-              key={i}
-              className="h-2 rounded-full transition-all"
-              style={{
-                width: currentStep === i + 1 ? '24px' : '8px',
-                backgroundColor:
-                  currentStep === i + 1 ? '#EAB308' : 'rgba(255,255,255,0.4)',
-              }}
-            />
-          ))}
         </div>
       </main>
     </div>
   );
-}
+};
 
 export async function getServerSideProps({ locale }: { locale: string }) {
   return {

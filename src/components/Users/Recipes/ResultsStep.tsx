@@ -40,26 +40,26 @@ const SuggestionCard = ({
       </div>
 
       <div className="flex flex-col gap-3 px-6 py-4">
-        <h3 className="text-center text-lg font-bold">{title}</h3>
+        <h3 className="text-center">{title}</h3>
 
         {recipe.difficulty && (
-          <p className="text-sm text-myText-muted">{recipe.difficulty}</p>
+          <p className="text-myText-muted">{recipe.difficulty}</p>
         )}
 
         {recipe.author?.user?.username && (
-          <p className="mt-auto text-sm text-myText-muted">
+          <p className="mt-auto text-myText-muted">
             {t('recipes.by')} {recipe.author.user.username}
           </p>
         )}
 
         {suggestion.missingCount > 0 && (
-          <p className="text-xs text-myYellow font-semibold">
+          <p className="text-myYellow ">
             -{suggestion.missingCount} {t('recipes.missingIngredients')}
           </p>
         )}
 
         {suggestion.missingUtensils.length > 0 && (
-          <p className="text-xs text-myRed font-semibold">
+          <p className="text-myRed ">
             {t('recipes.missingUtensils')}:{' '}
             {suggestion.missingUtensils
               .map((u) => (isEl ? u.name_el : u.name_en))
@@ -92,7 +92,7 @@ export default function ResultsStep({
       <div className="max-w-5xl mx-auto px-6 pt-10 pb-20">
         <button
           onClick={onBack}
-          className="flex items-center gap-2 text-sm font-bold mb-8 transition hover:opacity-80 text-cookie-300"
+          className="flex items-center gap-2  mb-8 transition hover:opacity-80 text-myText-muted"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -111,10 +111,6 @@ export default function ResultsStep({
           {t('recipes.backToSearch')}
         </button>
 
-        <h2 className="text-center text-2xl font-bold mb-10">
-          {t('recipes.resultsTitle')}
-        </h2>
-
         {loading ? (
           <div className="flex justify-center py-16">
             <div className="h-10 w-10 animate-spin rounded-full border-4 border-cookie-300 border-t-transparent" />
@@ -125,6 +121,8 @@ export default function ResultsStep({
           </p>
         ) : (
           <>
+            <h2 className="text-center mb-10">{t('recipes.resultsTitle')}</h2>
+
             <div className="flex flex-col gap-16 md:hidden">
               {suggestions.slice(0, 6).map((s) => (
                 <SuggestionCard

@@ -1,9 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { useTranslation } from 'next-i18next';
-import { FormData, inputClass, labelClass } from './types';
-
-// ─── Step 1: Title + Image ────────────────────────────────────────────────────
+import { FormData, inputClass } from './types';
 
 interface StepOneProps {
   form: FormData;
@@ -26,13 +24,11 @@ export default function StepOne({
 
   return (
     <div>
-      <h2 className="mb-5 text-2xl font-black text-myYellow">
+      <h2 className="mb-5 text-myYellow">
         {t('chef.create_recipe.step1_title')}
       </h2>
 
-      <label className={labelClass}>
-        {t('chef.create_recipe.recipe_name_label')}
-      </label>
+      <h3 className="mb-3 mt-6">{t('chef.create_recipe.recipe_name_label')}</h3>
       <input
         type="text"
         placeholder={t('chef.create_recipe.recipe_name_placeholder')}
@@ -41,14 +37,12 @@ export default function StepOne({
         className={inputClass}
       />
       {fieldErrors.title && (
-        <p className="mt-1 text-xs text-red-500">{fieldErrors.title}</p>
+        <p className="mt-1 text-myRed">{fieldErrors.title}</p>
       )}
 
-      <label className={`${labelClass} mt-6`}>
-        {t('chef.create_recipe.photo_label')}
-      </label>
+      <h3 className="mb-3 mt-6">{t('chef.create_recipe.photo_label')}</h3>
       <div
-        className="mt-2 flex cursor-pointer flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-gray-300 p-10 text-center transition hover:border-gray-400"
+        className="mt-2 flex cursor-pointer flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-cookie-200 p-10 text-center transition hover:border-cookie-400"
         onClick={() => fileInputRef.current?.click()}
         onDrop={onDrop}
         onDragOver={(e) => e.preventDefault()}
@@ -69,8 +63,8 @@ export default function StepOne({
               fill="none"
               viewBox="0 0 24 24"
               strokeWidth={1.2}
-              stroke="#3F4756"
-              className="h-12 w-12"
+              stroke="currentColor"
+              className="h-12 w-12 text-cookie-300"
             >
               <path
                 strokeLinecap="round"
@@ -83,7 +77,7 @@ export default function StepOne({
                 d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zM18.75 10.5h.008v.008h-.008V10.5z"
               />
             </svg>
-            <p className="text-sm text-gray-400 leading-relaxed">
+            <p className="text-myText-muted">
               {t('chef.create_recipe.photo_upload_hint')}
             </p>
           </>

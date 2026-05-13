@@ -13,10 +13,8 @@ export interface ExecutionStep {
 }
 
 export interface FormData {
-  // Step 1
   title: string;
   image: string | null;
-  // Step 2
   personalNote: string;
   prepTime: string;
   cookTime: string;
@@ -26,12 +24,9 @@ export interface FormData {
   protein: string;
   carbs: string;
   fat: string;
-  // Step 3
   category: RecipeCategory | '';
   summary: string;
-  // Step 4
   ingredients: IngredientRow[];
-  // Step 5
   steps: ExecutionStep[];
 }
 
@@ -46,7 +41,7 @@ export const UNIT_OPTIONS = [
   'κ.γ.',
 ];
 
-export const inputClass =
-  'w-full border-b border-gray-300 bg-transparent py-2 text-sm outline-none focus:border-cookie-300 transition placeholder:text-gray-300';
+export { CATEGORY_OPTIONS } from '../../../utils/recipeUtils';
 
-export const labelClass = 'mb-1 block text-base font-black';
+export const inputClass =
+  'w-full border-2 border-cookie-400  py-2 outline-none focus:border-cookie-400 transition placeholder:text-myText-muted';

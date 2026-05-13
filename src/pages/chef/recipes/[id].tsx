@@ -32,7 +32,7 @@ import RecipeMacrosCard from '../../../components/Chef/recipeDetail/RecipeMacros
 import ScrollToTopButton from '../../../components/Helper/ScrollToTopButton';
 import Stars from '../../../components/Helper/Stars';
 import DeleteConfirm from '../../../components/Helper/DeleteConfirm';
-import { DIFFICULTY_OPTIONS } from '../../../utils/recipeShared';
+import { DIFFICULTY_OPTIONS } from '../../../utils/recipeUtils';
 
 export default function ChefSingleRecipe() {
   const { loading: authLoading, isAuthorized } = useIsChef();
