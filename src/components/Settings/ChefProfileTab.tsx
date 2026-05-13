@@ -49,7 +49,7 @@ export default function ChefProfileTab() {
     <div>
       <FieldGroup title={t('settings.chefPublicProfile')}>
         <TextArea
-          label={t('settings.chefBio')}
+          label=""
           value={bio}
           onChange={setBio}
           placeholder={t('settings.chefBioPlaceholder')}

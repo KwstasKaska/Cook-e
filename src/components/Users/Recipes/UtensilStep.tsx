@@ -1,5 +1,4 @@
 import { useMemo, useState } from 'react';
-import { useTranslation } from 'next-i18next';
 
 type Utensil = {
   id: number;
@@ -7,12 +6,6 @@ type Utensil = {
   name_en: string;
   category_el: string;
   category_en: string;
-};
-
-const CAT_I18N: Record<string, string> = {
-  'Cooking Vessels': 'cookingVessels',
-  Utensils: 'utensils',
-  'Extra Equipment': 'extraEquipment',
 };
 
 export default function UtensilStep({
@@ -28,23 +21,17 @@ export default function UtensilStep({
   loading: boolean;
   isEl: boolean;
 }) {
-  const { t } = useTranslation('common');
   const [openCat, setOpenCat] = useState<string | null>(null);
-
-  const getCatLabel = (catKey: string) => {
-    const i18nKey = CAT_I18N[catKey];
-    return i18nKey ? t(`utensils.${i18nKey}`) : catKey;
-  };
 
   const grouped = useMemo(() => {
     const map = new Map<string, Utensil[]>();
     for (const u of utensils) {
-      const key = u.category_en;
+      const key = isEl ? u.category_el : u.category_en;
       if (!map.has(key)) map.set(key, []);
       map.get(key)!.push(u);
     }
     return map;
-  }, [utensils]);
+  }, [utensils, isEl]);
 
   const categoryKeys = useMemo(() => Array.from(grouped.keys()), [grouped]);
 
@@ -76,7 +63,7 @@ export default function UtensilStep({
               onClick={() => setOpenCat(isOpen ? null : catKey)}
               className="w-full flex items-center justify-between px-5 py-3.5 transition"
             >
-              <span>{getCatLabel(catKey)}</span>
+              <span>{catKey}</span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"

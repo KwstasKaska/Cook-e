@@ -347,7 +347,7 @@
       "photo_slot": "photo",
       "recipe_title_preview": "Recipe title",
       "personal_tip_label": "Personal note",
-      "personal_tip_placeholder": "e.g. spaghetti bolognese",
+      "personal_tip_placeholder": "e.g. cooke it for your favorites",
       "total_time_label": "Total implementation time",
       "prep_time": "preparation time:",
       "cook_time": "cooking time:",
@@ -368,6 +368,8 @@
       "add_ingredient": "Add ingredient",
       "ingredient_placeholder": "tomato",
       "execution_label": "Execution",
+      "steps_label": "Steps",
+
       "step_placeholder": "describe the step...",
       "add_step": "Add step",
       "preview_btn": "Previous",

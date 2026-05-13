@@ -122,7 +122,7 @@ const ChefRecipesContent = () => {
                   )}
                   {rest.length > 0 && (
                     <div className="flex flex-col gap-3 md:w-1/2">
-                      {rest.map((recipe, i) => (
+                      {rest.map((recipe) => (
                         <RecipeCompactCard
                           key={recipe.id}
                           recipe={recipe}
@@ -130,7 +130,6 @@ const ChefRecipesContent = () => {
                           onClick={() =>
                             router.push(`/chef/recipes/${recipe.id}`)
                           }
-                          dark={i === 0}
                         />
                       ))}
                     </div>

@@ -1,16 +1,4 @@
 import { useState } from 'react';
-import { useTranslation } from 'next-i18next';
-
-const CAT_I18N: Record<string, string> = {
-  Λαχανικά: 'vegetables',
-  Φρούτα: 'fruits',
-  'Ψωμί & Δημητριακά': 'breadGrains',
-  Γαλακτοκομικά: 'dairy',
-  'Κρεατικά/Αυγά/Ψαρικά/Θαλασσινά': 'meatEggsFishSeafood',
-  'Λίπη & Λάδια': 'fatOils',
-  Όσπρια: 'legumes',
-  'Γλυκίσματα/Αναψυκτικά και σνακ': 'sweetsSnacks',
-};
 
 type Ingredient = {
   id: number;
@@ -39,13 +27,7 @@ export default function IngredientStep({
   error?: string | null;
   onClearError?: () => void;
 }) {
-  const { t } = useTranslation('common');
   const [openCat, setOpenCat] = useState<string | null>(null);
-
-  const getCatLabel = (catName: string) => {
-    const key = CAT_I18N[catName];
-    return key ? t(`ingredientCategories.${key}`) : catName;
-  };
 
   if (loading) {
     return (
@@ -75,7 +57,7 @@ export default function IngredientStep({
               onClick={() => setOpenCat(isOpen ? null : catName)}
               className="w-full flex items-center justify-between px-5 py-3.5 transition"
             >
-              <span>{getCatLabel(catName)}</span>
+              <span>{catName}</span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
