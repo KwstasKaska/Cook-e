@@ -9,7 +9,6 @@ import {
   useMyFavoritesQuery,
   useMyMealPlanQuery,
   useMyNutritionalSummaryQuery,
-  useMyCartQuery,
 } from '../../generated/graphql';
 import useIsUser from '../../utils/useIsUser';
 import { toDisplay, statusStyle } from '../../utils/appointmentUtils';
@@ -53,11 +52,8 @@ const HomeContent = () => {
     fetchPolicy: 'network-only',
   });
 
-  const { data: cartData } = useMyCartQuery({ fetchPolicy: 'network-only' });
-
   const summary = summaryData?.myNutritionalSummary;
   const favorites = favData?.myFavorites ?? [];
-  const cartCount = cartData?.myCart?.length ?? 0;
 
   const stats = [
     {
@@ -225,11 +221,6 @@ const HomeContent = () => {
           >
             <div className="mb-3 flex items-center justify-between">
               <h3>{t('nav.cart')}</h3>
-              {cartCount > 0 && (
-                <span className="rounded-full bg-cookie-200 px-2.5 py-0.5 text-myText-heading">
-                  {cartCount}
-                </span>
-              )}
             </div>
             <p className="flex-1 text-myText-muted">{t('landing.cartDesc')}</p>
             <span className="mt-4 self-center">{t('common.open')}</span>
