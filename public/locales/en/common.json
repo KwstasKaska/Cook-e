@@ -452,7 +452,10 @@
     "next": "Next",
     "prev": "Previous",
     "seeAll": "All",
-    "seeAll2": "All"
+    "seeAll2": "All",
+    "yes": "Yes",
+    "no": "No",
+    "undo": "Undo"
   },
   "register": {
     "title": "Create an account",

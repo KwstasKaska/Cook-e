@@ -8,7 +8,7 @@ import useIsUser from '../../../utils/useIsUser';
 import PaginationControls from '../../../components/Helper/PaginationControls';
 import { DIFFICULTY_MAP } from '../../../utils/recipeUtils';
 
-const FAV_LIMIT = 8;
+const FAV_LIMIT = 9;
 
 export async function getServerSideProps({ locale }: { locale: string }) {
   return {
@@ -61,7 +61,7 @@ const FavoritesContent = () => {
             {t('recipes.noFavourites')}
           </p>
         ) : (
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 ">
             {favorites.map((fav) => {
               const recipe = fav.recipe;
               if (!recipe) return null;

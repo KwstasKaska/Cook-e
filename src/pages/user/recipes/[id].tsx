@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef } from 'react';
 import { useRouter } from 'next/router';
 import Navbar from '../../../components/Users/Navbar';
 import ScrollToTopButton from '../../../components/Helper/ScrollToTopButton';
@@ -19,6 +19,7 @@ import {
   useRateRecipeMutation,
   useDeleteRecipeRatingMutation,
   useLogCookedRecipeMutation,
+  useDeleteCookLogMutation,
 } from '../../../generated/graphql';
 import useIsUser from '../../../utils/useIsUser';
 import { getDifficultyLabel } from '../../../utils/recipeHelpers';
@@ -29,6 +30,7 @@ import { useApolloClient } from '@apollo/client';
 const RATINGS_LIMIT = 10;
 
 type DetailTab = 'reviews' | 'rate';
+type CookState = 'idle' | 'confirm' | 'undo' | 'done';
 
 export async function getServerSideProps({ locale }: { locale: string }) {
   return {
@@ -52,6 +54,7 @@ const RecipeDetailContent = () => {
   const recipeId = parseInt(id as string, 10);
   const isEl = router.locale === 'el';
   const client = useApolloClient();
+
   const [activeTab, setActiveTab] = useState<DetailTab>('reviews');
   const [checkedIngredients, setCheckedIngredients] = useState<Set<number>>(
     new Set(),
@@ -60,7 +63,9 @@ const RecipeDetailContent = () => {
   const [ratingScore, setRatingScore] = useState(0);
   const [ratingError, setRatingError] = useState('');
   const [ratingSuccess, setRatingSuccess] = useState('');
-  const [cookedSuccess, setCookedSuccess] = useState(false);
+  const [cookState, setCookState] = useState<CookState>('idle');
+  const [lastCookId, setLastCookId] = useState<number | null>(null);
+  const undoTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const { data: recipeData, loading: recipeLoading } = useRecipeQuery({
     variables: { id: recipeId },
@@ -105,6 +110,7 @@ const RecipeDetailContent = () => {
   const [rateRecipe, { loading: rating }] = useRateRecipeMutation();
   const [deleteRecipeRating] = useDeleteRecipeRatingMutation();
   const [logCookedRecipe, { loading: logging }] = useLogCookedRecipeMutation();
+  const [deleteCookLog] = useDeleteCookLogMutation();
 
   const recipe = recipeData?.recipe;
   const avgRating = avgData?.recipeAverageRating ?? 0;
@@ -183,9 +189,34 @@ const RecipeDetailContent = () => {
   };
 
   const handleLogCooked = async () => {
-    await logCookedRecipe({ variables: { recipeId } });
-    setCookedSuccess(true);
-    setTimeout(() => setCookedSuccess(false), 2000);
+    const res = await logCookedRecipe({ variables: { recipeId } });
+    const logId = res.data?.logCookedRecipe?.id ?? null;
+    setLastCookId(logId);
+    setCookState('confirm');
+  };
+
+  const handleConfirmCooked = () => {
+    setCookState('undo');
+    undoTimerRef.current = setTimeout(() => {
+      setLastCookId(null);
+      setCookState('done');
+      setTimeout(() => setCookState('idle'), 2000);
+    }, 4000);
+  };
+
+  const handleUndoCooked = async () => {
+    if (undoTimerRef.current) clearTimeout(undoTimerRef.current);
+    if (lastCookId !== null)
+      await deleteCookLog({ variables: { id: lastCookId } });
+    setLastCookId(null);
+    setCookState('idle');
+  };
+
+  const handleCancelCooked = async () => {
+    if (lastCookId !== null)
+      await deleteCookLog({ variables: { id: lastCookId } });
+    setLastCookId(null);
+    setCookState('idle');
   };
 
   const handleLoadMoreRatings = () => {
@@ -249,6 +280,12 @@ const RecipeDetailContent = () => {
                     <h1 className="max-w-lg break-words leading-tight">
                       {title}
                     </h1>
+                    {avgRating > 0 && (
+                      <StarRow
+                        rating={avgRating}
+                        ratingCount={reviews.length}
+                      />
+                    )}
                     <ShareButton
                       dark
                       url={
@@ -257,19 +294,6 @@ const RecipeDetailContent = () => {
                           : ''
                       }
                     />
-                    <button
-                      onClick={handleLogCooked}
-                      disabled={logging}
-                      className={`w-fit transition rounded-xl px-4 py-0.5 border-2 border-cookie-400 disabled:cursor-not-allowed disabled:opacity-50 ${
-                        cookedSuccess
-                          ? 'text-herb-200'
-                          : 'hover:text-white hover:bg-cookie-400'
-                      }`}
-                    >
-                      {cookedSuccess
-                        ? t('chef.recipe_detail.marked_as_cooked')
-                        : t('chef.recipe_detail.mark_as_cooked')}
-                    </button>
                   </div>
                   {recipe.recipeImage && (
                     <div className="relative hidden h-48 w-48 flex-shrink-0 overflow-hidden rounded-full border-4 border-surface shadow-xl md:block">
@@ -292,8 +316,47 @@ const RecipeDetailContent = () => {
                 )}
               </div>
 
-              {avgRating > 0 && (
-                <StarRow rating={avgRating} ratingCount={reviews.length} />
+              {cookState === 'confirm' ? (
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={handleConfirmCooked}
+                    className="rounded-xl border-2 border-herb-200 px-4 py-0.5 text-herb-200 transition hover:bg-herb-200 hover:text-white"
+                  >
+                    {t('common.yes')}
+                  </button>
+                  <button
+                    onClick={handleCancelCooked}
+                    className="rounded-xl border-2 border-myRed px-4 py-0.5 text-myRed transition hover:bg-myRed hover:text-white"
+                  >
+                    {t('common.no')}
+                  </button>
+                </div>
+              ) : cookState === 'undo' ? (
+                <div className="flex items-center gap-2">
+                  <span className="rounded-xl border-2 border-herb-200 bg-herb-200 px-4 py-0.5 text-white">
+                    {t('chef.recipe_detail.marked_as_cooked')}
+                  </span>
+                  <button
+                    onClick={handleUndoCooked}
+                    className="rounded-xl border-2 border-myRed px-4 py-0.5 text-myRed transition hover:bg-myRed hover:text-white"
+                  >
+                    {t('common.undo')}
+                  </button>
+                </div>
+              ) : (
+                <button
+                  onClick={cookState === 'idle' ? handleLogCooked : undefined}
+                  disabled={logging || cookState === 'done'}
+                  className={`w-fit rounded-xl border-2 border-cookie-400 px-4 py-0.5 transition disabled:cursor-not-allowed disabled:opacity-50 ${
+                    cookState === 'done'
+                      ? 'bg-herb-200 text-white border-herb-200'
+                      : 'hover:bg-cookie-400 hover:text-white'
+                  }`}
+                >
+                  {cookState === 'done'
+                    ? t('chef.recipe_detail.marked_as_cooked')
+                    : t('chef.recipe_detail.mark_as_cooked')}
+                </button>
               )}
 
               {ingredients.length > 0 && (
@@ -344,10 +407,10 @@ const RecipeDetailContent = () => {
                             {ri.quantity} {ri.unit} {name}
                             <button
                               onClick={() => handleAddToCart(ingId)}
-                              className={`ml-6 border px-4 py-0.5 border-cookie-400 rounded-xl transition ${
+                              className={`ml-6 rounded-xl border border-cookie-400 px-4 py-0.5 transition ${
                                 inCart
                                   ? 'text-myYellow'
-                                  : 'hover:text-white hover:bg-cookie-400'
+                                  : 'hover:bg-cookie-400 hover:text-white'
                               }`}
                             >
                               {inCart
@@ -415,7 +478,7 @@ const RecipeDetailContent = () => {
                     <img
                       src={recipe.author.user.image}
                       alt={recipe.author.user.username}
-                      className="h-20 w-20 rounded-full object-cover border-4 border-surface shadow"
+                      className="h-20 w-20 rounded-full border-4 border-surface object-cover shadow"
                     />
                   ) : (
                     <div className="flex h-20 w-20 items-center justify-center rounded-full border-4 border-surface bg-cookie-200 text-myText-heading shadow">
