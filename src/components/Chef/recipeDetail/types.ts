@@ -1,4 +1,8 @@
 import { Difficulty, RecipeCategory } from '../../../generated/graphql';
+export {
+  DIFFICULTY_OPTIONS,
+  CATEGORY_OPTIONS,
+} from '../../../utils/recipeUtils';
 
 export interface IngredientRow {
   ingredientId: number;

@@ -1,4 +1,8 @@
 import { Difficulty, RecipeCategory } from '../../../generated/graphql';
+export {
+  DIFFICULTY_OPTIONS,
+  CATEGORY_OPTIONS,
+} from '../../../utils/recipeUtils';
 
 export interface IngredientRow {
   id: number;
@@ -40,8 +44,6 @@ export const UNIT_OPTIONS = [
   'κ.σ.',
   'κ.γ.',
 ];
-
-export { CATEGORY_OPTIONS } from '../../../utils/recipeUtils';
 
 export const inputClass =
   'w-full border-2 border-cookie-400  py-2 outline-none focus:border-cookie-400 transition placeholder:text-myText-muted';
