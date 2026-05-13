@@ -82,7 +82,7 @@ const Login: NextPage = () => {
                 name="email"
                 autoComplete="email"
                 className="w-full rounded-xl border border-cookie-200 px-4 py-1.5 text-myText-base placeholder:text-myText-muted focus:outline-none"
-                placeholder={t('login.username_placeholder')}
+                placeholder={t('login.email_placeholder')}
               />
               <InputField
                 type="password"

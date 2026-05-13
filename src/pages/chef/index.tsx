@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import ChefNavbar from '../../components/Chef/ChefNavbar';
@@ -24,7 +24,7 @@ export default function ChefIndex() {
   return <ChefHomeContent />;
 }
 
-function ChefHomeContent() {
+const ChefHomeContent = () => {
   const { t, i18n } = useTranslation('common');
   const lang = i18n.language;
 
@@ -85,27 +85,22 @@ function ChefHomeContent() {
       <div className="flex min-h-screen flex-col">
         <ChefNavbar />
         <div className="flex flex-1 items-center justify-center">
-          <p className="text-white opacity-60">{t('common.loading')}</p>
+          <p className="text-myText-muted">{t('common.loading')}</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-screen flex-col bg-surface">
       <ChefNavbar />
 
       <main className="flex flex-1 flex-col items-center px-4 py-8 md:px-8">
-        <h1
-          className="mb-6 text-3xl italic"
-          style={{ color: 'rgba(255,255,255,0.85)' }}
-        >
-          {t('chef.profile.page_title')}
-        </h1>
+        <h1 className="mb-6 italic">{t('chef.profile.page_title')}</h1>
 
-        <div className="w-full max-w-3xl rounded-2xl bg-myBeige-100 p-6 md:p-8">
-          <div className="flex flex-col items-center mb-4">
-            <div className="h-24 w-24 overflow-hidden rounded-full border-4 border-myGrey-200 shadow-lg bg-myBlue-100">
+        <div className="w-full max-w-3xl rounded-2xl bg-cookie-100 p-6 md:p-8">
+          <div className="mb-4 flex flex-col items-center">
+            <div className="h-24 w-24 overflow-hidden rounded-full border-4 border-cookie-400 shadow-lg bg-cookie-200">
               {chefProfile?.user?.image ? (
                 <img
                   src={chefProfile.user.image}
@@ -114,81 +109,64 @@ function ChefHomeContent() {
                 />
               ) : (
                 <div className="flex h-full w-full items-center justify-center">
-                  <span className="text-2xl font-bold">
+                  <span className=" ">
                     {chefProfile?.user?.username?.[0]?.toUpperCase() ?? '?'}
                   </span>
                 </div>
               )}
             </div>
-            <p className="mt-2 text-lg font-bold">
-              {chefProfile?.user?.username ?? ''}
-            </p>
+            <p className="mt-2  ">{chefProfile?.user?.username ?? ''}</p>
           </div>
 
-          {/* Rating */}
-          <div className="flex justify-center mb-4">
+          <div className="mb-4 flex justify-center">
             <div className="flex flex-col items-center">
-              <p className="mb-2 text-sm font-semibold">
-                {t('chef.profile.user_rating')}
-              </p>
+              <p className="mb-2  ">{t('chef.profile.user_rating')}</p>
               {averageRating > 0 ? (
                 <>
-                  <div className="flex items-center gap-2 rounded-full border-2 border-gray-400 px-3 py-1.5">
+                  <div className="flex items-center gap-2 rounded-full border-2 border-cookie-400 px-3 py-1.5">
                     <Stars rating={averageRating} size="sm" />
-                    <span className="text-sm font-bold">
-                      {averageRating.toFixed(1)} / 5
-                    </span>
+                    <span className=" ">{averageRating.toFixed(1)} / 5</span>
                   </div>
-                  <p className="mt-1 text-xs text-gray-500">
+                  <p className="mt-1  text-myText-muted">
                     {totalRatings} {t('chef.profile.user_reviews')}
                   </p>
                 </>
               ) : (
-                <p className="text-sm text-gray-500">
+                <p className=" text-myText-muted">
                   {t('chef.profile.no_ratings')}
                 </p>
               )}
             </div>
           </div>
 
-          {/* Bio */}
-          <div
-            className="mt-2 rounded-xl px-5 py-4"
-            style={{ backgroundColor: '#D6C9A8' }}
-          >
-            <p className="mb-1 text-xs font-bold tracking-wide">
-              {t('settings.bio')}
-            </p>
+          <div className="mt-2 rounded-xl bg-cookie-200 px-5 py-4">
+            <p className="mb-1   tracking-wide">{t('settings.bio')}</p>
             {chefProfile?.bio_el || chefProfile?.bio_en ? (
-              <p className="text-sm leading-relaxed">
+              <p className=" ">
                 {pick(chefProfile.bio_el ?? '', chefProfile.bio_en ?? '', lang)}
               </p>
             ) : (
-              <p className="text-sm italic text-gray-500">
+              <p className=" italic text-myText-muted">
                 {t('chef.profile.bio_placeholder')}
               </p>
             )}
           </div>
 
-          {/* Stats */}
-          <div className="mt-6 flex items-center justify-center divide-x divide-gray-400">
+          <div className="mt-6 flex items-center justify-center divide-x divide-cookie-400">
             {stats.map((stat) => (
               <div key={stat.label} className="flex flex-col items-center px-8">
-                <span className="text-sm text-gray-500">{stat.label}</span>
-                <span className="text-2xl font-bold">{stat.value}</span>
+                <span className=" text-myText-muted">{stat.label}</span>
+                <span className=" ">{stat.value}</span>
               </div>
             ))}
           </div>
 
-          {/* Articles */}
-          <div className="mt-8 mb-3 flex items-center justify-between">
-            <h3 className="text-sm font-semibold">
-              {t('chef.profile.articles')}
-            </h3>
+          <div className="mb-3 mt-8 flex items-center justify-between">
+            <h3>{t('chef.profile.articles')}</h3>
             {!showCreateForm && (
               <button
                 onClick={() => setShowCreateForm(true)}
-                className="flex items-center gap-1.5 rounded-full px-4 py-1.5 text-xs font-bold transition bg-myYellow hover:opacity-90"
+                className="flex items-center gap-1.5 rounded-full bg-cookie-300 px-4 py-1.5   text-white transition hover:bg-cookie-400"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -210,7 +188,7 @@ function ChefHomeContent() {
           </div>
 
           {showCreateForm && (
-            <div className="mb-4 rounded-2xl bg-myBlue-100 p-5">
+            <div className="mb-4 rounded-2xl bg-cookie-200 p-5">
               <ArticleForm
                 rows={6}
                 onSuccess={() => setShowCreateForm(false)}
@@ -221,11 +199,11 @@ function ChefHomeContent() {
           )}
 
           {articlesLoading ? (
-            <p className="text-center text-sm text-gray-500">
+            <p className="text-center  text-myText-muted">
               {t('common.loading')}
             </p>
           ) : articles.length === 0 ? (
-            <p className="text-center text-sm text-gray-500">
+            <p className="text-center  text-myText-muted">
               {t('chef.profile.no_articles')}
             </p>
           ) : (
@@ -234,7 +212,7 @@ function ChefHomeContent() {
                 <Link
                   key={article.id}
                   href={`/chef/articles/${article.id}`}
-                  className="cursor-pointer overflow-hidden rounded-xl transition hover:scale-105 bg-myBlue-100 hover:shadow-lg"
+                  className="cursor-pointer overflow-hidden rounded-xl bg-cookie-200 transition hover:scale-105 hover:shadow-lg"
                 >
                   <div className="relative h-28 w-full overflow-hidden">
                     <Image
@@ -245,7 +223,7 @@ function ChefHomeContent() {
                     />
                   </div>
                   <div className="p-2">
-                    <p className="text-xs font-semibold leading-tight line-clamp-2">
+                    <p className="line-clamp-2   ">
                       {pick(article.title_el, article.title_en, lang)}
                     </p>
                   </div>
@@ -262,7 +240,7 @@ function ChefHomeContent() {
                     variables: { chefId: userId!, offset: articles.length },
                   })
                 }
-                className="rounded-full bg-myBlue-100 px-8 py-2 text-sm font-bold transition hover:opacity-90"
+                className="rounded-full border-2 border-cookie-400 px-8 py-2   transition hover:bg-cookie-400 hover:text-white"
               >
                 {t('chef.more')}
               </button>
@@ -272,7 +250,7 @@ function ChefHomeContent() {
       </main>
     </div>
   );
-}
+};
 
 export async function getServerSideProps({ locale }: { locale: string }) {
   return {

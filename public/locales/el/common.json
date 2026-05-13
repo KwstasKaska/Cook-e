@@ -434,7 +434,6 @@
     "title": "Δημιουργία λογαριασμού",
     "subtitle": "Μια μαγειρική απόλαυση σε περιμένει! Ολοκλήρωσε την εγγραφή σου.",
     "login_button": "Σύνδεση",
-    "username_placeholder": "Ονοματεπώνυμο",
     "email_placeholder": "Email",
     "password_placeholder": "Κωδικός πρόσβασης",
     "role_label": "Ιδιότητα:",
@@ -445,7 +444,7 @@
   "login": {
     "title": "Καλώς ήρθες!",
     "form_title": "Σύνδεση",
-    "username_placeholder": "Διεύθυνση email",
+    "email_placeholder": "Διεύθυνση email",
     "password_placeholder": "Κωδικός πρόσβασης",
     "submit": "Σύνδεση",
     "forgot_password": "Ξέχασες τον κωδικό;",
