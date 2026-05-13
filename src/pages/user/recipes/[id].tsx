@@ -270,9 +270,7 @@ const RecipeDetailContent = () => {
       <main className="flex-1">
         <div className="mx-auto max-w-6xl px-4 py-10 md:px-8 md:py-16">
           <div className="grid grid-cols-1 gap-8 md:grid-cols-[1fr_280px] lg:grid-cols-[1fr_320px] md:items-start">
-            {/* LEFT COLUMN */}
             <div className="flex min-w-0 flex-col gap-8">
-              {/* Back */}
               <button
                 onClick={() => router.back()}
                 className="flex w-fit items-center gap-2 text-myText-muted transition hover:text-cookie-400"
@@ -294,7 +292,6 @@ const RecipeDetailContent = () => {
                 {t('common.back')}
               </button>
 
-              {/* Title block */}
               <div className="flex min-w-0 flex-col gap-3">
                 {recipe.category && (
                   <p className="text-sm text-myText-muted">
@@ -313,7 +310,6 @@ const RecipeDetailContent = () => {
                 />
               </div>
 
-              {/* Cook state */}
               {cookState === 'undo' ? (
                 <div className="flex items-center gap-2">
                   <span className="rounded-xl border-2 border-herb-200 bg-herb-200 px-4 py-0.5 text-white">
@@ -342,12 +338,10 @@ const RecipeDetailContent = () => {
                 </button>
               )}
 
-              {/* Description — shown here on mobile since sidebar is below */}
               {description && (
                 <p className="text-myText-muted md:hidden">{description}</p>
               )}
 
-              {/* Ingredients */}
               {ingredients.length > 0 && (
                 <div>
                   <h2 className="mb-4">{t('ingredientCategories.title')}</h2>
@@ -365,7 +359,6 @@ const RecipeDetailContent = () => {
                           key={ingId}
                           className="flex items-center gap-3 py-2.5"
                         >
-                          {/* Checkbox */}
                           <button
                             onClick={() => toggleIngredient(ingId)}
                             className="flex-shrink-0"
@@ -394,7 +387,6 @@ const RecipeDetailContent = () => {
                             </span>
                           </button>
 
-                          {/* Name */}
                           <span
                             className={`flex-1 transition ${
                               isChecked ? 'text-myText-muted line-through' : ''
@@ -403,7 +395,6 @@ const RecipeDetailContent = () => {
                             {ri.quantity} {ri.unit} {name}
                           </span>
 
-                          {/* Cart icon button */}
                           <button
                             onClick={() => !inCart && handleAddToCart(ingId)}
                             title={
@@ -426,7 +417,6 @@ const RecipeDetailContent = () => {
                 </div>
               )}
 
-              {/* Steps */}
               {steps.length > 0 && (
                 <div>
                   <h2 className="mb-6">{t('chef.recipe_detail.execution')}</h2>
@@ -447,7 +437,6 @@ const RecipeDetailContent = () => {
                 </div>
               )}
 
-              {/* Utensils */}
               {utensils.length > 0 && (
                 <div>
                   <h2 className="mb-4">
@@ -467,7 +456,6 @@ const RecipeDetailContent = () => {
               )}
             </div>
 
-            {/* RIGHT SIDEBAR */}
             <div className="min-w-0 overflow-hidden rounded-2xl bg-surface shadow-xl md:sticky md:top-6">
               {recipe.author?.user && (
                 <button
