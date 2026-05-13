@@ -6,9 +6,8 @@ import { useRouter } from 'next/router';
 import { useMyFavoritesQuery } from '../../../generated/graphql';
 import useIsUser from '../../../utils/useIsUser';
 import PaginationControls from '../../../components/Helper/PaginationControls';
-import { DIFFICULTY_MAP } from '../../../utils/recipeUtils';
 
-const FAV_LIMIT = 9;
+const FAV_LIMIT = 12;
 
 export async function getServerSideProps({ locale }: { locale: string }) {
   return {
@@ -61,35 +60,27 @@ const FavoritesContent = () => {
             {t('recipes.noFavourites')}
           </p>
         ) : (
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 ">
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
             {favorites.map((fav) => {
               const recipe = fav.recipe;
               if (!recipe) return null;
               const title = isEl ? recipe.title_el : recipe.title_en;
-              const totalTime = (recipe.prepTime ?? 0) + (recipe.cookTime ?? 0);
-              const diff = recipe.difficulty
-                ? DIFFICULTY_MAP[recipe.difficulty.toLowerCase()] ?? null
-                : null;
+
               return (
                 <div
                   key={fav.id}
                   onClick={() => router.push(`/user/recipes/${recipe.id}`)}
-                  className="flex cursor-pointer flex-col items-center gap-2 rounded-2xl bg-surface p-4 shadow-lg transition-shadow hover:shadow-xl"
+                  className="cursor-pointer rounded-2xl bg-surface shadow-xl overflow-hidden transition duration-200 hover:scale-105 flex flex-col"
                 >
-                  <img
-                    src={recipe.recipeImage!}
-                    alt={title}
-                    className="h-20 w-20 rounded-full border-2 border-cookie-400 object-cover shadow"
-                  />
-                  <h5 className="text-center">{title}</h5>
-                  <div className="flex items-center gap-2 text-myText-muted">
-                    {totalTime > 0 && (
-                      <span>
-                        {totalTime} {t('landing.minutes')}
-                      </span>
-                    )}
-                    {diff && totalTime > 0 && <span>·</span>}
-                    {diff && <span>{isEl ? diff.el : diff.en}</span>}
+                  <div className="h-24 w-full overflow-hidden flex-shrink-0">
+                    <img
+                      src={recipe.recipeImage!}
+                      alt={title}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div className="flex flex-col gap-2 px-4 py-3">
+                    <h5 className="text-center">{title}</h5>
                   </div>
                 </div>
               );

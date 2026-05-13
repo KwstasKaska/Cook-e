@@ -259,14 +259,18 @@ const HomeContent = () => {
                     <div
                       key={fav.id}
                       onClick={() => router.push(`/user/recipes/${recipe.id}`)}
-                      className="flex cursor-pointer flex-col items-center gap-2 rounded-2xl border-2 border-cookie-400 p-3 transition-shadow hover:shadow-md"
+                      className="cursor-pointer rounded-2xl bg-surface shadow-xl transition duration-300 hover:scale-105 overflow-hidden flex flex-col"
                     >
-                      <img
-                        src={recipe.recipeImage!}
-                        alt={title}
-                        className="h-14 w-14 rounded-full border-2 border-cookie-400 object-cover shadow"
-                      />
-                      <h6 className="text-center">{title}</h6>
+                      <div className="h-20 w-full overflow-hidden flex-shrink-0">
+                        <img
+                          src={recipe.recipeImage!}
+                          alt={title}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <div className="px-4 py-3">
+                        <h6 className="text-center">{title}</h6>
+                      </div>
                     </div>
                   );
                 })}

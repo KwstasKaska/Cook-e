@@ -55,7 +55,7 @@ const ChatList = () => {
                   {t('chat.noResults')}
                 </div>
               ) : (
-                <div className="grid grid-cols-2 gap-x-4 gap-y-14 pt-6 md:grid-cols-3 lg:grid-cols-4">
+                <div className="grid grid-cols-2 gap-4 pt-2 md:grid-cols-3 lg:grid-cols-4">
                   {users.map((u) => (
                     <UserCard
                       key={u.id}
@@ -95,10 +95,10 @@ const UserCard = ({
   onClick: () => void;
 }) => (
   <div
-    className="relative cursor-pointer rounded-2xl border-2 border-cookie-400 px-4 pb-4 pt-10 shadow-sm transition-transform duration-200 hover:scale-105"
+    className="cursor-pointer rounded-2xl bg-surface shadow-xl overflow-hidden transition duration-200 hover:scale-105 flex flex-col items-center gap-3 pb-4"
     onClick={onClick}
   >
-    <div className="absolute -top-8 left-1/2 -translate-x-1/2">
+    <div className="w-full bg-cookie-100 flex justify-center pt-6 pb-4">
       {image ? (
         <img
           src={image}
@@ -106,15 +106,15 @@ const UserCard = ({
           className="h-16 w-16 rounded-full border-2 border-cookie-400 object-cover shadow"
         />
       ) : (
-        <div className="flex h-16 w-16 items-center justify-center rounded-full border-2 border-cookie-400 bg-cookie-200 shadow">
-          <span className="  text-myText-heading">
+        <div className="flex h-16 w-16 items-center justify-center rounded-full border-4 border-surface bg-cookie-200 shadow">
+          <span className="text-myText-heading">
             {username[0]?.toUpperCase() ?? '?'}
           </span>
         </div>
       )}
     </div>
-    <div className="text-center">
-      <p className="  leading-tight">{username}</p>
+    <div className="px-4 text-center">
+      <p className="leading-tight">{username}</p>
     </div>
   </div>
 );

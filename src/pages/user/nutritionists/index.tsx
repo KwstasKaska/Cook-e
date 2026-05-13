@@ -54,7 +54,7 @@ const ListView = () => {
                   {t('nutritionists.noResults')}
                 </div>
               ) : (
-                <div className="grid grid-cols-2 gap-x-4 gap-y-16 pt-6 md:grid-cols-3 lg:grid-cols-4">
+                <div className="grid grid-cols-2  gap-4 pt-2 md:grid-cols-3 lg:grid-cols-4">
                   {nutritionists.map((nutr) => (
                     <NutrCard
                       key={nutr.id}
@@ -89,10 +89,10 @@ const NutrCard = ({
 }) => {
   return (
     <div
-      className="relative cursor-pointer rounded-2xl border-2 border-cookie-400 px-4 pb-4 pt-10 shadow-sm transition-transform duration-200 hover:scale-105"
+      className="cursor-pointer rounded-2xl bg-surface shadow-xl overflow-hidden transition duration-200 hover:scale-105 flex flex-col items-center gap-3 pb-4"
       onClick={onClick}
     >
-      <div className="absolute -top-8 left-1/2 -translate-x-1/2">
+      <div className="w-full bg-cookie-100 flex justify-center pt-6 pb-4">
         {image ? (
           <img
             src={image}
@@ -107,7 +107,7 @@ const NutrCard = ({
           </div>
         )}
       </div>
-      <div className="text-center">
+      <div className="text-center px-4">
         <p className="mb-1 w-full break-words text-center">{username}</p>
         {city && <p className="text-myText-muted">{city}</p>}
       </div>

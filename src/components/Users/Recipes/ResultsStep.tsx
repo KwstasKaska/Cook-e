@@ -15,31 +15,23 @@ type Suggestion = {
 
 const SuggestionCard = ({
   suggestion,
-  index,
   onClick,
   isEl,
 }: {
   suggestion: Suggestion;
-  index: number;
   onClick: () => void;
   isEl: boolean;
 }) => {
   const { t } = useTranslation('common');
   const recipe = suggestion.recipe;
   const title = isEl ? recipe.title_el : recipe.title_en;
-  const topPad = index === 0 ? 'pt-28' : index === 1 ? 'pt-24' : 'pt-20';
-  const imgSize =
-    index === 0 ? 'h-40 w-40' : index === 1 ? 'h-36 w-36' : 'h-32 w-32';
-  const imgTop = index === 0 ? '-top-20' : index === 1 ? '-top-16' : '-top-14';
 
   return (
     <div
       onClick={onClick}
-      className={`relative cursor-pointer rounded-2xl bg-surface shadow-xl transition duration-300 hover:scale-105 ${topPad} px-6 pb-8 flex flex-col gap-3`}
+      className="cursor-pointer rounded-2xl bg-surface shadow-xl transition duration-300 hover:scale-105 overflow-hidden flex flex-col"
     >
-      <div
-        className={`absolute left-1/2 -translate-x-1/2 ${imgTop} ${imgSize} overflow-hidden rounded-full border-4 border-cookie-100 shadow-xl bg-cookie-100`}
-      >
+      <div className="h-28 w-full overflow-hidden flex-shrink-0">
         <img
           src={recipe.recipeImage!}
           alt={title}
@@ -47,32 +39,34 @@ const SuggestionCard = ({
         />
       </div>
 
-      <h3 className="text-center text-lg font-bold">{title}</h3>
+      <div className="flex flex-col gap-3 px-6 py-4">
+        <h3 className="text-center text-lg font-bold">{title}</h3>
 
-      {recipe.difficulty && (
-        <p className="text-sm text-myText-muted">{recipe.difficulty}</p>
-      )}
+        {recipe.difficulty && (
+          <p className="text-sm text-myText-muted">{recipe.difficulty}</p>
+        )}
 
-      {recipe.author?.user?.username && (
-        <p className="mt-auto pt-4 text-sm text-myText-muted">
-          {t('recipes.by')} {recipe.author.user.username}
-        </p>
-      )}
+        {recipe.author?.user?.username && (
+          <p className="mt-auto text-sm text-myText-muted">
+            {t('recipes.by')} {recipe.author.user.username}
+          </p>
+        )}
 
-      {suggestion.missingCount > 0 && (
-        <p className="text-xs text-myYellow font-semibold">
-          -{suggestion.missingCount} {t('recipes.missingIngredients')}
-        </p>
-      )}
+        {suggestion.missingCount > 0 && (
+          <p className="text-xs text-myYellow font-semibold">
+            -{suggestion.missingCount} {t('recipes.missingIngredients')}
+          </p>
+        )}
 
-      {suggestion.missingUtensils.length > 0 && (
-        <p className="text-xs text-myRed font-semibold">
-          {t('recipes.missingUtensils')}:{' '}
-          {suggestion.missingUtensils
-            .map((u) => (isEl ? u.name_el : u.name_en))
-            .join(', ')}
-        </p>
-      )}
+        {suggestion.missingUtensils.length > 0 && (
+          <p className="text-xs text-myRed font-semibold">
+            {t('recipes.missingUtensils')}:{' '}
+            {suggestion.missingUtensils
+              .map((u) => (isEl ? u.name_el : u.name_en))
+              .join(', ')}
+          </p>
+        )}
+      </div>
     </div>
   );
 };
@@ -117,7 +111,7 @@ export default function ResultsStep({
           {t('recipes.backToSearch')}
         </button>
 
-        <h2 className="text-center text-2xl font-bold mb-24">
+        <h2 className="text-center text-2xl font-bold mb-10">
           {t('recipes.resultsTitle')}
         </h2>
 
@@ -136,18 +130,16 @@ export default function ResultsStep({
                 <SuggestionCard
                   key={s.recipe.id}
                   suggestion={s}
-                  index={1}
                   onClick={() => onSelectRecipe(s.recipe.id)}
                   isEl={isEl}
                 />
               ))}
             </div>
-            <div className="hidden md:grid md:grid-cols-3 md:items-end md:gap-6">
-              {suggestions.slice(0, 3).map((s, i) => (
+            <div className="hidden md:grid md:grid-cols-3 md:gap-6">
+              {suggestions.slice(0, 3).map((s) => (
                 <SuggestionCard
                   key={s.recipe.id}
                   suggestion={s}
-                  index={i}
                   onClick={() => onSelectRecipe(s.recipe.id)}
                   isEl={isEl}
                 />
