@@ -370,10 +370,8 @@ const RecipeDetailContent = () => {
                               }`}
                             >
                               {inCart
-                                ? '✓'
-                                : isEl
-                                  ? 'Προσθήκη στη λίστα'
-                                  : 'Add to list'}
+                                ? t('recipes.cart.addedToCart')
+                                : t('recipes.cart.addToList')}
                             </button>
                           </span>
                         </div>

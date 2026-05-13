@@ -118,7 +118,9 @@
     "items": "ingredients",
     "clearSelected": "Clear selected",
     "emptyCart": "Your list is empty.",
-    "browseIngredients": "Add ingredients"
+    "browseIngredients": "Add ingredients",
+    "addToList": "Add to list",
+    "addedToCart": "Added to list"
   },
   "chat": {
     "title": "Members communication",

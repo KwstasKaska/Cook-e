@@ -117,7 +117,9 @@
     "items": "υλικά",
     "clearSelected": "Καθαρισμός επιλεγμένων",
     "emptyCart": "Η λίστα σου είναι άδεια.",
-    "browseIngredients": "Προσθήκη υλικών"
+    "browseIngredients": "Προσθήκη υλικών",
+    "addToList": "Προσθήκη στη λίστα",
+    "addedToCart": "Προστέθηκε στη λίστα"
   },
   "chat": {
     "title": "Επικοινωνία μελών",
