@@ -9,7 +9,7 @@
     "tagline": "A food journey",
     "messages": "Messages",
     "articles": "Articles",
-    "chat": "Members communication"
+    "chat": "Chat with other members"
   },
   "chefnav": {
     "chef_index": "Overview",
@@ -26,15 +26,11 @@
     "protein": "Protein",
     "carbs": "Carbohydrates",
     "cookCount": "Cooked recipes",
-    "startCooking": "Start cooking!",
     "minutes": "minutes",
-    "noCookedYet": "You haven't cooked any recipes yet.",
-    "noRatingsCta": "Browse recipes",
     "nutritionTitle": "Nutritional info of the week",
     "nutritionDesc": "This chart contains the summary of the nutritional info from every recipe you've logged as cooked in the last week from the equivalent field inside the recipe's page.",
-
-    "weeklyRecipesTitle": "Top rated recipes this week",
-    "weeklyRecipesDesc1": "These are the recipes the community has rated highest in the last 7 days."
+    "cartDesc": "Your ingredients supermarket list.",
+    "chatDesc": "Chat with other members."
   },
   "day": {
     "MONDAY": "Monday",
@@ -183,7 +179,7 @@
     "deleteConfirmTitle": "Delete account",
     "deleteConfirmYes": "Delete",
     "deleteConfirmCancel": "Cancel",
-    "appointments": "My appointments",
+    "appointments": "My requests for appointments",
     "noAppointments": "You have no appointment requests yet.",
     "appointmentStatus": {
       "pending": "Pending",
@@ -448,7 +444,7 @@
     "prev": "Previous",
     "seeAll": "All",
     "seeAll2": "All",
-
+    "open": "Open",
     "undo": "Undo"
   },
   "register": {

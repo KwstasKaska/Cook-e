@@ -38,6 +38,7 @@ const CartContent = ({
   isEl: boolean;
   t: ReturnType<typeof useTranslation>['t'];
 }) => {
+  const router = useRouter();
   const [checkedIds, setCheckedIds] = useState<Set<number>>(new Set());
   const [openCategory, setOpenCategory] = useState<string | null>(null);
 
@@ -111,6 +112,13 @@ const CartContent = ({
 
       <div className="relative min-h-screen">
         <div className="relative z-10 max-w-2xl mx-auto px-6 pt-14 pb-24">
+          <button
+            onClick={() => router.push('/user')}
+            className="mb-6 text-myText-muted hover:text-cookie-400"
+          >
+            ← {t('common.back')}
+          </button>
+
           <h1 className="text-center mb-1">{t('cart.title')}</h1>
 
           {loading ? (
@@ -118,7 +126,7 @@ const CartContent = ({
               <div className="h-8 w-8 animate-spin rounded-full border-2 border-cookie-300 border-t-transparent" />
             </div>
           ) : items.length === 0 ? (
-            <div className="rounded-2xl border-2  border-cookie-400 p-10 text-center mb-6">
+            <div className="rounded-2xl border-2 border-cookie-400 p-10 text-center mb-6">
               <p className="text-myText-muted">{t('cart.emptyCart')}</p>
             </div>
           ) : (
@@ -133,7 +141,7 @@ const CartContent = ({
                   return (
                     <div
                       key={item.id}
-                      className="flex border-2 border-cookie-400  items-center gap-3 rounded-2xl  px-3 py-3 bg-surface transition"
+                      className="flex border-2 border-cookie-400 items-center gap-3 rounded-2xl px-3 py-3 bg-surface transition"
                     >
                       <button
                         onClick={() => toggleChecked(item.id)}
@@ -163,7 +171,7 @@ const CartContent = ({
                       </button>
 
                       <p
-                        className="flex-1 min-w-0 truncate "
+                        className="flex-1 min-w-0 truncate"
                         style={{
                           color: isChecked ? '#9C9080' : '#3D3529',
                           textDecoration: isChecked ? 'line-through' : 'none',
@@ -201,7 +209,7 @@ const CartContent = ({
                 <button
                   onClick={handleClearChecked}
                   disabled={checkedCount === 0}
-                  className={`rounded-full border-2 px-5 py-2  transition ${
+                  className={`rounded-full border-2 px-5 py-2 transition ${
                     checkedCount > 0
                       ? 'border-myRed text-myRed hover:bg-myRed hover:text-white cursor-pointer'
                       : 'border-cookie-400 text-myText-muted cursor-not-allowed'
@@ -225,7 +233,7 @@ const CartContent = ({
                     onClick={() => setOpenCategory(isOpen ? null : category)}
                     className="w-full flex border border-cookie-400 items-center justify-between rounded-2xl bg-surface px-4 py-3 text-left"
                   >
-                    <span className="">{category}</span>
+                    <span>{category}</span>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24"
@@ -244,7 +252,7 @@ const CartContent = ({
                   </button>
 
                   {isOpen && (
-                    <div className="grid grid-cols-1  gap-2 mt-2 sm:grid-cols-2 lg:grid-cols-3">
+                    <div className="grid grid-cols-1 gap-2 mt-2 sm:grid-cols-2 lg:grid-cols-3">
                       {ings.map((ing) => {
                         const alreadyIn = cartIngredientIds.has(ing.id);
                         const name = isEl ? ing.name_el : ing.name_en;
@@ -254,13 +262,13 @@ const CartContent = ({
                             key={ing.id}
                             onClick={() => !alreadyIn && handleAdd(ing.id)}
                             disabled={alreadyIn}
-                            className="flex items-center border border-cookie-300 justify-between rounded-xl bg-surface  px-3 py-2.5 text-left transition"
+                            className="flex items-center border border-cookie-300 justify-between rounded-xl bg-surface px-3 py-2.5 text-left transition"
                             style={{
                               opacity: alreadyIn ? 0.45 : 1,
                               cursor: alreadyIn ? 'default' : 'pointer',
                             }}
                           >
-                            <span className=" truncate">{name}</span>
+                            <span className="truncate">{name}</span>
                             {!alreadyIn && (
                               <svg
                                 xmlns="http://www.w3.org/2000/svg"

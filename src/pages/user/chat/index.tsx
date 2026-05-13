@@ -1,6 +1,7 @@
 import Navbar from '../../../components/Users/Navbar';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useRouter } from 'next/router';
 import { useUsersQuery } from '../../../generated/graphql';
 import useIsUser from '../../../utils/useIsUser';
 import { useChatContext } from '../../../components/Chat/ChatContext';
@@ -23,6 +24,7 @@ export default function ChatPage() {
 
 const ChatList = () => {
   const { t } = useTranslation('common');
+  const router = useRouter();
   const { openConversation } = useChatContext();
 
   const { data, loading, fetchMore } = useUsersQuery({
@@ -40,8 +42,15 @@ const ChatList = () => {
   return (
     <div className="min-h-screen">
       <Navbar />
-      <div className="relative z-10 mx-auto w-full max-w-5xl px-6 pb-20 pt-12">
-        <h1 className="mb-6 text-center ">{t('chat.title')}</h1>
+      <div className="relative z-10 mx-auto w-full max-w-5xl  pb-20 pt-12">
+        <button
+          onClick={() => router.push('/user')}
+          className="mb-6 ml-7 text-myText-muted hover:text-cookie-400"
+        >
+          ← {t('common.back')}
+        </button>
+
+        <h1 className="mb-6 text-center">{t('chat.title')}</h1>
 
         {loading ? (
           <div className="flex justify-center py-16">
@@ -51,7 +60,7 @@ const ChatList = () => {
           <div className="relative mx-auto md:px-8">
             <div className="rounded-2xl bg-surface px-4 pb-8 pt-2 shadow-lg">
               {users.length === 0 ? (
-                <div className="py-12 text-center  text-myText-muted">
+                <div className="py-12 text-center text-myText-muted">
                   {t('chat.noResults')}
                 </div>
               ) : (
@@ -71,7 +80,7 @@ const ChatList = () => {
                 <div className="mt-10 flex justify-center">
                   <button
                     onClick={handleLoadMore}
-                    className="rounded-full border-2 border-cookie-400 px-6 py-2  transition hover:bg-cookie-400 hover:text-white"
+                    className="rounded-full border-2 border-cookie-400 px-6 py-2 transition hover:bg-cookie-400 hover:text-white"
                   >
                     {t('chat.loadMore')}
                   </button>

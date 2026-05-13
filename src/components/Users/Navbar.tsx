@@ -12,8 +12,6 @@ const Navbar = () => {
       href: '/user/nutritionists',
       label: t('nav.nutritionists'),
     },
-    { kind: 'href', href: '/user/chat', label: t('nav.chat') },
-    { kind: 'href', href: '/user/cart', label: t('nav.cart') },
   ];
 
   return <BaseNavbar links={links} />;

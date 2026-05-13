@@ -9,6 +9,7 @@ import {
   useMyFavoritesQuery,
   useMyMealPlanQuery,
   useMyNutritionalSummaryQuery,
+  useMyCartQuery,
 } from '../../generated/graphql';
 import useIsUser from '../../utils/useIsUser';
 import { toDisplay, statusStyle } from '../../utils/appointmentUtils';
@@ -52,8 +53,11 @@ const HomeContent = () => {
     fetchPolicy: 'network-only',
   });
 
+  const { data: cartData } = useMyCartQuery({ fetchPolicy: 'network-only' });
+
   const summary = summaryData?.myNutritionalSummary;
   const favorites = favData?.myFavorites ?? [];
+  const cartCount = cartData?.myCart?.length ?? 0;
 
   const stats = [
     {
@@ -109,13 +113,13 @@ const HomeContent = () => {
       <Navbar />
 
       <div className="mx-auto max-w-3xl px-6 pb-16 pt-10">
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+        <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2">
           <div className="flex flex-col rounded-2xl bg-surface p-5 shadow-lg">
             <h3 className="mb-4">{t('settings.appointments')}</h3>
 
             {apptLoading ? (
               <div className="flex flex-1 items-center justify-center py-8">
-                <div className="h-6 w-6  rounded-full border-2 border-cookie-400 border-t-transparent" />
+                <div className="h-6 w-6 rounded-full border-2 border-cookie-400 border-t-transparent" />
               </div>
             ) : recentAppts.length === 0 ? (
               <p className="flex-1 text-myText-muted">
@@ -175,7 +179,7 @@ const HomeContent = () => {
 
             {planLoading ? (
               <div className="flex flex-1 items-center justify-center py-8">
-                <div className="h-6 w-6  rounded-full border-2 border-cookie-400 border-t-transparent" />
+                <div className="h-6 w-6 rounded-full border-2 border-cookie-400 border-t-transparent" />
               </div>
             ) : snapshotMeals.length === 0 ? (
               <p className="flex-1 text-myText-muted">
@@ -195,7 +199,7 @@ const HomeContent = () => {
                       key={entry.id}
                       className="flex gap-2 border-b border-cookie-100 py-1.5 last:border-0"
                     >
-                      <span className=" flex-shrink-0  text-nutr-200">
+                      <span className="flex-shrink-0 text-nutr-200">
                         {t(`meal.${entry.mealType}`)}
                       </span>
                       <p className="line-clamp-1 text-myText-base">{comment}</p>
@@ -215,6 +219,35 @@ const HomeContent = () => {
         </div>
 
         <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2">
+          <div
+            onClick={() => router.push('/user/cart')}
+            className="flex cursor-pointer flex-col rounded-2xl bg-surface p-6 shadow-lg transition hover:scale-[1.02] hover:shadow-xl"
+          >
+            <div className="mb-3 flex items-center justify-between">
+              <h3>{t('nav.cart')}</h3>
+              {cartCount > 0 && (
+                <span className="rounded-full bg-cookie-200 px-2.5 py-0.5 text-myText-heading">
+                  {cartCount}
+                </span>
+              )}
+            </div>
+            <p className="flex-1 text-myText-muted">{t('landing.cartDesc')}</p>
+            <span className="mt-4 self-center">{t('common.open')}</span>
+          </div>
+
+          <div
+            onClick={() => router.push('/user/chat')}
+            className="flex cursor-pointer flex-col rounded-2xl bg-surface p-6 shadow-lg transition hover:scale-[1.02] hover:shadow-xl"
+          >
+            <div className="mb-3">
+              <h3>{t('nav.chat')}</h3>
+            </div>
+            <p className="flex-1 text-myText-muted">{t('landing.chatDesc')}</p>
+            <span className="mt-4 self-center ">{t('common.open')} </span>
+          </div>
+        </div>
+
+        <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2">
           <div className="flex flex-col rounded-2xl bg-surface p-6 shadow-lg">
             <h3 className="mb-4">{t('landing.nutritionTitle')}</h3>
             <p className="mb-4 text-myText-muted">
@@ -223,7 +256,7 @@ const HomeContent = () => {
 
             {summaryLoading ? (
               <div className="flex flex-1 items-center justify-center py-8">
-                <div className="h-8 w-8  rounded-full border-4 border-cookie-400 border-t-transparent" />
+                <div className="h-8 w-8 rounded-full border-4 border-cookie-400 border-t-transparent" />
               </div>
             ) : (
               <div className="grid grid-cols-2 gap-x-6 gap-y-4">
@@ -242,7 +275,7 @@ const HomeContent = () => {
 
             {favLoading ? (
               <div className="flex flex-1 items-center justify-center py-8">
-                <div className="h-6 w-6  rounded-full border-2 border-cookie-400 border-t-transparent" />
+                <div className="h-6 w-6 rounded-full border-2 border-cookie-400 border-t-transparent" />
               </div>
             ) : favorites.length === 0 ? (
               <p className="flex-1 text-myText-muted">
