@@ -194,13 +194,13 @@ const ChefProfileContent = () => {
                 onClick={() => router.push(`/user/chef/${chefId}/recipes`)}
                 className="flex-1 rounded-xl border-2 border-cookie-400 py-2   transition hover:bg-cookie-400 hover:text-white"
               >
-                {t('chef.profile.recipes')} →
+                {t('chef.profile.recipes')}
               </button>
               <button
                 onClick={() => router.push(`/user/chef/${chefId}/articles`)}
                 className="flex-1 rounded-xl border-2 border-cookie-400 py-2   transition hover:bg-cookie-400 hover:text-white"
               >
-                {t('chef.profile.articles')} →
+                {t('chef.profile.articles')}
               </button>
             </div>
 

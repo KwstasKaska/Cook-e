@@ -168,7 +168,7 @@ const ProfileContent = () => {
               onClick={() => router.push(`/user/nutritionists/${id}/articles`)}
               className="rounded-xl border-2 border-cookie-400 px-4 py-1.5   transition hover:bg-cookie-400 hover:text-white"
             >
-              {t('chef.profile.articles')} →
+              {t('chef.profile.articles')}
             </button>
           </div>
         </div>

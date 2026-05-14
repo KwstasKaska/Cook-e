@@ -162,7 +162,6 @@
     "chefBioPlaceholder": "Describe your experience and expertise...",
     "nutritionistProfile": "Professional profile",
     "saveSuccess": "Changes saved successfully.",
-    "saveError": "Something went wrong. Please try again.",
     "usernameRequired": "Username is required.",
     "emailRequired": "Email is required.",
     "currentPasswordRequired": "Current password is required.",
@@ -189,10 +188,7 @@
   },
   "nutr": {
     "yourArticles": "Your articles",
-    "articleImageAlt": "Article image",
-    "searchAppointments": "Αppointment calendar",
     "todayAppointments": "Today's appointments",
-    "coffeeImageAlt": "A coffee image",
     "noAppointmentsFor": "No available appointments for",
     "createNutritionPlan": "Create nutrition plan",
     "nutritionPlanFor": "Nutrition plan for:",
@@ -242,21 +238,18 @@
     "calendarHint": "Here you can see booking requests from members for the dates and hours you have set. When you accept a request, you can create a meal plan for that member and chat with them directly.",
     "setAvailabilityHint": "Use \"Set availability\" to add for the selected date the hours members can book with you.",
     "noAppointmentsToday": "No appointments scheduled for today.",
-    "recipesHint": "Open a recipe and use the copy link button to share it via chat or include it in a meal plan."
+    "recipesHint": "Open a recipe and use the copy link button to share it via chat or include it in a meal plan.",
+    "acceptedAppt": "My confirmed appointments",
+    "noAcceptedAppt": "There are no confirmed appointments yet"
   },
   "chef": {
     "more": "More",
-
     "recipes": {
       "page_title": "My recipes",
       "categories_label": "Categories",
-      "search_placeholder": "Search recipes...",
-      "sort_newest": "Newest",
       "servings": "servings",
       "duration": "duration",
       "minutes": "minutes",
-      "sort_oldest": "Oldest",
-      "sort_alpha": "Alphabetical",
       "empty": "No recipes found."
     },
     "recipe_card": {
@@ -299,7 +292,7 @@
     "profile": {
       "page_title": "My profile",
       "no_ratings": "No ratings yet.",
-      "bio_placeholder": "No bio set yet. You can add one from Settings.",
+      "bio_placeholder": "No bio set yet. You can add one from settings.",
       "recipes": "My recipes",
       "articles": "My articles",
       "no_articles": "There are not any articles yet.",

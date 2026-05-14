@@ -72,6 +72,8 @@ const ChefOverviewContent = () => {
     );
   }
 
+  const bio = pick(chefProfile?.bio_el ?? '', chefProfile?.bio_en ?? '', lang);
+
   return (
     <div className="min-h-screen ">
       <ChefNavbar />
@@ -110,13 +112,15 @@ const ChefOverviewContent = () => {
             )}
           </div>
 
-          {(chefProfile?.bio_el || chefProfile?.bio_en) && (
-            <div className="w-full rounded-xl bg-cookie-100 px-5 py-4">
-              <p className="text-center leading-relaxed">
-                {pick(chefProfile.bio_el ?? '', chefProfile.bio_en ?? '', lang)}
-              </p>
-            </div>
-          )}
+          <div className="w-full rounded-xl bg-cookie-100 px-5 py-4">
+            <p
+              className={`text-center leading-relaxed${
+                !bio ? ' text-myText-muted' : ''
+              }`}
+            >
+              {bio || t('chef.profile.bio_placeholder')}
+            </p>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
@@ -163,7 +167,7 @@ const ChefOverviewContent = () => {
               onClick={() => router.push('/chef/recipes')}
               className="mt-4 self-end text-cookie-400 hover:underline"
             >
-              {t('common.seeAll2')} →
+              {t('common.seeAll2')}
             </button>
           </div>
 
@@ -209,7 +213,7 @@ const ChefOverviewContent = () => {
               onClick={() => router.push('/chef/articles')}
               className="mt-4 self-end text-cookie-400 hover:underline"
             >
-              {t('common.seeAll')} →
+              {t('common.seeAll')}
             </button>
           </div>
         </div>

@@ -1446,7 +1446,7 @@ export type MyNutritionalSummaryQuery = { __typename?: 'Query', myNutritionalSum
 export type MyNutritionistProfileQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MyNutritionistProfileQuery = { __typename?: 'Query', myNutritionistProfile?: { __typename?: 'NutritionistProfile', id: number, bio_el?: string | null, bio_en?: string | null, phone?: string | null, city_el?: string | null, city_en?: string | null, user?: { __typename?: 'User', id: number, username: string, email: string } | null } | null };
+export type MyNutritionistProfileQuery = { __typename?: 'Query', myNutritionistProfile?: { __typename?: 'NutritionistProfile', id: number, bio_el?: string | null, bio_en?: string | null, phone?: string | null, city_el?: string | null, city_en?: string | null, user?: { __typename?: 'User', id: number, username: string, email: string, image?: string | null } | null } | null };
 
 export type MyRecipesQueryVariables = Exact<{
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -4199,6 +4199,7 @@ export const MyNutritionistProfileDocument = gql`
       id
       username
       email
+      image
     }
   }
 }

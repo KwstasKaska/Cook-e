@@ -10,6 +10,7 @@ query MyNutritionistProfile {
       id
       username
       email
+      image
     }
   }
 }

@@ -166,7 +166,7 @@ const HomeContent = () => {
               onClick={() => router.push('/user/appointments')}
               className="mt-4 self-end text-cookie-400 hover:underline"
             >
-              {t('common.seeAll')} →
+              {t('common.seeAll')}
             </button>
           </div>
 
@@ -209,7 +209,7 @@ const HomeContent = () => {
               onClick={() => router.push('/user/mealplan')}
               className="mt-4 self-end text-cookie-400 hover:underline"
             >
-              {t('common.seeAll')} →
+              {t('common.seeAll')}
             </button>
           </div>
         </div>
@@ -305,7 +305,7 @@ const HomeContent = () => {
               onClick={() => router.push('/user/favorites')}
               className="mt-4 self-end text-cookie-400 hover:underline"
             >
-              {t('common.seeAll2')} →
+              {t('common.seeAll2')}
             </button>
           </div>
         </div>

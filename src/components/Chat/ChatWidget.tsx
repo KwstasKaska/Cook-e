@@ -70,7 +70,7 @@ export default function ChatWidget({ currentUserId }: ChatWidgetProps) {
     if (pendingFiredRef.current) return;
     pendingFiredRef.current = true;
 
-    async function initConversation() {
+    const initConversation = async () => {
       setStartError('');
       const result = await startConversation({
         variables: { participantId: pendingUserId! },
@@ -92,23 +92,22 @@ export default function ChatWidget({ currentUserId }: ChatWidgetProps) {
         setSendError('');
         setBody('');
       }
-    }
+    };
 
     initConversation();
   }, [pendingUserId]);
 
-  function getOtherParticipant(convo: {
+  const getOtherParticipant = (convo: {
     participant1Id: number;
     participant2Id: number;
     participant1: { id: number; username: string; image?: string | null };
     participant2: { id: number; username: string; image?: string | null };
-  }) {
-    return convo.participant1Id === currentUserId
+  }) =>
+    convo.participant1Id === currentUserId
       ? convo.participant2
       : convo.participant1;
-  }
 
-  function openThread(convoId: number) {
+  const openThread = (convoId: number) => {
     client.cache.evict({ id: `Conversation:${convoId}` });
     client.cache.gc();
     setActiveConvoId(convoId);
@@ -116,9 +115,9 @@ export default function ChatWidget({ currentUserId }: ChatWidgetProps) {
     setSendError('');
     setStartError('');
     setBody('');
-  }
+  };
 
-  async function handleSend() {
+  const handleSend = async () => {
     if (!body.trim()) return;
     setSendError('');
 
@@ -130,35 +129,31 @@ export default function ChatWidget({ currentUserId }: ChatWidgetProps) {
       return;
     }
     setBody('');
-  }
+  };
 
-  function handleKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       handleSend();
     }
-  }
+  };
 
   if (!isOpen) return null;
 
   const thread = threadData?.conversation;
 
   return (
-    <div
-      className="fixed z-50 bg-white flex flex-col overflow-hidden
-    inset-0
-    sm:inset-auto sm:bottom-6 sm:right-6 sm:w-80 sm:rounded-lg sm:shadow-xl sm:border sm:border-gray-200 sm:h-[420px]"
-    >
-      <div className="flex items-center justify-between px-3 py-2 bg-blue-600 text-white flex-shrink-0">
+    <div className="fixed inset-0 z-50 flex flex-col overflow-hidden bg-surface sm:inset-auto sm:bottom-6 sm:right-6 sm:h-[420px] sm:w-80 sm:rounded-2xl sm:border sm:border-cookie-200 sm:shadow-xl">
+      <div className="flex flex-shrink-0 items-center justify-between bg-cookie-300 px-3 py-2 text-white">
         <div className="flex items-center gap-2">
           {view === 'thread' && (
             <button
               onClick={() => setView('inbox')}
-              className="hover:opacity-70 mr-1"
+              className="mr-1 hover:opacity-70"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="w-4 h-4"
+                className="h-4 w-4"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -172,7 +167,7 @@ export default function ChatWidget({ currentUserId }: ChatWidgetProps) {
               </svg>
             </button>
           )}
-          <span className=" ">
+          <span>
             {view === 'inbox'
               ? t('messages', 'Messages')
               : thread && !threadLoading
@@ -183,7 +178,7 @@ export default function ChatWidget({ currentUserId }: ChatWidgetProps) {
         <button onClick={closeWidget} className="hover:opacity-70">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="w-4 h-4"
+            className="h-4 w-4"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -199,17 +194,19 @@ export default function ChatWidget({ currentUserId }: ChatWidgetProps) {
       </div>
 
       {view === 'inbox' && (
-        <div className="flex-1 overflow-y-auto divide-y divide-gray-100">
+        <div className="flex-1 divide-y divide-cookie-100 overflow-y-auto">
           {startError && (
-            <p className=" text-red-500 text-center px-3 py-2">{startError}</p>
+            <p className="px-3 py-2 text-center text-myRed">{startError}</p>
           )}
           {inboxLoading && (
-            <p className=" text-gray-400 text-center py-6">Loading...</p>
+            <p className="py-6 text-center text-myText-muted">
+              {t('common.loading')}
+            </p>
           )}
           {!inboxLoading &&
             !inboxData?.myConversations?.length &&
             !startError && (
-              <p className=" text-gray-400 text-center py-6">
+              <p className="py-6 text-center text-myText-muted">
                 {t('no_conversations', 'No conversations yet.')}
               </p>
             )}
@@ -219,22 +216,22 @@ export default function ChatWidget({ currentUserId }: ChatWidgetProps) {
               <button
                 key={convo.id}
                 onClick={() => openThread(convo.id)}
-                className="w-full flex items-center gap-3 px-3 py-3 hover:bg-gray-50 text-left transition-colors"
+                className="flex w-full items-center gap-3 px-3 py-3 text-left transition-colors hover:bg-cookie-100"
               >
-                <div className="w-9 h-9 rounded-full bg-gray-200 overflow-hidden flex-shrink-0">
+                <div className="h-9 w-9 flex-shrink-0 overflow-hidden rounded-full bg-cookie-200">
                   {other.image ? (
                     <img
                       src={other.image}
                       alt={other.username}
-                      className="w-full h-full object-cover"
+                      className="h-full w-full object-cover"
                     />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center   text-gray-500">
+                    <div className="flex h-full w-full items-center justify-center text-myText-heading">
                       {other.username[0].toUpperCase()}
                     </div>
                   )}
                 </div>
-                <p className="  text-gray-800 truncate">{other.username}</p>
+                <p className="truncate text-myText-base">{other.username}</p>
               </button>
             );
           })}
@@ -242,16 +239,18 @@ export default function ChatWidget({ currentUserId }: ChatWidgetProps) {
       )}
 
       {view === 'thread' && starting && (
-        <div className="flex-1 flex items-center justify-center">
-          <p className=" text-gray-400">Άνοιγμα συνομιλίας...</p>
+        <div className="flex flex-1 items-center justify-center">
+          <p className="text-myText-muted">Άνοιγμα συνομιλίας...</p>
         </div>
       )}
 
       {view === 'thread' && !starting && (
         <>
-          <div className="flex-1 overflow-y-auto px-3 py-2 space-y-2">
+          <div className="flex-1 space-y-2 overflow-y-auto px-3 py-2">
             {threadLoading && (
-              <p className=" text-gray-400 text-center py-4">Loading...</p>
+              <p className="py-4 text-center text-myText-muted">
+                {t('common.loading')}
+              </p>
             )}
             {thread?.messages?.map((msg) => {
               const isMine = msg.senderId === currentUserId;
@@ -261,10 +260,10 @@ export default function ChatWidget({ currentUserId }: ChatWidgetProps) {
                   className={`flex ${isMine ? 'justify-end' : 'justify-start'}`}
                 >
                   <div
-                    className={`max-w-[70%] px-3 py-2 rounded-2xl  break-words ${
+                    className={`max-w-[70%] break-words rounded-2xl px-3 py-2 ${
                       isMine
-                        ? 'bg-blue-600 text-white rounded-br-sm'
-                        : 'bg-gray-100 text-gray-800 rounded-bl-sm'
+                        ? 'rounded-br-sm bg-cookie-300 text-white'
+                        : 'rounded-bl-sm bg-cookie-100 text-myText-base'
                     }`}
                   >
                     {msg.body}
@@ -275,25 +274,24 @@ export default function ChatWidget({ currentUserId }: ChatWidgetProps) {
             <div ref={messagesEndRef} />
           </div>
 
-          {sendError && <p className=" text-red-500 px-3 pb-1">{sendError}</p>}
+          {sendError && <p className="px-3 pb-1 text-myRed">{sendError}</p>}
 
-          <div className="border-t border-gray-200 px-3 py-2 flex items-end gap-2 flex-shrink-0">
+          <div className="flex flex-shrink-0 items-end gap-2 border-t border-cookie-200 px-3 py-2">
             <textarea
               value={body}
               onChange={(e) => setBody(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder={t('type_message', 'Type a message…')}
               rows={1}
-              className="flex-1 resize-none  border border-gray-200 rounded-lg px-2 py-1.5 focus:outline-none focus:border-blue-400"
+              className="flex-1 resize-none rounded-xl border border-cookie-200 px-2 py-1.5 focus:outline-none focus:border-cookie-400"
             />
             <button
               onClick={handleSend}
               disabled={sending || !body.trim()}
-              className="flex-shrink-0 w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center disabled:opacity-40 hover:bg-blue-700 transition-colors"
+              className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-cookie-300 text-white transition-colors hover:bg-cookie-400 disabled:opacity-40"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="w-4 h-4"
+                className="h-4 w-4"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
