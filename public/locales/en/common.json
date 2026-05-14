@@ -128,7 +128,8 @@
     "browseIngredients": "Add ingredients",
     "addToList": "Add to list",
     "addedToCart": "Added to list",
-    "subtitle": "Add ingredients directly from the recipes or from the lists below."
+    "subtitle": "Add missing or wanted ingredients directly from the recipes pages.",
+    "browseRecipes": "Browse on search recipes page"
   },
   "chat": {
     "title": "Members communication",

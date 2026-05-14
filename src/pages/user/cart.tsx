@@ -1,13 +1,11 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback } from 'react';
 import Navbar from '../../components/Users/Navbar';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useRouter } from 'next/router';
 import {
   useMyCartQuery,
-  useAddToCartMutation,
   useRemoveFromCartMutation,
-  useIngredientsQuery,
 } from '../../generated/graphql';
 import ScrollToTopButton from '../../components/Helper/ScrollToTopButton';
 import useIsUser from '../../utils/useIsUser';
@@ -40,33 +38,13 @@ const CartContent = ({
 }) => {
   const router = useRouter();
   const [checkedIds, setCheckedIds] = useState<Set<number>>(new Set());
-  const [openCategory, setOpenCategory] = useState<string | null>(null);
 
   const { data, loading, refetch } = useMyCartQuery({
     fetchPolicy: 'network-only',
   });
-  const { data: ingredientsData } = useIngredientsQuery();
-  const [addToCart] = useAddToCartMutation();
   const [removeFromCart] = useRemoveFromCartMutation();
 
   const items = data?.myCart ?? [];
-  const cartIngredientIds = useMemo(
-    () => new Set(items.map((i) => i.ingredientId)),
-    [items],
-  );
-
-  const ingredientsByCategory = useMemo(() => {
-    const all = ingredientsData?.ingredients ?? [];
-    const map = new Map<string, typeof all>();
-    for (const ing of all) {
-      const key = isEl
-        ? ing.category?.name_el ?? ''
-        : ing.category?.name_en ?? '';
-      if (!map.has(key)) map.set(key, []);
-      map.get(key)!.push(ing);
-    }
-    return map;
-  }, [ingredientsData, isEl]);
 
   const toggleChecked = (id: number) =>
     setCheckedIds((prev) => {
@@ -96,14 +74,6 @@ const CartContent = ({
     await refetch();
   }, [checkedIds, removeFromCart, refetch]);
 
-  const handleAdd = useCallback(
-    async (ingredientId: number) => {
-      await addToCart({ variables: { ingredientId } });
-      await refetch();
-    },
-    [addToCart, refetch],
-  );
-
   const checkedCount = checkedIds.size;
 
   return (
@@ -111,7 +81,7 @@ const CartContent = ({
       <Navbar />
 
       <div className="relative min-h-screen">
-        <div className="relative z-10 max-w-2xl mx-auto px-6 pt-14 pb-24">
+        <div className="relative z-10 mx-auto max-w-2xl px-6 pb-24 pt-14">
           <button
             onClick={() => router.push('/user')}
             className="mb-6 text-myText-muted hover:text-cookie-400"
@@ -119,17 +89,22 @@ const CartContent = ({
             {t('common.back')}
           </button>
 
-          <h1 className="text-center mb-1">{t('cart.title')}</h1>
-          <p className="text-center text-myText-muted mb-6">
-            {t('cart.subtitle')}
-          </p>
+          <h1 className="mb-1 text-center">{t('cart.title')}</h1>
+          <p className="mb-6 text-center ">{t('cart.subtitle')}</p>
+
           {loading ? (
             <div className="flex justify-center py-16">
               <div className="h-8 w-8 animate-spin rounded-full border-2 border-cookie-300 border-t-transparent" />
             </div>
           ) : items.length === 0 ? (
-            <div className="rounded-2xl border-2 border-cookie-400 p-10 text-center mb-6">
-              <p className="text-myText-muted">{t('cart.emptyCart')}</p>
+            <div className="mb-6 rounded-2xl border-2 border-cookie-400 p-10 text-center">
+              <p className="mb-4 text-myText-muted">{t('cart.emptyCart')}</p>
+              <button
+                onClick={() => router.push('/user/recipes')}
+                className="rounded-full border-2 border-cookie-400 px-5 py-1.5 text-cookie-400 transition hover:bg-cookie-400 hover:text-white"
+              >
+                {t('cart.browseRecipes')}
+              </button>
             </div>
           ) : (
             <>
@@ -143,7 +118,7 @@ const CartContent = ({
                   return (
                     <div
                       key={item.id}
-                      className="flex border-2 border-cookie-400 items-center gap-3 rounded-2xl px-3 py-3 bg-surface transition"
+                      className="flex items-center gap-3 rounded-2xl border-2 border-cookie-400 bg-surface px-3 py-3 transition"
                     >
                       <button
                         onClick={() => toggleChecked(item.id)}
@@ -173,7 +148,7 @@ const CartContent = ({
                       </button>
 
                       <p
-                        className="flex-1 min-w-0 truncate"
+                        className="min-w-0 flex-1 truncate"
                         style={{
                           color: isChecked ? '#9C9080' : '#3D3529',
                           textDecoration: isChecked ? 'line-through' : 'none',
@@ -204,7 +179,7 @@ const CartContent = ({
                 })}
               </div>
 
-              <div className="mt-6 flex border-cookie-400 items-center justify-between border-t-2 pt-5">
+              <div className="mt-6 flex items-center justify-between border-t-2 border-cookie-400 pt-5">
                 <p className="text-myText-muted">
                   {checkedCount}/{items.length} {t('cart.items')}
                 </p>
@@ -213,8 +188,8 @@ const CartContent = ({
                   disabled={checkedCount === 0}
                   className={`rounded-full border-2 px-5 py-2 transition ${
                     checkedCount > 0
-                      ? 'border-myRed text-myRed hover:bg-myRed hover:text-white cursor-pointer'
-                      : 'border-cookie-400 text-myText-muted cursor-not-allowed'
+                      ? 'cursor-pointer border-myRed text-myRed hover:bg-myRed hover:text-white'
+                      : 'cursor-not-allowed border-cookie-400 text-myText-muted'
                   }`}
                 >
                   {t('cart.clearSelected')}
@@ -222,78 +197,6 @@ const CartContent = ({
               </div>
             </>
           )}
-
-          <div className="mt-10">
-            <h3 className="mb-4">{t('cart.browseIngredients')}</h3>
-
-            {[...ingredientsByCategory.entries()].map(([category, ings]) => {
-              const isOpen = openCategory === category;
-
-              return (
-                <div key={category} className="mb-2">
-                  <button
-                    onClick={() => setOpenCategory(isOpen ? null : category)}
-                    className="w-full flex border border-cookie-400 items-center justify-between rounded-2xl bg-surface px-4 py-3 text-left"
-                  >
-                    <span>{category}</span>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="currentColor"
-                      className="h-4 w-4 text-myText-muted transition-transform"
-                      style={{
-                        transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
-                      }}
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M12.53 16.28a.75.75 0 01-1.06 0l-7.5-7.5a.75.75 0 011.06-1.06L12 14.69l6.97-6.97a.75.75 0 111.06 1.06l-7.5 7.5z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </button>
-
-                  {isOpen && (
-                    <div className="grid grid-cols-1 gap-2 mt-2 sm:grid-cols-2 lg:grid-cols-3">
-                      {ings.map((ing) => {
-                        const alreadyIn = cartIngredientIds.has(ing.id);
-                        const name = isEl ? ing.name_el : ing.name_en;
-
-                        return (
-                          <button
-                            key={ing.id}
-                            onClick={() => !alreadyIn && handleAdd(ing.id)}
-                            disabled={alreadyIn}
-                            className="flex items-center border border-cookie-300 justify-between rounded-xl bg-surface px-3 py-2.5 text-left transition"
-                            style={{
-                              opacity: alreadyIn ? 0.45 : 1,
-                              cursor: alreadyIn ? 'default' : 'pointer',
-                            }}
-                          >
-                            <span className="truncate">{name}</span>
-                            {!alreadyIn && (
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                                fill="currentColor"
-                                className="h-4 w-4 flex-shrink-0 ml-2 text-cookie-300"
-                              >
-                                <path
-                                  fillRule="evenodd"
-                                  d="M12 3.75a.75.75 0 01.75.75v6.75h6.75a.75.75 0 010 1.5h-6.75v6.75a.75.75 0 01-1.5 0v-6.75H4.5a.75.75 0 010-1.5h6.75V4.5a.75.75 0 01.75-.75z"
-                                  clipRule="evenodd"
-                                />
-                              </svg>
-                            )}
-                          </button>
-                        );
-                      })}
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
         </div>
       </div>
 
