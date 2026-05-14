@@ -41,6 +41,7 @@ export default function NutritionistProfileTab() {
   }, [profile, lang]);
 
   const handleSave = async () => {
+    if (loading) return;
     setFieldErrors({});
     setSuccess(null);
 

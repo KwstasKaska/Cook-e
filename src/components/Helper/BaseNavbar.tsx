@@ -10,9 +10,7 @@ import { HamburgerButton } from '../Helper/HamburgerButton';
 import LanguageSwitcher from '../Helper/LanguageSwitcher';
 import Logo from '../Helper/Logo';
 
-export type NavLink =
-  | { kind: 'href'; href: string; label: string }
-  | { kind: 'scroll'; sectionId: string; label: string; scrollPage: string };
+export type NavLink = { href: string; label: string };
 
 interface BaseNavbarProps {
   links: NavLink[];
@@ -30,27 +28,7 @@ const BaseNavbar = ({ links }: BaseNavbarProps) => {
 
   const me = meData?.me;
 
-  const isActive = (link: NavLink) => {
-    if (link.kind === 'href') return router.pathname === link.href;
-    return (
-      router.pathname === link.scrollPage &&
-      router.asPath.includes(link.sectionId)
-    );
-  };
-
-  const handleClick = (link: NavLink) => {
-    if (link.kind === 'href') {
-      router.push(link.href);
-      return;
-    }
-    if (router.pathname !== link.scrollPage) {
-      router.push(`${link.scrollPage}#${link.sectionId}`);
-      return;
-    }
-    document
-      .getElementById(link.sectionId)
-      ?.scrollIntoView({ behavior: 'smooth' });
-  };
+  const isActive = (link: NavLink) => router.pathname === link.href;
 
   const handleLogout = async () => {
     await logout();
@@ -68,12 +46,12 @@ const BaseNavbar = ({ links }: BaseNavbarProps) => {
   if (loading) return null;
 
   return (
-    <nav className="w-full bg-cookie-200 px-6 py-0 flex items-stretch justify-between relative z-50 h-14">
+    <nav className="relative z-50 flex h-14 w-full items-stretch justify-between bg-cookie-200 px-6 py-0">
       <div className="flex items-center gap-4">
         <Logo />
         {me && (
-          <div className="hidden xl:flex items-center gap-4">
-            <span className="text-cookie-300 select-none leading-none">|</span>
+          <div className="hidden items-center gap-4 xl:flex">
+            <span className="select-none leading-none text-cookie-300">|</span>
             <div className="flex items-center gap-2">
               {me.image ? (
                 <img
@@ -94,42 +72,26 @@ const BaseNavbar = ({ links }: BaseNavbarProps) => {
         )}
       </div>
 
-      <div className="hidden xl:flex text-myText-base items-center gap-6">
-        {links.map((link) => {
-          const active = isActive(link);
-          const key = link.kind === 'href' ? link.href : link.sectionId;
-          if (link.kind === 'href') {
-            return (
-              <Link
-                key={key}
-                href={link.href}
-                className="text-sm font-semibold tracking-wide transition-colors duration-150"
-                style={linkStyle(active)}
-              >
-                {link.label}
-              </Link>
-            );
-          }
-          return (
-            <button
-              key={key}
-              onClick={() => handleClick(link)}
-              className=" tracking-wide transition-colors duration-150"
-              style={linkStyle(active)}
-            >
-              {link.label}
-            </button>
-          );
-        })}
+      <div className="hidden items-center gap-6 text-myText-base xl:flex">
+        {links.map((link) => (
+          <Link
+            key={link.href}
+            href={link.href}
+            className="text-sm font-semibold tracking-wide transition-colors duration-150"
+            style={linkStyle(isActive(link))}
+          >
+            {link.label}
+          </Link>
+        ))}
       </div>
 
-      <div className="hidden xl:flex items-center gap-4">
+      <div className="hidden items-center gap-4 xl:flex">
         <LanguageSwitcher dark />
         <NavSettingsLink />
         <button
           onClick={handleLogout}
           disabled={logoutLoading}
-          className="rounded-full border border-myText-base px-4 text-sm font-semibold leading-7 transition-colors duration-150 hover:bg-myRed hover:border-myRed hover:text-white disabled:opacity-50"
+          className="rounded-full border border-myText-base px-4 text-sm font-semibold leading-7 transition-colors duration-150 hover:border-myRed hover:bg-myRed hover:text-white disabled:opacity-50"
         >
           {t('nav.logout')}
         </button>
@@ -138,13 +100,13 @@ const BaseNavbar = ({ links }: BaseNavbarProps) => {
       <HamburgerButton
         isOpen={menuOpen}
         onClick={() => setMenuOpen((v) => !v)}
-        className="xl:hidden p-2 self-center"
+        className="p-2 self-center xl:hidden"
       />
 
       {menuOpen && (
-        <div className="absolute bg-cookie-200 top-full left-0 w-full flex flex-col items-start px-6 py-4 gap-4 xl:hidden shadow-lg z-50">
+        <div className="absolute left-0 top-full z-50 flex w-full flex-col items-start gap-4 bg-cookie-200 px-6 py-4 shadow-lg xl:hidden">
           {me && (
-            <div className="flex items-center gap-2 pb-3 w-full">
+            <div className="flex w-full items-center gap-2 pb-3">
               {me.image ? (
                 <img
                   src={me.image}
@@ -161,37 +123,18 @@ const BaseNavbar = ({ links }: BaseNavbarProps) => {
               </span>
             </div>
           )}
-          {links.map((link) => {
-            const active = isActive(link);
-            const key = link.kind === 'href' ? link.href : link.sectionId;
-            if (link.kind === 'href') {
-              return (
-                <Link
-                  key={key}
-                  href={link.href}
-                  onClick={() => setMenuOpen(false)}
-                  className="text-sm font-semibold tracking-wide w-full py-1 transition-colors duration-150"
-                  style={linkStyle(active)}
-                >
-                  {link.label}
-                </Link>
-              );
-            }
-            return (
-              <button
-                key={key}
-                onClick={() => {
-                  handleClick(link);
-                  setMenuOpen(false);
-                }}
-                className="text-sm font-semibold tracking-wide w-full text-left py-1 transition-colors duration-150"
-                style={linkStyle(active)}
-              >
-                {link.label}
-              </button>
-            );
-          })}
-          <div className="w-full pt-3 flex items-center justify-between">
+          {links.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              onClick={() => setMenuOpen(false)}
+              className="w-full py-1 text-sm font-semibold tracking-wide transition-colors duration-150"
+              style={linkStyle(isActive(link))}
+            >
+              {link.label}
+            </Link>
+          ))}
+          <div className="flex w-full items-center justify-between pt-3">
             <div className="flex items-center gap-4">
               <NavSettingsLink onClick={() => setMenuOpen(false)} />
               <LanguageSwitcher dark />
@@ -199,7 +142,7 @@ const BaseNavbar = ({ links }: BaseNavbarProps) => {
             <button
               onClick={handleLogout}
               disabled={logoutLoading}
-              className="rounded-full border border-myText-base px-4 text-sm font-semibold leading-7 transition-colors hover:bg-myRed hover:border-myRed hover:text-white disabled:opacity-50"
+              className="rounded-full border border-myText-base px-4 text-sm font-semibold leading-7 transition-colors hover:border-myRed hover:bg-myRed hover:text-white disabled:opacity-50"
             >
               {t('nav.logout')}
             </button>

@@ -76,7 +76,7 @@ export default function SettingsPage() {
       return;
     }
     await apolloClient.clearStore();
-    router.push('/login');
+    router.push('/');
   };
 
   if (authLoading || !isAuthorized || !me) return null;

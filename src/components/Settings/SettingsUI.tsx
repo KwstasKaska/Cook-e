@@ -62,8 +62,7 @@ export const TextArea = ({
       placeholder={placeholder}
       rows={4}
       onChange={(e) => onChange(e.target.value)}
-      className="w-full rounded-xl border-2 px-4 py-2.5  focus:outline-none transition resize-none"
-      style={{ borderColor: error ? '#ED5B5B' : '#3D3529' }}
+      className="w-full rounded-xl border-2 border-cookie-400 px-4 py-2.5  focus:outline-none transition resize-none"
     />
     {error && <p className="mt-1  text-myRed">{error}</p>}
   </div>

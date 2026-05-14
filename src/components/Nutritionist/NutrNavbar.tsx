@@ -5,13 +5,9 @@ const NutrNavbar = () => {
   const { t } = useTranslation('common');
 
   const links: NavLink[] = [
-    { kind: 'href', href: '/nutritionist', label: t('nutrnav.nutr_home') },
-    { kind: 'href', href: '/nutritionist/articles', label: t('nav.articles') },
-    {
-      kind: 'href',
-      href: '/nutritionist/mealplans',
-      label: t('nutrnav.nutr_scheduler'),
-    },
+    { href: '/nutritionist', label: t('nutrnav.overview') },
+    { href: '/nutritionist/appointments', label: t('nutrnav.appointments') },
+    { href: '/nutritionist/mealplans', label: t('nutrnav.mealplans') },
   ];
 
   return <BaseNavbar links={links} />;

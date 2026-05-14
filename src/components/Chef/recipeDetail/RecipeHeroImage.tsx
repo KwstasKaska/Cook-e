@@ -17,7 +17,6 @@ export default function RecipeHeroImage({
   title_el,
   title_en,
   lang,
-  backHref,
 }: Props) {
   const { t } = useTranslation('common');
   const router = useRouter();
@@ -25,7 +24,7 @@ export default function RecipeHeroImage({
   return (
     <div className="relative h-56 w-full overflow-hidden bg-cookie-100 md:h-72">
       <button
-        onClick={() => router.push(backHref)}
+        onClick={() => router.back()}
         className="absolute left-4 top-4 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-surface shadow transition hover:bg-cookie-100"
       >
         <svg

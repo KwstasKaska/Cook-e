@@ -50,8 +50,6 @@ export default function ChefSingleRecipe() {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
-  const initializedRef = useRef(false);
-
   const { data: profileData, loading: profileLoading } =
     useMyChefProfileQuery();
   const myChefId = profileData?.myChefProfile?.id;
@@ -86,10 +84,9 @@ export default function ChefSingleRecipe() {
   const [deleteRecipe, { loading: deleting }] = useDeleteRecipeMutation();
 
   useEffect(() => {
-    if (!recipe || initializedRef.current) return;
+    if (!recipe) return;
     setEditForm(buildEditForm(recipe, lang));
-    initializedRef.current = true;
-  }, [recipe]);
+  }, [recipe, lang]);
 
   if (authLoading || !isAuthorized) return null;
 
@@ -138,26 +135,15 @@ export default function ChefSingleRecipe() {
       recipeImageUrl = editForm.recipeImage;
     }
 
-    const titleChanged =
-      editForm.title.trim() !==
-      (lang === 'en' ? recipe.title_en : recipe.title_el);
+    const titleChanged = editForm.title.trim() !== recipe.title_el;
     const descChanged =
-      editForm.description.trim() !==
-      (lang === 'en'
-        ? recipe.description_en ?? ''
-        : recipe.description_el ?? '');
+      editForm.description.trim() !== (recipe.description_el ?? '');
     const commentChanged =
-      editForm.chefComment.trim() !==
-      (lang === 'en'
-        ? recipe.chefComment_en ?? ''
-        : recipe.chefComment_el ?? '');
+      editForm.chefComment.trim() !== (recipe.chefComment_el ?? '');
     const stepsChanged =
       validSteps.length !== (recipe.steps ?? []).length ||
       validSteps.some(
-        (s, i) =>
-          s.body.trim() !==
-          ((recipe.steps ?? [])[i]?.[lang === 'en' ? 'body_en' : 'body_el'] ??
-            ''),
+        (s, i) => s.body.trim() !== ((recipe.steps ?? [])[i]?.body_el ?? ''),
       );
 
     const res = await updateRecipe({
@@ -208,7 +194,7 @@ export default function ChefSingleRecipe() {
     }
 
     if (result?.recipe) {
-      setEditForm(buildEditForm(result.recipe, lang));
+      setEditForm(buildEditForm(result.recipe));
     }
 
     setImageFile(null);
@@ -226,7 +212,7 @@ export default function ChefSingleRecipe() {
     setFieldErrors({});
     setImageFile(null);
     setImagePreview(null);
-    if (recipe) setEditForm(buildEditForm(recipe, lang));
+    if (recipe) setEditForm(buildEditForm(recipe));
     setIsEditing(false);
   };
 

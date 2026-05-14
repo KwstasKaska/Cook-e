@@ -50,10 +50,12 @@ const ArticleSinglePage = ({
 
   useEffect(() => {
     if (data?.article) {
-      setEditTitle(data.article.title_el ?? '');
-      setEditText(data.article.text_el ?? '');
+      setEditTitle(
+        pick(data.article.title_el, data.article.title_en, lang) ?? '',
+      );
+      setEditText(pick(data.article.text_el, data.article.text_en, lang) ?? '');
     }
-  }, [data]);
+  }, [data, lang]);
 
   const [updateArticle] = useUpdateArticleMutation({
     onCompleted: () => {
@@ -283,8 +285,12 @@ const ArticleSinglePage = ({
                     <button
                       onClick={() => {
                         setIsEditing(false);
-                        setEditTitle(article.title_el ?? '');
-                        setEditText(article.text_el ?? '');
+                        setEditTitle(
+                          pick(article.title_el, article.title_en, lang) ?? '',
+                        );
+                        setEditText(
+                          pick(article.text_el, article.text_en, lang) ?? '',
+                        );
                         setEditImageFile(null);
                         setEditImagePreview(null);
                         setEditError('');

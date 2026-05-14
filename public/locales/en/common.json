@@ -16,9 +16,9 @@
     "chef_create": "Create recipe"
   },
   "nutrnav": {
-    "nutr_calendar": "Calendar",
-    "nutr_appointments": "Appointment management",
-    "nutr_scheduler": "Creation of nutritional plans"
+    "overview": "Overview",
+    "appointments": "Appointment management",
+    "mealplans": "Create nutritional plans"
   },
   "landing": {
     "energy": "Calories",

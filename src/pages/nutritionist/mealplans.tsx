@@ -182,10 +182,10 @@ const NutrSchedulerContent = () => {
                 </thead>
 
                 <tbody>
-                  {mealTypes.map((meal, i) => {
-                    const bg = i % 2 === 0 ? '#FFFDF9' : '#F7EDE0';
+                  {mealTypes.map((meal) => {
+                    const bg = '#EDD4B0';
                     return (
-                      <tr key={meal} style={{ background: bg }}>
+                      <tr key={meal} className="bg-surface ">
                         <td
                           style={stickyCell(bg)}
                           className="px-4 py-4 font-bold"
@@ -198,8 +198,7 @@ const NutrSchedulerContent = () => {
                           return (
                             <td
                               key={day}
-                              className="px-3 py-3 align-top"
-                              style={{ borderBottom: '1px solid #EDD4B0' }}
+                              className="px-3 py-3 align-top border-b  border-cookie-400 "
                             >
                               <textarea
                                 value={val}
@@ -208,7 +207,7 @@ const NutrSchedulerContent = () => {
                                 }
                                 placeholder="—"
                                 rows={3}
-                                className="w-full resize-none rounded-xl border-2 border-cookie-400 bg-surface px-3 py-2 focus:outline-none focus:ring-2 focus:ring-cookie-300"
+                                className="w-full resize-none rounded-xl border border-cookie-400 bg-surface px-3 py-2 focus:outline-none focus:ring-2 focus:ring-cookie-300"
                               />
                             </td>
                           );
