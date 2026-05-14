@@ -30,7 +30,7 @@ const RecipeCard = ({
     <img
       src={image}
       alt={title}
-      className="h-24  w-full object-cover md:h-[10em]"
+      className="h-[6em] w-full object-cover md:h-[10em]"
     />
     <h4 className="px-2 text-center">{title}</h4>
 
