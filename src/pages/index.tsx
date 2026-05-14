@@ -11,7 +11,6 @@ import {
 import LanguageSwitcher from '../components/Helper/LanguageSwitcher';
 import Logo from '../components/Helper/Logo';
 import { pick } from '../utils/pick';
-import { recipeImageSrc } from '../utils/recipeHelpers';
 import { useRouter } from 'next/router';
 
 interface RecipeCardProps {
@@ -31,7 +30,7 @@ const RecipeCard = ({
     <img
       src={image}
       alt={title}
-      className="h-[8em] w-full object-cover md:h-[10em]"
+      className="h-24  w-full object-cover md:h-[10em]"
     />
     <h4 className="px-2 text-center">{title}</h4>
 
@@ -71,7 +70,7 @@ const Index: NextPage = () => {
     <RecipeCard
       key={recipe.id}
       title={pick(recipe.title_el, recipe.title_en, lang)}
-      image={recipeImageSrc(recipe.recipeImage)}
+      image={recipe.recipeImage!}
       authorName={recipe.author?.user?.username ?? '—'}
       authorImage={recipe.author?.user?.image}
     />

@@ -8,7 +8,7 @@ import {
   RecipeCategory,
 } from '../../../generated/graphql';
 import { pick } from '../../../utils/pick';
-import { totalDuration, recipeImageSrc } from '../../../utils/recipeHelpers';
+import { totalDuration } from '../../../utils/recipeHelpers';
 import useIsChef from '../../../utils/useIsChef';
 import ChefNavbar from '../../../components/Chef/ChefNavbar';
 import RecipeCategoryFilter from '../../../components/Chef/RecipeCategoryFilter';
@@ -108,7 +108,7 @@ const ChefRecipesContent = () => {
                     >
                       <div className="h-32 w-full overflow-hidden">
                         <img
-                          src={recipeImageSrc(recipe.recipeImage)}
+                          src={recipe.recipeImage!}
                           alt={title}
                           className="h-full w-full object-cover"
                         />
