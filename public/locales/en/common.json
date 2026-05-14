@@ -15,6 +15,18 @@
     "chef_index": "Overview",
     "chef_create": "Create recipe"
   },
+  "pagination": {
+    "prevRecipes": "Previous recipes",
+    "nextRecipes": "Next recipes",
+    "prevArticles": "Previous articles",
+    "nextArticles": "Next articles",
+    "prevFavorites": "Previous favorites",
+    "nextFavorites": "Next favorites",
+    "prevAppointments": "Previous requests",
+    "nextAppointments": "Next requests",
+    "prevAccepted": "Previous accepted requests",
+    "nextAccepted": "Next accepted requests"
+  },
   "nutrnav": {
     "overview": "Overview",
     "appointments": "Appointment management",

@@ -141,6 +141,8 @@ const AcceptedAppointmentsContent = () => {
           hasMore={page < totalPages - 1}
           onPrev={() => setPage((p) => p - 1)}
           onNext={() => setPage((p) => p + 1)}
+          prevLabel={t('pagination.prevAccepted')}
+          nextLabel={t('pagination.nextAccepted')}
         />
       </div>
     </div>

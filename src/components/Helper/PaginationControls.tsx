@@ -5,14 +5,18 @@ interface Props {
   hasMore: boolean;
   onPrev: () => void;
   onNext: () => void;
+  prevLabel?: string;
+  nextLabel?: string;
 }
 
-export default function PaginationControls({
+const PaginationControls = ({
   hasPrev,
   hasMore,
   onPrev,
   onNext,
-}: Props) {
+  prevLabel,
+  nextLabel,
+}: Props) => {
   const { t } = useTranslation('common');
 
   if (!hasPrev && !hasMore) return null;
@@ -22,19 +26,21 @@ export default function PaginationControls({
       {hasPrev && (
         <button
           onClick={onPrev}
-          className="rounded-xl border-2 border-cookie-400 px-8 py-1.5  transition hover:bg-cookie-400 hover:text-white"
+          className="rounded-xl border-2 border-cookie-400 px-8 py-1.5 transition hover:bg-cookie-400 hover:text-white"
         >
-          {t('common.prev')}
+          {prevLabel ?? t('common.prev')}
         </button>
       )}
       {hasMore && (
         <button
           onClick={onNext}
-          className="rounded-xl border-2 border-cookie-400 px-8 py-1.5  transition hover:bg-cookie-400 hover:text-white"
+          className="rounded-xl border-2 border-cookie-400 px-8 py-1.5 transition hover:bg-cookie-400 hover:text-white"
         >
-          {t('common.next')}
+          {nextLabel ?? t('common.next')}
         </button>
       )}
     </div>
   );
-}
+};
+
+export default PaginationControls;

@@ -97,7 +97,7 @@ const Login: NextPage = () => {
                 disabled={isSubmitting}
                 className="mt-1 w-full rounded-xl bg-cookie-300 py-2.5 text-white transition hover:bg-cookie-400 disabled:cursor-not-allowed disabled:opacity-60"
               >
-                {isSubmitting ? t('common.loading') : t('login.submit')}
+                {!isSubmitting && t('login.submit')}
               </button>
             </Form>
           )}

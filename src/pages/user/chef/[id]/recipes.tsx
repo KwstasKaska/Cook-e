@@ -94,6 +94,8 @@ const ChefRecipesContent = () => {
             hasMore={hasMore && recipes.length > 0}
             onPrev={() => setOffset((o) => o - LIMIT)}
             onNext={() => setOffset((o) => o + LIMIT)}
+            prevLabel={t('pagination.prevRecipes')}
+            nextLabel={t('pagination.nextRecipes')}
           />
         )}
       </div>

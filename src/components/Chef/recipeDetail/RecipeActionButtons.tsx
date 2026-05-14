@@ -42,7 +42,7 @@ export default function RecipeActionButtons({
         disabled={saving}
         className="flex items-center justify-center gap-2 rounded-2xl  px-4 py-1.5 border-2 border-herb-200 text-herb-200  hover:text-white transition  hover:bg-herb-200 disabled:opacity-50"
       >
-        {saving ? t('common.saving') : t('chef.recipe_detail.save')}
+        {!saving && t('chef.recipe_detail.save')}
       </button>
       <button
         type="button"
@@ -57,7 +57,7 @@ export default function RecipeActionButtons({
         disabled={deleting}
         className="flex items-center justify-center gap-2 rounded-2xl  px-4 py-1.5 border-2 border-myRed text-myRed  transition hover:bg-myRed hover:text-white disabled:opacity-50"
       >
-        {deleting ? t('common.loading') : t('chef.recipe_detail.delete')}
+        {!deleting && t('chef.recipe_detail.delete')}
       </button>
     </div>
   );

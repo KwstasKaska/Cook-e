@@ -105,6 +105,8 @@ const AppointmentsContent = () => {
               hasMore={page < totalPages - 1}
               onPrev={() => setPage((p) => p - 1)}
               onNext={() => setPage((p) => p + 1)}
+              prevLabel={t('pagination.prevAppointments')}
+              nextLabel={t('pagination.nextAppointments')}
             />
           </div>
         )}

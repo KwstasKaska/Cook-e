@@ -280,7 +280,7 @@ const ArticleSinglePage = ({
                       disabled={isSaving}
                       className="w-full rounded-xl border-2 border-cookie-400 px-4 py-0.5 transition hover:bg-cookie-400 hover:text-white disabled:opacity-50 sm:w-auto"
                     >
-                      {isSaving ? t('common.loading') : t('common.save')}
+                      {!isSaving && t('common.save')}
                     </button>
                     <button
                       onClick={() => {

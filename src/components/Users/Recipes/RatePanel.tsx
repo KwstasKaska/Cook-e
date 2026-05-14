@@ -58,7 +58,7 @@ export default function RatePanel({
             : 'hover:text-white hover:bg-cookie-400'
         }`}
       >
-        {submitting ? t('common.saving') : t('recipes.submitRating')}
+        {!submitting && t('recipes.submitRating')}
       </button>
     </div>
   );

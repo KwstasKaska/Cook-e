@@ -119,6 +119,8 @@ const NutrArticlesContent = () => {
             hasMore={hasMore && articles.length > 0}
             onPrev={() => setOffset((o) => o - LIMIT)}
             onNext={() => setOffset((o) => o + LIMIT)}
+            prevLabel={t('pagination.prevArticles')}
+            nextLabel={t('pagination.nextArticles')}
           />
         )}
       </div>

@@ -11,6 +11,18 @@
     "articles": "Άρθρα",
     "chat": "Επικοινωνία με άλλα μέλη"
   },
+  "pagination": {
+    "prevRecipes": "Προηγούμενες συνταγές",
+    "nextRecipes": "Επόμενες συνταγές",
+    "prevArticles": "Προηγούμενα άρθρα",
+    "nextArticles": "Επόμενα άρθρα",
+    "prevFavorites": "Προηγούμενες αγαπημένες",
+    "nextFavorites": "Επόμενες αγαπημένες",
+    "prevAppointments": "Προηγούμενες αιτήσεις",
+    "nextAppointments": "Επόμενες αιτήσεις",
+    "prevAccepted": "Προηγούμενες επιβεβαιωμένες αιτήσεις",
+    "nextAccepted": "Επόμενες επιβεβαιωμένες αιτήσεις"
+  },
   "recipe_category": {
     "MEAT": "Κρέας",
     "LEGUMES": "Όσπρια",

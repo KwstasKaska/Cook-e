@@ -146,11 +146,7 @@ export default function SettingsPage() {
                     disabled={deleting}
                     className="w-full flex items-center gap-3 px-4 py-3.5   text-left transition-colors text-myRed hover:bg-red-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-myRed disabled:opacity-50"
                   >
-                    <span>
-                      {deleting
-                        ? t('common.loading')
-                        : t('settings.deleteAccount')}
-                    </span>
+                    <span>{!deleting && t('settings.deleteAccount')}</span>
                   </button>
                   {deleteError && (
                     <p className="px-4 pb-3  text-myRed">{deleteError}</p>

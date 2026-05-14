@@ -231,7 +231,7 @@ export default function ChefSingleRecipe() {
         <ChefNavbar />
         <main className="flex flex-1 items-center justify-center">
           <p className="text-myText-muted">
-            {loading ? t('common.loading') : t('chef.recipe_detail.not_found')}
+            {!loading && t('chef.recipe_detail.not_found')}
           </p>
         </main>
       </div>

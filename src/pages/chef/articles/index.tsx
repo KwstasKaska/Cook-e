@@ -135,6 +135,8 @@ const ChefArticlesContent = () => {
               hasMore={hasMore}
               onPrev={() => setOffset((o) => o - LIMIT)}
               onNext={() => setOffset((o) => o + LIMIT)}
+              prevLabel={t('pagination.prevArticles')}
+              nextLabel={t('pagination.nextArticles')}
             />
           </div>
         )}

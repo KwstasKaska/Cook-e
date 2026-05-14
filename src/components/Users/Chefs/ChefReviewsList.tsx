@@ -64,9 +64,9 @@ export default function ChefReviewsList({
             <button
               onClick={onLoadMore}
               disabled={fetchingMore}
-              className="mt-2 w-full rounded-xl border-2 border-cookie-400 py-1.5    transition hover:bg-cookie-400 hover:text-white disabled:opacity-50"
+              className="mt-2 w-full rounded-xl border-2 border-cookie-400 py-1.5  transition hover:bg-cookie-400 hover:text-white disabled:opacity-50"
             >
-              {fetchingMore ? t('common.loading') : t('chef.more')}
+              {!fetchingMore && t('chef.more')}
             </button>
           )}
         </div>

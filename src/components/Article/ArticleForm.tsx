@@ -116,9 +116,9 @@ const ArticleForm = ({
         <button
           onClick={handleSubmit}
           disabled={loading}
-          className="w-full rounded-full hover:text-white border-2 border-cookie-400 px-4 py-0.5 hover:bg-cookie-400    disabled:opacity-50 sm:w-auto"
+          className="w-full rounded-full hover:text-white border-2 border-cookie-400 px-4 py-0.5 hover:bg-cookie-400  disabled:opacity-50 sm:w-auto"
         >
-          {loading ? t('common.loading') : t('nutr.create_article.submit')}
+          {!loading && t('nutr.create_article.submit')}
         </button>
         <button
           onClick={handleCancel}

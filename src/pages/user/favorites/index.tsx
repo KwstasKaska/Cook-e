@@ -94,6 +94,8 @@ const FavoritesContent = () => {
             hasMore={hasMore && favorites.length > 0}
             onPrev={() => setOffset((o) => o - FAV_LIMIT)}
             onNext={() => setOffset((o) => o + FAV_LIMIT)}
+            prevLabel={t('pagination.prevFavorites')}
+            nextLabel={t('pagination.nextFavorites')}
           />
         )}
       </div>

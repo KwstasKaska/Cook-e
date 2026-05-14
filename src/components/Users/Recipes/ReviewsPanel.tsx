@@ -70,7 +70,7 @@ export default function ReviewsPanel({
               disabled={loadingMore}
               className="mt-2 w-full rounded-xl border-2 border-cookie-400 py-1.5 transition hover:bg-cookie-400 hover:text-white disabled:opacity-50"
             >
-              {loadingMore ? t('common.loading') : t('chef.more')}
+              {!loadingMore && t('chef.more')}
             </button>
           )}
         </div>
