@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import NutrNavbar from '../components/Nutritionist/NutrNavbar';
-import CalendarC from '../components/Nutritionist/CalendarC';
-import NutrAppointments from '../components/Nutritionist/NutrAppointments';
-import { DateContext } from '../components/Context';
+import NutrNavbar from '../../components/Nutritionist/NutrNavbar';
+import CalendarC from '../../components/Nutritionist/CalendarC';
+import NutrAppointments from '../../components/Nutritionist/NutrAppointments';
+import { DateContext } from '../../components/Context';
 import { GetServerSidePropsContext, NextPage } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
-import useIsNutritionist from '../utils/useIsNutr';
+import useIsNutritionist from '../../utils/useIsNutr';
 
 export const getServerSideProps = async (
   context: GetServerSidePropsContext,
@@ -41,7 +41,7 @@ const Nutritionist: NextPage = () => {
         <DateContext.Provider value={{ selectedDate, setSelectedDate }}>
           <section
             id="section_2"
-            className="min-h-screen overflow-hidden bg-myGrey-100 pb-16"
+            className="min-h-screen overflow-hidden  pb-16"
           >
             <div className="mx-auto max-w-[70em]">
               <h2 className="mx-auto pt-16 text-center text-2xl font-bold md:text-4xl">

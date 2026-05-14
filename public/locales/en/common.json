@@ -18,7 +18,7 @@
   "nutrnav": {
     "nutr_calendar": "Calendar",
     "nutr_appointments": "Appointment management",
-    "nutr_scheduler": "Nutritional plans"
+    "nutr_scheduler": "Creation of nutritional plans"
   },
   "landing": {
     "energy": "Calories",

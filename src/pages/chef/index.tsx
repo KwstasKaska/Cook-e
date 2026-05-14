@@ -73,10 +73,10 @@ const ChefOverviewContent = () => {
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen ">
       <ChefNavbar />
 
-      <div className="mx-auto max-w-3xl px-6 pb-16 pt-10">
+      <div className="mx-auto max-w-3xl px-6 pb-16 pt-10 ">
         <div className="mb-8 flex flex-col items-center gap-4 rounded-2xl bg-surface p-6 shadow-lg">
           <div className="h-24 w-24 overflow-hidden rounded-full border-2 border-cookie-400  shadow-lg">
             {chefProfile?.user?.image ? (

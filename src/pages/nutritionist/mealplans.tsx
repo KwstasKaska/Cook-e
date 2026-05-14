@@ -112,6 +112,8 @@ const NutrSchedulerContent = () => {
     zIndex: 10,
   });
 
+  const headerBg = '#EDD4B0';
+
   return (
     <div className="flex min-h-screen flex-col bg-cookie-100">
       <NutrNavbar />
@@ -121,7 +123,7 @@ const NutrSchedulerContent = () => {
           <h1 className="mb-8 text-center">{t('nutr.createNutritionPlan')}</h1>
 
           <div className="mb-6 flex items-center justify-center gap-3">
-            <label className="  uppercase tracking-wide text-myText-muted">
+            <label className="uppercase tracking-wide text-myText-muted">
               {t('nutr.selectUser')}
             </label>
             <select
@@ -132,7 +134,7 @@ const NutrSchedulerContent = () => {
                 );
                 setFieldError('');
               }}
-              className="rounded-full border border-cookie-200 bg-white px-4 py-0.5   "
+              className="rounded-full border-2 border-cookie-400 bg-surface px-4 py-0.5 focus:outline-none focus:ring-2 focus:ring-cookie-300"
             >
               <option value="">{t('nutr.selectUser')}...</option>
               {acceptedClients.map((c) => (
@@ -143,10 +145,10 @@ const NutrSchedulerContent = () => {
             </select>
           </div>
 
-          <div className="overflow-hidden rounded-2xl bg-white ">
+          <div className="overflow-hidden rounded-2xl bg-surface shadow-lg">
             <div className="relative w-full overflow-x-auto">
               <table
-                className="border-collapse "
+                className="border-collapse"
                 style={{
                   tableLayout: 'fixed',
                   minWidth: STICKY_W + daysOfWeek.length * COL_W,
@@ -160,14 +162,18 @@ const NutrSchedulerContent = () => {
                 </colgroup>
 
                 <thead>
-                  <tr className="bg-cookie-200">
-                    <th className="px-4 py-4 text-left bg-cookie-200  tracking-wide text-myText-muted">
+                  <tr>
+                    <th
+                      style={stickyCell(headerBg)}
+                      className="px-4 py-4 text-left tracking-wide text-myText-muted"
+                    >
                       {t('nutr.mealsAndDays')}
                     </th>
                     {daysOfWeek.map((day) => (
                       <th
                         key={day}
                         className="px-3 py-4 text-center tracking-wide"
+                        style={{ background: headerBg }}
                       >
                         {t(`day.${day}`)}
                       </th>
@@ -177,12 +183,12 @@ const NutrSchedulerContent = () => {
 
                 <tbody>
                   {mealTypes.map((meal, i) => {
-                    const bg = i % 2 === 0 ? '#FFFDF9' : '#EDD4B0';
+                    const bg = i % 2 === 0 ? '#FFFDF9' : '#F7EDE0';
                     return (
                       <tr key={meal} style={{ background: bg }}>
                         <td
                           style={stickyCell(bg)}
-                          className="px-4 font-bold py-4 "
+                          className="px-4 py-4 font-bold"
                         >
                           {t(`meal.${meal}`)}
                         </td>
@@ -202,7 +208,7 @@ const NutrSchedulerContent = () => {
                                 }
                                 placeholder="—"
                                 rows={3}
-                                className="w-full resize-none rounded-xl border px-3 py-2.5  "
+                                className="w-full resize-none rounded-xl border-2 border-cookie-400 bg-surface px-3 py-2 focus:outline-none focus:ring-2 focus:ring-cookie-300"
                               />
                             </td>
                           );
@@ -216,13 +222,13 @@ const NutrSchedulerContent = () => {
           </div>
 
           <div className="mt-6 flex flex-col items-center gap-3">
-            {fieldError && <p className="  text-myRed">{fieldError}</p>}
+            {fieldError && <p className="text-myRed">{fieldError}</p>}
             <div className="flex gap-3">
               {filledCells.length > 0 && (
                 <button
                   type="button"
                   onClick={() => setCellInfo({})}
-                  className="rounded-full border border-cookie-200 px-4 py-0.5   text-myText-muted transition hover:bg-cookie-200"
+                  className="rounded-full border-2 border-cookie-400 px-4 py-0.5 text-cookie-400 transition hover:bg-cookie-400 hover:text-white"
                 >
                   {t('nutr.clear')}
                 </button>
@@ -231,7 +237,7 @@ const NutrSchedulerContent = () => {
                 type="button"
                 onClick={handleSubmit}
                 disabled={filledCells.length === 0}
-                className="rounded-full bg-cookie-300 px-5 py-1   text-white transition hover:bg-cookie-400 disabled:opacity-40"
+                className="rounded-full bg-cookie-300 px-5 py-1 text-white transition hover:bg-cookie-400 disabled:opacity-40"
               >
                 {t('nutr.set')}
               </button>

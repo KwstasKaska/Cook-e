@@ -130,7 +130,7 @@ const ArticleSinglePage = ({
 
   if (loading || meLoading || !id) {
     return (
-      <div className="flex min-h-screen flex-col bg-surface">
+      <div className="flex min-h-screen flex-col ">
         <Navbar />
         <div className="flex flex-1 items-center justify-center">
           <div className="h-10 w-10 animate-spin rounded-full border-4 border-cookie-300 border-t-transparent" />
@@ -141,7 +141,7 @@ const ArticleSinglePage = ({
 
   if (!article) {
     return (
-      <div className="flex min-h-screen flex-col bg-surface">
+      <div className="flex min-h-screen flex-col ">
         <Navbar />
         <div className="flex flex-1 items-center justify-center">
           <p className="text-myText-muted">{t('chef.article.not_found')}</p>
@@ -153,7 +153,7 @@ const ArticleSinglePage = ({
   const heroSrc = editImagePreview ?? article.image;
 
   return (
-    <div className="flex min-h-screen flex-col bg-surface">
+    <div className="flex min-h-screen flex-col ">
       <Navbar />
 
       {showDeleteModal && (
@@ -170,7 +170,7 @@ const ArticleSinglePage = ({
       <main className="flex flex-1 flex-col items-center px-4 py-8 md:px-8">
         <div className="w-full max-w-2xl">
           <button
-            onClick={() => router.push(backHref)}
+            onClick={() => router.back()}
             className="mb-6 flex items-center gap-2 text-myText-muted transition hover:opacity-70"
           >
             <svg
@@ -190,7 +190,7 @@ const ArticleSinglePage = ({
             {t('common.back')}
           </button>
 
-          <div className="w-full overflow-hidden rounded-2xl bg-cookie-100 shadow-xl">
+          <div className="w-full overflow-hidden rounded-2xl bg-surface shadow-xl">
             <div className="relative h-56 w-full">
               <Image
                 src={heroSrc}
