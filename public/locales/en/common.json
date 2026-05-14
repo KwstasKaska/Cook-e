@@ -127,7 +127,8 @@
     "emptyCart": "Your list is empty.",
     "browseIngredients": "Add ingredients",
     "addToList": "Add to list",
-    "addedToCart": "Added to list"
+    "addedToCart": "Added to list",
+    "subtitle": "Add ingredients directly from the recipes or from the lists below."
   },
   "chat": {
     "title": "Members communication",

@@ -120,7 +120,9 @@ const CartContent = ({
           </button>
 
           <h1 className="text-center mb-1">{t('cart.title')}</h1>
-
+          <p className="text-center text-myText-muted mb-6">
+            {t('cart.subtitle')}
+          </p>
           {loading ? (
             <div className="flex justify-center py-16">
               <div className="h-8 w-8 animate-spin rounded-full border-2 border-cookie-300 border-t-transparent" />
