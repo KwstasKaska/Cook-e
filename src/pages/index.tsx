@@ -43,11 +43,11 @@ const RecipeCard = ({
           className="h-[2em] w-[2em] rounded-[.5em] object-cover md:h-[3em] md:w-[3em]"
         />
       ) : (
-        <div className="flex h-[2em] w-[2em] items-center justify-center rounded-[.5em] bg-cookie-200  text-white md:h-[3em] md:w-[3em]">
+        <div className="flex h-[2em] w-[2em] items-center justify-center rounded-[.5em] bg-cookie-200 text-white md:h-[3em] md:w-[3em]">
           {authorName.charAt(0).toUpperCase()}
         </div>
       )}
-      <p className=" leading-[.8rem] ">{authorName}</p>
+      <p className="leading-[.8rem]">{authorName}</p>
     </div>
   </div>
 );
@@ -108,7 +108,7 @@ const Index: NextPage = () => {
                 meData?.me ? `/${meData.me.role.toLowerCase()}` : '/login',
               )
             }
-            className="rounded-full border border-cookie-200 bg-cookie-200 px-4 py-0.5   text-myText-base"
+            className="rounded-full border border-cookie-200 bg-cookie-200 px-4 py-0.5 text-myText-base"
           >
             {t('index.cta')}
           </button>
@@ -118,19 +118,19 @@ const Index: NextPage = () => {
       <section className="container mt-[3em] grid grid-flow-row gap-4 rounded-[3em] bg-cookie-200 md:mt-0 md:rounded-none md:rounded-bl-[6em]">
         <div className="flex items-center justify-center px-4 pt-4">
           {!meLoading && (
-            <div className="flex items-center gap-3 ">
+            <div className="flex items-center gap-3">
               <LanguageSwitcher dark />
               {!meData?.me ? (
                 <>
                   <button
                     onClick={() => router.push('/login')}
-                    className="rounded-full border border-surface px-4 py-0.5 text-myText-base bg-surface "
+                    className="rounded-full border border-surface bg-surface px-4 py-0.5 text-myText-base"
                   >
                     {t('index.login')}
                   </button>
                   <button
                     onClick={() => router.push('/register')}
-                    className="rounded-full border border-surface px-4 py-0.5 text-myText-base bg-surface "
+                    className="rounded-full border border-surface bg-surface px-4 py-0.5 text-myText-base"
                   >
                     {t('index.register')}
                   </button>
@@ -142,7 +142,7 @@ const Index: NextPage = () => {
                     await apolloClient.resetStore();
                   }}
                   disabled={logoutLoading}
-                  className="rounded-full border border-surface px-4 py-0.5   text-myText-base bg-surface  disabled:opacity-60"
+                  className="rounded-full border border-surface bg-surface px-4 py-0.5 text-myText-base disabled:opacity-60"
                 >
                   {t('index.logout')}
                 </button>
@@ -152,10 +152,14 @@ const Index: NextPage = () => {
         </div>
 
         <div className="my-[3.5em] px-6 md:px-3 md:py-[2em]">
+          <div className="mb-6 text-center">
+            <h3>{t('index.top_recipes_title')}</h3>
+          </div>
+
           <div className="relative flex items-center justify-center gap-3 md:hidden">
             <div
               onClick={() => setSlideIndex((i) => Math.max(i - 1, 0))}
-              className="px-2  text-white disabled:opacity-30"
+              className="px-2 text-white disabled:opacity-30"
             >
               ‹
             </div>
@@ -164,7 +168,7 @@ const Index: NextPage = () => {
               onClick={() =>
                 setSlideIndex((i) => Math.min(i + 1, cards.length - 1))
               }
-              className="px-2  text-white disabled:opacity-30"
+              className="px-2 text-white disabled:opacity-30"
             >
               ›
             </div>
