@@ -27,11 +27,11 @@ const RecipeCard = ({
   authorName,
   authorImage,
 }: RecipeCardProps) => (
-  <div className="grid w-full grid-flow-row justify-items-center gap-2 rounded-[.9em] bg-surface pb-[1.5em] shadow-2xl drop-shadow-2xl">
+  <div className="grid w-full grid-flow-row justify-items-center gap-2 overflow-hidden rounded-[.9em] bg-surface pb-[1.5em] shadow-2xl drop-shadow-2xl">
     <img
       src={image}
       alt={title}
-      className="-mt-[3em] h-[6em] w-[6em] rounded-full object-cover md:h-[7em] md:w-[7em]"
+      className="h-[8em] w-full object-cover md:h-[10em]"
     />
     <h4 className="px-2 text-center">{title}</h4>
 
