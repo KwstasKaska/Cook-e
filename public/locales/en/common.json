@@ -232,17 +232,16 @@
     "setContentFirst": "Please write the meal content first.",
     "selectDateFirst": "Please select a date first.",
     "selectTimeFirst": "Please select a time.",
-    "booked": "Booked",
     "messagePatients": "Message your patients",
     "clear": "Clear",
-    "calendarHint": "Here you can see booking requests from members for the dates and hours you have set. When you accept a request, you can create a meal plan for that member and chat with them directly.",
-    "setAvailabilityHint": "Use \"Set availability\" to add for the selected date the hours members can book with you.",
-    "noAppointmentsToday": "No appointments scheduled for today.",
-    "recipesHint": "Open a recipe and use the copy link button to share it via chat or include it in a meal plan.",
     "acceptedAppt": "My confirmed appointments",
     "noAcceptedAppt": "There are no confirmed appointments yet",
     "plansPerClient": "Plans per client",
-    "noPlansYet": "No meal plans created yet."
+    "pendingRequests": "No meal plans created yet.",
+    "noPlansYet": "No meal plans created yet.",
+    "createSlot": "Create slot",
+    "pendingRequests2": "Pending requests",
+    "noPendingRequests2": "No pending requests."
   },
   "chef": {
     "more": "More",
