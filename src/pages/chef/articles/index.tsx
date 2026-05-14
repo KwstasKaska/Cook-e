@@ -51,7 +51,7 @@ const ChefArticlesContent = () => {
           onClick={() => router.back()}
           className="mb-6 text-myText-muted "
         >
-          ← {t('common.back')}
+          {t('common.back')}
         </button>
 
         <div className="mb-8 flex items-center justify-between">

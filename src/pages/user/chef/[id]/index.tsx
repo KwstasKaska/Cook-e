@@ -142,7 +142,7 @@ const ChefProfileContent = () => {
             onClick={() => router.back()}
             className="mb-8 text-myText-muted hover:"
           >
-            ← {t('common.back')}
+            {t('common.back')}
           </button>
 
           <div className="flex flex-col gap-6 rounded-2xl bg-surface p-6 shadow-lg">

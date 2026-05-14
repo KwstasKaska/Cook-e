@@ -4,4 +4,8 @@ fragment RegularMealScheduler on MealScheduler {
   mealType
   comment_el
   comment_en
+  user {
+    id
+    username
+  }
 }

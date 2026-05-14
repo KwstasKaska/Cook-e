@@ -56,15 +56,12 @@ const NutritionistOverviewContent = () => {
     });
 
   const thisMonthAppts = useMemo(() => {
-    const now = new Date();
-    const month = now.getMonth();
-    const year = now.getFullYear();
+    const today = new Date().toISOString().slice(0, 10);
     return (requestsData?.getAppointmentRequestsForNutritionist ?? [])
       .filter((req) => {
         if (req.status !== AppointmentStatus.Accepted) return false;
         if (!req.slot?.date) return false;
-        const d = new Date(req.slot.date);
-        return d.getMonth() === month && d.getFullYear() === year;
+        return req.slot.date >= today;
       })
       .sort((a, b) => {
         const dateCompare = a.slot!.date.localeCompare(b.slot!.date);

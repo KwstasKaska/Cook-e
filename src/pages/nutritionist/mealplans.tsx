@@ -8,9 +8,11 @@ import {
   DayOfWeek,
   MealType,
   useGetAppointmentRequestsForNutritionistQuery,
+  useGetNutritionistMealPlansQuery,
   useCreateMealSchedulerMutation,
   AppointmentStatus,
 } from '../../generated/graphql';
+import { DAY_ORDER, MEAL_ORDER } from '../../utils/mealUtils';
 
 export const daysOfWeek: DayOfWeek[] = [
   DayOfWeek.Monday,
@@ -42,13 +44,20 @@ const NutrSchedulerPage = () => {
 };
 
 const NutrSchedulerContent = () => {
-  const { t } = useTranslation('common');
+  const { t, i18n } = useTranslation('common');
+  const isEl = i18n.language === 'el';
 
   const [cellInfo, setCellInfo] = useState<CellInfo>({});
   const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
   const [fieldError, setFieldError] = useState('');
+  const [openDay, setOpenDay] = useState<string | null>(null);
 
   const { data: reqData } = useGetAppointmentRequestsForNutritionistQuery();
+  const { data: plansData, loading: plansLoading } =
+    useGetNutritionistMealPlansQuery({
+      variables: { limit: 100, offset: 0 },
+      fetchPolicy: 'network-only',
+    });
   const [createMealScheduler] = useCreateMealSchedulerMutation();
 
   const acceptedClients = useMemo(() => {
@@ -66,6 +75,17 @@ const NutrSchedulerContent = () => {
     });
     return clients;
   }, [reqData]);
+
+  const byUser = useMemo(() => {
+    const map = new Map<string, typeof entries>();
+    const entries = plansData?.getNutritionistMealPlans ?? [];
+    for (const entry of entries) {
+      const username = entry.user?.username ?? 'unknown';
+      if (!map.has(username)) map.set(username, []);
+      map.get(username)!.push(entry);
+    }
+    return map;
+  }, [plansData]);
 
   const filledCells = Object.entries(cellInfo).filter(
     ([, v]) => v.trim() !== '',
@@ -185,7 +205,7 @@ const NutrSchedulerContent = () => {
                   {mealTypes.map((meal) => {
                     const bg = '#EDD4B0';
                     return (
-                      <tr key={meal} className="bg-surface ">
+                      <tr key={meal} className="bg-surface">
                         <td
                           style={stickyCell(bg)}
                           className="px-4 py-4 font-bold"
@@ -198,7 +218,7 @@ const NutrSchedulerContent = () => {
                           return (
                             <td
                               key={day}
-                              className="px-3 py-3 align-top border-b  border-cookie-400 "
+                              className="px-3 py-3 align-top border-b border-cookie-400"
                             >
                               <textarea
                                 value={val}
@@ -242,6 +262,110 @@ const NutrSchedulerContent = () => {
               </button>
             </div>
           </div>
+
+          <div className="my-12 border-t border-cookie-200" />
+
+          <h1 className="mb-8 text-center">{t('nutr.plansPerClient')}</h1>
+
+          {plansLoading ? (
+            <div className="flex justify-center py-8">
+              <div className="h-6 w-6 animate-spin rounded-full border-4 border-nutr-200 border-t-transparent" />
+            </div>
+          ) : byUser.size === 0 ? (
+            <div className="py-8 text-center">
+              <p className="text-myText-muted">{t('nutr.noPlansYet')}</p>
+            </div>
+          ) : (
+            <div className="flex flex-col gap-10">
+              {[...byUser.entries()].map(([username, entries]) => (
+                <div key={username}>
+                  <p className="mb-3 text-nutr-200">{username}</p>
+
+                  <div className="flex flex-col gap-2">
+                    {DAY_ORDER.map((day) => {
+                      const meals = MEAL_ORDER.map((mealType) =>
+                        entries.find(
+                          (e) => e.day === day && e.mealType === mealType,
+                        ),
+                      ).filter(Boolean);
+
+                      if (meals.length === 0) return null;
+
+                      const key = `${username}-${day}`;
+                      const isOpen = openDay === key;
+
+                      return (
+                        <div
+                          key={day}
+                          className="overflow-hidden rounded-2xl bg-surface"
+                          style={{
+                            border: isOpen
+                              ? '1.5px solid #5B9EC9'
+                              : '1.5px solid transparent',
+                          }}
+                        >
+                          <button
+                            onClick={() => setOpenDay(isOpen ? null : key)}
+                            className="flex w-full items-center justify-between px-5 py-3.5 transition"
+                          >
+                            <span className="capitalize">
+                              {t(`day.${day}`)}
+                            </span>
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth={2}
+                              className="h-4 w-4 transition-transform duration-200"
+                              style={{
+                                transform: isOpen
+                                  ? 'rotate(180deg)'
+                                  : 'rotate(0deg)',
+                              }}
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M19.5 8.25l-7.5 7.5-7.5-7.5"
+                              />
+                            </svg>
+                          </button>
+
+                          {isOpen && (
+                            <div className="flex flex-col divide-y divide-cookie-200 px-5 pb-4">
+                              {MEAL_ORDER.map((mealType) => {
+                                const entry = entries.find(
+                                  (e) =>
+                                    e.day === day && e.mealType === mealType,
+                                );
+                                if (!entry) return null;
+                                const comment = isEl
+                                  ? entry.comment_el
+                                  : entry.comment_en;
+
+                                return (
+                                  <div
+                                    key={mealType}
+                                    className="flex gap-4 py-3"
+                                  >
+                                    <span className="w-28 flex-shrink-0 capitalize text-nutr-200">
+                                      {t(`meal.${mealType}`)}
+                                    </span>
+                                    <p>{comment}</p>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </main>
     </div>

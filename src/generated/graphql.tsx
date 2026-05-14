@@ -1000,9 +1000,9 @@ export type RegularUserFavoriteFragment = { __typename?: 'UserFavorite', id: num
 
 export type MealSchedulerWithNutritionistFragment = { __typename?: 'MealScheduler', id: number, day: DayOfWeek, mealType: MealType, comment_el: string, comment_en: string, nutritionist: { __typename?: 'NutritionistProfile', user?: { __typename?: 'User', username: string } | null } };
 
-export type RegularMealPlanResponseFragment = { __typename?: 'MealPlanResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, mealScheduler?: { __typename?: 'MealScheduler', id: number, day: DayOfWeek, mealType: MealType, comment_el: string, comment_en: string } | null };
+export type RegularMealPlanResponseFragment = { __typename?: 'MealPlanResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, mealScheduler?: { __typename?: 'MealScheduler', id: number, day: DayOfWeek, mealType: MealType, comment_el: string, comment_en: string, user: { __typename?: 'User', id: number, username: string } } | null };
 
-export type RegularMealSchedulerFragment = { __typename?: 'MealScheduler', id: number, day: DayOfWeek, mealType: MealType, comment_el: string, comment_en: string };
+export type RegularMealSchedulerFragment = { __typename?: 'MealScheduler', id: number, day: DayOfWeek, mealType: MealType, comment_el: string, comment_en: string, user: { __typename?: 'User', id: number, username: string } };
 
 export type ConversationWithParticipantsFragment = { __typename?: 'Conversation', id: number, participant1Id: number, participant2Id: number, createdAt: string, updatedAt: string, participant1: { __typename?: 'User', id: number, username: string, image?: string | null }, participant2: { __typename?: 'User', id: number, username: string, image?: string | null } };
 
@@ -1210,14 +1210,14 @@ export type CreateMealSchedulerMutationVariables = Exact<{
 }>;
 
 
-export type CreateMealSchedulerMutation = { __typename?: 'Mutation', createMealScheduler: { __typename?: 'MealPlanResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, mealScheduler?: { __typename?: 'MealScheduler', id: number, day: DayOfWeek, mealType: MealType, comment_el: string, comment_en: string } | null } };
+export type CreateMealSchedulerMutation = { __typename?: 'Mutation', createMealScheduler: { __typename?: 'MealPlanResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, mealScheduler?: { __typename?: 'MealScheduler', id: number, day: DayOfWeek, mealType: MealType, comment_el: string, comment_en: string, user: { __typename?: 'User', id: number, username: string } } | null } };
 
 export type DeleteMealSchedulerMutationVariables = Exact<{
   id: Scalars['Int']['input'];
 }>;
 
 
-export type DeleteMealSchedulerMutation = { __typename?: 'Mutation', deleteMealScheduler: { __typename?: 'MealPlanResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, mealScheduler?: { __typename?: 'MealScheduler', id: number, day: DayOfWeek, mealType: MealType, comment_el: string, comment_en: string } | null } };
+export type DeleteMealSchedulerMutation = { __typename?: 'Mutation', deleteMealScheduler: { __typename?: 'MealPlanResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, mealScheduler?: { __typename?: 'MealScheduler', id: number, day: DayOfWeek, mealType: MealType, comment_el: string, comment_en: string, user: { __typename?: 'User', id: number, username: string } } | null } };
 
 export type RateRecipeMutationVariables = Exact<{
   recipeId: Scalars['Int']['input'];
@@ -1402,7 +1402,7 @@ export type GetNutritionistMealPlansQueryVariables = Exact<{
 }>;
 
 
-export type GetNutritionistMealPlansQuery = { __typename?: 'Query', getNutritionistMealPlans: Array<{ __typename?: 'MealScheduler', id: number, day: DayOfWeek, mealType: MealType, comment_el: string, comment_en: string }> };
+export type GetNutritionistMealPlansQuery = { __typename?: 'Query', getNutritionistMealPlans: Array<{ __typename?: 'MealScheduler', id: number, day: DayOfWeek, mealType: MealType, comment_el: string, comment_en: string, user: { __typename?: 'User', id: number, username: string } }> };
 
 export type MyCartQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1791,6 +1791,10 @@ export const RegularMealSchedulerFragmentDoc = gql`
   mealType
   comment_el
   comment_en
+  user {
+    id
+    username
+  }
 }
     `;
 export const RegularMealPlanResponseFragmentDoc = gql`

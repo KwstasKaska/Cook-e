@@ -49,7 +49,7 @@ const ChefRecipesContent = () => {
           onClick={() => router.back()}
           className="mb-6 text-myText-muted hover:text-cookie-400"
         >
-          ← {t('common.back')}
+          {t('common.back')}
         </button>
 
         <h1 className="mb-8 text-center">{t('chef.profile.recipes')}</h1>

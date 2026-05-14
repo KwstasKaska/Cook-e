@@ -18,7 +18,7 @@
   "nutrnav": {
     "overview": "Overview",
     "appointments": "Appointment management",
-    "mealplans": "Create nutritional plans"
+    "mealplans": "Nutritional plans"
   },
   "landing": {
     "energy": "Calories",
@@ -240,7 +240,9 @@
     "noAppointmentsToday": "No appointments scheduled for today.",
     "recipesHint": "Open a recipe and use the copy link button to share it via chat or include it in a meal plan.",
     "acceptedAppt": "My confirmed appointments",
-    "noAcceptedAppt": "There are no confirmed appointments yet"
+    "noAcceptedAppt": "There are no confirmed appointments yet",
+    "plansPerClient": "Plans per client",
+    "noPlansYet": "No meal plans created yet."
   },
   "chef": {
     "more": "More",

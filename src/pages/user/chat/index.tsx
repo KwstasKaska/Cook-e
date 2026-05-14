@@ -47,7 +47,7 @@ const ChatList = () => {
           onClick={() => router.push('/user')}
           className="mb-6 ml-7 text-myText-muted hover:text-cookie-400"
         >
-          ← {t('common.back')}
+          {t('common.back')}
         </button>
 
         <h1 className="mb-6 text-center">{t('chat.title')}</h1>

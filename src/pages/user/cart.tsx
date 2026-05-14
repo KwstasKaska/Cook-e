@@ -116,7 +116,7 @@ const CartContent = ({
             onClick={() => router.push('/user')}
             className="mb-6 text-myText-muted hover:text-cookie-400"
           >
-            ← {t('common.back')}
+            {t('common.back')}
           </button>
 
           <h1 className="text-center mb-1">{t('cart.title')}</h1>
