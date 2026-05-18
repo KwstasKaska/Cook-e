@@ -103,21 +103,10 @@
   },
 
   "ingredientCategories": {
-    "title": "Ingredients",
-    "vegetables": "Vegetables",
-    "fruits": "Fruits",
-    "breadGrains": "Bread & grains",
-    "dairy": "Dairy",
-    "meatEggsFishSeafood": "Meat/eggs/fish/seafood",
-    "fatOils": "Fats & oils",
-    "legumes": "Legumes",
-    "sweetsSnacks": "Sweets/drinks & snacks"
+    "title": "Ingredients"
   },
   "utensils": {
-    "title": "Utensils",
-    "cookingVessels": "Cooking Vessels",
-    "utensils": "Utensils",
-    "extraEquipment": "Extra Equipment"
+    "title": "Utensils"
   },
   "cart": {
     "title": "My ingredients list for supermarket",
@@ -495,6 +484,6 @@
     "role_nutritionist_desc": "Create articles, nutrition plans,set availability for appointments and manage these requests.",
     "role_user_label": "Are you a member?",
     "role_user_desc": "Find personalized recipes and rate both them and the chefs, book an appointment with a nutritionist and communicate with other members.",
-    "top_recipes_title": "Top rated recipes"
+    "top_recipes_title": "Top rated recipes of the week"
   }
 }
