@@ -265,8 +265,11 @@ const NutrSchedulerContent = () => {
               <button
                 type="button"
                 onClick={handleSubmit}
-                disabled={filledCells.length === 0}
-                className="rounded-full bg-cookie-300 px-5 py-1 text-white transition hover:bg-cookie-400 disabled:opacity-80"
+                className={`rounded-xl border-2 border-cookie-400 px-8 py-2.5  shadow-lg transition-opacity   ${
+                  filledCells.length === 0
+                    ? 'cursor-not-allowed'
+                    : 'hover:text-white hover:bg-cookie-400'
+                }`}
               >
                 {t('nutr.set')}
               </button>

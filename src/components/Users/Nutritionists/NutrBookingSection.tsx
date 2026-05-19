@@ -164,7 +164,7 @@ export default function NutrBookingSection({ nutritionistProfileId }: Props) {
         disabled={!selectedSlotId || requesting}
         className={`mt-6 rounded-xl border-2 border-cookie-400 px-8 py-2.5  shadow-lg transition-opacity ${
           !selectedSlotId || requesting
-            ? 'cursor-not-allowed   bg-cookie-400 opacity-50'
+            ? 'cursor-not-allowed    '
             : 'hover:text-white hover:bg-cookie-400'
         }`}
       >
