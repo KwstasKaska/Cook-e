@@ -8,7 +8,6 @@ type Suggestion = {
     title_el: string;
     title_en: string;
     recipeImage?: string | null;
-    difficulty?: string | null;
     author?: { user?: { username?: string | null } | null } | null;
   };
 };
@@ -41,10 +40,6 @@ const SuggestionCard = ({
 
       <div className="flex flex-col gap-3 px-6 py-4">
         <h3 className="text-center">{title}</h3>
-
-        {recipe.difficulty && (
-          <p className="text-myText-muted">{recipe.difficulty}</p>
-        )}
 
         {recipe.author?.user?.username && (
           <p className="mt-auto text-myText-muted">
