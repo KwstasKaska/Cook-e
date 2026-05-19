@@ -80,8 +80,6 @@ const Index: NextPage = () => {
     <div className="min-h-screen w-full bg-cookie-100 md:grid md:grid-cols-2">
       <div className="container h-full pt-[1em]">
         <div className="flex h-full flex-col items-center justify-center gap-5 px-6 py-10 md:px-[3.5em]">
-          <Logo />
-
           <h1 className="text-center leading-tight">{t('index.hero_title')}</h1>
 
           <div className="flex flex-col gap-3 text-center">
@@ -115,10 +113,13 @@ const Index: NextPage = () => {
       </div>
 
       <section className="container mt-[3em] grid grid-flow-row gap-4 rounded-[3em] bg-cookie-200 md:mt-0 md:rounded-none md:rounded-bl-[6em]">
-        <div className="flex items-center justify-center px-4 pt-4">
+        <div className="flex flex-col items-center gap-3 px-4 pt-4">
+          <div className="flex w-full items-center mb-8 justify-between">
+            <Logo />
+            <LanguageSwitcher dark />
+          </div>
           {!meLoading && (
             <div className="flex items-center gap-3">
-              <LanguageSwitcher dark />
               {!meData?.me ? (
                 <>
                   <button

@@ -107,9 +107,15 @@ const RecipesContent = () => {
       {step === 'picker' && (
         <div className="mx-auto max-w-3xl px-6 pb-24 pt-10 lg:max-w-5xl">
           <div className="mb-10">
-            <h1 className="mb-1">{t('recipes.title')}</h1>
-            <p className="opacity-80">{t('recipes.recipeHint1')}</p>
-            <p className="mt-1 opacity-80">{t('recipes.recipeHint2')}</p>
+            <button
+              onClick={() => router.back()}
+              className="mb-6 text-myText-muted hover:text-cookie-400"
+            >
+              {t('common.back')}
+            </button>
+            <h1 className="mb-2">{t('recipes.title')}</h1>
+            <p className="opacity-80 ">{t('recipes.recipeHint1')}</p>
+            <p className="mt-1 opacity-80 ">{t('recipes.recipeHint2')}</p>
           </div>
 
           <h2 className="mb-4">{t('ingredientCategories.title')}</h2>

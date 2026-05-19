@@ -107,6 +107,12 @@ export default function SettingsPage() {
 
       <div className="relative overflow-hidden min-h-screen">
         <div className="relative z-10 max-w-5xl mx-auto px-6 pt-10 pb-20">
+          <button
+            onClick={() => router.back()}
+            className="mb-6 text-myText-muted "
+          >
+            {t('common.back')}
+          </button>
           <h1 className="mb-8">{t('settings.title')}</h1>
 
           <div className="flex flex-col md:flex-row gap-6 items-start">

@@ -281,11 +281,21 @@ const CreateRecipeContent = () => {
   };
 
   return (
-    <div className="min-h-screen bg-cookie-100 flex flex-col">
+    <div className="min-h-screen">
       <ChefNavbar />
 
-      <main className="flex flex-1 flex-col items-center px-4 py-10">
-        <h1 className="mb-8">{t('chef.create_recipe.page_title')}</h1>
+      <main className="flex flex-1 flex-col items-center px-4 py-8 md:px-8">
+        <div className="w-full max-w-xl">
+          <button
+            onClick={() => router.back()}
+            className="mb-6 text-myText-muted hover:opacity-70 transition"
+          >
+            {t('common.back')}
+          </button>
+          <h1 className="mb-8 text-center">
+            {t('chef.create_recipe.page_title')}
+          </h1>
+        </div>
 
         <div className="w-full max-w-xl rounded-2xl bg-surface shadow-xl p-7">
           <div className="overflow-y-auto">{renderStep()}</div>

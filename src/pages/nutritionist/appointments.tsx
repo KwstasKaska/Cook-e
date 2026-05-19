@@ -117,14 +117,16 @@ const AppointmentsContent = () => {
       <NutrNavbar />
       <div className="mx-auto max-w-2xl px-6 pb-16 pt-10">
         <button
-          onClick={() => router.push('/nutritionist')}
-          className="mb-6 text-myText-muted hover:text-cookie-400"
+          onClick={() => router.back()}
+          className="mb-6 text-myText-muted "
         >
           {t('common.back')}
         </button>
-
         <section className="mb-12">
-          <h2 className="mb-4">{t('nutr.pendingRequests2')}</h2>
+          <div className="mb-8 text-center">
+            <h1>{t('nutrnav.appointments')}</h1>
+          </div>
+          <h2 className="mb-4 text-center">{t('nutr.pendingRequests2')}</h2>
 
           {pendingRequests.length === 0 ? (
             <div className="py-8 text-center">
@@ -192,7 +194,7 @@ const AppointmentsContent = () => {
         <div className="mb-10 border-t border-cookie-200" />
 
         <section className="mb-12">
-          <h2 className="mb-4">{t('nutr.createSlot')}</h2>
+          <h2 className="mb-4 text-center">{t('nutr.createSlot')}</h2>
 
           <div className="flex flex-col gap-3 rounded-2xl border-2 border-cookie-400 bg-surface p-5">
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center">

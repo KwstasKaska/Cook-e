@@ -50,7 +50,7 @@ const BaseNavbar = ({ links }: BaseNavbarProps) => {
       <div className="flex items-center gap-4">
         <Logo />
         {me && (
-          <div className="hidden items-center gap-4 xl:flex">
+          <div className="hidden items-center gap-3 xl:flex">
             <span className="select-none leading-none text-cookie-300">|</span>
             <div className="flex items-center gap-2">
               {me.image ? (
@@ -67,6 +67,7 @@ const BaseNavbar = ({ links }: BaseNavbarProps) => {
               <span className="text-sm font-semibold text-myText-base">
                 {me.username}
               </span>
+              <NavSettingsLink />
             </div>
           </div>
         )}
@@ -87,7 +88,6 @@ const BaseNavbar = ({ links }: BaseNavbarProps) => {
 
       <div className="hidden items-center gap-4 xl:flex">
         <LanguageSwitcher dark />
-        <NavSettingsLink />
         <button
           onClick={handleLogout}
           disabled={logoutLoading}

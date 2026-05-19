@@ -35,9 +35,18 @@ const ListView = () => {
   return (
     <div className="min-h-screen">
       <Navbar />
-      <div className="relative z-10 mx-auto w-full max-w-5xl px-6 pb-20 pt-12">
-        <h1 className="mb-6 text-center">{t('nutritionists.popularTitle')}</h1>
-
+      <div className="mx-auto max-w-3xl px-6 pb-24 pt-10 lg:max-w-5xl">
+        <div className="mb-6">
+          <button
+            onClick={() => router.back()}
+            className="mb-6 text-myText-muted hover:text-cookie-400"
+          >
+            {t('common.back')}
+          </button>
+          <h1 className="mb-2 text-center">
+            {t('nutritionists.popularTitle')}
+          </h1>
+        </div>
         <div className="mx-auto mb-8 max-w-3xl flex flex-col gap-1.5 text-left md:px-8">
           <p>{t('nutritionists.listHint1')}</p>
         </div>

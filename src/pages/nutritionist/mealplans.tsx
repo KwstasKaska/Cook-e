@@ -13,6 +13,7 @@ import {
   AppointmentStatus,
 } from '../../generated/graphql';
 import { DAY_ORDER, MEAL_ORDER } from '../../utils/mealUtils';
+import { useRouter } from 'next/router';
 
 export const daysOfWeek: DayOfWeek[] = [
   DayOfWeek.Monday,
@@ -46,7 +47,7 @@ const NutrSchedulerPage = () => {
 const NutrSchedulerContent = () => {
   const { t, i18n } = useTranslation('common');
   const isEl = i18n.language === 'el';
-
+  const router = useRouter();
   const [cellInfo, setCellInfo] = useState<CellInfo>({});
   const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
   const [fieldError, setFieldError] = useState('');
@@ -135,12 +136,21 @@ const NutrSchedulerContent = () => {
   const headerBg = '#EDD4B0';
 
   return (
-    <div className="flex min-h-screen flex-col bg-cookie-100">
+    <div className="min-h-screen ">
       <NutrNavbar />
 
       <main className="flex flex-1 flex-col items-center px-4 py-8 md:px-8">
         <div className="w-full max-w-6xl">
-          <h1 className="mb-8 text-center">{t('nutr.createNutritionPlan')}</h1>
+          <button
+            onClick={() => router.back()}
+            className="mb-6 text-myText-muted hover:opacity-70 transition"
+          >
+            {t('common.back')}
+          </button>
+          <h1 className="mb-8 text-center">{t('nutrnav.mealplans')}</h1>
+        </div>
+        <div className="w-full max-w-6xl">
+          <h2 className="mb-8 text-center">{t('nutr.createNutritionPlan')}</h2>
 
           <div className="mb-6 flex items-center justify-center gap-3">
             <label className="uppercase tracking-wide text-myText-muted">
@@ -256,7 +266,7 @@ const NutrSchedulerContent = () => {
                 type="button"
                 onClick={handleSubmit}
                 disabled={filledCells.length === 0}
-                className="rounded-full bg-cookie-300 px-5 py-1 text-white transition hover:bg-cookie-400 disabled:opacity-40"
+                className="rounded-full bg-cookie-300 px-5 py-1 text-white transition hover:bg-cookie-400 disabled:opacity-80"
               >
                 {t('nutr.set')}
               </button>
@@ -265,7 +275,7 @@ const NutrSchedulerContent = () => {
 
           <div className="my-12 border-t border-cookie-200" />
 
-          <h1 className="mb-8 text-center">{t('nutr.plansPerClient')}</h1>
+          <h2 className="mb-8 text-center">{t('nutr.plansPerClient')}</h2>
 
           {plansLoading ? (
             <div className="flex justify-center py-8">

@@ -1,7 +1,7 @@
 {
   "nav": {
     "home": "Overview",
-    "recipes": "Find recipes",
+    "recipes": "Search recipes",
     "nutritionists": "Nutritionists",
     "logout": "Logout",
     "cart": "Supermarket list",
@@ -70,10 +70,9 @@
     "VEGAN": "Vegan"
   },
   "recipes": {
-    "title": "Find personalized recipes",
+    "title": "Search recipes",
     "favourites": "Favourite recipes",
     "backToSearch": "Back",
-    "backToRecipes": "Back to search recipes",
     "resultsTitle": "Choose from the suggested recipes",
     "newSearch": "New search",
     "by": "By:",
@@ -98,8 +97,8 @@
     "favourites_more": "Load more",
     "ingredients": "Ingredients",
     "copy": "Copy link",
-    "recipeHint1": "In order to search for a personalized recipes you have to insert at least 3 ingredients you want to use and if there are recipes that match these inserts or have at most 3 extra ingredients, then these will be shown.",
-    "recipeHint2": "Utensils dont make a difference, if you define some it just show you what utensils are missing from the suggested recipe."
+    "recipeHint1": "You have to insert at least 3 ingredients you want to use and if there are recipes that match these inserts or have at most 3 extra ingredients, then these will be shown.",
+    "recipeHint2": "If you define the utensils you have then it will show you which ones are missing from the suggested recipes."
   },
 
   "ingredientCategories": {
@@ -109,7 +108,7 @@
     "title": "Utensils"
   },
   "cart": {
-    "title": "My ingredients list for supermarket",
+    "title": "Supermarket list",
     "addIngredient": "Add ingredient...",
     "items": "ingredients",
     "clearSelected": "Clear selected",
@@ -121,7 +120,7 @@
     "browseRecipes": "Browse on search recipes page"
   },
   "chat": {
-    "title": "Members communication",
+    "title": "Chat with other members",
     "usersCount": "members",
     "noResults": "No members found.",
     "loadMore": "Load more"
@@ -445,7 +444,7 @@
     "undo": "Undo"
   },
   "register": {
-    "title": "Create an account",
+    "title": "Register",
     "subtitle": "A culinary delight awaits you!  Complete your registration.",
     "login_button": "Login",
     "username_plc": "Username",
@@ -454,7 +453,7 @@
     "role_label": "Role:",
     "role_user": "Member",
     "role_nutritionist": "Nutritionist",
-    "submit": "Create an account"
+    "submit": "Register"
   },
   "login": {
     "title": "Welcome!",
@@ -465,7 +464,7 @@
     "forgot_password": "Forgot your password?",
     "no_account": "Don't have an account yet?",
     "account": "Do you have an account?",
-    "create_account": "Create one"
+    "create_account": "Register"
   },
   "forgot_password": {
     "success": "If an account exists with this email, you will be notified via email.",

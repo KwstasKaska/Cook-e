@@ -83,7 +83,7 @@ const CartContent = ({
       <div className="relative min-h-screen">
         <div className="relative z-10 mx-auto max-w-2xl px-6 pb-24 pt-14">
           <button
-            onClick={() => router.push('/user')}
+            onClick={() => router.back()}
             className="mb-6 text-myText-muted hover:text-cookie-400"
           >
             {t('common.back')}

@@ -57,7 +57,7 @@ const NutrRecipesContent = () => {
           {t('common.back')}
         </button>
 
-        <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <div className="mb-8 text-center">
           <h1>{t('nutr.nutr_recipes')}</h1>
         </div>
 

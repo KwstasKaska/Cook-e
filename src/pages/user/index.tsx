@@ -225,17 +225,6 @@ const HomeContent = () => {
 
         <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2">
           <div
-            onClick={() => router.push('/user/cart')}
-            className="flex cursor-pointer flex-col rounded-2xl bg-surface p-6 shadow-lg transition hover:scale-[1.02] hover:shadow-xl"
-          >
-            <div className="mb-3 flex items-center justify-between">
-              <h3>{t('nav.cart')}</h3>
-            </div>
-            <p className="flex-1 text-myText-muted">{t('landing.cartDesc')}</p>
-            <span className="mt-4 self-center">{t('common.open')}</span>
-          </div>
-
-          <div
             onClick={() => router.push('/user/chat')}
             className="flex cursor-pointer flex-col rounded-2xl bg-surface p-6 shadow-lg transition hover:scale-[1.02] hover:shadow-xl"
           >
@@ -245,31 +234,19 @@ const HomeContent = () => {
             <p className="flex-1 text-myText-muted">{t('landing.chatDesc')}</p>
             <span className="mt-4 self-center ">{t('common.open')} </span>
           </div>
+          <div
+            onClick={() => router.push('/user/cart')}
+            className="flex cursor-pointer flex-col rounded-2xl bg-surface p-6 shadow-lg transition hover:scale-[1.02] hover:shadow-xl"
+          >
+            <div className="mb-3 flex items-center justify-between">
+              <h3>{t('nav.cart')}</h3>
+            </div>
+            <p className="flex-1 text-myText-muted">{t('landing.cartDesc')}</p>
+            <span className="mt-4 self-center">{t('common.open')}</span>
+          </div>
         </div>
 
         <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2">
-          <div className="flex flex-col rounded-2xl bg-surface p-6 shadow-lg">
-            <h3 className="mb-4">{t('landing.nutritionTitle')}</h3>
-            <p className="mb-4 text-myText-muted">
-              {t('landing.nutritionDesc')}
-            </p>
-
-            {summaryLoading ? (
-              <div className="flex flex-1 items-center justify-center py-8">
-                <div className="h-8 w-8 rounded-full border-4 border-cookie-400 border-t-transparent" />
-              </div>
-            ) : (
-              <div className="grid grid-cols-2 gap-x-6 gap-y-4">
-                {stats.map((s) => (
-                  <div key={s.labelKey} className="flex flex-col gap-0.5">
-                    <span className="text-myText-muted">{t(s.labelKey)}</span>
-                    <span className="text-myText-heading">{s.value}</span>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-
           <div className="flex flex-col rounded-2xl bg-surface p-5 shadow-lg">
             <h3 className="mb-4">{t('recipes.favourites')}</h3>
 
@@ -316,6 +293,27 @@ const HomeContent = () => {
             >
               {t('common.seeAll2')}
             </button>
+          </div>
+          <div className="flex flex-col rounded-2xl bg-surface p-6 shadow-lg">
+            <h3 className="mb-4">{t('landing.nutritionTitle')}</h3>
+            <p className="mb-4 text-myText-muted">
+              {t('landing.nutritionDesc')}
+            </p>
+
+            {summaryLoading ? (
+              <div className="flex flex-1 items-center justify-center py-8">
+                <div className="h-8 w-8 rounded-full border-4 border-cookie-400 border-t-transparent" />
+              </div>
+            ) : (
+              <div className="grid grid-cols-2 gap-x-6 gap-y-4">
+                {stats.map((s) => (
+                  <div key={s.labelKey} className="flex flex-col gap-0.5">
+                    <span className="text-myText-muted">{t(s.labelKey)}</span>
+                    <span className="text-myText-heading">{s.value}</span>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>

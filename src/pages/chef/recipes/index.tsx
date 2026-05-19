@@ -68,7 +68,7 @@ const ChefRecipesContent = () => {
 
       <div className="mx-auto max-w-5xl px-6 pb-16 pt-10">
         <button
-          onClick={() => router.push('/chef')}
+          onClick={() => router.back()}
           className="mb-6 flex items-center gap-2 text-myText-muted transition hover:text-cookie-400"
         >
           {t('common.back')}
