@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useRouter } from 'next/router';
@@ -8,6 +8,7 @@ import Navbar from '../../../components/Users/Navbar';
 import PaginationControls from '../../../components/Helper/PaginationControls';
 import { useMyAppointmentRequestsQuery } from '../../../generated/graphql';
 import { toDisplay, statusStyle } from '../../../utils/appointmentUtils';
+import { AppointmentStatus } from '../../../generated/graphql';
 
 const LIMIT = 6;
 
@@ -32,7 +33,18 @@ const AppointmentsContent = () => {
   const [page, setPage] = useState(0);
 
   const { data, loading } = useMyAppointmentRequestsQuery();
-  const all = data?.myAppointmentRequests ?? [];
+
+  const today = new Date().toISOString().split('T')[0];
+
+  const all = useMemo(() => {
+    return (data?.myAppointmentRequests ?? []).filter((req) => {
+      if (req.status === AppointmentStatus.Pending) {
+        return req.slot?.date && req.slot.date >= today;
+      }
+      return true;
+    });
+  }, [data, today]);
+
   const totalPages = Math.ceil(all.length / LIMIT);
   const paginated = all.slice(page * LIMIT, page * LIMIT + LIMIT);
 
