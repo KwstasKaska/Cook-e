@@ -113,7 +113,11 @@ const NutrRecipeDetailContent = () => {
             <div className="mb-6">
               <ShareButton
                 dark
-                url={typeof window !== 'undefined' ? window.location.href : ''}
+                url={
+                  typeof window !== 'undefined'
+                    ? `${window.location.origin}/user/recipes/${recipe.id}`
+                    : ''
+                }
               />
             </div>
 
