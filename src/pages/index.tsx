@@ -77,7 +77,7 @@ const Index: NextPage = () => {
   ));
 
   return (
-    <div className="min-h-screen w-full bg-cookie-100 md:grid md:grid-cols-2">
+    <div className="min-h-screen w-full md:grid md:grid-cols-2">
       <div className="container h-full pt-[1em]">
         <div className="flex h-full flex-col items-center justify-center gap-5 px-6 py-10 md:px-[3.5em]">
           <h1 className="text-center leading-tight">{t('index.hero_title')}</h1>
@@ -114,7 +114,7 @@ const Index: NextPage = () => {
 
       <section className="container mt-[3em] grid grid-flow-row gap-4 rounded-[3em] bg-cookie-200 md:mt-0 md:rounded-none md:rounded-bl-[6em]">
         <div className="flex flex-col items-center gap-3 px-4 pt-4">
-          <div className="flex w-full items-center mb-8 justify-between">
+          <div className="flex w-full items-center mb-8 mt-2 justify-between">
             <Logo />
             <LanguageSwitcher dark />
           </div>
@@ -151,8 +151,8 @@ const Index: NextPage = () => {
           )}
         </div>
 
-        <div className="my-[3.5em] px-6 md:px-3 md:py-[2em]">
-          <div className="mb-6 text-center">
+        <div className=" px-6 md:px-3">
+          <div className="mb-4 text-center">
             <h3>{t('index.top_recipes_title')}</h3>
           </div>
 
