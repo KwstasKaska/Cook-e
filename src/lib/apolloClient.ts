@@ -73,6 +73,12 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 });
 
 const createApolloClient = (headers: IncomingHttpHeaders | null = null) => {
+  const isBrowser = typeof window !== 'undefined';
+
+  const uri = isBrowser
+    ? '/graphql'
+    : process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/graphql';
+
   const enhancedFetch = (url: RequestInfo, init: RequestInit) => {
     return fetch(url, {
       ...init,
@@ -85,14 +91,14 @@ const createApolloClient = (headers: IncomingHttpHeaders | null = null) => {
   };
 
   const httpLink = createUploadLink({
-    uri: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/graphql',
+    uri,
     credentials: 'include',
     fetch: enhancedFetch as any,
     headers: { 'Apollo-Require-Preflight': 'true' },
   });
 
   return new ApolloClient({
-    ssrMode: typeof window === 'undefined',
+    ssrMode: !isBrowser,
     link: from([errorLink, httpLink as unknown as ApolloLink]),
     cache: new InMemoryCache({
       typePolicies: {
