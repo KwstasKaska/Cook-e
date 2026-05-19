@@ -378,7 +378,8 @@ const RecipeDetailContent = () => {
                               isChecked ? 'text-myText-muted line-through' : ''
                             }`}
                           >
-                            {ri.quantity} {ri.unit} {name}
+                            {ri.quantity}{' '}
+                            {t(`chef.create_recipe.units.${ri.unit}`)} {name}
                           </span>
 
                           <button
