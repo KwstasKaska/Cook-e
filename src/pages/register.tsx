@@ -71,7 +71,7 @@ const Register: NextPage = () => {
               <Field
                 type="text"
                 name="username"
-                placeholder={t('register.username_placeholder')}
+                placeholder={t('')}
                 className="w-full rounded-xl border border-cookie-200 px-4 py-1.5 text-myText-base placeholder:text-myText-muted focus:outline-none"
               />
               <ErrorMessage
