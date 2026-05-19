@@ -2,7 +2,7 @@ import { useTranslation } from 'next-i18next';
 import { SmallStars } from '../../../components/Helper/Stars';
 import { ChefRating } from '../../../generated/graphql';
 
-const RATINGS_LIMIT = 3;
+const RATINGS_LIMIT = 5;
 
 interface Props {
   reviews: ChefRating[];
