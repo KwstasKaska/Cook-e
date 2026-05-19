@@ -423,6 +423,7 @@
     "title": "Δημιουργία λογαριασμού",
     "subtitle": "Μια μαγειρική απόλαυση σε περιμένει! Ολοκλήρωσε την εγγραφή σου.",
     "login_button": "Σύνδεση",
+    "username_plc": "Username",
     "email_placeholder": "Email",
     "password_placeholder": "Κωδικός πρόσβασης",
     "role_label": "Ιδιότητα:",
