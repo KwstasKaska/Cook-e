@@ -135,24 +135,17 @@ export default function ChefSingleRecipe() {
       recipeImageUrl = editForm.recipeImage;
     }
 
-    const titleChanged = editForm.title.trim() !== recipe.title_el;
-    const descChanged =
-      editForm.description.trim() !== (recipe.description_el ?? '');
-    const commentChanged =
-      editForm.chefComment.trim() !== (recipe.chefComment_el ?? '');
-    const stepsChanged =
-      validSteps.length !== (recipe.steps ?? []).length ||
-      validSteps.some(
-        (s, i) => s.body.trim() !== ((recipe.steps ?? [])[i]?.body_el ?? ''),
-      );
-
     const res = await updateRecipe({
       variables: {
         data: {
           id: recipe.id,
-          ...(titleChanged && { title: editForm.title.trim() }),
-          ...(descChanged && { description: editForm.description.trim() }),
-          ...(commentChanged && { chefComment: editForm.chefComment.trim() }),
+          title: editForm.title.trim(),
+          ...(editForm.description.trim() && {
+            description: editForm.description.trim(),
+          }),
+          ...(editForm.chefComment.trim() && {
+            chefComment: editForm.chefComment.trim(),
+          }),
           ...(recipeImageUrl && { recipeImage: recipeImageUrl }),
           ...(editForm.difficulty && {
             difficulty: editForm.difficulty as Difficulty,
@@ -174,9 +167,7 @@ export default function ChefSingleRecipe() {
             quantity: r.quantity,
             unit: r.unit,
           })),
-          ...(stepsChanged && {
-            steps: validSteps.map((s) => ({ body: s.body.trim() })),
-          }),
+          steps: validSteps.map((s) => ({ body: s.body.trim() })),
           utensilIds: editForm.utensilIds,
         },
       },
