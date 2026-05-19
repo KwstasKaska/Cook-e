@@ -38,12 +38,18 @@ export default function NutrBookingSection({ nutritionistProfileId }: Props) {
   const [requestAppointment, { loading: requesting }] =
     useRequestAppointmentMutation();
 
+  const today = new Date().toISOString().split('T')[0];
+
   const availableSlots = slotsData?.availableSlots ?? [];
 
   const visibleSlots = availableSlots.filter((slot) => {
     if (!slot.date) return false;
     const slotDate = new Date(slot.date);
-    return !isNaN(slotDate.getTime()) && slotDate.getMonth() === monthIndex;
+    return (
+      !isNaN(slotDate.getTime()) &&
+      slotDate.getMonth() === monthIndex &&
+      slot.date >= today
+    );
   });
 
   const monthName = new Date(2026, monthIndex).toLocaleString(
