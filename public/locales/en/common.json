@@ -459,7 +459,7 @@
   "login": {
     "title": "Welcome!",
     "form_title": "Login",
-    "username_placeholder": "Email address",
+    "email_placeholder": "Email address",
     "password_placeholder": "Password",
     "submit": "Login",
     "forgot_password": "Forgot your password?",
