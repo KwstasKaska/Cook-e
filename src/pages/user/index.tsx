@@ -9,6 +9,7 @@ import {
   useMyFavoritesQuery,
   useMyMealPlanQuery,
   useMyNutritionalSummaryQuery,
+  AppointmentStatus,
 } from '../../generated/graphql';
 import useIsUser from '../../utils/useIsUser';
 import { toDisplay, statusStyle } from '../../utils/appointmentUtils';
@@ -75,10 +76,18 @@ const HomeContent = () => {
     { labelKey: 'landing.cookCount', value: `${summary?.cookCount ?? 0}` },
   ];
 
-  const recentAppts = useMemo(
-    () => (apptData?.myAppointmentRequests ?? []).slice(0, APPT_SNAPSHOT),
-    [apptData],
-  );
+  const today = new Date().toISOString().split('T')[0];
+
+  const recentAppts = useMemo(() => {
+    return (apptData?.myAppointmentRequests ?? [])
+      .filter((req) => {
+        if (req.status === AppointmentStatus.Pending) {
+          return req.slot?.date && req.slot.date >= today;
+        }
+        return true;
+      })
+      .slice(0, APPT_SNAPSHOT);
+  }, [apptData, today]);
 
   const { snapshotMeals, snapshotNutrName } = useMemo(() => {
     const plan = planData?.myMealPlan ?? [];
