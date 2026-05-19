@@ -2,10 +2,10 @@ import { useRouter } from 'next/router';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
 import NutrNavbar from '../../../components/Nutritionist/NutrNavbar';
-import ScrollToTopButton from '../../../components/Helper/ScrollToTopButton';
 import { useRecipeQuery } from '../../../generated/graphql';
 import useIsNutritionist from '../../../utils/useIsNutr';
 import { pick } from '../../../utils/pick';
+import ShareButton from '../../../components/Helper/ShareButton';
 
 export async function getServerSideProps({ locale }: { locale: string }) {
   return {
@@ -94,7 +94,7 @@ const NutrRecipeDetailContent = () => {
             <h1 className="mb-4">{title}</h1>
 
             {recipe.author?.user && (
-              <div className="mb-6 flex items-center gap-3">
+              <div className="mb-4 flex items-center gap-3">
                 {recipe.author.user.image ? (
                   <img
                     src={recipe.author.user.image}
@@ -109,6 +109,13 @@ const NutrRecipeDetailContent = () => {
                 <span className="">{recipe.author.user.username}</span>
               </div>
             )}
+
+            <div className="mb-6">
+              <ShareButton
+                dark
+                url={typeof window !== 'undefined' ? window.location.href : ''}
+              />
+            </div>
 
             {recipe.recipeIngredients &&
               recipe.recipeIngredients.length > 0 && (
@@ -169,8 +176,6 @@ const NutrRecipeDetailContent = () => {
           </div>
         </div>
       </main>
-
-      <ScrollToTopButton />
     </div>
   );
 };
