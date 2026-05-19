@@ -257,7 +257,7 @@ const NutrSchedulerContent = () => {
                 <button
                   type="button"
                   onClick={() => setCellInfo({})}
-                  className="rounded-full border-2 border-cookie-400 px-4 py-0.5 text-cookie-400 transition hover:bg-cookie-400 hover:text-white"
+                  className="rounded-xl border-2 border-cookie-400 px-4 py-0.5  transition hover:bg-cookie-400 hover:text-white"
                 >
                   {t('nutr.clear')}
                 </button>
