@@ -129,7 +129,7 @@
   "nutritionists": {
     "searchTitle": "Find your nutritionist:",
     "searchPlaceholder": "Search nutritionist",
-    "popularTitle": "Popular nutritionists",
+    "popularTitle": "Nutritionists",
     "showAll": "All",
     "back": "Back",
     "availableTimes": "Available appointments",
@@ -249,7 +249,7 @@
   "chef": {
     "more": "More",
     "recipes": {
-      "page_title": "My recipes",
+      "page_title": "Recipes",
       "categories_label": "Categories",
       "servings": "servings",
       "duration": "duration",
@@ -297,8 +297,8 @@
       "page_title": "My profile",
       "no_ratings": "No ratings yet.",
       "bio_placeholder": "No bio set yet. You can add one from settings.",
-      "recipes": "My recipes",
-      "articles": "My articles",
+      "recipes": "Recipes",
+      "articles": "Articles",
       "no_articles": "There are not any articles yet.",
       "create_article": "New article",
       "article_image_required": "Please select an image for the article.",

@@ -34,7 +34,7 @@
   },
   "chefnav": {
     "chef_index": "Επισκόπηση",
-    "chef_recipes": "Οι συνταγές μου",
+    "chef_recipes": "Συνταγές",
     "chef_create": "Δημιουργία συνταγής"
   },
   "nutrnav": {
@@ -129,7 +129,7 @@
   "nutritionists": {
     "searchTitle": "Αναζήτησε τον διατροφολόγο σου:",
     "searchPlaceholder": "Εύρεση διατροφολόγου",
-    "popularTitle": "Δημοφιλείς διατροφολόγοι",
+    "popularTitle": "Διατροφολόγοι",
     "showAll": "Όλοι",
     "back": "Πίσω",
     "availableTimes": "Διαθέσιμα ραντεβού",
@@ -191,7 +191,7 @@
     }
   },
   "nutr": {
-    "yourArticles": "Τα άρθρα μου",
+    "yourArticles": "Άρθρα",
     "todayAppointments": "Σημερινές επισκέψεις",
     "noAppointmentsFor": "Δεν υπάρχουν διαθέσιμες επισκέψεις για τις",
     "createNutritionPlan": "Δημιουργία πλάνου διατροφής",
@@ -249,7 +249,7 @@
   "chef": {
     "more": "Περισσότερες",
     "recipes": {
-      "page_title": "Οι συνταγές μου",
+      "page_title": "Συνταγές",
       "categories_label": "Είδη",
       "servings": "άτομα",
       "duration": "χρονική διάρκεια",
@@ -300,9 +300,9 @@
       "user_reviews": "αξιολογήσεις μελών",
       "no_ratings": "Δεν υπάρχουν αξιολογήσεις ακόμα.",
       "bio_placeholder": "Δεν έχει οριστεί βιογραφικό ακόμα. Μπορείς να το προσθέσεις από τις ρυθμίσεις.",
-      "recipes": "Οι συνταγές μου",
+      "recipes": "Συνταγές",
       "followers": "Ακόλουθοι",
-      "articles": "Τα άρθρα μου",
+      "articles": "Άρθρα",
       "rating": "Βαθμολογία",
       "no_articles": "Δεν υπάρχουν άρθρα ακόμα.",
       "create_article": "Νέο άρθρο",
