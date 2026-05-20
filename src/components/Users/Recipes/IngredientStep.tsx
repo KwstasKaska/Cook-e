@@ -86,7 +86,7 @@ export default function IngredientStep({
 
   return (
     <div className="flex flex-col gap-3">
-      <div className="grid grid-cols-3 gap-2">
+      <div className="grid grid-cols-2 lg:grid-cols-3 gap-2">
         {categoryKeys.map((catName) => {
           const isOpen = openCat === catName;
 
@@ -161,7 +161,7 @@ export default function IngredientStep({
           </div>
         )}
         {error && selectedIngredients.length > 0 && (
-          <p className="mt-1.5  text-myRed">{error}</p>
+          <p className="mt-1.5 text-myRed">{error}</p>
         )}
       </div>
     </div>
