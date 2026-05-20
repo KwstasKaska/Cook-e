@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import Navbar from '../../../../components/Users/Navbar';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
@@ -7,6 +7,11 @@ import {
   useNutritionistQuery,
   useMyAppointmentRequestsQuery,
   useArticlesByNutritionistQuery,
+  useNutritionistAverageRatingQuery,
+  useNutritionistRatingsQuery,
+  useMyNutritionistRatingQuery,
+  useRateNutritionistMutation,
+  useDeleteNutritionistRatingMutation,
 } from '../../../../generated/graphql';
 import useIsUser from '../../../../utils/useIsUser';
 import { useChatContext } from '../../../../components/Chat/ChatContext';
@@ -14,6 +19,12 @@ import { pick } from '../../../../utils/pick';
 import NutrBookingSection from '../../../../components/Users/Nutritionists/NutrBookingSection';
 import ShareButton from '../../../../components/Helper/ShareButton';
 import PaginationControls from '../../../../components/Helper/PaginationControls';
+import NutrRateForm from '../../../../components/Users/Nutritionists/NutrRateForm';
+import NutrReviewsList, {
+  RATINGS_LIMIT,
+} from '../../../../components/Users/Nutritionists/NutrReviewsList';
+import ScrollToTopButton from '../../../../components/Helper/ScrollToTopButton';
+import { StarRow } from '../../../../components/Helper/Stars';
 
 const LIMIT = 6;
 
@@ -36,8 +47,13 @@ const ProfileContent = () => {
   const router = useRouter();
   const lang = (router.locale ?? 'el') as 'el' | 'en';
   const { openConversation } = useChatContext();
+
   const [showArticles, setShowArticles] = useState(false);
   const [offset, setOffset] = useState(0);
+  const [showRateForm, setShowRateForm] = useState(false);
+  const [ratingScore, setRatingScore] = useState(0);
+  const [ratingError, setRatingError] = useState('');
+  const [ratingSuccess, setRatingSuccess] = useState('');
 
   const id = Number(router.query.id);
 
@@ -52,6 +68,7 @@ const ProfileContent = () => {
   });
 
   const nutr = data?.nutritionist;
+  const nutrId = nutr?.id ?? 0;
   const myRequests = requestsData?.myAppointmentRequests ?? [];
 
   const hasAcceptedAppointment = myRequests.some(
@@ -67,9 +84,78 @@ const ProfileContent = () => {
       fetchPolicy: 'network-only',
     });
 
+  const { data: avgData } = useNutritionistAverageRatingQuery({
+    variables: { nutritionistId: nutrId },
+    skip: !nutrId,
+  });
+
+  const {
+    data: ratingsData,
+    loading: ratingsLoading,
+    refetch: refetchRatings,
+    fetchMore: fetchMoreRatings,
+    networkStatus: ratingsNetworkStatus,
+  } = useNutritionistRatingsQuery({
+    variables: { nutritionistId: nutrId, limit: RATINGS_LIMIT, offset: 0 },
+    skip: !nutrId,
+    fetchPolicy: 'network-only',
+    notifyOnNetworkStatusChange: true,
+  });
+
+  const { data: myRatingData, refetch: refetchMyRating } =
+    useMyNutritionistRatingQuery({
+      variables: { nutritionistId: nutrId },
+      skip: !nutrId,
+    });
+
+  const [rateNutritionist, { loading: submitting }] =
+    useRateNutritionistMutation();
+  const [deleteNutritionistRating] = useDeleteNutritionistRatingMutation();
+
   const articles = articlesData?.articlesByNutritionist ?? [];
   const hasMore = articles.length === LIMIT;
   const hasPrev = offset > 0;
+
+  const avgRating = avgData?.nutritionistAverageRating ?? 0;
+  const reviews = ratingsData?.nutritionistRatings ?? [];
+  const myRating = myRatingData?.myNutritionistRating ?? null;
+  const fetchingMoreRatings = ratingsNetworkStatus === 3;
+  const hasMoreReviews =
+    reviews.length > 0 && reviews.length % RATINGS_LIMIT === 0;
+
+  const handleRate = useCallback(async () => {
+    setRatingError('');
+    setRatingSuccess('');
+    if (ratingScore < 1 || ratingScore > 5) {
+      setRatingError(t('recipes.ratingScoreError'));
+      return;
+    }
+    await rateNutritionist({
+      variables: { nutritionistId: nutrId, score: ratingScore },
+    });
+    setRatingSuccess(t('recipes.ratingSuccess'));
+    setRatingScore(0);
+    setShowRateForm(false);
+    await refetchRatings();
+    await refetchMyRating();
+  }, [
+    rateNutritionist,
+    nutrId,
+    ratingScore,
+    refetchRatings,
+    refetchMyRating,
+    t,
+  ]);
+
+  const handleDeleteRating = useCallback(async () => {
+    setRatingError('');
+    setRatingSuccess('');
+    await deleteNutritionistRating({ variables: { nutritionistId: nutrId } });
+    setRatingScore(0);
+    setRatingSuccess(t('recipes.ratingDeleted'));
+    await refetchRatings();
+    await refetchMyRating();
+  }, [deleteNutritionistRating, nutrId, refetchRatings, refetchMyRating, t]);
 
   if (loading) {
     return (
@@ -127,14 +213,14 @@ const ProfileContent = () => {
 
             <div className="min-w-0 flex-1">
               <h3 className="truncate">{username}</h3>
-              {cityText && <p className="mt-0.5  ">{cityText}</p>}
-              {nutr.phone && <p className="mt-0.5  ">{nutr.phone}</p>}
+              {cityText && <p className="mt-0.5">{cityText}</p>}
+              {nutr.phone && <p className="mt-0.5">{nutr.phone}</p>}
             </div>
 
             {hasAcceptedAppointment && userId > 0 && (
               <button
                 onClick={() => openConversation(userId)}
-                className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full border-2 border-cookie-400  transition hover:bg-cookie-400 hover:text-white"
+                className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full border-2 border-cookie-400 transition hover:bg-cookie-400 hover:text-white"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -154,13 +240,24 @@ const ProfileContent = () => {
             )}
           </div>
 
+          {avgRating > 0 && <StarRow rating={avgRating} />}
+
           {bioText && <p className="">{bioText}</p>}
 
-          <div className="flex justify-between border-t border-cookie-400 pt-4">
-            <ShareButton
-              url={typeof window !== 'undefined' ? window.location.href : ''}
-              dark
-            />
+          <ShareButton
+            url={typeof window !== 'undefined' ? window.location.href : ''}
+            dark
+          />
+
+          <div className="flex flex-wrap gap-3 justify-between border-t border-cookie-400 pt-4">
+            <button
+              onClick={() => setShowRateForm((prev) => !prev)}
+              className="rounded-xl border-2 border-cookie-400 px-4 py-1.5  transition hover:bg-cookie-400 hover:text-white"
+            >
+              {showRateForm
+                ? t('common.cancel')
+                : t('nutritionists.rateNutrTitle')}
+            </button>
             <button
               onClick={() => {
                 setShowArticles((prev) => !prev);
@@ -168,9 +265,42 @@ const ProfileContent = () => {
               }}
               className="rounded-xl border-2 border-cookie-400 px-4 py-1.5 transition hover:bg-cookie-400 hover:text-white"
             >
-              {t('chef.profile.articles')}
+              {showArticles ? t('common.cancel') : t('chef.profile.articles')}
             </button>
           </div>
+        </div>
+
+        {showRateForm && (
+          <div className="mb-6">
+            <NutrRateForm
+              myRating={myRating}
+              ratingScore={ratingScore}
+              ratingError={ratingError}
+              ratingSuccess={ratingSuccess}
+              submitting={submitting}
+              onScoreChange={setRatingScore}
+              onSubmit={handleRate}
+              onDelete={handleDeleteRating}
+            />
+          </div>
+        )}
+
+        <div className="mb-6">
+          <NutrReviewsList
+            reviews={reviews as any}
+            loading={ratingsLoading}
+            fetchingMore={fetchingMoreRatings}
+            hasMore={hasMoreReviews}
+            onLoadMore={() =>
+              fetchMoreRatings({
+                variables: {
+                  nutritionistId: nutrId,
+                  limit: RATINGS_LIMIT,
+                  offset: reviews.length,
+                },
+              })
+            }
+          />
         </div>
 
         {showArticles && (
@@ -234,6 +364,7 @@ const ProfileContent = () => {
           hasAcceptedAppointment={hasAcceptedAppointment}
         />
       </div>
+      <ScrollToTopButton />
     </div>
   );
 };

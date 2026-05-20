@@ -24,8 +24,6 @@ function StarIcon({
   );
 }
 
-// ── Default export: simple stars row used in chef pages
-// Usage: <Stars rating={4.5} size="md" />
 interface StarsProps {
   rating: number;
   size?: 'sm' | 'md' | 'lg';
@@ -44,15 +42,13 @@ export default function Stars({ rating, size = 'md' }: StarsProps) {
   );
 }
 
-// ── StarRow: stars + numeric label
-// Usage: <StarRow rating={4.5} ratingCount={30} small />
 export function StarRow({
   rating,
   ratingCount,
   small = false,
 }: {
   rating: number;
-  ratingCount: number;
+  ratingCount?: number;
   small?: boolean;
 }) {
   return (
@@ -67,14 +63,13 @@ export function StarRow({
         ))}
       </div>
       <span className={`text-yellow-400 ${small ? 'text-xs' : 'text-sm'}`}>
-        {rating.toFixed(1)} / 5 ({ratingCount})
+        {rating.toFixed(1)} / 5
+        {ratingCount !== undefined ? ` (${ratingCount})` : ''}
       </span>
     </div>
   );
 }
 
-// ── SmallStars: compact stars only, no label (used in review cards)
-// Usage: <SmallStars rating={review.score} />
 export function SmallStars({ rating }: { rating: number }) {
   return (
     <div className="flex gap-0.5">
@@ -89,8 +84,6 @@ export function SmallStars({ rating }: { rating: number }) {
   );
 }
 
-// ── StarPicker: interactive star selector (used in rate forms)
-// Usage: <StarPicker value={score} onChange={setScore} />
 export function StarPicker({
   value,
   onChange,

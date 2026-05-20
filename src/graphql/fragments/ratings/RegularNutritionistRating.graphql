@@ -1,0 +1,12 @@
+fragment RegularNutritionistRating on NutritionistRating {
+  id
+  nutritionistId
+  userId
+  score
+  createdAt
+  user {
+    id
+    username
+    image
+  }
+}

@@ -263,6 +263,7 @@ export type Mutation = {
   deleteChefRating: Scalars['Boolean']['output'];
   deleteCookLog: Scalars['Boolean']['output'];
   deleteMealScheduler: MealPlanResponse;
+  deleteNutritionistRating: Scalars['Boolean']['output'];
   deleteRecipe: Scalars['Boolean']['output'];
   deleteRecipeRating: Scalars['Boolean']['output'];
   deleteUser: Scalars['Boolean']['output'];
@@ -270,6 +271,7 @@ export type Mutation = {
   login: UserResponse;
   logout: Scalars['Boolean']['output'];
   rateChef: ChefRating;
+  rateNutritionist: NutritionistRating;
   rateRecipe: RecipeRating;
   register: UserResponse;
   removeFromCart: Scalars['Boolean']['output'];
@@ -359,6 +361,11 @@ export type MutationDeleteMealSchedulerArgs = {
 };
 
 
+export type MutationDeleteNutritionistRatingArgs = {
+  nutritionistId: Scalars['Int']['input'];
+};
+
+
 export type MutationDeleteRecipeArgs = {
   id: Scalars['Int']['input'];
 };
@@ -382,6 +389,12 @@ export type MutationLoginArgs = {
 
 export type MutationRateChefArgs = {
   chefId: Scalars['Int']['input'];
+  score: Scalars['Int']['input'];
+};
+
+
+export type MutationRateNutritionistArgs = {
+  nutritionistId: Scalars['Int']['input'];
   score: Scalars['Int']['input'];
 };
 
@@ -499,6 +512,17 @@ export type NutritionistProfileResponse = {
   nutritionistProfile?: Maybe<NutritionistProfile>;
 };
 
+export type NutritionistRating = {
+  __typename?: 'NutritionistRating';
+  createdAt: Scalars['String']['output'];
+  id: Scalars['Int']['output'];
+  nutritionistId: Scalars['Int']['output'];
+  score: Scalars['Int']['output'];
+  updatedAt: Scalars['String']['output'];
+  user?: Maybe<User>;
+  userId: Scalars['Int']['output'];
+};
+
 export type Query = {
   __typename?: 'Query';
   article?: Maybe<Article>;
@@ -530,10 +554,13 @@ export type Query = {
   myNutritionPlans: Array<MealScheduler>;
   myNutritionalSummary: NutritionalSummary;
   myNutritionistProfile?: Maybe<NutritionistProfile>;
+  myNutritionistRating?: Maybe<NutritionistRating>;
   myRecipeRating?: Maybe<RecipeRating>;
   myRecipes: Array<Recipe>;
   myRecipesByCategory: Array<Recipe>;
   nutritionist?: Maybe<NutritionistProfile>;
+  nutritionistAverageRating?: Maybe<Scalars['Float']['output']>;
+  nutritionistRatings: Array<NutritionistRating>;
   nutritionists: Array<NutritionistProfile>;
   recipe?: Maybe<Recipe>;
   recipeAverageRating?: Maybe<Scalars['Float']['output']>;
@@ -671,6 +698,11 @@ export type QueryMyFavoritesArgs = {
 };
 
 
+export type QueryMyNutritionistRatingArgs = {
+  nutritionistId: Scalars['Int']['input'];
+};
+
+
 export type QueryMyRecipeRatingArgs = {
   recipeId: Scalars['Int']['input'];
 };
@@ -691,6 +723,18 @@ export type QueryMyRecipesByCategoryArgs = {
 
 export type QueryNutritionistArgs = {
   id: Scalars['Int']['input'];
+};
+
+
+export type QueryNutritionistAverageRatingArgs = {
+  nutritionistId: Scalars['Int']['input'];
+};
+
+
+export type QueryNutritionistRatingsArgs = {
+  limit?: Scalars['Int']['input'];
+  nutritionistId: Scalars['Int']['input'];
+  offset?: Scalars['Int']['input'];
 };
 
 
@@ -1014,6 +1058,8 @@ export type RegularMessageFragment = { __typename?: 'Message', id: number, conve
 
 export type RegularChefRatingFragment = { __typename?: 'ChefRating', id: number, chefId: number, userId: number, score: number, createdAt: string, user?: { __typename?: 'User', id: number, username: string, image?: string | null } | null };
 
+export type RegularNutritionistRatingFragment = { __typename?: 'NutritionistRating', id: number, nutritionistId: number, userId: number, score: number, createdAt: string, user?: { __typename?: 'User', id: number, username: string, image?: string | null } | null };
+
 export type RegularRecipeRatingFragment = { __typename?: 'RecipeRating', id: number, recipeId: number, userId: number, score: number, createdAt: string, user?: { __typename?: 'User', id: number, username: string, image?: string | null } | null };
 
 export type TopRatedRecipeFragment = { __typename?: 'Recipe', id: number, title_el: string, title_en: string, recipeImage?: string | null, caloriesTotal?: number | null, prepTime: number, cookTime: number, difficulty: Difficulty, category?: RecipeCategory | null, author?: { __typename?: 'ChefProfile', user: { __typename?: 'User', username: string, image?: string | null } } | null };
@@ -1218,6 +1264,21 @@ export type DeleteMealSchedulerMutationVariables = Exact<{
 
 
 export type DeleteMealSchedulerMutation = { __typename?: 'Mutation', deleteMealScheduler: { __typename?: 'MealPlanResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, mealScheduler?: { __typename?: 'MealScheduler', id: number, day: DayOfWeek, mealType: MealType, comment_el: string, comment_en: string, user: { __typename?: 'User', id: number, username: string } } | null } };
+
+export type RateNutritionistMutationVariables = Exact<{
+  nutritionistId: Scalars['Int']['input'];
+  score: Scalars['Int']['input'];
+}>;
+
+
+export type RateNutritionistMutation = { __typename?: 'Mutation', rateNutritionist: { __typename?: 'NutritionistRating', id: number, nutritionistId: number, userId: number, score: number, createdAt: string, user?: { __typename?: 'User', id: number, username: string, image?: string | null } | null } };
+
+export type DeleteNutritionistRatingMutationVariables = Exact<{
+  nutritionistId: Scalars['Int']['input'];
+}>;
+
+
+export type DeleteNutritionistRatingMutation = { __typename?: 'Mutation', deleteNutritionistRating: boolean };
 
 export type RateRecipeMutationVariables = Exact<{
   recipeId: Scalars['Int']['input'];
@@ -1464,6 +1525,29 @@ export type MyRecipesByCategoryQueryVariables = Exact<{
 
 
 export type MyRecipesByCategoryQuery = { __typename?: 'Query', myRecipesByCategory: Array<{ __typename?: 'Recipe', id: number, title_el: string, title_en: string, description_el?: string | null, description_en?: string | null, chefComment_el?: string | null, chefComment_en?: string | null, category?: RecipeCategory | null, recipeImage?: string | null, prepTime: number, cookTime: number, restTime?: number | null, difficulty: Difficulty, caloriesTotal?: number | null, protein?: number | null, carbs?: number | null, fat?: number | null, foodEthnicity?: string | null, authorId: number, createdAt: string, updatedAt: string, steps?: Array<{ __typename?: 'Step', id: number, body_el: string, body_en: string, recipeID: number }> | null, recipeIngredients?: Array<{ __typename?: 'RecipeIngredient', recipeId: number, ingredientId: number, quantity: string, unit: string, ingredient?: { __typename?: 'Ingredient', id: number, name_el: string, name_en: string, caloriesPer100g?: number | null } | null }> | null, author?: { __typename?: 'ChefProfile', user: { __typename?: 'User', id: number, username: string, image?: string | null } } | null, utensils?: Array<{ __typename?: 'Utensil', id: number, name_el: string, name_en: string }> | null }> };
+
+export type NutritionistRatingsQueryVariables = Exact<{
+  nutritionistId: Scalars['Int']['input'];
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+}>;
+
+
+export type NutritionistRatingsQuery = { __typename?: 'Query', nutritionistRatings: Array<{ __typename?: 'NutritionistRating', id: number, nutritionistId: number, userId: number, score: number, createdAt: string, user?: { __typename?: 'User', id: number, username: string, image?: string | null } | null }> };
+
+export type NutritionistAverageRatingQueryVariables = Exact<{
+  nutritionistId: Scalars['Int']['input'];
+}>;
+
+
+export type NutritionistAverageRatingQuery = { __typename?: 'Query', nutritionistAverageRating?: number | null };
+
+export type MyNutritionistRatingQueryVariables = Exact<{
+  nutritionistId: Scalars['Int']['input'];
+}>;
+
+
+export type MyNutritionistRatingQuery = { __typename?: 'Query', myNutritionistRating?: { __typename?: 'NutritionistRating', id: number, nutritionistId: number, userId: number, score: number, createdAt: string, user?: { __typename?: 'User', id: number, username: string, image?: string | null } | null } | null };
 
 export type NutritionistQueryVariables = Exact<{
   id: Scalars['Int']['input'];
@@ -1858,6 +1942,20 @@ export const RegularChefRatingFragmentDoc = gql`
     fragment RegularChefRating on ChefRating {
   id
   chefId
+  userId
+  score
+  createdAt
+  user {
+    id
+    username
+    image
+  }
+}
+    `;
+export const RegularNutritionistRatingFragmentDoc = gql`
+    fragment RegularNutritionistRating on NutritionistRating {
+  id
+  nutritionistId
   userId
   score
   createdAt
@@ -2883,6 +2981,71 @@ export function useDeleteMealSchedulerMutation(baseOptions?: Apollo.MutationHook
 export type DeleteMealSchedulerMutationHookResult = ReturnType<typeof useDeleteMealSchedulerMutation>;
 export type DeleteMealSchedulerMutationResult = Apollo.MutationResult<DeleteMealSchedulerMutation>;
 export type DeleteMealSchedulerMutationOptions = Apollo.BaseMutationOptions<DeleteMealSchedulerMutation, DeleteMealSchedulerMutationVariables>;
+export const RateNutritionistDocument = gql`
+    mutation RateNutritionist($nutritionistId: Int!, $score: Int!) {
+  rateNutritionist(nutritionistId: $nutritionistId, score: $score) {
+    ...RegularNutritionistRating
+  }
+}
+    ${RegularNutritionistRatingFragmentDoc}`;
+export type RateNutritionistMutationFn = Apollo.MutationFunction<RateNutritionistMutation, RateNutritionistMutationVariables>;
+
+/**
+ * __useRateNutritionistMutation__
+ *
+ * To run a mutation, you first call `useRateNutritionistMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRateNutritionistMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [rateNutritionistMutation, { data, loading, error }] = useRateNutritionistMutation({
+ *   variables: {
+ *      nutritionistId: // value for 'nutritionistId'
+ *      score: // value for 'score'
+ *   },
+ * });
+ */
+export function useRateNutritionistMutation(baseOptions?: Apollo.MutationHookOptions<RateNutritionistMutation, RateNutritionistMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RateNutritionistMutation, RateNutritionistMutationVariables>(RateNutritionistDocument, options);
+      }
+export type RateNutritionistMutationHookResult = ReturnType<typeof useRateNutritionistMutation>;
+export type RateNutritionistMutationResult = Apollo.MutationResult<RateNutritionistMutation>;
+export type RateNutritionistMutationOptions = Apollo.BaseMutationOptions<RateNutritionistMutation, RateNutritionistMutationVariables>;
+export const DeleteNutritionistRatingDocument = gql`
+    mutation DeleteNutritionistRating($nutritionistId: Int!) {
+  deleteNutritionistRating(nutritionistId: $nutritionistId)
+}
+    `;
+export type DeleteNutritionistRatingMutationFn = Apollo.MutationFunction<DeleteNutritionistRatingMutation, DeleteNutritionistRatingMutationVariables>;
+
+/**
+ * __useDeleteNutritionistRatingMutation__
+ *
+ * To run a mutation, you first call `useDeleteNutritionistRatingMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteNutritionistRatingMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteNutritionistRatingMutation, { data, loading, error }] = useDeleteNutritionistRatingMutation({
+ *   variables: {
+ *      nutritionistId: // value for 'nutritionistId'
+ *   },
+ * });
+ */
+export function useDeleteNutritionistRatingMutation(baseOptions?: Apollo.MutationHookOptions<DeleteNutritionistRatingMutation, DeleteNutritionistRatingMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteNutritionistRatingMutation, DeleteNutritionistRatingMutationVariables>(DeleteNutritionistRatingDocument, options);
+      }
+export type DeleteNutritionistRatingMutationHookResult = ReturnType<typeof useDeleteNutritionistRatingMutation>;
+export type DeleteNutritionistRatingMutationResult = Apollo.MutationResult<DeleteNutritionistRatingMutation>;
+export type DeleteNutritionistRatingMutationOptions = Apollo.BaseMutationOptions<DeleteNutritionistRatingMutation, DeleteNutritionistRatingMutationVariables>;
 export const RateRecipeDocument = gql`
     mutation RateRecipe($recipeId: Int!, $score: Int!) {
   rateRecipe(recipeId: $recipeId, score: $score) {
@@ -4323,6 +4486,130 @@ export type MyRecipesByCategoryQueryHookResult = ReturnType<typeof useMyRecipesB
 export type MyRecipesByCategoryLazyQueryHookResult = ReturnType<typeof useMyRecipesByCategoryLazyQuery>;
 export type MyRecipesByCategorySuspenseQueryHookResult = ReturnType<typeof useMyRecipesByCategorySuspenseQuery>;
 export type MyRecipesByCategoryQueryResult = Apollo.QueryResult<MyRecipesByCategoryQuery, MyRecipesByCategoryQueryVariables>;
+export const NutritionistRatingsDocument = gql`
+    query NutritionistRatings($nutritionistId: Int!, $limit: Int = 10, $offset: Int = 0) {
+  nutritionistRatings(
+    nutritionistId: $nutritionistId
+    limit: $limit
+    offset: $offset
+  ) {
+    ...RegularNutritionistRating
+  }
+}
+    ${RegularNutritionistRatingFragmentDoc}`;
+
+/**
+ * __useNutritionistRatingsQuery__
+ *
+ * To run a query within a React component, call `useNutritionistRatingsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useNutritionistRatingsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useNutritionistRatingsQuery({
+ *   variables: {
+ *      nutritionistId: // value for 'nutritionistId'
+ *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
+ *   },
+ * });
+ */
+export function useNutritionistRatingsQuery(baseOptions: Apollo.QueryHookOptions<NutritionistRatingsQuery, NutritionistRatingsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<NutritionistRatingsQuery, NutritionistRatingsQueryVariables>(NutritionistRatingsDocument, options);
+      }
+export function useNutritionistRatingsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<NutritionistRatingsQuery, NutritionistRatingsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<NutritionistRatingsQuery, NutritionistRatingsQueryVariables>(NutritionistRatingsDocument, options);
+        }
+export function useNutritionistRatingsSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<NutritionistRatingsQuery, NutritionistRatingsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<NutritionistRatingsQuery, NutritionistRatingsQueryVariables>(NutritionistRatingsDocument, options);
+        }
+export type NutritionistRatingsQueryHookResult = ReturnType<typeof useNutritionistRatingsQuery>;
+export type NutritionistRatingsLazyQueryHookResult = ReturnType<typeof useNutritionistRatingsLazyQuery>;
+export type NutritionistRatingsSuspenseQueryHookResult = ReturnType<typeof useNutritionistRatingsSuspenseQuery>;
+export type NutritionistRatingsQueryResult = Apollo.QueryResult<NutritionistRatingsQuery, NutritionistRatingsQueryVariables>;
+export const NutritionistAverageRatingDocument = gql`
+    query NutritionistAverageRating($nutritionistId: Int!) {
+  nutritionistAverageRating(nutritionistId: $nutritionistId)
+}
+    `;
+
+/**
+ * __useNutritionistAverageRatingQuery__
+ *
+ * To run a query within a React component, call `useNutritionistAverageRatingQuery` and pass it any options that fit your needs.
+ * When your component renders, `useNutritionistAverageRatingQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useNutritionistAverageRatingQuery({
+ *   variables: {
+ *      nutritionistId: // value for 'nutritionistId'
+ *   },
+ * });
+ */
+export function useNutritionistAverageRatingQuery(baseOptions: Apollo.QueryHookOptions<NutritionistAverageRatingQuery, NutritionistAverageRatingQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<NutritionistAverageRatingQuery, NutritionistAverageRatingQueryVariables>(NutritionistAverageRatingDocument, options);
+      }
+export function useNutritionistAverageRatingLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<NutritionistAverageRatingQuery, NutritionistAverageRatingQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<NutritionistAverageRatingQuery, NutritionistAverageRatingQueryVariables>(NutritionistAverageRatingDocument, options);
+        }
+export function useNutritionistAverageRatingSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<NutritionistAverageRatingQuery, NutritionistAverageRatingQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<NutritionistAverageRatingQuery, NutritionistAverageRatingQueryVariables>(NutritionistAverageRatingDocument, options);
+        }
+export type NutritionistAverageRatingQueryHookResult = ReturnType<typeof useNutritionistAverageRatingQuery>;
+export type NutritionistAverageRatingLazyQueryHookResult = ReturnType<typeof useNutritionistAverageRatingLazyQuery>;
+export type NutritionistAverageRatingSuspenseQueryHookResult = ReturnType<typeof useNutritionistAverageRatingSuspenseQuery>;
+export type NutritionistAverageRatingQueryResult = Apollo.QueryResult<NutritionistAverageRatingQuery, NutritionistAverageRatingQueryVariables>;
+export const MyNutritionistRatingDocument = gql`
+    query MyNutritionistRating($nutritionistId: Int!) {
+  myNutritionistRating(nutritionistId: $nutritionistId) {
+    ...RegularNutritionistRating
+  }
+}
+    ${RegularNutritionistRatingFragmentDoc}`;
+
+/**
+ * __useMyNutritionistRatingQuery__
+ *
+ * To run a query within a React component, call `useMyNutritionistRatingQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMyNutritionistRatingQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMyNutritionistRatingQuery({
+ *   variables: {
+ *      nutritionistId: // value for 'nutritionistId'
+ *   },
+ * });
+ */
+export function useMyNutritionistRatingQuery(baseOptions: Apollo.QueryHookOptions<MyNutritionistRatingQuery, MyNutritionistRatingQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<MyNutritionistRatingQuery, MyNutritionistRatingQueryVariables>(MyNutritionistRatingDocument, options);
+      }
+export function useMyNutritionistRatingLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MyNutritionistRatingQuery, MyNutritionistRatingQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<MyNutritionistRatingQuery, MyNutritionistRatingQueryVariables>(MyNutritionistRatingDocument, options);
+        }
+export function useMyNutritionistRatingSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<MyNutritionistRatingQuery, MyNutritionistRatingQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<MyNutritionistRatingQuery, MyNutritionistRatingQueryVariables>(MyNutritionistRatingDocument, options);
+        }
+export type MyNutritionistRatingQueryHookResult = ReturnType<typeof useMyNutritionistRatingQuery>;
+export type MyNutritionistRatingLazyQueryHookResult = ReturnType<typeof useMyNutritionistRatingLazyQuery>;
+export type MyNutritionistRatingSuspenseQueryHookResult = ReturnType<typeof useMyNutritionistRatingSuspenseQuery>;
+export type MyNutritionistRatingQueryResult = Apollo.QueryResult<MyNutritionistRatingQuery, MyNutritionistRatingQueryVariables>;
 export const NutritionistDocument = gql`
     query Nutritionist($id: Int!) {
   nutritionist(id: $id) {

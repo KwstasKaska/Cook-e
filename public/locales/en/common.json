@@ -135,7 +135,8 @@
     "bookError": "Something went wrong. Please try again.",
     "bookSuccess": "Successfull request",
     "noSlots": "This nutritionist hasn't set any available slots yet. Check back later or message him.",
-    "listHint1": "Inside each profile you'll find their articles, available appointment slots, and a share button. Once a nutritionist accepts your request, a chat icon appears on their profile so you can message them directly."
+    "listHint1": "Inside each profile you'll find their articles, available appointment slots, and a share button. Once a nutritionist accepts your request, a chat icon appears on their profile so you can message them directly.",
+    "rateNutrTitle": "Rate the nutritionist"
   },
   "settings": {
     "title": "Settings",

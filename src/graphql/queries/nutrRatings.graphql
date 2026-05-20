@@ -1,0 +1,23 @@
+query NutritionistRatings(
+  $nutritionistId: Int!
+  $limit: Int = 10
+  $offset: Int = 0
+) {
+  nutritionistRatings(
+    nutritionistId: $nutritionistId
+    limit: $limit
+    offset: $offset
+  ) {
+    ...RegularNutritionistRating
+  }
+}
+
+query NutritionistAverageRating($nutritionistId: Int!) {
+  nutritionistAverageRating(nutritionistId: $nutritionistId)
+}
+
+query MyNutritionistRating($nutritionistId: Int!) {
+  myNutritionistRating(nutritionistId: $nutritionistId) {
+    ...RegularNutritionistRating
+  }
+}

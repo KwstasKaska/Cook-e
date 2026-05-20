@@ -1,0 +1,9 @@
+mutation RateNutritionist($nutritionistId: Int!, $score: Int!) {
+  rateNutritionist(nutritionistId: $nutritionistId, score: $score) {
+    ...RegularNutritionistRating
+  }
+}
+
+mutation DeleteNutritionistRating($nutritionistId: Int!) {
+  deleteNutritionistRating(nutritionistId: $nutritionistId)
+}

@@ -16,6 +16,8 @@ import NutrNavbar from '../../components/Nutritionist/NutrNavbar';
 import { el, enUS } from 'date-fns/locale';
 import { toDisplay } from '../../utils/appointmentUtils';
 import { useChatContext } from '../../components/Chat/ChatContext';
+import { StarRow } from '../../components/Helper/Stars';
+import { useNutritionistAverageRatingQuery } from '../../generated/graphql';
 
 const SNAPSHOT = 2;
 const APPT_SNAPSHOT = 3;
@@ -81,6 +83,15 @@ const NutritionistOverviewContent = () => {
     lang,
   );
 
+  const nutrProfileId = nutrProfile?.id;
+
+  const { data: avgData } = useNutritionistAverageRatingQuery({
+    variables: { nutritionistId: nutrProfileId! },
+    skip: !nutrProfileId,
+  });
+
+  const avgRating = avgData?.nutritionistAverageRating ?? 0;
+
   if (profileLoading) {
     return (
       <div className="flex min-h-screen flex-col">
@@ -120,6 +131,11 @@ const NutritionistOverviewContent = () => {
               {city && <p className="mt-0.5 text-myText-muted">{city}</p>}
               {nutrProfile?.phone && (
                 <p className="mt-0.5 text-myText-muted">{nutrProfile.phone}</p>
+              )}
+              {avgRating > 0 && (
+                <div className="flex mt-0.5 justify-center">
+                  <StarRow rating={avgRating} />
+                </div>
               )}
             </div>
 
