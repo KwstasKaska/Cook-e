@@ -116,7 +116,7 @@ const RecipesContent = () => {
           <p className="">{t('recipes.recipeHint1')}</p>
         </div>
 
-        <div className="flex flex-col gap-10 lg:flex-row lg:items-start lg:gap-10">
+        <div className="flex flex-col gap-10 lg:grid lg:grid-cols-[2fr_1fr] lg:items-start lg:gap-10">
           <div className="w-full  lg:flex-1">
             <h2 className="mb-3 text-center">
               {t('ingredientCategories.title')}
