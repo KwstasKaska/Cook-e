@@ -215,11 +215,6 @@ const ProfileContent = () => {
               <h3 className="truncate">{username}</h3>
               {cityText && <p className="mt-0.5">{cityText}</p>}
               {nutr.phone && <p className="mt-0.5">{nutr.phone}</p>}
-              {avgRating > 0 && (
-                <div className="flex mt-0.5 justify-center">
-                  <StarRow rating={avgRating} />
-                </div>
-              )}
             </div>
 
             {hasAcceptedAppointment && userId > 0 && (
