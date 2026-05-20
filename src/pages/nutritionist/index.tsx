@@ -96,7 +96,7 @@ const NutritionistOverviewContent = () => {
     <div className="min-h-screen">
       <NutrNavbar />
 
-      <div className="mx-auto max-w-3xl px-6 pb-16 pt-10">
+      <div className="mx-auto max-w-3xl lg:max-w-4xl px-6 pb-16 pt-10">
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
           <div className="flex flex-col items-center gap-4 rounded-2xl bg-surface p-6 shadow-lg">
             <div className="h-24 w-24 overflow-hidden rounded-full border-2 border-cookie-400 shadow-lg">

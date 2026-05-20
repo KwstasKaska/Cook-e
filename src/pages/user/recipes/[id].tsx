@@ -268,7 +268,7 @@ const RecipeDetailContent = () => {
     <div className="flex min-h-screen flex-col">
       <Navbar />
       <main className="flex-1">
-        <div className="mx-auto max-w-6xl px-4 py-10 md:px-8 md:py-16">
+        <div className="mx-auto max-w-3xl lg:max-w-4xl px-4 py-10 md:px-8 md:py-16">
           <div className="grid grid-cols-1 gap-8 md:grid-cols-[1fr_280px] lg:grid-cols-[1fr_320px] md:items-start">
             <div className="flex min-w-0 flex-col gap-8">
               <button

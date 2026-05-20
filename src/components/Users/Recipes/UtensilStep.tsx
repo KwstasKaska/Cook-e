@@ -1,4 +1,6 @@
 import { useMemo, useState } from 'react';
+import { GiCookingPot, GiKnifeFork, GiBlender } from 'react-icons/gi';
+import { HiOutlineX } from 'react-icons/hi';
 
 type Utensil = {
   id: number;
@@ -7,6 +9,22 @@ type Utensil = {
   category_el: string;
   category_en: string;
 };
+
+const CATEGORY_ICONS: Record<string, JSX.Element> = {
+  'Cooking Vessels': <GiCookingPot className="h-7 w-7" />,
+  Utensils: <GiKnifeFork className="h-7 w-7" />,
+  'Extra Equipment': <GiBlender className="h-7 w-7" />,
+};
+
+const EN_KEYS: Record<string, string> = {
+  Βοηθητικά: 'Extra Equipment',
+  Σκεύη: 'Utensils',
+  'Σκεύη Μαγειρέματος': 'Cooking Vessels',
+};
+
+const getCategoryIcon = (name: string): JSX.Element =>
+  CATEGORY_ICONS[name] ??
+  CATEGORY_ICONS[EN_KEYS[name]] ?? <GiKnifeFork className="h-7 w-7" />;
 
 export default function UtensilStep({
   utensils,
@@ -37,74 +55,84 @@ export default function UtensilStep({
 
   if (loading) {
     return (
-      <div className="flex justify-center py-16">
+      <div className="flex justify-center py-8">
         <div className="h-8 w-8 animate-spin rounded-full border-4 border-cookie-300 border-t-transparent" />
       </div>
     );
   }
 
+  const selectedUtensils = utensils.filter((u) => selectedIds.includes(u.id));
+
   return (
-    <div className="flex flex-col gap-2">
-      {categoryKeys.map((catKey) => {
-        const isOpen = openCat === catKey;
-        const items = grouped.get(catKey) ?? [];
+    <div className="flex flex-col gap-3">
+      <div className="grid grid-cols-3 gap-2">
+        {categoryKeys.map((catKey) => {
+          const isOpen = openCat === catKey;
 
-        return (
-          <div
-            key={catKey}
-            className="rounded-2xl bg-surface overflow-hidden"
-            style={{
-              border: isOpen
-                ? '1.5px solid #C9955A'
-                : '1.5px solid transparent',
-            }}
-          >
+          return (
             <button
+              key={catKey}
               onClick={() => setOpenCat(isOpen ? null : catKey)}
-              className="w-full flex items-center justify-between px-5 py-3.5 transition"
+              className={`flex flex-col items-center justify-center gap-2 rounded-2xl border-2 px-2 py-4 transition ${
+                isOpen
+                  ? 'border-cookie-400 bg-cookie-100 text-cookie-400'
+                  : 'border-cookie-200 bg-surface  hover:border-cookie-300 hover:text-cookie-300'
+              }`}
             >
-              <span>{catKey}</span>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth={2}
-                className="h-4 w-4 transition-transform duration-200"
-                style={{
-                  transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
-                }}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M19.5 8.25l-7.5 7.5-7.5-7.5"
-                />
-              </svg>
+              {getCategoryIcon(catKey)}
+              <span className="text-center">{catKey}</span>
             </button>
+          );
+        })}
+      </div>
 
-            {isOpen && (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 px-4 pb-4">
-                {items.map((u) => {
-                  const sel = selectedIds.includes(u.id);
-                  const name = isEl ? u.name_el : u.name_en;
-                  return (
-                    <div
-                      key={u.id}
-                      onClick={() => onToggle(u.id)}
-                      className={`rounded-xl border border-cookie-400 px-4 py-3 cursor-pointer transition ${
-                        sel ? 'bg-cookie-200' : 'bg-surface'
-                      }`}
-                    >
-                      <p className="truncate">{name}</p>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
+      {openCat && (
+        <div className="rounded-2xl border-2 border-cookie-400 bg-surface p-3">
+          <p className="mb-2 px-1  ">{openCat}</p>
+          <div className="grid grid-cols-1 gap-1.5 sm:grid-cols-2">
+            {(grouped.get(openCat) ?? []).map((u) => {
+              const sel = selectedIds.includes(u.id);
+              const name = isEl ? u.name_el : u.name_en;
+              return (
+                <div
+                  key={u.id}
+                  onClick={() => onToggle(u.id)}
+                  className={`cursor-pointer rounded-xl border px-3 py-2 transition ${
+                    sel
+                      ? 'border-cookie-400 bg-cookie-200'
+                      : 'border-cookie-200 bg-surface hover:border-cookie-300'
+                  }`}
+                >
+                  <p className="truncate ">{name}</p>
+                </div>
+              );
+            })}
           </div>
-        );
-      })}
+        </div>
+      )}
+
+      <div className="min-h-[52px] rounded-2xl border-2 border-cookie-200 bg-surface px-4 py-3">
+        {selectedUtensils.length === 0 ? (
+          <p className=" ">
+            {isEl
+              ? 'Δεν έχεις επιλέξει σκεύη ακόμα.'
+              : 'No utensils selected yet.'}
+          </p>
+        ) : (
+          <div className="flex flex-wrap gap-1.5">
+            {selectedUtensils.map((u) => (
+              <button
+                key={u.id}
+                onClick={() => onToggle(u.id)}
+                className="flex items-center gap-1 rounded-full border border-cookie-400 bg-cookie-100 px-2.5 py-0.5  transition hover:bg-cookie-400 hover:text-white"
+              >
+                {isEl ? u.name_el : u.name_en}
+                <HiOutlineX className="h-3 w-3 flex-shrink-0" />
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

@@ -42,7 +42,7 @@ const ChatList = () => {
   return (
     <div className="min-h-screen">
       <Navbar />
-      <div className="relative z-10 mx-auto w-full max-w-5xl  pb-20 pt-12">
+      <div className="relative z-10 mx-auto w-full max-w-3xl lg:max-w-4xl  pb-20 pt-12">
         <button
           onClick={() => router.push('/user')}
           className="mb-6 ml-7 text-myText-muted hover:text-cookie-400"

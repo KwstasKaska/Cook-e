@@ -170,7 +170,7 @@ const ArticleSinglePage = ({
       )}
 
       <main className="flex flex-1 flex-col items-center px-4 py-8 md:px-8">
-        <div className="w-full max-w-2xl">
+        <div className="w-full max-w-3xl">
           <button
             onClick={() => router.back()}
             className="mb-6 flex items-center gap-2 text-myText-muted transition hover:opacity-70"

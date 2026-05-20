@@ -140,7 +140,7 @@ const NutrSchedulerContent = () => {
       <NutrNavbar />
 
       <main className="flex flex-1 flex-col items-center px-4 py-8 md:px-8">
-        <div className="w-full max-w-6xl">
+        <div className="w-full max-w-3xl lg:max-w-5xl">
           <button
             onClick={() => router.back()}
             className="mb-6 text-myText-muted hover:opacity-70 transition"
@@ -149,7 +149,7 @@ const NutrSchedulerContent = () => {
           </button>
           <h1 className="mb-8 text-center">{t('nutrnav.mealplans')}</h1>
         </div>
-        <div className="w-full max-w-6xl">
+        <div className="w-full max-w-3xl lg:max-w-5xl">
           <h2 className="mb-8 text-center">{t('nutr.createNutritionPlan')}</h2>
 
           <div className="mb-6 flex items-center justify-center gap-3">

@@ -41,7 +41,7 @@ const FavoritesContent = () => {
   return (
     <div className="min-h-screen">
       <Navbar />
-      <div className="mx-auto max-w-3xl px-6 pb-16 pt-10">
+      <div className="mx-auto max-w-3xl lg:max-w-4xl px-6 pb-16 pt-10">
         <button
           onClick={() => router.push('/user')}
           className="mb-6 text-sm font-semibold text-myText-muted hover:text-cookie-400"

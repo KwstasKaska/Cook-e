@@ -35,7 +35,7 @@ const ListView = () => {
   return (
     <div className="min-h-screen">
       <Navbar />
-      <div className="mx-auto max-w-3xl px-6 pb-24 pt-10 lg:max-w-5xl">
+      <div className="mx-auto max-w-3xl px-6 pb-24 pt-10 lg:max-w-4xl">
         <div className="mb-2">
           <button
             onClick={() => router.back()}

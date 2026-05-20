@@ -28,33 +28,31 @@ const SuggestionCard = ({
   return (
     <div
       onClick={onClick}
-      className="cursor-pointer rounded-2xl bg-surface shadow-xl transition duration-300 hover:scale-105 overflow-hidden flex flex-col"
+      className="flex cursor-pointer flex-col overflow-hidden rounded-2xl bg-surface shadow-md transition duration-300 hover:scale-[1.02] hover:shadow-xl"
     >
-      <div className="h-28 w-full overflow-hidden flex-shrink-0">
-        <img
-          src={recipe.recipeImage!}
-          alt={title}
-          className="w-full h-full object-cover"
-        />
-      </div>
-
-      <div className="flex flex-col gap-3 px-6 py-4">
-        <h3 className="text-center">{title}</h3>
-
+      {recipe.recipeImage && (
+        <div className="h-28 w-full flex-shrink-0 overflow-hidden">
+          <img
+            src={recipe.recipeImage}
+            alt={title}
+            className="h-full w-full object-cover"
+          />
+        </div>
+      )}
+      <div className="flex flex-col gap-2 px-4 py-3">
+        <p className="">{title}</p>
         {recipe.author?.user?.username && (
-          <p className="mt-auto text-myText-muted">
+          <p className="text-xs text-myText-muted">
             {t('recipes.by')} {recipe.author.user.username}
           </p>
         )}
-
         {suggestion.missingCount > 0 && (
-          <p className="text-myYellow ">
+          <p className="text-xs text-myYellow">
             -{suggestion.missingCount} {t('recipes.missingIngredients')}
           </p>
         )}
-
         {suggestion.missingUtensils.length > 0 && (
-          <p className="text-myRed ">
+          <p className="text-xs text-myRed">
             {t('recipes.missingUtensils')}:{' '}
             {suggestion.missingUtensils
               .map((u) => (isEl ? u.name_el : u.name_en))
@@ -70,62 +68,33 @@ export default function ResultsStep({
   suggestions,
   loading,
   onSelectRecipe,
-  onBack,
   isEl,
 }: {
   suggestions: Suggestion[];
   loading: boolean;
+  searched: boolean;
   onSelectRecipe: (id: number) => void;
-  onBack: () => void;
-  onSearch: () => void;
   isEl: boolean;
 }) {
-  const { t } = useTranslation('common');
+  if (loading) {
+    return (
+      <div className="flex justify-center py-24">
+        <div className="h-10 w-10 animate-spin rounded-full border-4 border-cookie-300 border-t-transparent" />
+      </div>
+    );
+  }
 
   return (
-    <div className="min-h-screen">
-      <div className="max-w-5xl mx-auto px-6 pt-10 pb-20">
-        <button
-          onClick={onBack}
-          className="flex items-center gap-2  mb-8 transition hover:opacity-80 text-myText-muted"
-        >
-          {t('recipes.backToSearch')}
-        </button>
-
-        {loading ? (
-          <div className="flex justify-center py-16">
-            <div className="h-10 w-10 animate-spin rounded-full border-4 border-cookie-300 border-t-transparent" />
-          </div>
-        ) : suggestions.length === 0 ? (
-          <p className="text-center text-myText-muted">
-            {t('recipes.noResults')}
-          </p>
-        ) : (
-          <>
-            <h2 className="text-center mb-10">{t('recipes.resultsTitle')}</h2>
-
-            <div className="flex flex-col gap-16 md:hidden">
-              {suggestions.slice(0, 6).map((s) => (
-                <SuggestionCard
-                  key={s.recipe.id}
-                  suggestion={s}
-                  onClick={() => onSelectRecipe(s.recipe.id)}
-                  isEl={isEl}
-                />
-              ))}
-            </div>
-            <div className="hidden md:grid md:grid-cols-3 md:gap-6">
-              {suggestions.slice(0, 3).map((s) => (
-                <SuggestionCard
-                  key={s.recipe.id}
-                  suggestion={s}
-                  onClick={() => onSelectRecipe(s.recipe.id)}
-                  isEl={isEl}
-                />
-              ))}
-            </div>
-          </>
-        )}
+    <div className="flex flex-col gap-4">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+        {suggestions.map((s) => (
+          <SuggestionCard
+            key={s.recipe.id}
+            suggestion={s}
+            onClick={() => onSelectRecipe(s.recipe.id)}
+            isEl={isEl}
+          />
+        ))}
       </div>
     </div>
   );

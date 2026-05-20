@@ -137,10 +137,10 @@ const ChefProfileContent = () => {
     <div className="flex min-h-screen flex-col">
       <Navbar />
       <main className="flex-1">
-        <div className="mx-auto max-w-2xl px-6 pb-20 pt-10">
+        <div className="mx-auto max-w-3xl lg:max-w-4xl px-6 pb-20 pt-10">
           <button
             onClick={() => router.back()}
-            className="mb-8 text-myText-muted hover:"
+            className="mb-8 text-myText-muted "
           >
             {t('common.back')}
           </button>

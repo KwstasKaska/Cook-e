@@ -66,7 +66,7 @@ const ChefRecipesContent = () => {
     <div className="min-h-screen bg-cookie-100">
       <ChefNavbar />
 
-      <div className="mx-auto max-w-5xl px-6 pb-16 pt-10">
+      <div className="mx-auto max-w-4xl  px-6 pb-16 pt-10">
         <button
           onClick={() => router.back()}
           className="mb-6 flex items-center gap-2 text-myText-muted transition hover:text-cookie-400"

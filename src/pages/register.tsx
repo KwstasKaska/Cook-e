@@ -38,8 +38,8 @@ const Register: NextPage = () => {
   if (loading || data?.me) return null;
 
   return (
-    <main className="flex min-h-screen w-full items-center justify-center  px-4 py-12">
-      <section className="w-full max-w-md rounded-3xl bg-surface px-8 py-8">
+    <main className="flex min-h-screen items-center justify-center  px-4 py-12">
+      <section className="w-full max-w-xl  rounded-3xl bg-surface px-8 py-8">
         <div className="mb-8 flex items-center justify-between">
           <Logo />
           <LanguageSwitcher dark />

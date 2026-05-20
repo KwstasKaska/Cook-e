@@ -59,7 +59,7 @@ const AcceptedAppointmentsContent = () => {
   return (
     <div className="min-h-screen">
       <NutrNavbar />
-      <div className="mx-auto max-w-2xl px-6 pb-16 pt-10">
+      <div className="mx-auto max-w-3xl lg:max-w-4xl px-6 pb-16 pt-10">
         <button
           onClick={() => router.push('/nutritionist')}
           className="mb-6 text-myText-muted hover:text-cookie-400"

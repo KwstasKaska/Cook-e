@@ -151,8 +151,8 @@ const Index: NextPage = () => {
           )}
         </div>
 
-        <div className=" px-6 md:px-3">
-          <div className="mb-4 text-center">
+        <div className="my-[3.5em] px-6 md:px-3 md:py-[2em]">
+          <div className="mb-6 text-center">
             <h3>{t('index.top_recipes_title')}</h3>
           </div>
 

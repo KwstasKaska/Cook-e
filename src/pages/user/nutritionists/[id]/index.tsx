@@ -82,7 +82,7 @@ const ProfileContent = () => {
   return (
     <div className="min-h-screen">
       <Navbar />
-      <div className="mx-auto max-w-2xl px-6 pb-20 pt-10">
+      <div className="mx-auto max-w-3xl lg:max-w-4xl px-6 pb-20 pt-10">
         <button
           onClick={() => router.back()}
           className="mb-8 flex items-center gap-2 text-myText-muted transition hover:"

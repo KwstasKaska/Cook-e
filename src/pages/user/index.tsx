@@ -117,7 +117,7 @@ const HomeContent = () => {
     <div className="min-h-screen">
       <Navbar />
 
-      <div className="mx-auto max-w-3xl px-6 pb-16 pt-10">
+      <div className="mx-auto max-w-3xl lg:max-w-4xl px-6 pb-16 pt-10">
         <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2">
           <div className="flex flex-col rounded-2xl bg-surface p-5 shadow-lg">
             <h3 className="mb-4">{t('settings.appointments')}</h3>

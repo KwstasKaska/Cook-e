@@ -285,7 +285,7 @@ const CreateRecipeContent = () => {
       <ChefNavbar />
 
       <main className="flex flex-1 flex-col items-center px-4 py-8 md:px-8">
-        <div className="w-full max-w-xl">
+        <div className="w-full max-w-3xl lg:max-w-4xl">
           <button
             onClick={() => router.back()}
             className="mb-6 text-myText-muted hover:opacity-70 transition"
@@ -297,7 +297,7 @@ const CreateRecipeContent = () => {
           </h1>
         </div>
 
-        <div className="w-full max-w-xl rounded-2xl bg-surface shadow-xl p-7">
+        <div className="w-full max-w-3xl lg:max-w-4xl rounded-2xl bg-surface shadow-xl p-7">
           <div className="overflow-y-auto">{renderStep()}</div>
 
           <div className="mt-8 flex items-center gap-3">

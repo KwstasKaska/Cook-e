@@ -81,7 +81,7 @@ const CartContent = ({
       <Navbar />
 
       <div className="relative min-h-screen">
-        <div className="relative z-10 mx-auto max-w-2xl px-6 pb-24 pt-14">
+        <div className="relative z-10 mx-auto lg:max-w-4xl max-w-3xl px-6 pb-24 pt-14">
           <button
             onClick={() => router.back()}
             className="mb-6 text-myText-muted hover:text-cookie-400"
