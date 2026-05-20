@@ -3,6 +3,7 @@ import Navbar from '../../../../components/Users/Navbar';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useRouter } from 'next/router';
+import { useApolloClient } from '@apollo/client';
 import {
   useNutritionistQuery,
   useMyAppointmentRequestsQuery,
@@ -47,6 +48,7 @@ const ProfileContent = () => {
   const router = useRouter();
   const lang = (router.locale ?? 'el') as 'el' | 'en';
   const { openConversation } = useChatContext();
+  const client = useApolloClient();
 
   const [showArticles, setShowArticles] = useState(false);
   const [offset, setOffset] = useState(0);
@@ -84,10 +86,12 @@ const ProfileContent = () => {
       fetchPolicy: 'network-only',
     });
 
-  const { data: avgData } = useNutritionistAverageRatingQuery({
-    variables: { nutritionistId: nutrId },
-    skip: !nutrId,
-  });
+  const { data: avgData, refetch: refetchAvg } =
+    useNutritionistAverageRatingQuery({
+      variables: { nutritionistId: nutrId },
+      skip: !nutrId,
+      fetchPolicy: 'network-only',
+    });
 
   const {
     data: ratingsData,
@@ -106,6 +110,7 @@ const ProfileContent = () => {
     useMyNutritionistRatingQuery({
       variables: { nutritionistId: nutrId },
       skip: !nutrId,
+      fetchPolicy: 'network-only',
     });
 
   const [rateNutritionist, { loading: submitting }] =
@@ -136,14 +141,20 @@ const ProfileContent = () => {
     setRatingSuccess(t('recipes.ratingSuccess'));
     setRatingScore(0);
     setShowRateForm(false);
+    client.cache.evict({ fieldName: 'nutritionistRatings' });
+    client.cache.evict({ fieldName: 'nutritionistAverageRating' });
+    client.cache.gc();
     await refetchRatings();
     await refetchMyRating();
+    await refetchAvg();
   }, [
     rateNutritionist,
     nutrId,
     ratingScore,
     refetchRatings,
     refetchMyRating,
+    refetchAvg,
+    client,
     t,
   ]);
 
@@ -153,9 +164,21 @@ const ProfileContent = () => {
     await deleteNutritionistRating({ variables: { nutritionistId: nutrId } });
     setRatingScore(0);
     setRatingSuccess(t('recipes.ratingDeleted'));
+    client.cache.evict({ fieldName: 'nutritionistRatings' });
+    client.cache.evict({ fieldName: 'nutritionistAverageRating' });
+    client.cache.gc();
     await refetchRatings();
     await refetchMyRating();
-  }, [deleteNutritionistRating, nutrId, refetchRatings, refetchMyRating, t]);
+    await refetchAvg();
+  }, [
+    deleteNutritionistRating,
+    nutrId,
+    refetchRatings,
+    refetchMyRating,
+    refetchAvg,
+    client,
+    t,
+  ]);
 
   if (loading) {
     return (

@@ -5,6 +5,7 @@ import ScrollToTopButton from '../../../components/Helper/ScrollToTopButton';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { StarRow } from '../../../components/Helper/Stars';
+import { useApolloClient } from '@apollo/client';
 import {
   useChefQuery,
   useChefAverageRatingQuery,
@@ -48,6 +49,7 @@ const ChefProfileContent = () => {
   const { id } = router.query;
   const chefId = parseInt(id as string, 10);
   const { openConversation } = useChatContext();
+  const client = useApolloClient();
 
   const [showRateForm, setShowRateForm] = useState(false);
   const [ratingScore, setRatingScore] = useState(0);
@@ -64,9 +66,10 @@ const ChefProfileContent = () => {
     fetchPolicy: 'network-only',
   });
 
-  const { data: avgData } = useChefAverageRatingQuery({
+  const { data: avgData, refetch: refetchAvg } = useChefAverageRatingQuery({
     variables: { chefId },
     skip: isNaN(chefId),
+    fetchPolicy: 'network-only',
   });
 
   const {
@@ -86,6 +89,7 @@ const ChefProfileContent = () => {
     {
       variables: { chefId },
       skip: isNaN(chefId),
+      fetchPolicy: 'network-only',
     },
   );
 
@@ -132,9 +136,22 @@ const ChefProfileContent = () => {
     setRatingSuccess(t('recipes.ratingSuccess'));
     setRatingScore(0);
     setShowRateForm(false);
+    client.cache.evict({ fieldName: 'chefRatings' });
+    client.cache.evict({ fieldName: 'chefAverageRating' });
+    client.cache.gc();
     await refetchRatings();
     await refetchMyRating();
-  }, [rateChef, chefId, ratingScore, refetchRatings, refetchMyRating, t]);
+    await refetchAvg();
+  }, [
+    rateChef,
+    chefId,
+    ratingScore,
+    refetchRatings,
+    refetchMyRating,
+    refetchAvg,
+    client,
+    t,
+  ]);
 
   const handleDeleteRating = useCallback(async () => {
     setRatingError('');
@@ -142,9 +159,21 @@ const ChefProfileContent = () => {
     await deleteChefRating({ variables: { chefId } });
     setRatingScore(0);
     setRatingSuccess(t('recipes.ratingDeleted'));
+    client.cache.evict({ fieldName: 'chefRatings' });
+    client.cache.evict({ fieldName: 'chefAverageRating' });
+    client.cache.gc();
     await refetchRatings();
     await refetchMyRating();
-  }, [deleteChefRating, chefId, refetchRatings, refetchMyRating, t]);
+    await refetchAvg();
+  }, [
+    deleteChefRating,
+    chefId,
+    refetchRatings,
+    refetchMyRating,
+    refetchAvg,
+    client,
+    t,
+  ]);
 
   if (chefLoading) {
     return (
