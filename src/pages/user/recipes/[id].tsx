@@ -107,7 +107,7 @@ const RecipeDetailContent = () => {
     fetchPolicy: 'network-only',
   });
 
-  const { data: avgData } = useRecipeAverageRatingQuery({
+  const { data: avgData, refetch: refetchAvg } = useRecipeAverageRatingQuery({
     variables: { recipeId },
     skip: isNaN(recipeId),
     fetchPolicy: 'network-only',
@@ -207,9 +207,11 @@ const RecipeDetailContent = () => {
     setRatingSuccess(t('recipes.ratingSuccess'));
     setRatingScore(0);
     client.cache.evict({ fieldName: 'recipeRatings' });
+    client.cache.evict({ fieldName: 'recipeAverageRating' });
     client.cache.gc();
     await refetchRatings();
     await refetchMyRating();
+    await refetchAvg();
   };
 
   const handleDeleteRating = async () => {
@@ -218,8 +220,12 @@ const RecipeDetailContent = () => {
     await deleteRecipeRating({ variables: { recipeId } });
     setRatingScore(0);
     setRatingSuccess(t('recipes.ratingDeleted'));
+    client.cache.evict({ fieldName: 'recipeRatings' });
+    client.cache.evict({ fieldName: 'recipeAverageRating' });
+    client.cache.gc();
     await refetchRatings();
     await refetchMyRating();
+    await refetchAvg();
   };
 
   const handleLogCooked = async () => {
@@ -268,7 +274,7 @@ const RecipeDetailContent = () => {
     <div className="flex min-h-screen flex-col">
       <Navbar />
       <main className="flex-1">
-        <div className="mx-auto max-w-3xl lg:max-w-4xl px-4 py-10 md:px-8 md:py-16">
+        <div className="mx-auto max-w-3xl lg:max-w-5xl px-4 py-10 md:px-8 md:py-16">
           <div className="grid grid-cols-1 gap-8 md:grid-cols-[1fr_280px] lg:grid-cols-[1fr_320px] md:items-start">
             <div className="flex min-w-0 flex-col gap-8">
               <button
