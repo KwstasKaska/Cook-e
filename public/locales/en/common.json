@@ -108,7 +108,6 @@
   },
   "cart": {
     "title": "Supermarket list",
-    "addIngredient": "Add ingredient...",
     "items": "ingredients",
     "clearSelected": "Clear selected",
     "emptyCart": "Your list is empty.",

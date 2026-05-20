@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import Navbar from '../../../../components/Users/Navbar';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
@@ -5,12 +6,16 @@ import { useRouter } from 'next/router';
 import {
   useNutritionistQuery,
   useMyAppointmentRequestsQuery,
+  useArticlesByNutritionistQuery,
 } from '../../../../generated/graphql';
 import useIsUser from '../../../../utils/useIsUser';
 import { useChatContext } from '../../../../components/Chat/ChatContext';
 import { pick } from '../../../../utils/pick';
 import NutrBookingSection from '../../../../components/Users/Nutritionists/NutrBookingSection';
 import ShareButton from '../../../../components/Helper/ShareButton';
+import PaginationControls from '../../../../components/Helper/PaginationControls';
+
+const LIMIT = 6;
 
 export async function getServerSideProps({ locale }: { locale: string }) {
   return {
@@ -31,6 +36,8 @@ const ProfileContent = () => {
   const router = useRouter();
   const lang = (router.locale ?? 'el') as 'el' | 'en';
   const { openConversation } = useChatContext();
+  const [showArticles, setShowArticles] = useState(false);
+  const [offset, setOffset] = useState(0);
 
   const id = Number(router.query.id);
 
@@ -50,6 +57,19 @@ const ProfileContent = () => {
   const hasAcceptedAppointment = myRequests.some(
     (req) => req.status === 'ACCEPTED' && req.slot?.nutritionistId === nutr?.id,
   );
+
+  const userId = nutr?.user?.id ?? 0;
+
+  const { data: articlesData, loading: articlesLoading } =
+    useArticlesByNutritionistQuery({
+      variables: { nutritionistId: userId, limit: LIMIT, offset },
+      skip: !showArticles || !userId,
+      fetchPolicy: 'network-only',
+    });
+
+  const articles = articlesData?.articlesByNutritionist ?? [];
+  const hasMore = articles.length === LIMIT;
+  const hasPrev = offset > 0;
 
   if (loading) {
     return (
@@ -76,7 +96,6 @@ const ProfileContent = () => {
   const cityText = pick(nutr.city_el ?? '', nutr.city_en ?? '', lang);
   const bioText = pick(nutr.bio_el ?? '', nutr.bio_en ?? '', lang);
   const username = nutr.user?.username ?? '—';
-  const userId = nutr.user?.id ?? 0;
   const image = nutr.user?.image ?? null;
 
   return (
@@ -101,21 +120,15 @@ const ProfileContent = () => {
                 />
               ) : (
                 <div className="flex h-full w-full items-center justify-center bg-cookie-200">
-                  <span className="text-myText-heading">
-                    {username[0]?.toUpperCase() ?? '?'}
-                  </span>
+                  <span className="">{username[0]?.toUpperCase() ?? '?'}</span>
                 </div>
               )}
             </div>
 
             <div className="min-w-0 flex-1">
               <h3 className="truncate">{username}</h3>
-              {cityText && (
-                <p className="mt-0.5  text-myText-muted">{cityText}</p>
-              )}
-              {nutr.phone && (
-                <p className="mt-0.5  text-myText-muted">{nutr.phone}</p>
-              )}
+              {cityText && <p className="mt-0.5  ">{cityText}</p>}
+              {nutr.phone && <p className="mt-0.5  ">{nutr.phone}</p>}
             </div>
 
             {hasAcceptedAppointment && userId > 0 && (
@@ -141,23 +154,79 @@ const ProfileContent = () => {
             )}
           </div>
 
-          {bioText && (
-            <p className=" leading-relaxed text-myText-muted">{bioText}</p>
-          )}
+          {bioText && <p className="">{bioText}</p>}
 
-          <div className="flex items-center gap-3 border-t border-cookie-400 pt-4">
+          <div className="flex justify-between border-t border-cookie-400 pt-4">
             <ShareButton
               url={typeof window !== 'undefined' ? window.location.href : ''}
               dark
             />
             <button
-              onClick={() => router.push(`/user/nutritionists/${id}/articles`)}
-              className="rounded-xl border-2 border-cookie-400 px-4 py-1.5   transition hover:bg-cookie-400 hover:text-white"
+              onClick={() => {
+                setShowArticles((prev) => !prev);
+                setOffset(0);
+              }}
+              className="rounded-xl border-2 border-cookie-400 px-4 py-1.5 transition hover:bg-cookie-400 hover:text-white"
             >
               {t('chef.profile.articles')}
             </button>
           </div>
         </div>
+
+        {showArticles && (
+          <div className="mb-6 rounded-2xl bg-surface p-6 shadow-lg">
+            <h3 className="mb-4">{t('chef.profile.articles')}</h3>
+
+            {articlesLoading ? (
+              <div className="flex justify-center py-12">
+                <div className="h-8 w-8 animate-spin rounded-full border-2 border-cookie-300 border-t-transparent" />
+              </div>
+            ) : articles.length === 0 ? (
+              <div className="py-12 text-center">
+                <p className="text-myText-muted">
+                  {t('chef.profile.no_articles')}
+                </p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {articles.map((article) => {
+                  const title = pick(article.title_el, article.title_en, lang);
+                  return (
+                    <div
+                      key={article.id}
+                      onClick={() =>
+                        router.push(`/user/articles/${article.id}`)
+                      }
+                      className="cursor-pointer overflow-hidden rounded-2xl bg-cookie-100 shadow-lg transition hover:scale-[1.02] hover:shadow-xl"
+                    >
+                      <div className="relative h-32 w-full overflow-hidden">
+                        <img
+                          src={article.image}
+                          alt={title}
+                          className="h-full w-full object-cover"
+                        />
+                      </div>
+                      <div className="px-4 py-3">
+                        <p className="">{title}</p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+
+            {!articlesLoading && (hasPrev || hasMore) && (
+              <PaginationControls
+                hasPrev={hasPrev}
+                hasMore={hasMore}
+                onPrev={() => setOffset((o) => o - LIMIT)}
+                onNext={() => setOffset((o) => o + LIMIT)}
+                prevLabel={t('pagination.prevArticles')}
+                nextLabel={t('pagination.nextArticles')}
+              />
+            )}
+          </div>
+        )}
 
         <NutrBookingSection
           nutritionistProfileId={nutr.id}

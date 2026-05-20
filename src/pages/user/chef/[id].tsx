@@ -1,10 +1,10 @@
 import { useState, useCallback } from 'react';
 import { useRouter } from 'next/router';
-import Navbar from '../../../../components/Users/Navbar';
-import ScrollToTopButton from '../../../../components/Helper/ScrollToTopButton';
+import Navbar from '../../../components/Users/Navbar';
+import ScrollToTopButton from '../../../components/Helper/ScrollToTopButton';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { StarRow } from '../../../../components/Helper/Stars';
+import { StarRow } from '../../../components/Helper/Stars';
 import {
   useChefQuery,
   useChefAverageRatingQuery,
@@ -12,14 +12,20 @@ import {
   useMyChefRatingQuery,
   useRateChefMutation,
   useDeleteChefRatingMutation,
-} from '../../../../generated/graphql';
-import useIsUser from '../../../../utils/useIsUser';
-import { useChatContext } from '../../../../components/Chat/ChatContext';
-import ChefRateForm from '../../../../components/Users/Chefs/ChefRateForm';
+  useArticlesByChefQuery,
+  useRecipesByChefQuery,
+} from '../../../generated/graphql';
+import useIsUser from '../../../utils/useIsUser';
+import { useChatContext } from '../../../components/Chat/ChatContext';
+import PaginationControls from '../../../components/Helper/PaginationControls';
+import ChefRateForm from '../../../components/Users/Chefs/ChefRateForm';
 import ChefReviewsList, {
   RATINGS_LIMIT,
-} from '../../../../components/Users/Chefs/ChefReviewsList';
-import { pick } from '../../../../utils/pick';
+} from '../../../components/Users/Chefs/ChefReviewsList';
+import { pick } from '../../../utils/pick';
+
+const ARTICLES_LIMIT = 6;
+const RECIPES_LIMIT = 6;
 
 export async function getServerSideProps({ locale }: { locale: string }) {
   return {
@@ -47,6 +53,10 @@ const ChefProfileContent = () => {
   const [ratingScore, setRatingScore] = useState(0);
   const [ratingError, setRatingError] = useState('');
   const [ratingSuccess, setRatingSuccess] = useState('');
+  const [showArticles, setShowArticles] = useState(false);
+  const [articlesOffset, setArticlesOffset] = useState(0);
+  const [showRecipes, setShowRecipes] = useState(false);
+  const [recipesOffset, setRecipesOffset] = useState(0);
 
   const { data: chefData, loading: chefLoading } = useChefQuery({
     variables: { id: chefId },
@@ -82,6 +92,19 @@ const ChefProfileContent = () => {
   const [rateChef, { loading: submitting }] = useRateChefMutation();
   const [deleteChefRating] = useDeleteChefRatingMutation();
 
+  const { data: articlesData, loading: articlesLoading } =
+    useArticlesByChefQuery({
+      variables: { chefId, limit: ARTICLES_LIMIT, offset: articlesOffset },
+      skip: !showArticles || isNaN(chefId),
+      fetchPolicy: 'network-only',
+    });
+
+  const { data: recipesData, loading: recipesLoading } = useRecipesByChefQuery({
+    variables: { chefId, limit: RECIPES_LIMIT, offset: recipesOffset },
+    skip: !showRecipes || isNaN(chefId),
+    fetchPolicy: 'network-only',
+  });
+
   const chef = chefData?.chef;
   const avgRating = avgData?.chefAverageRating ?? 0;
   const reviews = ratingsData?.chefRatings ?? [];
@@ -89,6 +112,14 @@ const ChefProfileContent = () => {
   const fetchingMoreRatings = ratingsNetworkStatus === 3;
   const hasMoreReviews =
     reviews.length > 0 && reviews.length % RATINGS_LIMIT === 0;
+
+  const articles = articlesData?.articlesByChef ?? [];
+  const articlesHasMore = articles.length === ARTICLES_LIMIT;
+  const articlesHasPrev = articlesOffset > 0;
+
+  const recipes = recipesData?.recipesByChef ?? [];
+  const recipesHasMore = recipes.length === RECIPES_LIMIT;
+  const recipesHasPrev = recipesOffset > 0;
 
   const handleRate = useCallback(async () => {
     setRatingError('');
@@ -160,14 +191,11 @@ const ChefProfileContent = () => {
               )}
               <div className="min-w-0 flex-1">
                 <h3 className="truncate">{chef.user?.username}</h3>
-                {avgRating > 0 && (
-                  <StarRow rating={avgRating} ratingCount={reviews.length} />
-                )}
               </div>
               {chef.user?.id && (
                 <button
                   onClick={() => openConversation(chef.user!.id)}
-                  className="flex-shrink-0 rounded-full border-2 border-cookie-400 p-2  transition hover:bg-cookie-400 hover:text-white"
+                  className="flex-shrink-0 rounded-full border-2 border-cookie-400 p-2 transition hover:bg-cookie-400 hover:text-white"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -189,20 +217,144 @@ const ChefProfileContent = () => {
 
             {bio && <p className=" leading-relaxed text-myText-muted">{bio}</p>}
 
+            {avgRating > 0 && (
+              <StarRow rating={avgRating} ratingCount={reviews.length} />
+            )}
+
             <div className="flex gap-3">
               <button
-                onClick={() => router.push(`/user/chef/${chefId}/recipes`)}
+                onClick={() => {
+                  setShowRecipes((prev) => !prev);
+                  setRecipesOffset(0);
+                }}
                 className="flex-1 rounded-xl border-2 border-cookie-400 py-2   transition hover:bg-cookie-400 hover:text-white"
               >
                 {t('chef.profile.recipes')}
               </button>
               <button
-                onClick={() => router.push(`/user/chef/${chefId}/articles`)}
+                onClick={() => {
+                  setShowArticles((prev) => !prev);
+                  setArticlesOffset(0);
+                }}
                 className="flex-1 rounded-xl border-2 border-cookie-400 py-2   transition hover:bg-cookie-400 hover:text-white"
               >
                 {t('chef.profile.articles')}
               </button>
             </div>
+
+            {showRecipes && (
+              <div className="border-t border-cookie-200 pt-4">
+                {recipesLoading ? (
+                  <div className="flex justify-center py-12">
+                    <div className="h-8 w-8 animate-spin rounded-full border-2 border-cookie-300 border-t-transparent" />
+                  </div>
+                ) : recipes.length === 0 ? (
+                  <div className="py-12 text-center">
+                    <p className="text-myText-muted">
+                      {t('chef.landing.no_recipes')}
+                    </p>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                    {recipes.map((recipe) => {
+                      const title = pick(
+                        recipe.title_el,
+                        recipe.title_en,
+                        lang,
+                      );
+                      return (
+                        <div
+                          key={recipe.id}
+                          onClick={() =>
+                            router.push(`/user/recipes/${recipe.id}`)
+                          }
+                          className="cursor-pointer overflow-hidden rounded-2xl bg-cookie-100 shadow-lg transition hover:scale-[1.02] hover:shadow-xl"
+                        >
+                          <div className="relative h-32 w-full overflow-hidden">
+                            <img
+                              src={recipe.recipeImage!}
+                              alt={title}
+                              className="h-full w-full object-cover"
+                            />
+                          </div>
+                          <div className="px-4 py-3">
+                            <p className="line-clamp-2 font-medium">{title}</p>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+
+                {!recipesLoading && (recipesHasPrev || recipesHasMore) && (
+                  <PaginationControls
+                    hasPrev={recipesHasPrev}
+                    hasMore={recipesHasMore}
+                    onPrev={() => setRecipesOffset((o) => o - RECIPES_LIMIT)}
+                    onNext={() => setRecipesOffset((o) => o + RECIPES_LIMIT)}
+                    prevLabel={t('pagination.prevRecipes')}
+                    nextLabel={t('pagination.nextRecipes')}
+                  />
+                )}
+              </div>
+            )}
+
+            {showArticles && (
+              <div className="border-t border-cookie-200 pt-4">
+                {articlesLoading ? (
+                  <div className="flex justify-center py-12">
+                    <div className="h-8 w-8 animate-spin rounded-full border-2 border-cookie-300 border-t-transparent" />
+                  </div>
+                ) : articles.length === 0 ? (
+                  <div className="py-12 text-center">
+                    <p className="text-myText-muted">
+                      {t('chef.profile.no_articles')}
+                    </p>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                    {articles.map((article) => {
+                      const title = pick(
+                        article.title_el,
+                        article.title_en,
+                        lang,
+                      );
+                      return (
+                        <div
+                          key={article.id}
+                          onClick={() =>
+                            router.push(`/user/articles/${article.id}`)
+                          }
+                          className="cursor-pointer overflow-hidden rounded-2xl bg-cookie-100 shadow-lg transition hover:scale-[1.02] hover:shadow-xl"
+                        >
+                          <div className="relative h-32 w-full overflow-hidden">
+                            <img
+                              src={article.image}
+                              alt={title}
+                              className="h-full w-full object-cover"
+                            />
+                          </div>
+                          <div className="px-4 py-3">
+                            <p className="line-clamp-2 font-medium">{title}</p>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+
+                {!articlesLoading && (articlesHasPrev || articlesHasMore) && (
+                  <PaginationControls
+                    hasPrev={articlesHasPrev}
+                    hasMore={articlesHasMore}
+                    onPrev={() => setArticlesOffset((o) => o - ARTICLES_LIMIT)}
+                    onNext={() => setArticlesOffset((o) => o + ARTICLES_LIMIT)}
+                    prevLabel={t('pagination.prevArticles')}
+                    nextLabel={t('pagination.nextArticles')}
+                  />
+                )}
+              </div>
+            )}
 
             <div className="border-t border-cookie-200 pt-4">
               <button
