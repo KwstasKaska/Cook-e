@@ -136,7 +136,7 @@ const NutrSchedulerContent = () => {
   const headerBg = '#EDD4B0';
 
   return (
-    <div className="min-h-screen ">
+    <div className="min-h-screen">
       <NutrNavbar />
 
       <main className="flex flex-1 flex-col items-center px-4 py-8 md:px-8">
@@ -149,6 +149,7 @@ const NutrSchedulerContent = () => {
           </button>
           <h1 className="mb-8 text-center">{t('nutrnav.mealplans')}</h1>
         </div>
+
         <div className="w-full max-w-3xl lg:max-w-5xl">
           <h2 className="mb-8 text-center">{t('nutr.createNutritionPlan')}</h2>
 
@@ -257,7 +258,7 @@ const NutrSchedulerContent = () => {
                 <button
                   type="button"
                   onClick={() => setCellInfo({})}
-                  className="rounded-xl border-2 border-cookie-400 px-4 py-0.5  transition hover:bg-cookie-400 hover:text-white"
+                  className="rounded-xl border-2 border-cookie-400 px-4 py-0.5 transition hover:bg-cookie-400 hover:text-white"
                 >
                   {t('nutr.clear')}
                 </button>
@@ -265,7 +266,7 @@ const NutrSchedulerContent = () => {
               <button
                 type="button"
                 onClick={handleSubmit}
-                className={`rounded-xl border-2 border-cookie-400 px-8 py-2.5  shadow-lg transition-opacity   ${
+                className={`rounded-xl border-2 border-cookie-400 px-8 py-2.5 shadow-lg transition-opacity ${
                   filledCells.length === 0
                     ? 'cursor-not-allowed'
                     : 'hover:text-white hover:bg-cookie-400'
@@ -291,10 +292,15 @@ const NutrSchedulerContent = () => {
           ) : (
             <div className="flex flex-col gap-10">
               {[...byUser.entries()].map(([username, entries]) => (
-                <div key={username}>
-                  <p className="mb-3 text-nutr-200">{username}</p>
+                <div
+                  key={username}
+                  className="overflow-hidden rounded-2xl bg-surface shadow-lg"
+                >
+                  <div className="border-b border-cookie-200 px-6 py-4">
+                    <p className="text-nutr-200">{username}</p>
+                  </div>
 
-                  <div className="flex flex-col gap-2">
+                  <div className="flex flex-col gap-2 p-4">
                     {DAY_ORDER.map((day) => {
                       const meals = MEAL_ORDER.map((mealType) =>
                         entries.find(
@@ -310,7 +316,7 @@ const NutrSchedulerContent = () => {
                       return (
                         <div
                           key={day}
-                          className="overflow-hidden rounded-2xl bg-surface"
+                          className="overflow-hidden rounded-xl bg-cookie-100"
                           style={{
                             border: isOpen
                               ? '1.5px solid #5B9EC9'

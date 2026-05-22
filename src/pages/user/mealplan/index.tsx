@@ -55,17 +55,22 @@ const MealPlanContent = () => {
 
         {plan.length === 0 ? (
           <div className="py-12 text-center">
-            <p className=" text-myText-muted">{t('settings.noMealPlan')}</p>
+            <p className="text-myText-muted">{t('settings.noMealPlan')}</p>
           </div>
         ) : (
           <div className="flex flex-col gap-10">
             {[...byNutritionist.entries()].map(([nutrName, entries]) => (
-              <div key={nutrName}>
-                <p className="mb-3   text-nutr-200">
-                  {t('settings.mealPlanBy')} {nutrName}
-                </p>
+              <div
+                key={nutrName}
+                className="overflow-hidden rounded-2xl bg-surface shadow-lg"
+              >
+                <div className="border-b border-cookie-200 px-6 py-4">
+                  <p className="text-nutr-200">
+                    {t('settings.mealPlanBy')} {nutrName}
+                  </p>
+                </div>
 
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-2 p-4">
                   {DAY_ORDER.map((day) => {
                     const meals = MEAL_ORDER.map((mealType) =>
                       entries.find(
@@ -81,7 +86,7 @@ const MealPlanContent = () => {
                     return (
                       <div
                         key={day}
-                        className="overflow-hidden rounded-2xl bg-surface"
+                        className="overflow-hidden rounded-xl bg-cookie-100"
                         style={{
                           border: isOpen
                             ? '1.5px solid #C9955A'
@@ -90,7 +95,7 @@ const MealPlanContent = () => {
                       >
                         <button
                           onClick={() => setOpenDay(isOpen ? null : key)}
-                          className="flex w-full items-center justify-between px-5 py-3.5   transition"
+                          className="flex w-full items-center justify-between px-5 py-3.5 transition"
                         >
                           <span className="capitalize">{t(`day.${day}`)}</span>
                           <svg
@@ -127,10 +132,10 @@ const MealPlanContent = () => {
 
                               return (
                                 <div key={mealType} className="flex gap-4 py-3">
-                                  <span className="w-28 flex-shrink-0   capitalize text-nutr-200">
+                                  <span className="w-28 flex-shrink-0 capitalize text-nutr-200">
                                     {t(`meal.${mealType}`)}
                                   </span>
-                                  <p className="">{comment}</p>
+                                  <p>{comment}</p>
                                 </div>
                               );
                             })}
