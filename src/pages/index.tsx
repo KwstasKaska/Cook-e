@@ -18,6 +18,7 @@ interface RecipeCardProps {
   image: string;
   authorName: string;
   authorImage?: string | null;
+  onClick?: () => void;
 }
 
 const RecipeCard = ({
@@ -25,8 +26,12 @@ const RecipeCard = ({
   image,
   authorName,
   authorImage,
+  onClick,
 }: RecipeCardProps) => (
-  <div className="grid w-full grid-flow-row justify-items-center gap-2 overflow-hidden rounded-[.9em] bg-surface pb-[1.5em] shadow-2xl drop-shadow-2xl">
+  <div
+    onClick={onClick}
+    className="grid w-full grid-flow-row justify-items-center gap-2 overflow-hidden rounded-[.9em] bg-surface pb-[1.5em] shadow-2xl drop-shadow-2xl cursor-pointer hover:opacity-90 transition-opacity"
+  >
     <img
       src={image}
       alt={title}
@@ -66,6 +71,15 @@ const Index: NextPage = () => {
 
   const featuredRecipes = topRatedData?.topRatedRecipes ?? [];
 
+  const role = meData?.me?.role?.toLowerCase();
+
+  const getRecipeRedirect = (recipeId: number) => {
+    if (!meData?.me) return '/login';
+    if (role === 'chef') return '/chef/recipes';
+    if (role === 'nutritionist') return `/nutritionist/recipes/${recipeId}`;
+    return `/user/recipes/${recipeId}`;
+  };
+
   const cards = featuredRecipes.map((recipe) => (
     <RecipeCard
       key={recipe.id}
@@ -73,46 +87,13 @@ const Index: NextPage = () => {
       image={recipe.recipeImage!}
       authorName={recipe.author?.user?.username ?? '—'}
       authorImage={recipe.author?.user?.image}
+      onClick={() => router.push(getRecipeRedirect(recipe.id))}
     />
   ));
 
   return (
     <div className="min-h-screen w-full md:grid md:grid-cols-2">
-      <div className="container h-full pt-[1em]">
-        <div className="flex h-full flex-col items-center justify-center gap-5 px-6 py-10 md:px-[3.5em]">
-          <h1 className="text-center leading-tight">{t('index.hero_title')}</h1>
-
-          <div className="flex flex-col gap-3 text-center">
-            <p>
-              <span className="font-bold">{t('index.role_user_label')}</span>{' '}
-              {t('index.role_user_desc')}
-            </p>
-            <p>
-              <span className="font-bold">{t('index.role_chef_label')}</span>{' '}
-              {t('index.role_chef_desc')}
-            </p>
-            <p>
-              <span className="font-bold">
-                {t('index.role_nutritionist_label')}
-              </span>{' '}
-              {t('index.role_nutritionist_desc')}
-            </p>
-          </div>
-
-          <button
-            onClick={() =>
-              router.push(
-                meData?.me ? `/${meData.me.role.toLowerCase()}` : '/login',
-              )
-            }
-            className="rounded-full border border-cookie-200 bg-cookie-200 px-4 py-0.5 text-myText-base"
-          >
-            {t('index.cta')}
-          </button>
-        </div>
-      </div>
-
-      <section className="container mt-[3em] grid grid-flow-row gap-4 rounded-[3em] bg-cookie-200 md:mt-0 md:rounded-none md:rounded-bl-[6em]">
+      <section className="container mt-[3em] grid grid-flow-row gap-4 rounded-[3em] bg-cookie-200 md:mt-0 md:rounded-none md:rounded-br-[6em]">
         <div className="flex flex-col items-center gap-3 px-4 pt-4">
           <div className="flex w-full items-center mb-8 mt-2 justify-between">
             <Logo />
@@ -136,16 +117,26 @@ const Index: NextPage = () => {
                   </button>
                 </>
               ) : (
-                <button
-                  onClick={async () => {
-                    await logout();
-                    await apolloClient.resetStore();
-                  }}
-                  disabled={logoutLoading}
-                  className="rounded-full border border-surface bg-surface px-4 py-0.5 text-myText-base disabled:opacity-60"
-                >
-                  {t('index.logout')}
-                </button>
+                <>
+                  <button
+                    onClick={() =>
+                      router.push(`/${meData.me!.role.toLowerCase()}`)
+                    }
+                    className="rounded-full border border-surface bg-surface px-4 py-0.5 text-myText-base"
+                  >
+                    {t('nav.home')}
+                  </button>
+                  <button
+                    onClick={async () => {
+                      await logout();
+                      await apolloClient.resetStore();
+                    }}
+                    disabled={logoutLoading}
+                    className="rounded-full border border-surface bg-surface px-4 py-0.5 text-myText-base disabled:opacity-60"
+                  >
+                    {t('index.logout')}
+                  </button>
+                </>
               )}
             </div>
           )}
@@ -179,6 +170,29 @@ const Index: NextPage = () => {
           </div>
         </div>
       </section>
+
+      <div className="container h-full pt-[1em]">
+        <div className="flex h-full flex-col items-center justify-center gap-5 px-6 py-10 md:px-[3.5em]">
+          <h1 className="text-center leading-tight">{t('index.hero_title')}</h1>
+
+          <div className="flex flex-col gap-3 text-center">
+            <p>
+              <span className="font-bold">{t('index.role_user_label')}</span>{' '}
+              {t('index.role_user_desc')}
+            </p>
+            <p>
+              <span className="font-bold">{t('index.role_chef_label')}</span>{' '}
+              {t('index.role_chef_desc')}
+            </p>
+            <p>
+              <span className="font-bold">
+                {t('index.role_nutritionist_label')}
+              </span>{' '}
+              {t('index.role_nutritionist_desc')}
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

@@ -5,7 +5,6 @@ import { useTranslation } from 'next-i18next';
 import NutrNavbar from '../../../components/Nutritionist/NutrNavbar';
 import useIsNutritionist from '../../../utils/useIsNutr';
 import { useRecipesQuery } from '../../../generated/graphql';
-import ScrollToTopButton from '../../../components/Helper/ScrollToTopButton';
 import PaginationControls from '../../../components/Helper/PaginationControls';
 import { pick } from '../../../utils/pick';
 
@@ -112,8 +111,6 @@ const NutrRecipesContent = () => {
           </div>
         )}
       </div>
-
-      <ScrollToTopButton />
     </div>
   );
 };

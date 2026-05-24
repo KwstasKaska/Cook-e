@@ -30,7 +30,6 @@ import RecipeActionButtons from '../../../components/Chef/recipeDetail/RecipeAct
 import RecipeTimeBreakdown from '../../../components/Chef/recipeDetail/RecipeTimeBreakdown';
 import RecipeCategoryCard from '../../../components/Chef/recipeDetail/RecipeCategoryCard';
 import RecipeMacrosCard from '../../../components/Chef/recipeDetail/RecipeMacrosCard';
-import ScrollToTopButton from '../../../components/Helper/ScrollToTopButton';
 import Stars from '../../../components/Helper/Stars';
 import DeleteConfirm from '../../../components/Helper/DeleteConfirm';
 import { DIFFICULTY_OPTIONS } from '../../../utils/recipeUtils';
@@ -388,7 +387,6 @@ export default function ChefSingleRecipe() {
             </div>
           </div>
         </div>
-        <ScrollToTopButton />
       </main>
     </div>
   );

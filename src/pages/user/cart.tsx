@@ -7,7 +7,6 @@ import {
   useMyCartQuery,
   useRemoveFromCartMutation,
 } from '../../generated/graphql';
-import ScrollToTopButton from '../../components/Helper/ScrollToTopButton';
 import useIsUser from '../../utils/useIsUser';
 
 export async function getServerSideProps({ locale }: { locale: string }) {
@@ -199,8 +198,6 @@ const CartContent = ({
           )}
         </div>
       </div>
-
-      <ScrollToTopButton />
     </div>
   );
 };

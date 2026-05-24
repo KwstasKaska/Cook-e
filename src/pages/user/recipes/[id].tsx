@@ -1,7 +1,6 @@
 import { useState, useCallback, useRef } from 'react';
 import { useRouter } from 'next/router';
 import Navbar from '../../../components/Users/Navbar';
-import ScrollToTopButton from '../../../components/Helper/ScrollToTopButton';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
 import { StarRow } from '../../../components/Helper/Stars';
@@ -643,7 +642,6 @@ const RecipeDetailContent = () => {
           </div>
         </div>
       </main>
-      <ScrollToTopButton />
     </div>
   );
 };

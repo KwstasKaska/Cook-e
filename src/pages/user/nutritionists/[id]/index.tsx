@@ -24,7 +24,6 @@ import NutrRateForm from '../../../../components/Users/Nutritionists/NutrRateFor
 import NutrReviewsList, {
   RATINGS_LIMIT,
 } from '../../../../components/Users/Nutritionists/NutrReviewsList';
-import ScrollToTopButton from '../../../../components/Helper/ScrollToTopButton';
 import { StarRow } from '../../../../components/Helper/Stars';
 
 const LIMIT = 6;
@@ -387,7 +386,6 @@ const ProfileContent = () => {
           hasAcceptedAppointment={hasAcceptedAppointment}
         />
       </div>
-      <ScrollToTopButton />
     </div>
   );
 };
