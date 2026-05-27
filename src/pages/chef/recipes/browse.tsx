@@ -74,7 +74,6 @@ const ChefBrowseRecipesContent = () => {
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
               {recipes.map((recipe) => {
                 const title = pick(recipe.title_el, recipe.title_en, lang);
-                const author = recipe.author?.user?.username ?? '';
                 return (
                   <div
                     key={recipe.id}
@@ -96,11 +95,6 @@ const ChefBrowseRecipesContent = () => {
                     </div>
                     <div className="px-3 pt-2 pb-3 flex flex-col justify-center text-center">
                       <p className="line-clamp-2 break-words">{title}</p>
-                      {author && (
-                        <p className="mt-0.5 line-clamp-1 text-myText-muted">
-                          {author}
-                        </p>
-                      )}
                     </div>
                   </div>
                 );

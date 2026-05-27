@@ -138,7 +138,6 @@ const ChefBrowseArticlesContent = () => {
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
               {articles.map((a) => {
                 const title = pick(a.title_el, a.title_en, lang);
-                const author = a.creator?.username ?? '';
                 return (
                   <Link
                     key={a.id}
@@ -157,11 +156,6 @@ const ChefBrowseArticlesContent = () => {
                     </div>
                     <div className="px-3 pt-2 pb-3 flex flex-col justify-center text-center">
                       <p className="line-clamp-2 break-words">{title}</p>
-                      {author && (
-                        <p className="mt-0.5 line-clamp-1 text-myText-muted">
-                          {author}
-                        </p>
-                      )}
                     </div>
                   </Link>
                 );
