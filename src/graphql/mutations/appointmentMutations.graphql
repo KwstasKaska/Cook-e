@@ -26,3 +26,15 @@ mutation RespondToAppointmentRequest(
 ) {
   respondToAppointmentRequest(requestId: $requestId, status: $status)
 }
+
+mutation DeleteAppointmentRequest($id: Float!) {
+  deleteAppointmentRequest(id: $id)
+}
+
+mutation CancelAcceptedRequest($id: Int!) {
+  cancelAcceptedRequest(id: $id)
+}
+
+mutation CancelAcceptedRequestAsNutr($id: Int!) {
+  cancelAcceptedRequestAsNutr(id: $id)
+}

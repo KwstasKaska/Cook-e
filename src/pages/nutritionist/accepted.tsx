@@ -6,8 +6,10 @@ import { el, enUS } from 'date-fns/locale';
 import { useChatContext } from '../../components/Chat/ChatContext';
 import PaginationControls from '../../components/Helper/PaginationControls';
 import NutrNavbar from '../../components/Nutritionist/NutrNavbar';
+import DeleteConfirm from '../../components/Helper/DeleteConfirm';
 import {
   useGetAppointmentRequestsForNutritionistQuery,
+  useCancelAcceptedRequestAsNutrMutation,
   AppointmentStatus,
 } from '../../generated/graphql';
 import { toDisplay } from '../../utils/appointmentUtils';
@@ -34,12 +36,17 @@ const AcceptedAppointmentsContent = () => {
   const router = useRouter();
   const dateFnsLocale = i18n.language === 'el' ? el : enUS;
   const [page, setPage] = useState(0);
+  const [confirmId, setConfirmId] = useState<number | null>(null);
   const { openConversation } = useChatContext();
 
-  const { data, loading } = useGetAppointmentRequestsForNutritionistQuery({
-    variables: { limit: 100, offset: 0 },
-    fetchPolicy: 'network-only',
-  });
+  const { data, loading, refetch } =
+    useGetAppointmentRequestsForNutritionistQuery({
+      variables: { limit: 100, offset: 0 },
+      fetchPolicy: 'network-only',
+    });
+
+  const [cancelAccepted, { loading: cancelling }] =
+    useCancelAcceptedRequestAsNutrMutation();
 
   const all = useMemo(() => {
     return (data?.getAppointmentRequestsForNutritionist ?? [])
@@ -56,13 +63,32 @@ const AcceptedAppointmentsContent = () => {
   const totalPages = Math.ceil(all.length / LIMIT);
   const paginated = all.slice(page * LIMIT, page * LIMIT + LIMIT);
 
+  const handleConfirm = async () => {
+    if (confirmId === null) return;
+    await cancelAccepted({ variables: { id: confirmId } });
+    setConfirmId(null);
+    refetch();
+  };
+
   return (
     <div className="min-h-screen">
       <NutrNavbar />
+
+      {confirmId !== null && (
+        <DeleteConfirm
+          title={t('settings.cancelAppointmentNutr')}
+          confirmLabel={t('common.delete')}
+          cancelLabel={t('common.cancel')}
+          loading={cancelling}
+          onConfirm={handleConfirm}
+          onCancel={() => setConfirmId(null)}
+        />
+      )}
+
       <div className="mx-auto max-w-3xl lg:max-w-4xl px-6 pb-16 pt-10">
         <button
           onClick={() => router.push('/nutritionist')}
-          className="mb-6  hover:text-cookie-400"
+          className="mb-6 hover:text-cookie-400"
         >
           {t('common.back')}
         </button>
@@ -71,14 +97,14 @@ const AcceptedAppointmentsContent = () => {
 
         {loading ? (
           <div className="flex justify-center py-12">
-            <div className="h-6 w-6 rounded-full border-4 border-cookie-400 border-t-transparent animate-spin" />
+            <div className="h-6 w-6 animate-spin rounded-full border-4 border-cookie-400 border-t-transparent" />
           </div>
         ) : all.length === 0 ? (
           <div className="py-12 text-center">
-            <p className="">{t('nutr.noAcceptedAppt')}</p>
+            <p>{t('nutr.noAcceptedAppt')}</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             {paginated.map((req) => {
               const client = req.client;
               const date = req.slot?.date
@@ -103,34 +129,43 @@ const AcceptedAppointmentsContent = () => {
                     )}
                     <div className="min-w-0">
                       <p className="truncate">{client?.username ?? '—'}</p>
-                      <p className="truncate ">
+                      <p className="truncate">
                         {date} · {time}
                       </p>
                     </div>
                   </div>
 
-                  {client && (
-                    <button
-                      onClick={() => openConversation(client.id)}
-                      className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border-2 border-cookie-400 text-cookie-400 transition hover:bg-cookie-400 hover:text-white"
-                      aria-label="Open chat"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        strokeWidth={2}
+                  <div className="flex flex-shrink-0 items-center gap-2">
+                    {client && (
+                      <button
+                        onClick={() => openConversation(client.id)}
+                        className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border-2 border-cookie-400 text-cookie-400 transition hover:bg-cookie-400 hover:text-white"
+                        aria-label="Open chat"
                       >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M8 10h.01M12 10h.01M16 10h.01M21 16c0 1.1-.9 2-2 2H7l-4 4V6a2 2 0 012-2h14a2 2 0 012 2v10z"
-                        />
-                      </svg>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-5 w-5"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          strokeWidth={2}
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M8 10h.01M12 10h.01M16 10h.01M21 16c0 1.1-.9 2-2 2H7l-4 4V6a2 2 0 012-2h14a2 2 0 012 2v10z"
+                          />
+                        </svg>
+                      </button>
+                    )}
+
+                    <button
+                      onClick={() => setConfirmId(Number(req.id))}
+                      className="rounded-full border-2 border-myRed px-3 py-0.5 text-myRed transition hover:bg-myRed hover:text-white"
+                    >
+                      {t('common.cancel')}
                     </button>
-                  )}
+                  </div>
                 </div>
               );
             })}

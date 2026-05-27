@@ -150,6 +150,9 @@
     "city": "City",
     "aboutMe": "About me",
     "bio": "Bio",
+    "cancelAppointment": "Delete request?",
+    "cancelAppointmentNutr": "Delete appointment?",
+
     "profilePicture": "Profile picture",
     "changePhoto": "Change photo",
     "bioPlaceholder": "Tell us a little about yourself...",

@@ -116,7 +116,7 @@ const AppointmentsContent = () => {
     <div className="min-h-screen">
       <NutrNavbar />
       <div className="mx-auto max-w-3xl lg:max-w-4xl px-6 pb-16 pt-10">
-        <button onClick={() => router.back()} className="mb-6  ">
+        <button onClick={() => router.back()} className="mb-6">
           {t('common.back')}
         </button>
         <section className="mb-12">
@@ -127,7 +127,7 @@ const AppointmentsContent = () => {
 
           {pendingRequests.length === 0 ? (
             <div className="py-8 text-center">
-              <p className="">{t('nutr.noPendingRequests2')}</p>
+              <p>{t('nutr.noPendingRequests2')}</p>
             </div>
           ) : (
             <div className="flex flex-col gap-3">
@@ -141,7 +141,7 @@ const AppointmentsContent = () => {
                 return (
                   <div
                     key={req.id}
-                    className="flex flex-col gap-3 overflow-hidden rounded-2xl border-2 border-cookie-400  bg-surface px-4 py-4 sm:flex-row sm:items-center sm:justify-between"
+                    className="flex flex-col gap-3 overflow-hidden rounded-2xl border-2 border-cookie-400 bg-surface px-4 py-4 sm:flex-row sm:items-center sm:justify-between"
                   >
                     <div className="flex min-w-0 items-center gap-3">
                       {client?.image ? (
@@ -155,7 +155,7 @@ const AppointmentsContent = () => {
                       )}
                       <div className="min-w-0">
                         <p className="truncate">{client?.username ?? '—'}</p>
-                        <p className="truncate ">
+                        <p className="truncate">
                           {reqDate} · {reqTime}
                         </p>
                       </div>
@@ -166,7 +166,7 @@ const AppointmentsContent = () => {
                         onClick={() =>
                           handleRespond(req.id, AppointmentStatus.Accepted)
                         }
-                        className="rounded-full border-2 border-cookie-400 px-4 py-1 hover:bg-cookie-400 hover:text-white transition "
+                        className="rounded-full border-2 border-cookie-400 px-4 py-1 transition hover:bg-cookie-400 hover:text-white"
                       >
                         {t('nutr.accept')}
                       </button>
@@ -227,32 +227,18 @@ const AppointmentsContent = () => {
               {futureSlots.map((slot) => (
                 <div
                   key={slot.id}
-                  className="flex items-center justify-between rounded-2xl border border-cookie-200 bg-surface px-4 py-3"
+                  className="flex flex-col gap-2 rounded-2xl border border-cookie-200 bg-surface px-4 py-3 md:flex-row md:items-center md:justify-between"
                 >
                   <div className="flex gap-3">
                     <span>{toDisplay(slot.date, dateFnsLocale)}</span>
-                    <span className="">{slot.time}</span>
+                    <span>{slot.time}</span>
                   </div>
                   {slot.isAvailable && (
                     <button
                       onClick={() => handleDelete(slot.id)}
-                      className=" transition hover:text-myRed"
-                      aria-label="Delete slot"
+                      className="self-start rounded-full border-2 border-myRed px-3 py-0.5 text-myRed transition hover:bg-myRed hover:text-white"
                     >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-4 w-4"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        strokeWidth={2}
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M6 18L18 6M6 6l12 12"
-                        />
-                      </svg>
+                      {t('common.delete')}
                     </button>
                   )}
                 </div>

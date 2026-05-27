@@ -251,6 +251,8 @@ export type Mutation = {
   __typename?: 'Mutation';
   addManyToCart: Array<ShoppingCart>;
   addToCart: ShoppingCart;
+  cancelAcceptedRequest: Scalars['Boolean']['output'];
+  cancelAcceptedRequestAsNutr: Scalars['Boolean']['output'];
   changePassword: UserResponse;
   clearCart: Scalars['Boolean']['output'];
   createAppointment: AppointmentResponse;
@@ -299,6 +301,16 @@ export type MutationAddManyToCartArgs = {
 
 export type MutationAddToCartArgs = {
   ingredientId: Scalars['Int']['input'];
+};
+
+
+export type MutationCancelAcceptedRequestArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
+export type MutationCancelAcceptedRequestAsNutrArgs = {
+  id: Scalars['Int']['input'];
 };
 
 
@@ -1103,6 +1115,27 @@ export type RespondToAppointmentRequestMutationVariables = Exact<{
 
 
 export type RespondToAppointmentRequestMutation = { __typename?: 'Mutation', respondToAppointmentRequest: boolean };
+
+export type DeleteAppointmentRequestMutationVariables = Exact<{
+  id: Scalars['Float']['input'];
+}>;
+
+
+export type DeleteAppointmentRequestMutation = { __typename?: 'Mutation', deleteAppointmentRequest: boolean };
+
+export type CancelAcceptedRequestMutationVariables = Exact<{
+  id: Scalars['Int']['input'];
+}>;
+
+
+export type CancelAcceptedRequestMutation = { __typename?: 'Mutation', cancelAcceptedRequest: boolean };
+
+export type CancelAcceptedRequestAsNutrMutationVariables = Exact<{
+  id: Scalars['Int']['input'];
+}>;
+
+
+export type CancelAcceptedRequestAsNutrMutation = { __typename?: 'Mutation', cancelAcceptedRequestAsNutr: boolean };
 
 export type UpdateArticleMutationVariables = Exact<{
   data: UpdateArticleInput;
@@ -2243,6 +2276,99 @@ export function useRespondToAppointmentRequestMutation(baseOptions?: Apollo.Muta
 export type RespondToAppointmentRequestMutationHookResult = ReturnType<typeof useRespondToAppointmentRequestMutation>;
 export type RespondToAppointmentRequestMutationResult = Apollo.MutationResult<RespondToAppointmentRequestMutation>;
 export type RespondToAppointmentRequestMutationOptions = Apollo.BaseMutationOptions<RespondToAppointmentRequestMutation, RespondToAppointmentRequestMutationVariables>;
+export const DeleteAppointmentRequestDocument = gql`
+    mutation DeleteAppointmentRequest($id: Float!) {
+  deleteAppointmentRequest(id: $id)
+}
+    `;
+export type DeleteAppointmentRequestMutationFn = Apollo.MutationFunction<DeleteAppointmentRequestMutation, DeleteAppointmentRequestMutationVariables>;
+
+/**
+ * __useDeleteAppointmentRequestMutation__
+ *
+ * To run a mutation, you first call `useDeleteAppointmentRequestMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteAppointmentRequestMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteAppointmentRequestMutation, { data, loading, error }] = useDeleteAppointmentRequestMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteAppointmentRequestMutation(baseOptions?: Apollo.MutationHookOptions<DeleteAppointmentRequestMutation, DeleteAppointmentRequestMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteAppointmentRequestMutation, DeleteAppointmentRequestMutationVariables>(DeleteAppointmentRequestDocument, options);
+      }
+export type DeleteAppointmentRequestMutationHookResult = ReturnType<typeof useDeleteAppointmentRequestMutation>;
+export type DeleteAppointmentRequestMutationResult = Apollo.MutationResult<DeleteAppointmentRequestMutation>;
+export type DeleteAppointmentRequestMutationOptions = Apollo.BaseMutationOptions<DeleteAppointmentRequestMutation, DeleteAppointmentRequestMutationVariables>;
+export const CancelAcceptedRequestDocument = gql`
+    mutation CancelAcceptedRequest($id: Int!) {
+  cancelAcceptedRequest(id: $id)
+}
+    `;
+export type CancelAcceptedRequestMutationFn = Apollo.MutationFunction<CancelAcceptedRequestMutation, CancelAcceptedRequestMutationVariables>;
+
+/**
+ * __useCancelAcceptedRequestMutation__
+ *
+ * To run a mutation, you first call `useCancelAcceptedRequestMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCancelAcceptedRequestMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [cancelAcceptedRequestMutation, { data, loading, error }] = useCancelAcceptedRequestMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useCancelAcceptedRequestMutation(baseOptions?: Apollo.MutationHookOptions<CancelAcceptedRequestMutation, CancelAcceptedRequestMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CancelAcceptedRequestMutation, CancelAcceptedRequestMutationVariables>(CancelAcceptedRequestDocument, options);
+      }
+export type CancelAcceptedRequestMutationHookResult = ReturnType<typeof useCancelAcceptedRequestMutation>;
+export type CancelAcceptedRequestMutationResult = Apollo.MutationResult<CancelAcceptedRequestMutation>;
+export type CancelAcceptedRequestMutationOptions = Apollo.BaseMutationOptions<CancelAcceptedRequestMutation, CancelAcceptedRequestMutationVariables>;
+export const CancelAcceptedRequestAsNutrDocument = gql`
+    mutation CancelAcceptedRequestAsNutr($id: Int!) {
+  cancelAcceptedRequestAsNutr(id: $id)
+}
+    `;
+export type CancelAcceptedRequestAsNutrMutationFn = Apollo.MutationFunction<CancelAcceptedRequestAsNutrMutation, CancelAcceptedRequestAsNutrMutationVariables>;
+
+/**
+ * __useCancelAcceptedRequestAsNutrMutation__
+ *
+ * To run a mutation, you first call `useCancelAcceptedRequestAsNutrMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCancelAcceptedRequestAsNutrMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [cancelAcceptedRequestAsNutrMutation, { data, loading, error }] = useCancelAcceptedRequestAsNutrMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useCancelAcceptedRequestAsNutrMutation(baseOptions?: Apollo.MutationHookOptions<CancelAcceptedRequestAsNutrMutation, CancelAcceptedRequestAsNutrMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CancelAcceptedRequestAsNutrMutation, CancelAcceptedRequestAsNutrMutationVariables>(CancelAcceptedRequestAsNutrDocument, options);
+      }
+export type CancelAcceptedRequestAsNutrMutationHookResult = ReturnType<typeof useCancelAcceptedRequestAsNutrMutation>;
+export type CancelAcceptedRequestAsNutrMutationResult = Apollo.MutationResult<CancelAcceptedRequestAsNutrMutation>;
+export type CancelAcceptedRequestAsNutrMutationOptions = Apollo.BaseMutationOptions<CancelAcceptedRequestAsNutrMutation, CancelAcceptedRequestAsNutrMutationVariables>;
 export const UpdateArticleDocument = gql`
     mutation UpdateArticle($data: UpdateArticleInput!) {
   updateArticle(data: $data) {

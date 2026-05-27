@@ -253,10 +253,10 @@ export default function ChatWidget({ currentUserId }: ChatWidgetProps) {
                   className={`flex ${isMine ? 'justify-end' : 'justify-start'}`}
                 >
                   <div
-                    className={`max-w-[70%] break-words rounded-2xl px-3 py-2 ${
+                    className={`w-full break-words rounded-2xl px-3 py-2 ${
                       isMine
-                        ? 'rounded-br-sm bg-cookie-300 text-white'
-                        : 'rounded-bl-sm bg-cookie-100 text-myText-base'
+                        ? ' bg-cookie-300 text-white'
+                        : ' bg-cookie-100 text-myText-base'
                     }`}
                   >
                     {msg.body}

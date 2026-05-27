@@ -6,11 +6,16 @@ import { el, enUS } from 'date-fns/locale';
 import useIsUser from '../../../utils/useIsUser';
 import Navbar from '../../../components/Users/Navbar';
 import PaginationControls from '../../../components/Helper/PaginationControls';
-import { useMyAppointmentRequestsQuery } from '../../../generated/graphql';
+import DeleteConfirm from '../../../components/Helper/DeleteConfirm';
+import {
+  useMyAppointmentRequestsQuery,
+  useDeleteAppointmentRequestMutation,
+  useCancelAcceptedRequestMutation,
+  AppointmentStatus,
+} from '../../../generated/graphql';
 import { toDisplay, statusStyle } from '../../../utils/appointmentUtils';
-import { AppointmentStatus } from '../../../generated/graphql';
 
-const LIMIT = 6;
+const LIMIT = 8;
 
 export async function getServerSideProps({ locale }: { locale: string }) {
   return {
@@ -31,8 +36,17 @@ const AppointmentsContent = () => {
   const router = useRouter();
   const dateFnsLocale = i18n.language === 'el' ? el : enUS;
   const [page, setPage] = useState(0);
+  const [confirmId, setConfirmId] = useState<number | null>(null);
+  const [confirmType, setConfirmType] = useState<'pending' | 'accepted' | null>(
+    null,
+  );
 
-  const { data, loading } = useMyAppointmentRequestsQuery();
+  const { data, loading, refetch } = useMyAppointmentRequestsQuery();
+
+  const [deletePending, { loading: deletingPending }] =
+    useDeleteAppointmentRequestMutation();
+  const [cancelAccepted, { loading: cancellingAccepted }] =
+    useCancelAcceptedRequestMutation();
 
   const today = new Date().toISOString().split('T')[0];
 
@@ -48,13 +62,42 @@ const AppointmentsContent = () => {
   const totalPages = Math.ceil(all.length / LIMIT);
   const paginated = all.slice(page * LIMIT, page * LIMIT + LIMIT);
 
+  const handleConfirm = async () => {
+    if (confirmId === null) return;
+    if (confirmType === 'pending') {
+      await deletePending({ variables: { id: confirmId } });
+    } else {
+      await cancelAccepted({ variables: { id: confirmId } });
+    }
+    setConfirmId(null);
+    setConfirmType(null);
+    refetch();
+  };
+
+  const isConfirming = deletingPending || cancellingAccepted;
+
   return (
     <div className="min-h-screen">
       <Navbar />
+
+      {confirmId !== null && (
+        <DeleteConfirm
+          title={t('settings.cancelAppointment')}
+          confirmLabel={t('common.delete')}
+          cancelLabel={t('common.cancel')}
+          loading={isConfirming}
+          onConfirm={handleConfirm}
+          onCancel={() => {
+            setConfirmId(null);
+            setConfirmType(null);
+          }}
+        />
+      )}
+
       <div className="mx-auto max-w-3xl lg:max-w-4xl px-6 pb-16 pt-10">
         <button
           onClick={() => router.push('/user')}
-          className="mb-6  hover:text-cookie-400"
+          className="mb-6 hover:text-cookie-400"
         >
           {t('common.back')}
         </button>
@@ -62,10 +105,10 @@ const AppointmentsContent = () => {
         <h1 className="mb-8 text-center">{t('settings.appointments')}</h1>
 
         {loading ? (
-          <p className=" ">{t('common.loading')}</p>
+          <p>{t('common.loading')}</p>
         ) : all.length === 0 ? (
           <div className="py-12 text-center">
-            <p className=" ">{t('settings.noAppointments')}</p>
+            <p>{t('settings.noAppointments')}</p>
           </div>
         ) : (
           <div className="flex flex-col gap-3">
@@ -75,6 +118,9 @@ const AppointmentsContent = () => {
                 ? toDisplay(req.slot.date, dateFnsLocale)
                 : '—';
               const time = req.slot?.time ?? '—';
+              const canCancel =
+                req.status === AppointmentStatus.Pending ||
+                req.status === AppointmentStatus.Accepted;
 
               return (
                 <div
@@ -86,28 +132,46 @@ const AppointmentsContent = () => {
                       <img
                         src={nutr.image}
                         alt={nutr.username}
-                        className="h-10 w-10 flex-shrink-0 border-2 border-cookie-400 rounded-full object-cover"
+                        className="h-10 w-10 flex-shrink-0 rounded-full border-2 border-cookie-400 object-cover"
                       />
                     ) : (
                       <div className="h-10 w-10 flex-shrink-0 rounded-full bg-cookie-200" />
                     )}
                     <div className="min-w-0">
-                      <p className="truncate  ">{nutr?.username ?? '—'}</p>
-                      <p className="truncate  ">
+                      <p className="truncate">{nutr?.username ?? '—'}</p>
+                      <p className="truncate">
                         {date} · {time}
                       </p>
                     </div>
                   </div>
 
-                  <span
-                    className={`w-fit flex-shrink-0 rounded-full px-3 py-1   ${
-                      statusStyle[req.status]
-                    }`}
-                  >
-                    {t(
-                      `settings.appointmentStatus.${req.status.toLowerCase()}`,
+                  <div className="flex flex-shrink-0 items-center gap-3">
+                    <span
+                      className={`rounded-full px-3 py-1 ${
+                        statusStyle[req.status]
+                      }`}
+                    >
+                      {t(
+                        `settings.appointmentStatus.${req.status.toLowerCase()}`,
+                      )}
+                    </span>
+
+                    {canCancel && (
+                      <button
+                        onClick={() => {
+                          setConfirmId(Number(req.id));
+                          setConfirmType(
+                            req.status === AppointmentStatus.Pending
+                              ? 'pending'
+                              : 'accepted',
+                          );
+                        }}
+                        className="rounded-full border-2 border-myRed px-3 py-0.5 text-myRed transition hover:bg-myRed hover:text-white"
+                      >
+                        {t('common.delete')}
+                      </button>
                     )}
-                  </span>
+                  </div>
                 </div>
               );
             })}
