@@ -138,13 +138,6 @@ const RecipeDetailContent = () => {
     async (ingredientId: number) => {
       await addToCart({ variables: { ingredientId } });
       setAddedToCart((prev) => new Set(prev).add(ingredientId));
-      setTimeout(() => {
-        setAddedToCart((prev) => {
-          const next = new Set(prev);
-          next.delete(ingredientId);
-          return next;
-        });
-      }, 1500);
     },
     [addToCart],
   );
