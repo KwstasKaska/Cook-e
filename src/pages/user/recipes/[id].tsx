@@ -15,6 +15,7 @@ import {
   useSaveRecipeMutation,
   useUnsaveRecipeMutation,
   useAddToCartMutation,
+  useRemoveFromCartMutation,
   useRateRecipeMutation,
   useDeleteRecipeRatingMutation,
   useLogCookedRecipeMutation,
@@ -54,10 +55,7 @@ const RecipeDetailContent = () => {
   const client = useApolloClient();
 
   const [showRateForm, setShowRateForm] = useState(false);
-  const [checkedIngredients, setCheckedIngredients] = useState<Set<number>>(
-    new Set(),
-  );
-  const [addedToCart, setAddedToCart] = useState<Set<number>>(new Set());
+  const [cartMap, setCartMap] = useState<Map<number, number>>(() => new Map());
   const [ratingScore, setRatingScore] = useState(0);
   const [cookState, setCookState] = useState<CookState>('idle');
   const [lastCookId, setLastCookId] = useState<number | null>(null);
@@ -103,6 +101,7 @@ const RecipeDetailContent = () => {
   const [saveRecipe] = useSaveRecipeMutation();
   const [unsaveRecipe] = useUnsaveRecipeMutation();
   const [addToCart] = useAddToCartMutation();
+  const [removeFromCart] = useRemoveFromCartMutation();
   const [rateRecipe, { loading: rating }] = useRateRecipeMutation();
   const [deleteRecipeRating] = useDeleteRecipeRatingMutation();
   const [logCookedRecipe, { loading: logging }] = useLogCookedRecipeMutation();
@@ -125,21 +124,29 @@ const RecipeDetailContent = () => {
   const hasMoreReviews =
     reviews.length > 0 && reviews.length % RATINGS_LIMIT === 0;
 
-  const toggleIngredient = (ingredientId: number) =>
-    setCheckedIngredients((prev) => {
-      const next = new Set(prev);
-      next.has(ingredientId)
-        ? next.delete(ingredientId)
-        : next.add(ingredientId);
-      return next;
-    });
-
   const handleAddToCart = useCallback(
     async (ingredientId: number) => {
-      await addToCart({ variables: { ingredientId } });
-      setAddedToCart((prev) => new Set(prev).add(ingredientId));
+      const res = await addToCart({ variables: { ingredientId } });
+      const cartItemId = res.data?.addToCart?.id;
+      if (cartItemId) {
+        setCartMap((prev) => new Map(prev).set(ingredientId, cartItemId));
+      }
     },
     [addToCart],
+  );
+
+  const handleUndoCart = useCallback(
+    async (ingredientId: number) => {
+      const cartItemId = cartMap.get(ingredientId);
+      if (!cartItemId) return;
+      await removeFromCart({ variables: { id: cartItemId } });
+      setCartMap((prev) => {
+        const next = new Map(prev);
+        next.delete(ingredientId);
+        return next;
+      });
+    },
+    [removeFromCart, cartMap],
   );
 
   const handleToggleFavorite = async () => {
@@ -248,7 +255,7 @@ const RecipeDetailContent = () => {
                 />
               </div>
 
-              {description && <p className=" md:hidden">{description}</p>}
+              {description && <p className="md:hidden">{description}</p>}
 
               {ingredients.length > 0 && (
                 <div>
@@ -260,67 +267,39 @@ const RecipeDetailContent = () => {
                       const name = isEl
                         ? ri.ingredient.name_el
                         : ri.ingredient.name_en;
-                      const isChecked = checkedIngredients.has(ingId);
-                      const inCart = addedToCart.has(ingId);
+                      const inCart = cartMap.has(ingId);
                       return (
                         <div
                           key={ingId}
                           className="flex items-center gap-3 py-2.5"
                         >
-                          <button
-                            onClick={() => toggleIngredient(ingId)}
-                            className="flex-shrink-0"
-                          >
-                            <span
-                              className={`flex h-4 w-4 items-center justify-center rounded-full border-2 transition ${
-                                isChecked
-                                  ? 'border-cookie-300 bg-cookie-300'
-                                  : 'border-myText-muted'
-                              }`}
-                            >
-                              {isChecked && (
-                                <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  viewBox="0 0 24 24"
-                                  fill="currentColor"
-                                  className="h-2.5 w-2.5 text-white"
-                                >
-                                  <path
-                                    fillRule="evenodd"
-                                    d="M19.916 4.626a.75.75 0 01.208 1.04l-9 13.5a.75.75 0 01-1.154.114l-6-6a.75.75 0 011.06-1.06l5.353 5.353 8.493-12.739a.75.75 0 011.04-.208z"
-                                    clipRule="evenodd"
-                                  />
-                                </svg>
-                              )}
-                            </span>
-                          </button>
+                          <span className="h-1.5 w-1.5 flex-shrink-0 rounded-full bg-cookie-400" />
 
-                          <span
-                            className={`flex-1 transition ${
-                              isChecked ? ' line-through' : ''
-                            }`}
-                          >
+                          <span className="flex-1">
                             {ri.quantity}{' '}
                             {t(`chef.create_recipe.units.${ri.unit}`)} {name}
                           </span>
 
-                          <button
-                            onClick={() => !inCart && handleAddToCart(ingId)}
-                            title={
-                              inCart
-                                ? t('cart.addedToCart')
-                                : t('cart.addToList')
-                            }
-                            className={`flex-shrink-0 rounded-xl border-2 px-3 py-0.5 text-sm transition ${
-                              inCart
-                                ? 'border-herb-200 bg-herb-200 text-white'
-                                : 'border-cookie-400  hover:bg-cookie-400 hover:text-white'
-                            }`}
-                          >
-                            {inCart
-                              ? t('cart.addedToCart')
-                              : t('cart.addToList')}
-                          </button>
+                          {inCart ? (
+                            <div className="flex flex-shrink-0 flex-col gap-1">
+                              <span className="rounded-xl border-2 border-herb-200 bg-herb-200 px-3 py-0.5 text-center text-sm text-white">
+                                {t('cart.addedToCart')}
+                              </span>
+                              <button
+                                onClick={() => handleUndoCart(ingId)}
+                                className="rounded-xl border-2 border-myRed px-3 py-0.5 text-sm text-myRed transition hover:bg-myRed hover:text-white"
+                              >
+                                {t('common.undo')}
+                              </button>
+                            </div>
+                          ) : (
+                            <button
+                              onClick={() => handleAddToCart(ingId)}
+                              className="flex-shrink-0 rounded-xl border-2 border-cookie-400 px-3 py-0.5 text-sm transition hover:bg-cookie-400 hover:text-white"
+                            >
+                              {t('cart.addToList')}
+                            </button>
+                          )}
                         </div>
                       );
                     })}

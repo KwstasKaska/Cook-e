@@ -322,7 +322,7 @@ const ProfileContent = () => {
 
         {showArticles && (
           <div className="mb-6 rounded-2xl bg-surface p-6 shadow-lg">
-            <h3 className="mb-4">{t('chef.overview.allArtciles')}</h3>
+            <h3 className="mb-4">{t('chef.overview.allArticles')}</h3>
 
             {articlesLoading ? (
               <div className="flex justify-center py-12">
