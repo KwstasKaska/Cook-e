@@ -42,7 +42,7 @@ const SuggestionCard = ({
       <div className="flex flex-col gap-2 px-4 py-3">
         <p className="">{title}</p>
         {recipe.author?.user?.username && (
-          <p className="text-xs text-myText-muted">
+          <p className="text-xs ">
             {t('recipes.by')} {recipe.author.user.username}
           </p>
         )}

@@ -39,7 +39,7 @@ const ListView = () => {
         <div className="mb-2">
           <button
             onClick={() => router.back()}
-            className="mb-6 text-myText-muted hover:text-cookie-400"
+            className="mb-6  hover:text-cookie-400"
           >
             {t('common.back')}
           </button>
@@ -59,7 +59,7 @@ const ListView = () => {
           <div className="relative mx-auto md:px-8">
             <div className="rounded-2xl bg-surface px-4 pb-8 pt-2 shadow-lg">
               {nutritionists.length === 0 ? (
-                <div className="py-12 text-center text-myText-muted">
+                <div className="py-12 text-center ">
                   {t('nutritionists.noResults')}
                 </div>
               ) : (
@@ -118,7 +118,7 @@ const NutrCard = ({
       </div>
       <div className="text-center px-4">
         <p className="mb-1 w-full break-words text-center">{username}</p>
-        {city && <p className="text-myText-muted">{city}</p>}
+        {city && <p className="">{city}</p>}
       </div>
     </div>
   );

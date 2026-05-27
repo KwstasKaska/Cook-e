@@ -69,7 +69,7 @@ const ChefRecipesContent = () => {
       <div className="mx-auto max-w-4xl  px-6 pb-16 pt-10">
         <button
           onClick={() => router.back()}
-          className="mb-6 flex items-center gap-2 text-myText-muted transition hover:text-cookie-400"
+          className="mb-6 flex items-center gap-2  transition hover:text-cookie-400"
         >
           {t('common.back')}
         </button>
@@ -88,9 +88,7 @@ const ChefRecipesContent = () => {
                 <div className="h-8 w-8 animate-spin rounded-full border-2 border-cookie-400 border-t-transparent" />
               </div>
             ) : recipes.length === 0 ? (
-              <p className="py-12 text-center text-myText-muted">
-                {t('chef.recipes.empty')}
-              </p>
+              <p className="py-12 text-center ">{t('chef.recipes.empty')}</p>
             ) : (
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {recipes.map((recipe) => {
@@ -115,7 +113,7 @@ const ChefRecipesContent = () => {
                       </div>
                       <div className="px-4 py-3 flex flex-col gap-1">
                         <p className="font-medium line-clamp-2">{title}</p>
-                        <p className="text-myText-muted">
+                        <p className="">
                           {duration} {t('chef.recipes.minutes')}
                         </p>
                       </div>

@@ -44,7 +44,7 @@ const FavoritesContent = () => {
       <div className="mx-auto max-w-3xl lg:max-w-4xl px-6 pb-16 pt-10">
         <button
           onClick={() => router.push('/user')}
-          className="mb-6 text-sm font-semibold text-myText-muted hover:text-cookie-400"
+          className="mb-6 text-sm font-semibold  hover:text-cookie-400"
         >
           {t('common.back')}
         </button>
@@ -56,9 +56,7 @@ const FavoritesContent = () => {
             <div className="h-8 w-8 animate-spin rounded-full border-2 border-cookie-300 border-t-transparent" />
           </div>
         ) : favorites.length === 0 && !hasPrev ? (
-          <p className="text-center text-myText-muted">
-            {t('recipes.noFavourites')}
-          </p>
+          <p className="text-center ">{t('recipes.noFavourites')}</p>
         ) : (
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
             {favorites.map((fav) => {

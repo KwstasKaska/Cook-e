@@ -66,7 +66,7 @@ const ChefOverviewContent = () => {
       <div className="flex min-h-screen flex-col">
         <ChefNavbar />
         <div className="flex flex-1 items-center justify-center">
-          <p className="text-myText-muted">{t('common.loading')}</p>
+          <p className="">{t('common.loading')}</p>
         </div>
       </div>
     );
@@ -101,23 +101,17 @@ const ChefOverviewContent = () => {
             {averageRating > 0 ? (
               <div className="mt-1 flex items-center justify-center gap-2">
                 <Stars rating={averageRating} size="sm" />
-                <span className="text-myText-muted">
+                <span className="">
                   {averageRating.toFixed(1)} ({totalRatings})
                 </span>
               </div>
             ) : (
-              <p className="mt-1 text-myText-muted">
-                {t('chef.profile.no_ratings')}
-              </p>
+              <p className="mt-1 ">{t('chef.profile.no_ratings')}</p>
             )}
           </div>
 
           <div className="w-full rounded-xl bg-cookie-100 px-5 py-4">
-            <p
-              className={`text-center leading-relaxed${
-                !bio ? ' text-myText-muted' : ''
-              }`}
-            >
+            <p className={`text-center leading-relaxed${!bio ? ' ' : ''}`}>
               {bio || t('chef.profile.bio_placeholder')}
             </p>
           </div>
@@ -132,9 +126,7 @@ const ChefOverviewContent = () => {
                 <div className="h-6 w-6 animate-spin rounded-full border-2 border-cookie-400 border-t-transparent" />
               </div>
             ) : recipes.length === 0 ? (
-              <p className="flex-1 text-myText-muted">
-                {t('chef.profile.no_recipes')}
-              </p>
+              <p className="flex-1 ">{t('chef.profile.no_recipes')}</p>
             ) : (
               <div className="flex flex-1 flex-col gap-3">
                 {recipes.map((r) => {
@@ -179,9 +171,7 @@ const ChefOverviewContent = () => {
                 <div className="h-6 w-6 animate-spin rounded-full border-2 border-cookie-400 border-t-transparent" />
               </div>
             ) : articles.length === 0 ? (
-              <p className="flex-1 text-myText-muted">
-                {t('chef.profile.no_articles')}
-              </p>
+              <p className="flex-1 ">{t('chef.profile.no_articles')}</p>
             ) : (
               <div className="flex flex-1 flex-col gap-3">
                 {articles.map((a) => {

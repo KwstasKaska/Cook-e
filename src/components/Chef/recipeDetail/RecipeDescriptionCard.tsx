@@ -84,7 +84,7 @@ export default function RecipeDescriptionCard({
             </p>
           )}
           {recipe.chefComment_el && (
-            <p className=" text-myText-muted">
+            <p className=" ">
               "{pick(recipe.chefComment_el, recipe.chefComment_en ?? '', lang)}"
             </p>
           )}

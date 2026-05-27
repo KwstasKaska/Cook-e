@@ -146,7 +146,7 @@ const ArticleSinglePage = ({
       <div className="flex min-h-screen flex-col ">
         <Navbar />
         <div className="flex flex-1 items-center justify-center">
-          <p className="text-myText-muted">{t('chef.article.not_found')}</p>
+          <p className="">{t('chef.article.not_found')}</p>
         </div>
       </div>
     );
@@ -173,7 +173,7 @@ const ArticleSinglePage = ({
         <div className="w-full max-w-3xl">
           <button
             onClick={() => router.back()}
-            className="mb-6 flex items-center gap-2 text-myText-muted transition hover:opacity-70"
+            className="mb-6 flex items-center gap-2  transition"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -205,7 +205,7 @@ const ArticleSinglePage = ({
                 <div className="absolute top-3 right-3 flex gap-2">
                   <button
                     onClick={() => setIsEditing(true)}
-                    className="flex items-center gap-1 rounded-xl bg-myYellow px-4 py-0.5 shadow transition hover:opacity-90"
+                    className="flex items-center gap-1 rounded-xl bg-myYellow px-4 py-0.5 shadow transition"
                   >
                     {t('common.edit')}
                   </button>
@@ -264,9 +264,7 @@ const ArticleSinglePage = ({
                       className="hidden"
                     />
                     {editImageFile && (
-                      <p className="mt-1 text-myText-muted">
-                        {editImageFile.name}
-                      </p>
+                      <p className="mt-1 ">{editImageFile.name}</p>
                     )}
                   </div>
 

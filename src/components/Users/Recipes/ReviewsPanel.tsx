@@ -34,9 +34,7 @@ export default function ReviewsPanel({
           <div className="h-6 w-6 animate-spin rounded-full border-4 border-cookie-400 border-t-transparent" />
         </div>
       ) : reviews.length === 0 ? (
-        <p className=" text-myText-muted">
-          {t('chef.recipe_detail.no_ratings_yet')}
-        </p>
+        <p className=" ">{t('chef.recipe_detail.no_ratings_yet')}</p>
       ) : (
         <div className="flex flex-col gap-5">
           {reviews.map((review) => (

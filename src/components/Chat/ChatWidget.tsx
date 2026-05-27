@@ -147,10 +147,7 @@ export default function ChatWidget({ currentUserId }: ChatWidgetProps) {
       <div className="flex flex-shrink-0 items-center justify-between bg-cookie-300 px-3 py-2 text-white">
         <div className="flex items-center gap-2">
           {view === 'thread' && (
-            <button
-              onClick={() => setView('inbox')}
-              className="mr-1 hover:opacity-70"
-            >
+            <button onClick={() => setView('inbox')} className="mr-1 ">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-4 w-4"
@@ -175,7 +172,7 @@ export default function ChatWidget({ currentUserId }: ChatWidgetProps) {
                 : '...'}
           </span>
         </div>
-        <button onClick={closeWidget} className="hover:opacity-70">
+        <button onClick={closeWidget} className="">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-4 w-4"
@@ -199,14 +196,12 @@ export default function ChatWidget({ currentUserId }: ChatWidgetProps) {
             <p className="px-3 py-2 text-center text-myRed">{startError}</p>
           )}
           {inboxLoading && (
-            <p className="py-6 text-center text-myText-muted">
-              {t('common.loading')}
-            </p>
+            <p className="py-6 text-center ">{t('common.loading')}</p>
           )}
           {!inboxLoading &&
             !inboxData?.myConversations?.length &&
             !startError && (
-              <p className="py-6 text-center text-myText-muted">
+              <p className="py-6 text-center ">
                 {t('no_conversations', 'No conversations yet.')}
               </p>
             )}
@@ -240,7 +235,7 @@ export default function ChatWidget({ currentUserId }: ChatWidgetProps) {
 
       {view === 'thread' && starting && (
         <div className="flex flex-1 items-center justify-center">
-          <p className="text-myText-muted">Άνοιγμα συνομιλίας...</p>
+          <p className="">Άνοιγμα συνομιλίας...</p>
         </div>
       )}
 
@@ -248,9 +243,7 @@ export default function ChatWidget({ currentUserId }: ChatWidgetProps) {
         <>
           <div className="flex-1 space-y-2 overflow-y-auto px-3 py-2">
             {threadLoading && (
-              <p className="py-4 text-center text-myText-muted">
-                {t('common.loading')}
-              </p>
+              <p className="py-4 text-center ">{t('common.loading')}</p>
             )}
             {thread?.messages?.map((msg) => {
               const isMine = msg.senderId === currentUserId;

@@ -47,7 +47,7 @@ const Register: NextPage = () => {
 
         <div className="mb-6 text-center">
           <h1 className="mb-1">{t('register.title')}</h1>
-          <p className="text-myText-muted">{t('register.subtitle')}</p>
+          <p className="">{t('register.subtitle')}</p>
         </div>
 
         <Formik
@@ -72,7 +72,7 @@ const Register: NextPage = () => {
                 type="text"
                 name="username"
                 placeholder={t('register.username_plc')}
-                className="w-full rounded-xl border border-cookie-200 px-4 py-1.5 text-myText-base placeholder:text-myText-muted focus:outline-none"
+                className="w-full rounded-xl border border-cookie-200 px-4 py-1.5   "
               />
               <ErrorMessage
                 name="username"
@@ -84,7 +84,7 @@ const Register: NextPage = () => {
                 type="email"
                 name="email"
                 placeholder={t('register.email_placeholder')}
-                className="w-full rounded-xl border border-cookie-200 px-4 py-1.5 text-myText-base placeholder:text-myText-muted focus:outline-none"
+                className="w-full rounded-xl border border-cookie-200 px-4 py-1.5   "
               />
               <ErrorMessage
                 name="email"
@@ -96,7 +96,7 @@ const Register: NextPage = () => {
                 type="password"
                 name="password"
                 placeholder={t('register.password_placeholder')}
-                className="w-full rounded-xl border border-cookie-200 px-4 py-1.5 text-myText-base placeholder:text-myText-muted focus:outline-none"
+                className="w-full rounded-xl border border-cookie-200 px-4 py-1.5   "
               />
               <ErrorMessage
                 name="password"
@@ -130,7 +130,7 @@ const Register: NextPage = () => {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="mt-4 w-full rounded-xl bg-cookie-300 py-2.5   text-white transition hover:bg-cookie-400 disabled:cursor-not-allowed disabled:opacity-60"
+                className="mt-4 w-full rounded-xl bg-cookie-300 py-2.5   text-white transition hover:bg-cookie-400 disabled:cursor-not-allowed"
               >
                 {t('register.submit')}
               </button>
@@ -138,12 +138,9 @@ const Register: NextPage = () => {
           )}
         </Formik>
 
-        <p className="mt-6 text-center text-myText-muted">
+        <p className="mt-6 text-center ">
           {t('login.account')}{' '}
-          <button
-            onClick={() => router.push('/login')}
-            className="font-semibold text-myText-base underline transition hover:opacity-80"
-          >
+          <button onClick={() => router.push('/login')} className="underline">
             {t('login.submit')}
           </button>
         </p>

@@ -50,7 +50,7 @@ export default function RecipeHeroImage({
           className="object-cover"
         />
       ) : (
-        <div className="flex h-full items-center justify-center text-myText-muted">
+        <div className="flex h-full items-center justify-center ">
           {t('chef.recipe_detail.no_image')}
         </div>
       )}

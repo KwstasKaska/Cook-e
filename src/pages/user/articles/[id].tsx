@@ -42,7 +42,7 @@ const ArticleDetailContent = () => {
       <div className="flex min-h-screen flex-col">
         <Navbar />
         <div className="flex flex-1 items-center justify-center">
-          <p className="text-myText-muted">{t('chef.article.not_found')}</p>
+          <p className="">{t('chef.article.not_found')}</p>
         </div>
       </div>
     );
@@ -60,7 +60,7 @@ const ArticleDetailContent = () => {
         <div className="w-full max-w-2xl">
           <button
             onClick={() => router.back()}
-            className="mb-6 flex items-center gap-2   text-myText-muted transition hover:opacity-70"
+            className="mb-6 flex items-center gap-2    transition"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

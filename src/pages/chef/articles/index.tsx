@@ -47,10 +47,7 @@ const ChefArticlesContent = () => {
       <ChefNavbar />
 
       <div className="mx-auto max-w-3xl lg:max-w-4xl px-6 pb-16 pt-10">
-        <button
-          onClick={() => router.back()}
-          className="mb-6 text-myText-muted "
-        >
+        <button onClick={() => router.back()} className="mb-6  ">
           {t('common.back')}
         </button>
 
@@ -97,7 +94,7 @@ const ChefArticlesContent = () => {
           </div>
         ) : articles.length === 0 ? (
           <div className="py-12 text-center">
-            <p className="text-myText-muted">{t('chef.profile.no_articles')}</p>
+            <p className="">{t('chef.profile.no_articles')}</p>
           </div>
         ) : (
           <div className="grid grid-cols-2 gap-4 md:grid-cols-3">

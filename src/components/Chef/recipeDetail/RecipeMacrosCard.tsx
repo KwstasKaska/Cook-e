@@ -27,7 +27,7 @@ export default function RecipeMacrosCard({
       <div className="flex flex-col gap-2">
         {MACRO_FIELDS.map(({ field, unit, labelKey }) => (
           <div key={field} className="flex items-center justify-between">
-            <span className="text-myText-muted">{t(labelKey)}</span>
+            <span className="">{t(labelKey)}</span>
             {isEditing ? (
               <div className="flex items-center gap-1">
                 <input
@@ -37,7 +37,7 @@ export default function RecipeMacrosCard({
                   onChange={(e) => onUpdate(field, e.target.value)}
                   className="w-16 rounded border border-cookie-400 px-2 py-0.5 text-right   outline-none focus:border-cookie-400"
                 />
-                <span className="text-myText-muted">{unit}</span>
+                <span className="">{unit}</span>
               </div>
             ) : (
               <span className=" ">

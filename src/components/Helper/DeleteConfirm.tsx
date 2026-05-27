@@ -27,7 +27,7 @@ const DeleteConfirm = ({
         <button
           onClick={onCancel}
           disabled={loading}
-          className="w-full sm:w-auto rounded-full border border-cookie-200 px-6 py-2  text-myText-muted transition hover:bg-cookie-100 disabled:opacity-50"
+          className="w-full sm:w-auto rounded-full border border-cookie-200 px-6 py-2   transition hover:bg-cookie-100 disabled:opacity-50"
         >
           {cancelLabel}
         </button>

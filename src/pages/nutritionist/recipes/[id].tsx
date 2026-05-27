@@ -60,9 +60,7 @@ const NutrRecipeDetailContent = () => {
     return (
       <div className="min-h-screen">
         <NutrNavbar />
-        <p className="pt-24 text-center text-myText-muted">
-          {t('recipe_detail.not_found')}
-        </p>
+        <p className="pt-24 text-center ">{t('recipe_detail.not_found')}</p>
       </div>
     );
   }
@@ -74,7 +72,7 @@ const NutrRecipeDetailContent = () => {
       <main className="mx-auto w-full max-w-3xl lg:max-w-4xl px-6 pb-20 pt-8">
         <button
           onClick={() => router.back()}
-          className="mb-6 flex items-center gap-2 text-myText-muted transition hover:opacity-70"
+          className="mb-6 flex items-center gap-2  transition "
         >
           {t('common.back')}
         </button>

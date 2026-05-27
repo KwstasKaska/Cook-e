@@ -89,7 +89,7 @@ const BaseNavbar = ({ links }: BaseNavbarProps) => {
         <button
           onClick={handleLogout}
           disabled={logoutLoading}
-          className="rounded-full border border-myText-base px-4 text-sm font-semibold leading-7 transition-colors duration-150 hover:border-myRed hover:bg-myRed hover:text-white disabled:opacity-50"
+          className="rounded-full border border-myText-base px-4 text-sm font-semibold leading-7 transition-colors duration-150 hover:border-myRed hover:bg-myRed hover:text-white"
         >
           {t('nav.logout')}
         </button>
@@ -115,7 +115,7 @@ const BaseNavbar = ({ links }: BaseNavbarProps) => {
           </div>
 
           {me && (
-            <div className="flex items-center gap-2 pb-4 border-b border-cookie-300">
+            <div className="flex items-center gap-2 pb-4">
               {me.image ? (
                 <img
                   src={me.image}

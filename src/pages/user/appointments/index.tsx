@@ -54,7 +54,7 @@ const AppointmentsContent = () => {
       <div className="mx-auto max-w-3xl lg:max-w-4xl px-6 pb-16 pt-10">
         <button
           onClick={() => router.push('/user')}
-          className="mb-6 text-myText-muted hover:text-cookie-400"
+          className="mb-6  hover:text-cookie-400"
         >
           {t('common.back')}
         </button>
@@ -62,10 +62,10 @@ const AppointmentsContent = () => {
         <h1 className="mb-8 text-center">{t('settings.appointments')}</h1>
 
         {loading ? (
-          <p className=" text-myText-muted">{t('common.loading')}</p>
+          <p className=" ">{t('common.loading')}</p>
         ) : all.length === 0 ? (
           <div className="py-12 text-center">
-            <p className=" text-myText-muted">{t('settings.noAppointments')}</p>
+            <p className=" ">{t('settings.noAppointments')}</p>
           </div>
         ) : (
           <div className="flex flex-col gap-3">
@@ -93,7 +93,7 @@ const AppointmentsContent = () => {
                     )}
                     <div className="min-w-0">
                       <p className="truncate  ">{nutr?.username ?? '—'}</p>
-                      <p className="truncate  text-myText-muted">
+                      <p className="truncate  ">
                         {date} · {time}
                       </p>
                     </div>

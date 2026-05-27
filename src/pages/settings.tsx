@@ -41,7 +41,11 @@ const TABS: Tab[] = [
     labelKey: 'settings.security',
     roles: ['USER', 'CHEF', 'NUTRITIONIST'],
   },
-  { key: 'chef-profile', labelKey: 'settings.chefProfile', roles: ['CHEF'] },
+  {
+    key: 'chef-profile',
+    labelKey: 'settings.nutritionistProfile',
+    roles: ['CHEF'],
+  },
   {
     key: 'nutritionist-profile',
     labelKey: 'settings.nutritionistProfile',
@@ -107,10 +111,7 @@ export default function SettingsPage() {
 
       <div className="relative overflow-hidden min-h-screen">
         <div className="relative z-10 max-w-5xl mx-auto px-6 pt-10 pb-20">
-          <button
-            onClick={() => router.back()}
-            className="mb-6 text-myText-muted "
-          >
+          <button onClick={() => router.back()} className="mb-6  ">
             {t('common.back')}
           </button>
           <h1 className="mb-8">{t('settings.title')}</h1>
@@ -169,7 +170,11 @@ export default function SettingsPage() {
                   tabIndex={0}
                   className="bg-surface rounded-2xl  border border-cookie-200 p-6 md:p-8 focus:outline-none"
                 >
-                  <PersonalTab username={me.username} image={me.image} />
+                  <PersonalTab
+                    username={me.username}
+                    image={me.image}
+                    email={me.email}
+                  />
                 </section>
               )}
               {activeTab === 'security' && (

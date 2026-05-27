@@ -102,9 +102,7 @@ export default function StepTwo({ form, fieldErrors, onUpdate }: StepTwoProps) {
       )}
 
       <h3 className="mb-1 mt-6">{t('chef.create_recipe.macros_label')}</h3>
-      <p className="mb-3 text-myText-muted">
-        {t('chef.create_recipe.macros_hint')}
-      </p>
+      <p className="mb-3 ">{t('chef.create_recipe.macros_hint')}</p>
       <div className="flex flex-col gap-3">
         {macroFields.map(({ label, field, unit }) => (
           <div key={field} className="flex items-center justify-between gap-4">
@@ -118,7 +116,7 @@ export default function StepTwo({ form, fieldErrors, onUpdate }: StepTwoProps) {
                 placeholder="0"
                 className="w-24 border-b border-cookie-200 bg-transparent py-1 outline-none text-right   focus:border-cookie-400 transition"
               />
-              <span className="text-myText-muted">{unit}</span>
+              <span className="">{unit}</span>
             </div>
           </div>
         ))}

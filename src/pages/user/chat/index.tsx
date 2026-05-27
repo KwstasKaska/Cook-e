@@ -45,7 +45,7 @@ const ChatList = () => {
       <div className="relative z-10 mx-auto w-full max-w-3xl lg:max-w-4xl  pb-20 pt-12">
         <button
           onClick={() => router.push('/user')}
-          className="mb-6 ml-7 text-myText-muted hover:text-cookie-400"
+          className="mb-6 ml-7  hover:text-cookie-400"
         >
           {t('common.back')}
         </button>
@@ -60,9 +60,7 @@ const ChatList = () => {
           <div className="relative mx-auto md:px-8">
             <div className="rounded-2xl bg-surface px-4 pb-8 pt-2 shadow-lg">
               {users.length === 0 ? (
-                <div className="py-12 text-center text-myText-muted">
-                  {t('chat.noResults')}
-                </div>
+                <div className="py-12 text-center ">{t('chat.noResults')}</div>
               ) : (
                 <div className="grid grid-cols-2 gap-4 pt-2 md:grid-cols-3 lg:grid-cols-4">
                   {users.map((u) => (

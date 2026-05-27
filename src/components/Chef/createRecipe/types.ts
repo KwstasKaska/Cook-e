@@ -46,4 +46,4 @@ export const UNIT_OPTIONS = [
 ];
 
 export const inputClass =
-  'w-full border-2 border-cookie-400  py-2 outline-none focus:border-cookie-400 transition placeholder:text-myText-muted';
+  'w-full border-2 border-cookie-400  py-2 outline-none focus:border-cookie-400 transition placeholder:';

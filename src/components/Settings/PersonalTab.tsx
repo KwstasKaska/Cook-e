@@ -6,9 +6,11 @@ import { uploadToCloudinary } from '../../utils/uploadToCloudinary';
 
 export default function PersonalTab({
   username,
+  email,
   image,
 }: {
   username: string;
+  email: string;
   image?: string | null;
 }) {
   const { t } = useTranslation('common');
@@ -101,13 +103,11 @@ export default function PersonalTab({
           <div className="flex flex-col gap-1">
             <button
               onClick={() => fileInputRef.current?.click()}
-              className="rounded-xl border-2 border-cookie-400  px-4 py-0.5  font-bold transition hover:bg-cookie-400 hover:text-white"
+              className="rounded-xl border-2 border-cookie-400 px-4 py-0.5 font-bold transition hover:bg-cookie-400 hover:text-white"
             >
               {t('settings.changePhoto')}
             </button>
-            {imageFile && (
-              <p className=" text-myText-muted">{imageFile.name}</p>
-            )}
+            {imageFile && <p className="">{imageFile.name}</p>}
           </div>
           <input
             ref={fileInputRef}
@@ -120,6 +120,10 @@ export default function PersonalTab({
       </FieldGroup>
 
       <FieldGroup title={t('settings.basicInfo')}>
+        <div>
+          <label className="block mb-1">{t('settings.email')}</label>
+          <div className="w-full  px-4 py-0.5 ">{email}</div>
+        </div>
         <Field
           label={t('settings.fullName')}
           value={usernameVal}

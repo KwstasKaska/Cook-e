@@ -83,7 +83,7 @@ const CartContent = ({
         <div className="relative z-10 mx-auto lg:max-w-4xl max-w-3xl px-6 pb-24 pt-14">
           <button
             onClick={() => router.back()}
-            className="mb-6 text-myText-muted hover:text-cookie-400"
+            className="mb-6  hover:text-cookie-400"
           >
             {t('common.back')}
           </button>
@@ -97,7 +97,7 @@ const CartContent = ({
             </div>
           ) : items.length === 0 ? (
             <div className="mb-6 rounded-2xl border-2 border-cookie-400 p-10 text-center">
-              <p className="mb-4 text-myText-muted">{t('cart.emptyCart')}</p>
+              <p className="mb-4 ">{t('cart.emptyCart')}</p>
               <button
                 onClick={() => router.push('/user/recipes')}
                 className="rounded-full border-2 border-cookie-400 px-5 py-1.5 text-cookie-400 transition hover:bg-cookie-400 hover:text-white"
@@ -158,7 +158,7 @@ const CartContent = ({
 
                       <button
                         onClick={() => handleRemove(item.id)}
-                        className="flex-shrink-0 text-myText-muted transition hover:text-myRed"
+                        className="flex-shrink-0  transition hover:text-myRed"
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -179,7 +179,7 @@ const CartContent = ({
               </div>
 
               <div className="mt-6 flex items-center justify-between border-t-2 border-cookie-400 pt-5">
-                <p className="text-myText-muted">
+                <p className="">
                   {checkedCount}/{items.length} {t('cart.items')}
                 </p>
                 <button
@@ -188,7 +188,7 @@ const CartContent = ({
                   className={`rounded-full border-2 px-5 py-2 transition ${
                     checkedCount > 0
                       ? 'cursor-pointer border-myRed text-myRed hover:bg-myRed hover:text-white'
-                      : 'cursor-not-allowed border-cookie-400 text-myText-muted'
+                      : 'cursor-not-allowed border-cookie-400 '
                   }`}
                 >
                   {t('cart.clearSelected')}

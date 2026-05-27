@@ -28,9 +28,7 @@ export default function RecipeCategoryCard({
       <div className="flex flex-col gap-3">
         {recipe.category && (
           <div>
-            <span className="text-myText-muted">
-              {t('chef.recipe_detail.dish_type')}
-            </span>
+            <span className="">{t('chef.recipe_detail.dish_type')}</span>
             {isEditing ? (
               <div className="mt-1 flex flex-wrap gap-1">
                 {CATEGORY_OPTIONS.map((opt) => (

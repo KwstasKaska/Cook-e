@@ -30,28 +30,29 @@ const RecipeCard = ({
 }: RecipeCardProps) => (
   <div
     onClick={onClick}
-    className="grid w-full grid-flow-row justify-items-center gap-2 overflow-hidden rounded-[.9em] bg-surface pb-[1.5em] shadow-2xl drop-shadow-2xl cursor-pointer hover:opacity-90 transition-opacity"
+    className="w-full overflow-hidden rounded-[.9em] bg-surface shadow-2xl drop-shadow-2xl cursor-pointer flex flex-col h-full"
   >
     <img
       src={image}
       alt={title}
-      className="h-[6em] w-full object-cover md:h-[10em]"
+      className="h-[160px] w-full object-cover flex-shrink-0"
     />
-    <h4 className="px-2 text-center">{title}</h4>
-
-    <div className="m-[0.65em] flex items-center gap-2">
-      {authorImage ? (
-        <img
-          src={authorImage}
-          alt={authorName}
-          className="h-[2em] w-[2em] rounded-[.5em] object-cover md:h-[3em] md:w-[3em]"
-        />
-      ) : (
-        <div className="flex h-[2em] w-[2em] items-center justify-center rounded-[.5em] bg-cookie-200 text-white md:h-[3em] md:w-[3em]">
-          {authorName.charAt(0).toUpperCase()}
-        </div>
-      )}
-      <p className="leading-[.8rem]">{authorName}</p>
+    <div className="h-[160px] flex flex-col items-center justify-center gap-2 px-3 py-3">
+      <h4 className="text-center">{title}</h4>
+      <div className="flex items-center gap-2">
+        {authorImage ? (
+          <img
+            src={authorImage}
+            alt={authorName}
+            className="h-[2em] w-[2em] rounded-[.5em] object-cover md:h-[3em] md:w-[3em]"
+          />
+        ) : (
+          <div className="flex h-[2em] w-[2em] items-center justify-center rounded-[.5em] bg-cookie-200 text-white md:h-[3em] md:w-[3em]">
+            {authorName.charAt(0).toUpperCase()}
+          </div>
+        )}
+        <p className="leading-[.8rem]">{authorName}</p>
+      </div>
     </div>
   </div>
 );
@@ -132,7 +133,7 @@ const Index: NextPage = () => {
                       await apolloClient.resetStore();
                     }}
                     disabled={logoutLoading}
-                    className="rounded-full border border-surface bg-surface px-4 py-0.5 text-myText-base disabled:opacity-60"
+                    className="rounded-full border border-surface bg-surface px-4 py-0.5 text-myText-base"
                   >
                     {t('index.logout')}
                   </button>
@@ -147,25 +148,27 @@ const Index: NextPage = () => {
             <h3>{t('index.top_recipes_title')}</h3>
           </div>
 
-          <div className="relative flex items-center justify-center gap-3 md:hidden">
+          <div className="relative flex items-center justify-center gap-3 lg:hidden">
             <div
               onClick={() => setSlideIndex((i) => Math.max(i - 1, 0))}
-              className="px-2 text-white disabled:opacity-30"
+              className="px-2 text-white"
             >
               ‹
             </div>
-            <div className="mt-[3em] w-[70%]">{cards[slideIndex]}</div>
+            <div className="mt-[3em] w-[70%] h-[320px]">
+              {cards[slideIndex]}
+            </div>
             <div
               onClick={() =>
                 setSlideIndex((i) => Math.min(i + 1, cards.length - 1))
               }
-              className="px-2 text-white disabled:opacity-30"
+              className="px-2 text-white"
             >
               ›
             </div>
           </div>
 
-          <div className="mt-[3em] hidden md:grid md:grid-cols-2 md:gap-7">
+          <div className="mt-[3em] hidden lg:grid lg:grid-cols-2 lg:gap-7">
             {cards}
           </div>
         </div>

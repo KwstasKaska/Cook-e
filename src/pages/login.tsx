@@ -81,21 +81,21 @@ const Login: NextPage = () => {
                 type="email"
                 name="email"
                 autoComplete="email"
-                className="w-full rounded-xl border border-cookie-200 px-4 py-1.5 text-myText-base placeholder:text-myText-muted focus:outline-none"
+                className="w-full rounded-xl border border-cookie-200 px-4 py-1.5  "
                 placeholder={t('login.email_placeholder')}
               />
               <InputField
                 type="password"
                 name="password"
                 autoComplete="current-password"
-                className="w-full rounded-xl border border-cookie-200 px-4 py-1.5 text-myText-base placeholder:text-myText-muted focus:outline-none"
+                className="w-full rounded-xl border border-cookie-200 px-4 py-1.5  "
                 placeholder={t('login.password_placeholder')}
               />
 
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="mt-1 w-full rounded-xl bg-cookie-300 py-2.5 text-white transition hover:bg-cookie-400 disabled:cursor-not-allowed disabled:opacity-60"
+                className="mt-1 w-full rounded-xl bg-cookie-300 py-2.5 text-white transition hover:bg-cookie-400 disabled:cursor-not-allowed "
               >
                 {!isSubmitting && t('login.submit')}
               </button>
@@ -103,11 +103,11 @@ const Login: NextPage = () => {
           )}
         </Formik>
 
-        <p className="mt-8 text-center text-myText-muted">
+        <p className="mt-8 text-center ">
           {t('login.no_account')}{' '}
           <button
             onClick={() => router.push('register')}
-            className=" text-myText-base underline transition hover:opacity-80"
+            className="  underline "
           >
             {t('login.create_account')}
           </button>

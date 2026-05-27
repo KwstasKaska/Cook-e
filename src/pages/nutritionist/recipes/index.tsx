@@ -51,7 +51,7 @@ const NutrRecipesContent = () => {
       <div className="mx-auto max-w-5xl px-6 pb-16 pt-10">
         <button
           onClick={() => router.back()}
-          className="mb-6 flex items-center gap-2 text-myText-muted transition hover:text-cookie-400"
+          className="mb-6 flex items-center gap-2  transition hover:text-cookie-400"
         >
           {t('common.back')}
         </button>
@@ -66,7 +66,7 @@ const NutrRecipesContent = () => {
           </div>
         ) : filtered.length === 0 ? (
           <div className="py-12 text-center">
-            <p className="text-myText-muted">{t('chef.recipes.empty')}</p>
+            <p className="">{t('chef.recipes.empty')}</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
@@ -90,7 +90,7 @@ const NutrRecipesContent = () => {
                   </div>
                   <div className="flex flex-col gap-1 p-3">
                     <p className="line-clamp-2 ">{title}</p>
-                    {author && <p className="text-myText-muted">by {author}</p>}
+                    {author && <p className="">by {author}</p>}
                   </div>
                 </button>
               );

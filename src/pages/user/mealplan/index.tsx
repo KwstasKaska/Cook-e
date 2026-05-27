@@ -46,7 +46,7 @@ const MealPlanContent = () => {
       <div className="mx-auto max-w-3xl lg:max-w-4xl px-6 pb-16 pt-10">
         <button
           onClick={() => router.push('/user')}
-          className="mb-6 text-myText-muted hover:text-cookie-400"
+          className="mb-6  hover:text-cookie-400"
         >
           {t('common.back')}
         </button>
@@ -55,7 +55,7 @@ const MealPlanContent = () => {
 
         {plan.length === 0 ? (
           <div className="py-12 text-center">
-            <p className="text-myText-muted">{t('settings.noMealPlan')}</p>
+            <p className="">{t('settings.noMealPlan')}</p>
           </div>
         ) : (
           <div className="flex flex-col gap-10">
@@ -65,7 +65,7 @@ const MealPlanContent = () => {
                 className="overflow-hidden rounded-2xl bg-surface shadow-lg"
               >
                 <div className="border-b border-cookie-200 px-6 py-4">
-                  <p className="text-nutr-200">
+                  <p className="text-cookie-400">
                     {t('settings.mealPlanBy')} {nutrName}
                   </p>
                 </div>
@@ -132,7 +132,7 @@ const MealPlanContent = () => {
 
                               return (
                                 <div key={mealType} className="flex gap-4 py-3">
-                                  <span className="w-28 flex-shrink-0 capitalize text-nutr-200">
+                                  <span className="w-28 flex-shrink-0 capitalize text-cookie-400">
                                     {t(`meal.${mealType}`)}
                                   </span>
                                   <p>{comment}</p>

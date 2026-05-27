@@ -77,9 +77,7 @@ export default function StepOne({
                 d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zM18.75 10.5h.008v.008h-.008V10.5z"
               />
             </svg>
-            <p className="text-myText-muted">
-              {t('chef.create_recipe.photo_upload_hint')}
-            </p>
+            <p className="">{t('chef.create_recipe.photo_upload_hint')}</p>
           </>
         )}
         <input

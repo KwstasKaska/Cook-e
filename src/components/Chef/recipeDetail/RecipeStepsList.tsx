@@ -53,7 +53,7 @@ export default function RecipeStepsList({
                       editForm.steps.filter((_, idx) => idx !== i),
                     )
                   }
-                  className="mt-1.5 flex-shrink-0 text-myText-muted transition hover:text-myRed"
+                  className="mt-1.5 flex-shrink-0  transition hover:text-myRed"
                 >
                   <svg
                     className="h-4 w-4"

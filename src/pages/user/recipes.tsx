@@ -106,7 +106,7 @@ const RecipesContent = () => {
       <div className="mx-auto max-w-7xl px-6 pb-24 pt-10">
         <button
           onClick={() => router.back()}
-          className="mb-6 text-myText-muted hover:text-cookie-400"
+          className="mb-6  hover:text-cookie-400"
         >
           {t('common.back')}
         </button>

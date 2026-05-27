@@ -197,10 +197,7 @@ const ChefProfileContent = () => {
       <Navbar />
       <main className="flex-1">
         <div className="mx-auto max-w-3xl lg:max-w-4xl px-6 pb-20 pt-10">
-          <button
-            onClick={() => router.back()}
-            className="mb-8 text-myText-muted "
-          >
+          <button onClick={() => router.back()} className="mb-8  ">
             {t('common.back')}
           </button>
 
@@ -243,7 +240,7 @@ const ChefProfileContent = () => {
               )}
             </div>
 
-            {bio && <p className=" leading-relaxed text-myText-muted">{bio}</p>}
+            {bio && <p className=" leading-relaxed ">{bio}</p>}
 
             {avgRating > 0 && (
               <StarRow rating={avgRating} ratingCount={reviews.length} />
@@ -278,9 +275,7 @@ const ChefProfileContent = () => {
                   </div>
                 ) : recipes.length === 0 ? (
                   <div className="py-12 text-center">
-                    <p className="text-myText-muted">
-                      {t('chef.landing.no_recipes')}
-                    </p>
+                    <p className="">{t('chef.landing.no_recipes')}</p>
                   </div>
                 ) : (
                   <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -335,9 +330,7 @@ const ChefProfileContent = () => {
                   </div>
                 ) : articles.length === 0 ? (
                   <div className="py-12 text-center">
-                    <p className="text-myText-muted">
-                      {t('chef.profile.no_articles')}
-                    </p>
+                    <p className="">{t('chef.profile.no_articles')}</p>
                   </div>
                 ) : (
                   <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">

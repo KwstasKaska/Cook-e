@@ -286,10 +286,7 @@ const CreateRecipeContent = () => {
 
       <main className="flex flex-1 flex-col items-center px-4 py-8 md:px-8">
         <div className="w-full max-w-3xl lg:max-w-4xl">
-          <button
-            onClick={() => router.back()}
-            className="mb-6 text-myText-muted hover:opacity-70 transition"
-          >
+          <button onClick={() => router.back()} className="mb-6   transition">
             {t('common.back')}
           </button>
           <h1 className="mb-8 text-center">

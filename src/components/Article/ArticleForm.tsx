@@ -107,7 +107,7 @@ const ArticleForm = ({
             className="hidden"
           />
         </div>
-        {image && <p className=" text-myText-muted">{image.name}</p>}
+        {image && <p className=" ">{image.name}</p>}
       </div>
 
       {error && <p className="text-center  text-myRed">{error}</p>}
@@ -123,7 +123,7 @@ const ArticleForm = ({
         <button
           onClick={handleCancel}
           disabled={loading}
-          className="w-full rounded-full border-2 text-myRed border-myRed hover:text-white hover:bg-myRed px-4 py-0.5   disabled:opacity-50 sm:w-auto"
+          className="w-full rounded-full border-2 text-myRed border-myRed hover:text-white hover:bg-myRed px-4 py-0.5 disabled:opacity-50 sm:w-auto"
         >
           {t('common.cancel')}
         </button>

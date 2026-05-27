@@ -278,14 +278,14 @@ const RecipeDetailContent = () => {
             <div className="flex min-w-0 flex-col gap-8">
               <button
                 onClick={() => router.back()}
-                className="flex w-fit items-center gap-2 text-myText-muted transition hover:text-cookie-400"
+                className="flex w-fit items-center gap-2  transition hover:text-cookie-400"
               >
                 {t('common.back')}
               </button>
 
               <div className="flex min-w-0 flex-col gap-3">
                 {recipe.category && (
-                  <p className="text-sm text-myText-muted">
+                  <p className="text-sm ">
                     {getCategoryLabel(recipe.category, lang)}
                   </p>
                 )}
@@ -329,9 +329,7 @@ const RecipeDetailContent = () => {
                 </button>
               )}
 
-              {description && (
-                <p className="text-myText-muted md:hidden">{description}</p>
-              )}
+              {description && <p className=" md:hidden">{description}</p>}
 
               {ingredients.length > 0 && (
                 <div>
@@ -380,7 +378,7 @@ const RecipeDetailContent = () => {
 
                           <span
                             className={`flex-1 transition ${
-                              isChecked ? 'text-myText-muted line-through' : ''
+                              isChecked ? ' line-through' : ''
                             }`}
                           >
                             {ri.quantity}{' '}
@@ -597,9 +595,7 @@ const RecipeDetailContent = () => {
                     key={tab}
                     onClick={() => setActiveTab(tab)}
                     className={`flex h-10 w-10 items-center justify-center rounded-full transition ${
-                      activeTab === tab
-                        ? 'bg-cookie-300 text-white'
-                        : 'text-myText-muted'
+                      activeTab === tab ? 'bg-cookie-300 text-white' : ''
                     }`}
                   >
                     <svg
@@ -622,7 +618,7 @@ const RecipeDetailContent = () => {
                 <button
                   onClick={handleToggleFavorite}
                   className={`flex h-10 w-10 items-center justify-center rounded-full transition ${
-                    isFavorited ? 'text-cookie-300' : 'text-myText-muted'
+                    isFavorited ? 'text-cookie-300' : ''
                   }`}
                   title={t('recipes.favourites')}
                 >

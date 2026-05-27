@@ -34,7 +34,7 @@ export default function RecipeTimeBreakdown({
       <div className="flex flex-col gap-2">
         {timeBreakdown.map(({ label, field, value }) => (
           <div key={field} className="flex items-center justify-between gap-2">
-            <span className="text-myText-muted">{label}</span>
+            <span className="">{label}</span>
             {isEditing ? (
               <input
                 type="number"

@@ -73,7 +73,7 @@ export default function StepFour({
                   onUpdateIngredient(ing.id, 'quantity', e.target.value)
                 }
                 placeholder="60"
-                className="w-12 bg-transparent font-semibold outline-none placeholder:text-myText-muted text-center border-b border-cookie-200"
+                className="w-12 bg-transparent font-semibold outline-none placeholder: text-center border-b border-cookie-200"
               />
               <select
                 value={ing.unit}
@@ -94,7 +94,7 @@ export default function StepFour({
                 <button
                   type="button"
                   onClick={() => onRemoveIngredient(ing.id)}
-                  className="ml-auto flex-shrink-0 text-myText-muted hover:text-myRed transition-colors"
+                  className="ml-auto flex-shrink-0  hover:text-myRed transition-colors"
                 >
                   <svg
                     className="h-4 w-4"

@@ -220,9 +220,7 @@ export default function ChefSingleRecipe() {
       <div className="flex min-h-screen flex-col">
         <ChefNavbar />
         <main className="flex flex-1 items-center justify-center">
-          <p className="text-myText-muted">
-            {!loading && t('chef.recipe_detail.not_found')}
-          </p>
+          <p className="">{!loading && t('chef.recipe_detail.not_found')}</p>
         </main>
       </div>
     );
@@ -306,9 +304,7 @@ export default function ChefSingleRecipe() {
                   className="hidden"
                 />
               </div>
-              {imageFile && (
-                <p className="mt-1 text-myText-muted">{imageFile.name}</p>
-              )}
+              {imageFile && <p className="mt-1 ">{imageFile.name}</p>}
             </div>
           )}
 
@@ -317,7 +313,7 @@ export default function ChefSingleRecipe() {
               {!isEditing && (
                 <div className="mb-4 flex items-center gap-2">
                   <Stars rating={avgRating} />
-                  <span className="text-myText-muted">
+                  <span className="">
                     {totalRatings > 0
                       ? `${avgRating.toFixed(1)} (${totalRatings})`
                       : t('chef.recipe_detail.no_ratings_yet')}

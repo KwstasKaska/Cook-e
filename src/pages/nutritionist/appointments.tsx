@@ -116,10 +116,7 @@ const AppointmentsContent = () => {
     <div className="min-h-screen">
       <NutrNavbar />
       <div className="mx-auto max-w-3xl lg:max-w-4xl px-6 pb-16 pt-10">
-        <button
-          onClick={() => router.back()}
-          className="mb-6 text-myText-muted "
-        >
+        <button onClick={() => router.back()} className="mb-6  ">
           {t('common.back')}
         </button>
         <section className="mb-12">
@@ -130,9 +127,7 @@ const AppointmentsContent = () => {
 
           {pendingRequests.length === 0 ? (
             <div className="py-8 text-center">
-              <p className="text-myText-muted">
-                {t('nutr.noPendingRequests2')}
-              </p>
+              <p className="">{t('nutr.noPendingRequests2')}</p>
             </div>
           ) : (
             <div className="flex flex-col gap-3">
@@ -160,7 +155,7 @@ const AppointmentsContent = () => {
                       )}
                       <div className="min-w-0">
                         <p className="truncate">{client?.username ?? '—'}</p>
-                        <p className="truncate text-myText-muted">
+                        <p className="truncate ">
                           {reqDate} · {reqTime}
                         </p>
                       </div>
@@ -171,7 +166,7 @@ const AppointmentsContent = () => {
                         onClick={() =>
                           handleRespond(req.id, AppointmentStatus.Accepted)
                         }
-                        className="rounded-full border-2 border-cookie-400 px-4 py-1 hover:bg-cookie-400 hover:text-white transition hover:opacity-80"
+                        className="rounded-full border-2 border-cookie-400 px-4 py-1 hover:bg-cookie-400 hover:text-white transition "
                       >
                         {t('nutr.accept')}
                       </button>
@@ -236,12 +231,12 @@ const AppointmentsContent = () => {
                 >
                   <div className="flex gap-3">
                     <span>{toDisplay(slot.date, dateFnsLocale)}</span>
-                    <span className="text-myText-muted">{slot.time}</span>
+                    <span className="">{slot.time}</span>
                   </div>
                   {slot.isAvailable && (
                     <button
                       onClick={() => handleDelete(slot.id)}
-                      className="text-myText-muted transition hover:text-myRed"
+                      className=" transition hover:text-myRed"
                       aria-label="Delete slot"
                     >
                       <svg

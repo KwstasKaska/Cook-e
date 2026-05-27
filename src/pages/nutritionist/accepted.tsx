@@ -62,7 +62,7 @@ const AcceptedAppointmentsContent = () => {
       <div className="mx-auto max-w-3xl lg:max-w-4xl px-6 pb-16 pt-10">
         <button
           onClick={() => router.push('/nutritionist')}
-          className="mb-6 text-myText-muted hover:text-cookie-400"
+          className="mb-6  hover:text-cookie-400"
         >
           {t('common.back')}
         </button>
@@ -75,7 +75,7 @@ const AcceptedAppointmentsContent = () => {
           </div>
         ) : all.length === 0 ? (
           <div className="py-12 text-center">
-            <p className="text-myText-muted">{t('nutr.noAcceptedAppt')}</p>
+            <p className="">{t('nutr.noAcceptedAppt')}</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -103,7 +103,7 @@ const AcceptedAppointmentsContent = () => {
                     )}
                     <div className="min-w-0">
                       <p className="truncate">{client?.username ?? '—'}</p>
-                      <p className="truncate text-myText-muted">
+                      <p className="truncate ">
                         {date} · {time}
                       </p>
                     </div>

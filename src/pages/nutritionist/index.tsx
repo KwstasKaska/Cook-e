@@ -97,7 +97,7 @@ const NutritionistOverviewContent = () => {
       <div className="flex min-h-screen flex-col">
         <NutrNavbar />
         <div className="flex flex-1 items-center justify-center">
-          <p className="text-myText-muted">{t('common.loading')}</p>
+          <p className="">{t('common.loading')}</p>
         </div>
       </div>
     );
@@ -128,9 +128,9 @@ const NutritionistOverviewContent = () => {
 
             <div className="text-center">
               <h2>{nutrProfile?.user?.username ?? ''}</h2>
-              {city && <p className="mt-0.5 text-myText-muted">{city}</p>}
+              {city && <p className="mt-0.5 ">{city}</p>}
               {nutrProfile?.phone && (
-                <p className="mt-0.5 text-myText-muted">{nutrProfile.phone}</p>
+                <p className="mt-0.5 ">{nutrProfile.phone}</p>
               )}
               {avgRating > 0 && (
                 <div className="flex mt-0.5 justify-center">
@@ -140,11 +140,7 @@ const NutritionistOverviewContent = () => {
             </div>
 
             <div className="w-full rounded-xl bg-cookie-100 px-5 py-4">
-              <p
-                className={`text-center leading-relaxed${
-                  !bio ? ' text-myText-muted' : ''
-                }`}
-              >
+              <p className={`text-center leading-relaxed${!bio ? ' ' : ''}`}>
                 {bio || t('chef.profile.bio_placeholder')}
               </p>
             </div>
@@ -158,9 +154,7 @@ const NutritionistOverviewContent = () => {
                 <div className="h-6 w-6 animate-spin rounded-full border-2 border-cookie-400 border-t-transparent" />
               </div>
             ) : thisMonthAppts.length === 0 ? (
-              <p className="flex-1 text-myText-muted">
-                {t('nutr.noAcceptedAppt')}
-              </p>
+              <p className="flex-1 ">{t('nutr.noAcceptedAppt')}</p>
             ) : (
               <div className="flex flex-1 flex-col gap-3">
                 {thisMonthAppts.map((req) => {
@@ -189,7 +183,7 @@ const NutritionistOverviewContent = () => {
                       )}
                       <div className="min-w-0 flex-1">
                         <p className="truncate">{client?.username ?? '—'}</p>
-                        <p className="truncate text-myText-muted">
+                        <p className="truncate ">
                           {date} · {time}
                         </p>
                       </div>
@@ -236,9 +230,7 @@ const NutritionistOverviewContent = () => {
                 <div className="h-6 w-6 animate-spin rounded-full border-2 border-cookie-400 border-t-transparent" />
               </div>
             ) : articles.length === 0 ? (
-              <p className="flex-1 text-myText-muted">
-                {t('chef.profile.no_articles')}
-              </p>
+              <p className="flex-1 ">{t('chef.profile.no_articles')}</p>
             ) : (
               <div className="flex flex-1 flex-col gap-3">
                 {articles.map((a) => {
@@ -284,9 +276,7 @@ const NutritionistOverviewContent = () => {
                 <div className="h-6 w-6 animate-spin rounded-full border-2 border-cookie-400 border-t-transparent" />
               </div>
             ) : recipes.length === 0 ? (
-              <p className="flex-1 text-myText-muted">
-                {t('chef.recipes.empty')}
-              </p>
+              <p className="flex-1 ">{t('chef.recipes.empty')}</p>
             ) : (
               <div className="flex flex-1 flex-col gap-3">
                 {recipes.map((r) => {

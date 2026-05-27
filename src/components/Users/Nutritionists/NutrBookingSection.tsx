@@ -135,7 +135,7 @@ export default function NutrBookingSection({ nutritionistProfileId }: Props) {
           <div className="h-6 w-6  rounded-full border-4 border-cookie-300 border-t-transparent" />
         </div>
       ) : visibleSlots.length === 0 ? (
-        <p className="mb-8  text-myText-muted">{t('nutritionists.noSlots')}</p>
+        <p className="mb-8  ">{t('nutritionists.noSlots')}</p>
       ) : (
         <>
           <div className="mb-8 flex flex-wrap justify-center gap-3">
@@ -162,7 +162,7 @@ export default function NutrBookingSection({ nutritionistProfileId }: Props) {
       <button
         onClick={handleBook}
         disabled={!selectedSlotId || requesting}
-        className={`mt-6 rounded-xl border-2 border-cookie-400 px-8 py-2.5  shadow-lg transition-opacity ${
+        className={`mt-6 rounded-xl border-2 border-cookie-400 px-8 py-2.5  shadow-lg  ${
           !selectedSlotId || requesting
             ? 'cursor-not-allowed    '
             : 'hover:text-white hover:bg-cookie-400'

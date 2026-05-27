@@ -48,13 +48,13 @@ export default function StepFive({
               onChange={(e) => onUpdateStep(s.id, e.target.value)}
               placeholder={t('chef.create_recipe.step_placeholder')}
               rows={3}
-              className="flex-1 resize-none rounded-xl border-b border-cookie-200 bg-cookie-100 px-3 py-2 outline-none placeholder:text-myText-muted focus:border-cookie-400 transition"
+              className="flex-1 resize-none rounded-xl border-b border-cookie-200 bg-cookie-100 px-3 py-2 outline-none placeholder: focus:border-cookie-400 transition"
             />
             {form.steps.length > 1 && (
               <button
                 type="button"
                 onClick={() => onRemoveStep(s.id)}
-                className="mt-2 flex-shrink-0 text-myText-muted hover:text-myRed transition-colors"
+                className="mt-2 flex-shrink-0  hover:text-myRed transition-colors"
               >
                 <svg
                   className="h-4 w-4"

@@ -141,10 +141,7 @@ const NutrSchedulerContent = () => {
 
       <main className="flex flex-1 flex-col items-center px-4 py-8 md:px-8">
         <div className="w-full max-w-3xl lg:max-w-5xl">
-          <button
-            onClick={() => router.back()}
-            className="mb-6 text-myText-muted hover:opacity-70 transition"
-          >
+          <button onClick={() => router.back()} className="mb-6   transition">
             {t('common.back')}
           </button>
           <h1 className="mb-8 text-center">{t('nutrnav.mealplans')}</h1>
@@ -154,7 +151,7 @@ const NutrSchedulerContent = () => {
           <h2 className="mb-8 text-center">{t('nutr.createNutritionPlan')}</h2>
 
           <div className="mb-6 flex items-center justify-center gap-3">
-            <label className="uppercase tracking-wide text-myText-muted">
+            <label className="uppercase tracking-wide ">
               {t('nutr.selectUser')}
             </label>
             <select
@@ -196,7 +193,7 @@ const NutrSchedulerContent = () => {
                   <tr>
                     <th
                       style={stickyCell(headerBg)}
-                      className="px-4 py-4 text-left tracking-wide text-myText-muted"
+                      className="px-4 py-4 text-left tracking-wide "
                     >
                       {t('nutr.mealsAndDays')}
                     </th>
@@ -283,11 +280,11 @@ const NutrSchedulerContent = () => {
 
           {plansLoading ? (
             <div className="flex justify-center py-8">
-              <div className="h-6 w-6 animate-spin rounded-full border-4 border-nutr-200 border-t-transparent" />
+              <div className="h-6 w-6 animate-spin rounded-full border-4 border-cookie-400 border-t-transparent" />
             </div>
           ) : byUser.size === 0 ? (
             <div className="py-8 text-center">
-              <p className="text-myText-muted">{t('nutr.noPlansYet')}</p>
+              <p className="">{t('nutr.noPlansYet')}</p>
             </div>
           ) : (
             <div className="flex flex-col gap-10">
@@ -297,7 +294,7 @@ const NutrSchedulerContent = () => {
                   className="overflow-hidden rounded-2xl bg-surface shadow-lg"
                 >
                   <div className="border-b border-cookie-200 px-6 py-4">
-                    <p className="text-nutr-200">{username}</p>
+                    <p className="">{username}</p>
                   </div>
 
                   <div className="flex flex-col gap-2 p-4">
@@ -368,7 +365,7 @@ const NutrSchedulerContent = () => {
                                     key={mealType}
                                     className="flex gap-4 py-3"
                                   >
-                                    <span className="w-28 flex-shrink-0 capitalize text-nutr-200">
+                                    <span className="w-28 flex-shrink-0 capitalize text-cookie-400">
                                       {t(`meal.${mealType}`)}
                                     </span>
                                     <p>{comment}</p>

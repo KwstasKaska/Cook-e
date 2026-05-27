@@ -43,7 +43,7 @@ export default function StepThree({ form, onUpdate }: StepThreeProps) {
         onChange={(e) => onUpdate('summary', e.target.value)}
         placeholder={t('chef.create_recipe.summary_placeholder')}
         rows={3}
-        className="w-full resize-none bg-transparent outline-none placeholder:text-myText-muted border-b border-cookie-200 focus:border-cookie-400 transition"
+        className="w-full resize-none bg-transparent outline-none placeholder: border-b border-cookie-200 focus:border-cookie-400 transition"
       />
     </div>
   );

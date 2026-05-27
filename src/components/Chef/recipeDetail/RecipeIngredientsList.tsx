@@ -97,7 +97,7 @@ export default function RecipeIngredientsList({
                   value={ing.quantity}
                   onChange={(e) => updateRow(i, { quantity: e.target.value })}
                   placeholder="60"
-                  className="w-12 border-b border-cookie-200 bg-transparent text-center  outline-none placeholder:text-myText-muted"
+                  className="w-12 border-b border-cookie-200 bg-transparent text-center  outline-none placeholder:"
                 />
                 <select
                   value={ing.unit}
@@ -116,7 +116,7 @@ export default function RecipeIngredientsList({
                   <button
                     type="button"
                     onClick={() => removeRow(i)}
-                    className="ml-auto flex-shrink-0 text-myText-muted transition hover:text-myRed"
+                    className="ml-auto flex-shrink-0  transition hover:text-myRed"
                   >
                     <svg
                       className="h-4 w-4"

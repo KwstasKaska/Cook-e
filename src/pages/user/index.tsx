@@ -127,9 +127,7 @@ const HomeContent = () => {
                 <div className="h-6 w-6 rounded-full border-2 border-cookie-400 border-t-transparent" />
               </div>
             ) : recentAppts.length === 0 ? (
-              <p className="flex-1 text-myText-muted">
-                {t('settings.noAppointments')}
-              </p>
+              <p className="flex-1 ">{t('settings.noAppointments')}</p>
             ) : (
               <div className="flex flex-1 flex-col gap-2">
                 {recentAppts.map((req) => {
@@ -150,7 +148,7 @@ const HomeContent = () => {
                       )}
                       <div className="min-w-0 flex-1">
                         <p className="truncate">{nutr?.username ?? '—'}</p>
-                        <p className="truncate text-myText-muted">
+                        <p className="truncate ">
                           {req.slot?.date
                             ? toDisplay(req.slot.date, dateFnsLocale)
                             : '—'}
@@ -187,13 +185,11 @@ const HomeContent = () => {
                 <div className="h-6 w-6 rounded-full border-2 border-cookie-400 border-t-transparent" />
               </div>
             ) : snapshotMeals.length === 0 ? (
-              <p className="flex-1 text-myText-muted">
-                {t('settings.noMealPlan')}
-              </p>
+              <p className="flex-1 ">{t('settings.noMealPlan')}</p>
             ) : (
               <div className="flex flex-1 flex-col gap-1">
                 {snapshotNutrName && (
-                  <p className="mb-2 text-nutr-200">
+                  <p className="mb-2 text-cookie-400">
                     {t('settings.mealPlanBy')} {snapshotNutrName}
                   </p>
                 )}
@@ -204,7 +200,7 @@ const HomeContent = () => {
                       key={entry.id}
                       className="flex gap-2 border-b border-cookie-100 py-1.5 last:border-0"
                     >
-                      <span className="flex-shrink-0 text-nutr-200">
+                      <span className="flex-shrink-0 text-cookie-400">
                         {t(`meal.${entry.mealType}`)}
                       </span>
                       <p className="line-clamp-1 text-myText-base">{comment}</p>
@@ -231,7 +227,7 @@ const HomeContent = () => {
             <div className="mb-3">
               <h3>{t('nav.chat')}</h3>
             </div>
-            <p className="flex-1 text-myText-muted">{t('landing.chatDesc')}</p>
+            <p className="flex-1 ">{t('landing.chatDesc')}</p>
             <span className="mt-4 self-center ">{t('common.open')} </span>
           </div>
           <div
@@ -241,7 +237,7 @@ const HomeContent = () => {
             <div className="mb-3 flex items-center justify-between">
               <h3>{t('nav.cart')}</h3>
             </div>
-            <p className="flex-1 text-myText-muted">{t('landing.cartDesc')}</p>
+            <p className="flex-1 ">{t('landing.cartDesc')}</p>
             <span className="mt-4 self-center">{t('common.open')}</span>
           </div>
         </div>
@@ -255,9 +251,7 @@ const HomeContent = () => {
                 <div className="h-6 w-6 rounded-full border-2 border-cookie-400 border-t-transparent" />
               </div>
             ) : favorites.length === 0 ? (
-              <p className="flex-1 text-myText-muted">
-                {t('recipes.noFavourites')}
-              </p>
+              <p className="flex-1 ">{t('recipes.noFavourites')}</p>
             ) : (
               <div className="grid flex-1 grid-rows-3 gap-3">
                 {favorites.map((fav) => {
@@ -296,9 +290,7 @@ const HomeContent = () => {
           </div>
           <div className="flex flex-col rounded-2xl bg-surface p-6 shadow-lg">
             <h3 className="mb-4">{t('landing.nutritionTitle')}</h3>
-            <p className="mb-4 text-myText-muted">
-              {t('landing.nutritionDesc')}
-            </p>
+            <p className="mb-4 ">{t('landing.nutritionDesc')}</p>
 
             {summaryLoading ? (
               <div className="flex flex-1 items-center justify-center py-8">
@@ -308,7 +300,7 @@ const HomeContent = () => {
               <div className="grid grid-cols-2 gap-x-6 gap-y-4">
                 {stats.map((s) => (
                   <div key={s.labelKey} className="flex flex-col gap-0.5">
-                    <span className="text-myText-muted">{t(s.labelKey)}</span>
+                    <span className="">{t(s.labelKey)}</span>
                     <span className="text-myText-heading">{s.value}</span>
                   </div>
                 ))}
