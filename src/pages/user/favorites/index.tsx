@@ -44,57 +44,68 @@ const FavoritesContent = () => {
       <div className="mx-auto max-w-3xl lg:max-w-4xl px-6 pb-16 pt-10">
         <button
           onClick={() => router.push('/user')}
-          className="mb-6 text-sm font-semibold  hover:text-cookie-400"
+          className="mb-6 hover:text-cookie-400"
         >
           {t('common.back')}
         </button>
 
-        <h1 className="mb-10 text-center">{t('recipes.favourites')}</h1>
+        <h1 className="mb-8 text-center">{t('recipes.favourites')}</h1>
 
         {loading ? (
           <div className="flex justify-center py-16">
             <div className="h-8 w-8 animate-spin rounded-full border-2 border-cookie-300 border-t-transparent" />
           </div>
         ) : favorites.length === 0 && !hasPrev ? (
-          <p className="text-center ">{t('recipes.noFavourites')}</p>
+          <div className="py-12 text-center">
+            <p>{t('recipes.noFavourites')}</p>
+          </div>
         ) : (
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-            {favorites.map((fav) => {
-              const recipe = fav.recipe;
-              if (!recipe) return null;
-              const title = isEl ? recipe.title_el : recipe.title_en;
-
-              return (
-                <div
-                  key={fav.id}
-                  onClick={() => router.push(`/user/recipes/${recipe.id}`)}
-                  className="cursor-pointer rounded-2xl bg-surface shadow-xl overflow-hidden transition duration-200 hover:scale-105 flex flex-col"
-                >
-                  <div className="h-24 w-full overflow-hidden flex-shrink-0">
-                    <img
-                      src={recipe.recipeImage!}
-                      alt={title}
-                      className="w-full h-full object-cover"
-                    />
+          <div className="rounded-2xl bg-surface px-4 pb-8 pt-4 shadow-lg">
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+              {favorites.map((fav) => {
+                const recipe = fav.recipe;
+                if (!recipe) return null;
+                const title = isEl ? recipe.title_el : recipe.title_en;
+                return (
+                  <div
+                    key={fav.id}
+                    onClick={() => router.push(`/user/recipes/${recipe.id}`)}
+                    className="cursor-pointer overflow-hidden rounded-2xl bg-surface shadow-xl transition duration-200 hover:scale-105 flex flex-col"
+                  >
+                    <div className="w-full bg-cookie-100 overflow-hidden">
+                      <img
+                        src={recipe.recipeImage!}
+                        alt={title}
+                        className="h-28 w-full object-cover"
+                      />
+                    </div>
+                    <div className="px-3 pt-2 pb-3 flex flex-col justify-center text-center">
+                      <p className="line-clamp-2 break-words">{title}</p>
+                    </div>
                   </div>
-                  <div className="flex flex-col gap-2 px-4 py-3">
-                    <h5 className="text-center">{title}</h5>
-                  </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
         )}
 
-        {!loading && (
-          <PaginationControls
-            hasPrev={hasPrev}
-            hasMore={hasMore && favorites.length > 0}
-            onPrev={() => setOffset((o) => o - FAV_LIMIT)}
-            onNext={() => setOffset((o) => o + FAV_LIMIT)}
-            prevLabel={t('pagination.prevFavorites')}
-            nextLabel={t('pagination.nextFavorites')}
-          />
+        {!loading && (hasPrev || hasMore) && (
+          <div className="mt-6">
+            <PaginationControls
+              hasPrev={hasPrev}
+              hasMore={hasMore}
+              onPrev={() => {
+                setOffset((o) => o - FAV_LIMIT);
+                window.scrollTo({ top: 0 });
+              }}
+              onNext={() => {
+                setOffset((o) => o + FAV_LIMIT);
+                window.scrollTo({ top: 0 });
+              }}
+              prevLabel={t('pagination.prevFavorites')}
+              nextLabel={t('pagination.nextFavorites')}
+            />
+          </div>
         )}
       </div>
     </div>

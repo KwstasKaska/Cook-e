@@ -63,13 +63,13 @@ const ChefRecipesContent = () => {
   const hasMore = recipes.length === LIMIT;
 
   return (
-    <div className="min-h-screen bg-cookie-100">
+    <div className="min-h-screen">
       <ChefNavbar />
 
-      <div className="mx-auto max-w-4xl  px-6 pb-16 pt-10">
+      <div className="mx-auto max-w-3xl lg:max-w-4xl px-6 pb-16 pt-10">
         <button
           onClick={() => router.back()}
-          className="mb-6 flex items-center gap-2  transition hover:text-cookie-400"
+          className="mb-6 hover:text-cookie-400"
         >
           {t('common.back')}
         </button>
@@ -88,48 +88,62 @@ const ChefRecipesContent = () => {
                 <div className="h-8 w-8 animate-spin rounded-full border-2 border-cookie-400 border-t-transparent" />
               </div>
             ) : recipes.length === 0 ? (
-              <p className="py-12 text-center ">{t('chef.recipes.empty')}</p>
+              <p className="py-12 text-center">{t('chef.recipes.empty')}</p>
             ) : (
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                {recipes.map((recipe) => {
-                  const title = pick(recipe.title_el, recipe.title_en, lang);
-                  const duration = totalDuration(
-                    recipe.prepTime,
-                    recipe.cookTime,
-                    recipe.restTime,
-                  );
-                  return (
-                    <div
-                      key={recipe.id}
-                      onClick={() => router.push(`/chef/recipes/${recipe.id}`)}
-                      className="cursor-pointer overflow-hidden rounded-2xl bg-surface shadow-lg transition hover:scale-[1.02] hover:shadow-xl"
-                    >
-                      <div className="h-32 w-full overflow-hidden">
-                        <img
-                          src={recipe.recipeImage!}
-                          alt={title}
-                          className="h-full w-full object-cover"
-                        />
+              <div className="rounded-2xl bg-surface px-4 pb-8 pt-4 shadow-lg">
+                <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
+                  {recipes.map((recipe) => {
+                    const title = pick(recipe.title_el, recipe.title_en, lang);
+                    const duration = totalDuration(
+                      recipe.prepTime,
+                      recipe.cookTime,
+                      recipe.restTime,
+                    );
+                    return (
+                      <div
+                        key={recipe.id}
+                        onClick={() =>
+                          router.push(`/chef/recipes/${recipe.id}`)
+                        }
+                        className="cursor-pointer overflow-hidden rounded-2xl bg-surface shadow-xl transition duration-200 hover:scale-105 flex flex-col"
+                      >
+                        <div className="w-full bg-cookie-100 overflow-hidden">
+                          {recipe.recipeImage ? (
+                            <img
+                              src={recipe.recipeImage}
+                              alt={title}
+                              className="h-28 w-full object-cover"
+                            />
+                          ) : (
+                            <div className="h-28 w-full" />
+                          )}
+                        </div>
+                        <div className="px-3 pt-2 pb-3 flex flex-col justify-center text-center">
+                          <p className="line-clamp-2 break-words">{title}</p>
+                          <p className="mt-0.5">
+                            {duration} {t('chef.recipes.minutes')}
+                          </p>
+                        </div>
                       </div>
-                      <div className="px-4 py-3 flex flex-col gap-1">
-                        <p className="font-medium line-clamp-2">{title}</p>
-                        <p className="">
-                          {duration} {t('chef.recipes.minutes')}
-                        </p>
-                      </div>
-                    </div>
-                  );
-                })}
+                    );
+                  })}
+                </div>
               </div>
             )}
 
-            {!loading && (
+            {!loading && (hasPrev || hasMore) && (
               <div className="mt-6">
                 <PaginationControls
                   hasPrev={hasPrev}
-                  hasMore={hasMore && recipes.length > 0}
-                  onPrev={() => setOffset((o) => o - LIMIT)}
-                  onNext={() => setOffset((o) => o + LIMIT)}
+                  hasMore={hasMore}
+                  onPrev={() => {
+                    setOffset((o) => o - LIMIT);
+                    window.scrollTo({ top: 0 });
+                  }}
+                  onNext={() => {
+                    setOffset((o) => o + LIMIT);
+                    window.scrollTo({ top: 0 });
+                  }}
                   prevLabel={t('pagination.prevRecipes')}
                   nextLabel={t('pagination.nextRecipes')}
                 />

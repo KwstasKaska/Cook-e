@@ -105,85 +105,93 @@ const AppointmentsContent = () => {
         <h1 className="mb-8 text-center">{t('settings.appointments')}</h1>
 
         {loading ? (
-          <p>{t('common.loading')}</p>
+          <div className="flex justify-center py-12">
+            <div className="h-6 w-6 animate-spin rounded-full border-2 border-cookie-400 border-t-transparent" />
+          </div>
         ) : all.length === 0 ? (
           <div className="py-12 text-center">
             <p>{t('settings.noAppointments')}</p>
           </div>
         ) : (
-          <div className="flex flex-col gap-3">
-            {paginated.map((req) => {
-              const nutr = req.slot?.nutritionistProfile?.user;
-              const date = req.slot?.date
-                ? toDisplay(req.slot.date, dateFnsLocale)
-                : '—';
-              const time = req.slot?.time ?? '—';
-              const canCancel =
-                req.status === AppointmentStatus.Pending ||
-                req.status === AppointmentStatus.Accepted;
+          <div className="rounded-2xl bg-surface px-4 pb-6 pt-4 shadow-lg">
+            <div className="flex flex-col gap-3">
+              {paginated.map((req) => {
+                const nutr = req.slot?.nutritionistProfile?.user;
+                const date = req.slot?.date
+                  ? toDisplay(req.slot.date, dateFnsLocale)
+                  : '—';
+                const time = req.slot?.time ?? '—';
+                const canCancel =
+                  req.status === AppointmentStatus.Pending ||
+                  req.status === AppointmentStatus.Accepted;
 
-              return (
-                <div
-                  key={req.id}
-                  className="flex flex-col gap-2 overflow-hidden rounded-2xl border-2 border-cookie-400 bg-surface px-4 py-4 sm:flex-row sm:items-center sm:justify-between"
-                >
-                  <div className="flex min-w-0 items-center gap-3">
-                    {nutr?.image ? (
-                      <img
-                        src={nutr.image}
-                        alt={nutr.username}
-                        className="h-10 w-10 flex-shrink-0 rounded-full border-2 border-cookie-400 object-cover"
-                      />
-                    ) : (
-                      <div className="h-10 w-10 flex-shrink-0 rounded-full bg-cookie-200" />
-                    )}
-                    <div className="min-w-0">
-                      <p className="truncate">{nutr?.username ?? '—'}</p>
-                      <p className="truncate">
-                        {date} · {time}
-                      </p>
+                return (
+                  <div
+                    key={req.id}
+                    className="flex flex-col gap-2 overflow-hidden rounded-2xl border-2 border-cookie-400 bg-surface px-4 py-4 sm:flex-row sm:items-center sm:justify-between"
+                  >
+                    <div className="flex min-w-0 items-center gap-3">
+                      {nutr?.image ? (
+                        <img
+                          src={nutr.image}
+                          alt={nutr.username}
+                          className="h-10 w-10 flex-shrink-0 rounded-full border-2 border-cookie-400 object-cover"
+                        />
+                      ) : (
+                        <div className="h-10 w-10 flex-shrink-0 rounded-full bg-cookie-200" />
+                      )}
+                      <div className="min-w-0">
+                        <p className="truncate">{nutr?.username ?? '—'}</p>
+                        <p className="truncate">
+                          {date} · {time}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-shrink-0 items-center gap-3">
+                      <span
+                        className={`rounded-full px-3 py-1 ${
+                          statusStyle[req.status]
+                        }`}
+                      >
+                        {t(
+                          `settings.appointmentStatus.${req.status.toLowerCase()}`,
+                        )}
+                      </span>
+
+                      {canCancel && (
+                        <button
+                          onClick={() => {
+                            setConfirmId(Number(req.id));
+                            setConfirmType(
+                              req.status === AppointmentStatus.Pending
+                                ? 'pending'
+                                : 'accepted',
+                            );
+                          }}
+                          className="rounded-full border-2 border-myRed px-3 py-0.5 text-myRed transition hover:bg-myRed hover:text-white"
+                        >
+                          {t('common.delete')}
+                        </button>
+                      )}
                     </div>
                   </div>
+                );
+              })}
+            </div>
 
-                  <div className="flex flex-shrink-0 items-center gap-3">
-                    <span
-                      className={`rounded-full px-3 py-1 ${
-                        statusStyle[req.status]
-                      }`}
-                    >
-                      {t(
-                        `settings.appointmentStatus.${req.status.toLowerCase()}`,
-                      )}
-                    </span>
-
-                    {canCancel && (
-                      <button
-                        onClick={() => {
-                          setConfirmId(Number(req.id));
-                          setConfirmType(
-                            req.status === AppointmentStatus.Pending
-                              ? 'pending'
-                              : 'accepted',
-                          );
-                        }}
-                        className="rounded-full border-2 border-myRed px-3 py-0.5 text-myRed transition hover:bg-myRed hover:text-white"
-                      >
-                        {t('common.delete')}
-                      </button>
-                    )}
-                  </div>
-                </div>
-              );
-            })}
-
-            <PaginationControls
-              hasPrev={page > 0}
-              hasMore={page < totalPages - 1}
-              onPrev={() => setPage((p) => p - 1)}
-              onNext={() => setPage((p) => p + 1)}
-              prevLabel={t('pagination.prevAppointments')}
-              nextLabel={t('pagination.nextAppointments')}
-            />
+            {all.length > LIMIT && (
+              <div className="mt-4">
+                <PaginationControls
+                  hasPrev={page > 0}
+                  hasMore={page < totalPages - 1}
+                  onPrev={() => setPage((p) => p - 1)}
+                  onNext={() => setPage((p) => p + 1)}
+                  prevLabel={t('pagination.prevAppointments')}
+                  nextLabel={t('pagination.nextAppointments')}
+                />
+              </div>
+            )}
           </div>
         )}
       </div>
