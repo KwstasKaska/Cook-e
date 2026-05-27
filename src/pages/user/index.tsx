@@ -15,7 +15,7 @@ import useIsUser from '../../utils/useIsUser';
 import { toDisplay, statusStyle } from '../../utils/appointmentUtils';
 import { JS_DAY_TO_ENUM, DAY_ORDER, MEAL_ORDER } from '../../utils/mealUtils';
 
-const FAV_SNAPSHOT = 3;
+const FAV_SNAPSHOT = 2;
 const APPT_SNAPSHOT = 3;
 
 export async function getServerSideProps({ locale }: { locale: string }) {
@@ -251,9 +251,9 @@ const HomeContent = () => {
                 <div className="h-6 w-6 rounded-full border-2 border-cookie-400 border-t-transparent" />
               </div>
             ) : favorites.length === 0 ? (
-              <p className="flex-1 ">{t('recipes.noFavourites')}</p>
+              <p className="flex-1">{t('recipes.noFavourites')}</p>
             ) : (
-              <div className="grid flex-1 grid-rows-3 gap-3">
+              <div className="grid flex-1 grid-cols-2 gap-3">
                 {favorites.map((fav) => {
                   const recipe = fav.recipe;
                   if (!recipe) return null;
@@ -263,17 +263,21 @@ const HomeContent = () => {
                     <div
                       key={fav.id}
                       onClick={() => router.push(`/user/recipes/${recipe.id}`)}
-                      className="cursor-pointer rounded-2xl bg-surface shadow-xl transition duration-300 hover:scale-105 overflow-hidden flex flex-col"
+                      className="cursor-pointer overflow-hidden rounded-2xl bg-surface shadow-xl transition duration-200 hover:scale-105 flex flex-col"
                     >
-                      <div className="h-20 w-full overflow-hidden flex-shrink-0">
-                        <img
-                          src={recipe.recipeImage!}
-                          alt={title}
-                          className="w-full h-full object-cover"
-                        />
+                      <div className="w-full bg-cookie-100 overflow-hidden">
+                        {recipe.recipeImage ? (
+                          <img
+                            src={recipe.recipeImage}
+                            alt={title}
+                            className="h-28 w-full object-cover"
+                          />
+                        ) : (
+                          <div className="h-28 w-full" />
+                        )}
                       </div>
-                      <div className="px-4 py-3">
-                        <h6 className="text-center">{title}</h6>
+                      <div className="px-3 pt-3 pb-1 h-14 flex items-center justify-center text-center">
+                        <p className="line-clamp-2 break-words">{title}</p>
                       </div>
                     </div>
                   );
@@ -288,20 +292,23 @@ const HomeContent = () => {
               {t('common.seeAll2')}
             </button>
           </div>
-          <div className="flex flex-col rounded-2xl bg-surface p-6 shadow-lg">
-            <h3 className="mb-4">{t('landing.nutritionTitle')}</h3>
-            <p className="mb-4 ">{t('landing.nutritionDesc')}</p>
+
+          <div className="flex flex-col rounded-2xl bg-surface p-5 shadow-lg">
+            <h3 className="mb-3">{t('landing.nutritionTitle')}</h3>
+            <p className="mb-3 text-sm">{t('landing.nutritionDesc')}</p>
 
             {summaryLoading ? (
               <div className="flex flex-1 items-center justify-center py-8">
                 <div className="h-8 w-8 rounded-full border-4 border-cookie-400 border-t-transparent" />
               </div>
             ) : (
-              <div className="grid grid-cols-2 gap-x-6 gap-y-4">
+              <div className="grid grid-cols-2 gap-x-4 gap-y-2">
                 {stats.map((s) => (
-                  <div key={s.labelKey} className="flex flex-col gap-0.5">
-                    <span className="">{t(s.labelKey)}</span>
-                    <span className="text-myText-heading">{s.value}</span>
+                  <div key={s.labelKey} className="flex flex-col gap-0">
+                    <span className="text-sm">{t(s.labelKey)}</span>
+                    <span className="text-sm text-myText-heading">
+                      {s.value}
+                    </span>
                   </div>
                 ))}
               </div>
