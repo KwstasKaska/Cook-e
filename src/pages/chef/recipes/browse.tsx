@@ -11,7 +11,7 @@ import {
 import PaginationControls from '../../../components/Helper/PaginationControls';
 import { pick } from '../../../utils/pick';
 
-const LIMIT = 12;
+const LIMIT = 28;
 
 export async function getServerSideProps({ locale }: { locale: string }) {
   return {
