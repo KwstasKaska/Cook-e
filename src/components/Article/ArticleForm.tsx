@@ -125,7 +125,7 @@ const ArticleForm = ({
           disabled={loading}
           className="w-full rounded-full border-2 text-myRed border-myRed hover:text-white hover:bg-myRed px-4 py-0.5 disabled:opacity-50 sm:w-auto"
         >
-          {t('common.close')}
+          {t('common.cancel')}
         </button>
       </div>
     </div>

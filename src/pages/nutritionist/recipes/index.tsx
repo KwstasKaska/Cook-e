@@ -40,61 +40,59 @@ const NutrRecipesContent = () => {
   const hasMore = recipes.length === LIMIT;
   const hasPrev = offset > 0;
 
-  const filtered = recipes.filter((r) =>
-    pick(r.title_el, r.title_en, lang).toLowerCase(),
-  );
-
   return (
-    <div className="min-h-screen bg-cookie-100">
+    <div className="min-h-screen">
       <NutrNavbar />
 
-      <div className="mx-auto max-w-5xl px-6 pb-16 pt-10">
+      <div className="mx-auto max-w-3xl lg:max-w-4xl px-6 pb-16 pt-10">
         <button
           onClick={() => router.back()}
-          className="mb-6 flex items-center gap-2  transition hover:text-cookie-400"
+          className="mb-6 hover:text-cookie-400"
         >
           {t('common.back')}
         </button>
 
-        <div className="mb-8 text-center">
-          <h1>{t('nutr.nutr_recipes')}</h1>
-        </div>
+        <h1 className="mb-8 text-center">{t('nutr.nutr_recipes')}</h1>
 
         {loading ? (
           <div className="flex justify-center py-12">
             <div className="h-8 w-8 animate-spin rounded-full border-2 border-cookie-400 border-t-transparent" />
           </div>
-        ) : filtered.length === 0 ? (
+        ) : recipes.length === 0 ? (
           <div className="py-12 text-center">
-            <p className="">{t('chef.recipes.empty')}</p>
+            <p>{t('chef.recipes.empty')}</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
-            {filtered.map((recipe) => {
-              const title = pick(recipe.title_el, recipe.title_en, lang);
-              const author = recipe.author?.user?.username ?? '';
-              return (
-                <button
-                  key={recipe.id}
-                  onClick={() =>
-                    router.push(`/nutritionist/recipes/${recipe.id}`)
-                  }
-                  className="group flex flex-col overflow-hidden rounded-2xl bg-surface text-left shadow-lg transition hover:scale-105 hover:shadow-xl"
-                >
-                  <div className="relative h-40 w-full overflow-hidden">
-                    <img
-                      src={recipe.recipeImage ?? undefined}
-                      alt={title}
-                      className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
-                    />
+          <div className="rounded-2xl bg-surface px-4 pb-8 pt-4 shadow-lg">
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
+              {recipes.map((recipe) => {
+                const title = pick(recipe.title_el, recipe.title_en, lang);
+                return (
+                  <div
+                    key={recipe.id}
+                    onClick={() =>
+                      router.push(`/nutritionist/recipes/${recipe.id}`)
+                    }
+                    className="cursor-pointer overflow-hidden rounded-2xl bg-surface shadow-xl transition duration-200 hover:scale-105 flex flex-col"
+                  >
+                    <div className="w-full bg-cookie-100 overflow-hidden">
+                      {recipe.recipeImage ? (
+                        <img
+                          src={recipe.recipeImage}
+                          alt={title}
+                          className="h-28 w-full object-cover"
+                        />
+                      ) : (
+                        <div className="h-28 w-full" />
+                      )}
+                    </div>
+                    <div className="px-3 pt-2 pb-3 flex flex-col justify-center text-center">
+                      <p className="line-clamp-2 break-words">{title}</p>
+                    </div>
                   </div>
-                  <div className="flex flex-col gap-1 p-3">
-                    <p className="line-clamp-2 ">{title}</p>
-                    {author && <p className="">by {author}</p>}
-                  </div>
-                </button>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
         )}
 
@@ -103,8 +101,14 @@ const NutrRecipesContent = () => {
             <PaginationControls
               hasPrev={hasPrev}
               hasMore={hasMore}
-              onPrev={() => setOffset((o) => o - LIMIT)}
-              onNext={() => setOffset((o) => o + LIMIT)}
+              onPrev={() => {
+                setOffset((o) => o - LIMIT);
+                window.scrollTo({ top: 0 });
+              }}
+              onNext={() => {
+                setOffset((o) => o + LIMIT);
+                window.scrollTo({ top: 0 });
+              }}
               prevLabel={t('pagination.prevRecipes')}
               nextLabel={t('pagination.nextRecipes')}
             />

@@ -40,16 +40,19 @@ const NutrArticlesContent = () => {
       <NutrNavbar />
 
       <div className="mx-auto max-w-3xl lg:max-w-4xl px-6 pb-16 pt-10">
-        <button onClick={() => router.back()} className="mb-6 ">
+        <button
+          onClick={() => router.back()}
+          className="mb-6 hover:text-cookie-400"
+        >
           {t('common.back')}
         </button>
 
         <div className="mb-8 flex items-center justify-between">
-          <h1>{t('nutr.yourArticles')}</h1>
+          <h1>{t('chef.overview.myArticles')}</h1>
           {!showCreateForm && (
             <button
               onClick={() => setShowCreateForm(true)}
-              className="flex items-center gap-1.5 rounded-full border-2 border-cookie-400 px-4 py-1.5 transition hover:bg-cookie-400 hover:text-white"
+              className="flex items-center gap-1.5 rounded-full border-2 border-cookie-400 px-4 py-1.5 text-cookie-400 transition hover:bg-cookie-400 hover:text-white"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -87,34 +90,36 @@ const NutrArticlesContent = () => {
           </div>
         ) : articles.length === 0 ? (
           <div className="py-12 text-center">
-            <p className="">{t('chef.profile.no_articles')}</p>
+            <p>{t('chef.profile.no_articles')}</p>
           </div>
         ) : (
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
-            {articles.map((article) => {
-              const title = pick(article.title_el, article.title_en, lang);
-              return (
-                <Link
-                  key={article.id}
-                  href={`/nutritionist/articles/${article.id}`}
-                  className="cursor-pointer overflow-hidden rounded-xl bg-surface shadow-lg transition hover:scale-105 hover:shadow-xl"
-                >
-                  <div className="relative h-28 w-full overflow-hidden">
-                    <Image
-                      src={article.image}
-                      alt={title}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                  <div className="p-3">
-                    <p className="line-clamp-2 font-semibold leading-snug">
-                      {title}
-                    </p>
-                  </div>
-                </Link>
-              );
-            })}
+          <div className="rounded-2xl bg-surface px-4 pb-8 pt-4 shadow-lg">
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
+              {articles.map((a) => {
+                const title = pick(a.title_el, a.title_en, lang);
+                return (
+                  <Link
+                    key={a.id}
+                    href={`/nutritionist/articles/${a.id}`}
+                    className="overflow-hidden rounded-2xl bg-surface shadow-xl transition duration-200 hover:scale-105 flex flex-col"
+                  >
+                    <div className="w-full bg-cookie-100 overflow-hidden">
+                      <div className="relative h-28 w-full">
+                        <Image
+                          src={a.image}
+                          alt={title}
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
+                    </div>
+                    <div className="px-3 pt-2 pb-3 flex flex-col justify-center text-center">
+                      <p className="line-clamp-2 break-words">{title}</p>
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
           </div>
         )}
 
@@ -123,8 +128,14 @@ const NutrArticlesContent = () => {
             <PaginationControls
               hasPrev={hasPrev}
               hasMore={hasMore}
-              onPrev={() => setOffset((o) => o - LIMIT)}
-              onNext={() => setOffset((o) => o + LIMIT)}
+              onPrev={() => {
+                setOffset((o) => o - LIMIT);
+                window.scrollTo({ top: 0 });
+              }}
+              onNext={() => {
+                setOffset((o) => o + LIMIT);
+                window.scrollTo({ top: 0 });
+              }}
               prevLabel={t('pagination.prevArticles')}
               nextLabel={t('pagination.nextArticles')}
             />

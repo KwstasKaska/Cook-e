@@ -162,7 +162,7 @@ const ArticleSinglePage = ({
         <DeleteConfirm
           title={t('chef.article.delete_confirm')}
           confirmLabel={t('common.delete')}
-          cancelLabel={t('common.close')}
+          cancelLabel={t('common.cancel')}
           loading={deleteLoading}
           onConfirm={handleDelete}
           onCancel={() => setShowDeleteModal(false)}

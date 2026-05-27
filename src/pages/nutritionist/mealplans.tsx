@@ -151,9 +151,6 @@ const NutrSchedulerContent = () => {
           <h2 className="mb-8 text-center">{t('nutr.createNutritionPlan')}</h2>
 
           <div className="mb-6 flex items-center justify-center gap-3">
-            <label className="uppercase tracking-wide ">
-              {t('nutr.selectUser')}
-            </label>
             <select
               value={selectedUserId ?? ''}
               onChange={(e) => {
@@ -194,9 +191,7 @@ const NutrSchedulerContent = () => {
                     <th
                       style={stickyCell(headerBg)}
                       className="px-4 py-4 text-left tracking-wide "
-                    >
-                      {t('nutr.mealsAndDays')}
-                    </th>
+                    ></th>
                     {daysOfWeek.map((day) => (
                       <th
                         key={day}

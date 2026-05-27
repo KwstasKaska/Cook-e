@@ -104,81 +104,87 @@ const AcceptedAppointmentsContent = () => {
             <p>{t('nutr.noAcceptedAppt')}</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-            {paginated.map((req) => {
-              const client = req.client;
-              const date = req.slot?.date
-                ? toDisplay(req.slot.date, dateFnsLocale)
-                : '—';
-              const time = req.slot?.time ?? '—';
+          <div className="rounded-2xl bg-surface px-4 pb-6 pt-4 shadow-lg">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              {paginated.map((req) => {
+                const client = req.client;
+                const date = req.slot?.date
+                  ? toDisplay(req.slot.date, dateFnsLocale)
+                  : '—';
+                const time = req.slot?.time ?? '—';
 
-              return (
-                <div
-                  key={req.id}
-                  className="flex flex-col gap-2 overflow-hidden rounded-2xl border-2 border-cookie-400 bg-surface px-4 py-4 sm:flex-row sm:items-center sm:justify-between"
-                >
-                  <div className="flex min-w-0 items-center gap-3">
-                    {client?.image ? (
-                      <img
-                        src={client.image}
-                        alt={client.username}
-                        className="h-10 w-10 flex-shrink-0 rounded-full border-2 border-cookie-400 object-cover"
-                      />
-                    ) : (
-                      <div className="h-10 w-10 flex-shrink-0 rounded-full bg-cookie-200" />
-                    )}
-                    <div className="min-w-0">
-                      <p className="truncate">{client?.username ?? '—'}</p>
-                      <p className="truncate">
-                        {date} · {time}
-                      </p>
+                return (
+                  <div
+                    key={req.id}
+                    className="flex flex-col gap-2 overflow-hidden rounded-2xl border-2 border-cookie-400 bg-surface px-4 py-4 sm:flex-row sm:items-center sm:justify-between"
+                  >
+                    <div className="flex min-w-0 items-center gap-3">
+                      {client?.image ? (
+                        <img
+                          src={client.image}
+                          alt={client.username}
+                          className="h-10 w-10 flex-shrink-0 rounded-full border-2 border-cookie-400 object-cover"
+                        />
+                      ) : (
+                        <div className="h-10 w-10 flex-shrink-0 rounded-full bg-cookie-200" />
+                      )}
+                      <div className="min-w-0">
+                        <p className="truncate">{client?.username ?? '—'}</p>
+                        <p className="truncate">
+                          {date} · {time}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-shrink-0 items-center gap-2">
+                      {client && (
+                        <button
+                          onClick={() => openConversation(client.id)}
+                          className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border-2 border-cookie-400 text-cookie-400 transition hover:bg-cookie-400 hover:text-white"
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-5 w-5"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            strokeWidth={2}
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M8 10h.01M12 10h.01M16 10h.01M21 16c0 1.1-.9 2-2 2H7l-4 4V6a2 2 0 012-2h14a2 2 0 012 2v10z"
+                            />
+                          </svg>
+                        </button>
+                      )}
+
+                      <button
+                        onClick={() => setConfirmId(Number(req.id))}
+                        className="rounded-full border-2 border-myRed px-3 py-0.5 text-myRed transition hover:bg-myRed hover:text-white"
+                      >
+                        {t('common.cancel')}
+                      </button>
                     </div>
                   </div>
-
-                  <div className="flex flex-shrink-0 items-center gap-2">
-                    {client && (
-                      <button
-                        onClick={() => openConversation(client.id)}
-                        className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border-2 border-cookie-400 text-cookie-400 transition hover:bg-cookie-400 hover:text-white"
-                        aria-label="Open chat"
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-5 w-5"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                          strokeWidth={2}
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M8 10h.01M12 10h.01M16 10h.01M21 16c0 1.1-.9 2-2 2H7l-4 4V6a2 2 0 012-2h14a2 2 0 012 2v10z"
-                          />
-                        </svg>
-                      </button>
-                    )}
-
-                    <button
-                      onClick={() => setConfirmId(Number(req.id))}
-                      className="rounded-full border-2 border-myRed px-3 py-0.5 text-myRed transition hover:bg-myRed hover:text-white"
-                    >
-                      {t('common.cancel')}
-                    </button>
-                  </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
         )}
-        <PaginationControls
-          hasPrev={page > 0}
-          hasMore={page < totalPages - 1}
-          onPrev={() => setPage((p) => p - 1)}
-          onNext={() => setPage((p) => p + 1)}
-          prevLabel={t('pagination.prevAccepted')}
-          nextLabel={t('pagination.nextAccepted')}
-        />
+
+        {!loading && all.length > 0 && (
+          <div className="mt-6">
+            <PaginationControls
+              hasPrev={page > 0}
+              hasMore={page < totalPages - 1}
+              onPrev={() => setPage((p) => p - 1)}
+              onNext={() => setPage((p) => p + 1)}
+              prevLabel={t('pagination.prevAccepted')}
+              nextLabel={t('pagination.nextAccepted')}
+            />
+          </div>
+        )}
       </div>
     </div>
   );
