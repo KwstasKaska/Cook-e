@@ -5,9 +5,9 @@ export const DIFFICULTY_OPTIONS: {
   labelEl: string;
   labelEn: string;
 }[] = [
-  { value: Difficulty.Easy, labelEl: 'Εύκολο', labelEn: 'Easy' },
-  { value: Difficulty.Medium, labelEl: 'Μέτριο', labelEn: 'Medium' },
-  { value: Difficulty.Difficult, labelEl: 'Δύσκολο', labelEn: 'Difficult' },
+  { value: Difficulty.Easy, labelEl: 'Εύκολος', labelEn: 'Easy' },
+  { value: Difficulty.Medium, labelEl: 'Μέτριος', labelEn: 'Medium' },
+  { value: Difficulty.Difficult, labelEl: 'Δύσκολος', labelEn: 'Difficult' },
 ];
 
 export const CATEGORY_OPTIONS: {

@@ -219,7 +219,7 @@ const ChefOverviewContent = () => {
                 return (
                   <div
                     key={r.id}
-                    onClick={() => router.push(`/chef/recipes/${r.id}`)}
+                    onClick={() => router.push(`/chef/recipes/browse/${r.id}`)}
                     className="cursor-pointer overflow-hidden rounded-2xl bg-surface shadow-xl transition duration-200 hover:scale-105 flex flex-col"
                   >
                     <div className="w-full bg-cookie-100 overflow-hidden">
@@ -253,7 +253,7 @@ const ChefOverviewContent = () => {
                 return (
                   <Link
                     key={a.id}
-                    href={`/chef/articles/${a.id}`}
+                    href={`/chef/articles/browse/${a.id}`}
                     className="overflow-hidden rounded-2xl bg-surface shadow-xl transition duration-200 hover:scale-105 flex flex-col"
                   >
                     <div className="w-full bg-cookie-100 overflow-hidden">
