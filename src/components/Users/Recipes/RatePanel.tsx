@@ -8,8 +8,7 @@ type ExistingRating = {
 export default function RatePanel({
   myRating,
   ratingScore,
-  ratingError,
-  ratingSuccess,
+
   submitting,
   onScoreChange,
   onSubmit,
@@ -17,8 +16,6 @@ export default function RatePanel({
 }: {
   myRating: ExistingRating;
   ratingScore: number;
-  ratingError: string;
-  ratingSuccess: string;
   submitting: boolean;
   onScoreChange: (score: number) => void;
   onSubmit: () => void;
@@ -45,9 +42,6 @@ export default function RatePanel({
       <div className="mb-4">
         <StarPicker value={ratingScore} onChange={onScoreChange} />
       </div>
-
-      {ratingError && <p className="mb-2   text-myRed">{ratingError}</p>}
-      {ratingSuccess && <p className="mb-2   text-herb-200">{ratingSuccess}</p>}
 
       <button
         onClick={onSubmit}

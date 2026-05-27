@@ -28,7 +28,6 @@ import { useApolloClient } from '@apollo/client';
 
 const RATINGS_LIMIT = 10;
 
-type DetailTab = 'reviews' | 'rate';
 type CookState = 'idle' | 'confirm' | 'undo' | 'done';
 
 export async function getServerSideProps({ locale }: { locale: string }) {
@@ -88,14 +87,12 @@ const RecipeDetailContent = () => {
   const isEl = router.locale === 'el';
   const client = useApolloClient();
 
-  const [activeTab, setActiveTab] = useState<DetailTab>('reviews');
+  const [showRateForm, setShowRateForm] = useState(false);
   const [checkedIngredients, setCheckedIngredients] = useState<Set<number>>(
     new Set(),
   );
   const [addedToCart, setAddedToCart] = useState<Set<number>>(new Set());
   const [ratingScore, setRatingScore] = useState(0);
-  const [ratingError, setRatingError] = useState('');
-  const [ratingSuccess, setRatingSuccess] = useState('');
   const [cookState, setCookState] = useState<CookState>('idle');
   const [lastCookId, setLastCookId] = useState<number | null>(null);
   const undoTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -196,15 +193,9 @@ const RecipeDetailContent = () => {
   };
 
   const handleRate = async () => {
-    setRatingError('');
-    setRatingSuccess('');
-    if (ratingScore < 1 || ratingScore > 5) {
-      setRatingError(t('recipes.ratingScoreError'));
-      return;
-    }
     await rateRecipe({ variables: { recipeId, score: ratingScore } });
-    setRatingSuccess(t('recipes.ratingSuccess'));
     setRatingScore(0);
+    setShowRateForm(false);
     client.cache.evict({ fieldName: 'recipeRatings' });
     client.cache.evict({ fieldName: 'recipeAverageRating' });
     client.cache.gc();
@@ -214,11 +205,8 @@ const RecipeDetailContent = () => {
   };
 
   const handleDeleteRating = async () => {
-    setRatingError('');
-    setRatingSuccess('');
     await deleteRecipeRating({ variables: { recipeId } });
     setRatingScore(0);
-    setRatingSuccess(t('recipes.ratingDeleted'));
     client.cache.evict({ fieldName: 'recipeRatings' });
     client.cache.evict({ fieldName: 'recipeAverageRating' });
     client.cache.gc();
@@ -300,34 +288,6 @@ const RecipeDetailContent = () => {
                   }
                 />
               </div>
-
-              {cookState === 'undo' ? (
-                <div className="flex items-center gap-2">
-                  <span className="rounded-xl border-2 border-herb-200 bg-herb-200 px-4 py-0.5 text-white">
-                    {t('chef.recipe_detail.marked_as_cooked')}
-                  </span>
-                  <button
-                    onClick={handleUndoCooked}
-                    className="rounded-xl border-2 border-myRed px-4 py-0.5 text-myRed transition hover:bg-myRed hover:text-white"
-                  >
-                    {t('common.undo')}
-                  </button>
-                </div>
-              ) : (
-                <button
-                  onClick={cookState === 'idle' ? handleLogCooked : undefined}
-                  disabled={logging || cookState === 'done'}
-                  className={`w-fit rounded-xl border-2 border-cookie-400 px-4 py-0.5 transition disabled:cursor-not-allowed disabled:opacity-50 ${
-                    cookState === 'done'
-                      ? 'border-herb-200 bg-herb-200 text-white'
-                      : 'hover:bg-cookie-400 hover:text-white'
-                  }`}
-                >
-                  {cookState === 'done'
-                    ? t('chef.recipe_detail.marked_as_cooked')
-                    : t('chef.recipe_detail.mark_as_cooked')}
-                </button>
-              )}
 
               {description && <p className=" md:hidden">{description}</p>}
 
@@ -556,21 +516,60 @@ const RecipeDetailContent = () => {
                 )}
               </div>
 
-              {activeTab === 'reviews' && (
-                <ReviewsPanel
-                  reviews={reviews}
-                  loading={ratingsLoading && !fetchingMoreRatings}
-                  hasMore={hasMoreReviews}
-                  loadingMore={fetchingMoreRatings}
-                  onLoadMore={handleLoadMoreRatings}
-                />
-              )}
-              {activeTab === 'rate' && (
+              <div className="flex flex-col gap-2 border-b border-cookie-400 px-6 py-3">
+                <button
+                  onClick={() => setShowRateForm((prev) => !prev)}
+                  className="w-full rounded-xl border-2 border-cookie-400 px-4 py-1.5 transition hover:bg-cookie-400 hover:text-white"
+                >
+                  {showRateForm ? t('common.close') : t('recipes.rateTitle')}
+                </button>
+
+                <button
+                  onClick={handleToggleFavorite}
+                  className={`w-full rounded-xl border-2 px-4 py-1.5 transition ${
+                    isFavorited
+                      ? 'border-herb-200 bg-herb-200 text-white'
+                      : 'border-cookie-400 hover:bg-cookie-400 hover:text-white'
+                  }`}
+                >
+                  {isFavorited
+                    ? t('recipes.savedToFavorites')
+                    : t('recipes.save')}
+                </button>
+
+                {cookState === 'undo' ? (
+                  <div className="flex gap-2">
+                    <span className="flex-1 rounded-xl border-2 border-herb-200 bg-herb-200 px-4 py-1.5 text-center text-white">
+                      {t('chef.recipe_detail.marked_as_cooked')}
+                    </span>
+                    <button
+                      onClick={handleUndoCooked}
+                      className="rounded-xl border-2 border-myRed px-4 py-1.5 text-myRed transition hover:bg-myRed hover:text-white"
+                    >
+                      {t('common.undo')}
+                    </button>
+                  </div>
+                ) : (
+                  <button
+                    onClick={cookState === 'idle' ? handleLogCooked : undefined}
+                    disabled={logging || cookState === 'done'}
+                    className={`w-full rounded-xl border-2 px-4 py-1.5 transition disabled:cursor-not-allowed disabled:opacity-50 ${
+                      cookState === 'done'
+                        ? 'border-herb-200 bg-herb-200 text-white'
+                        : 'border-cookie-400 hover:bg-cookie-400 hover:text-white'
+                    }`}
+                  >
+                    {cookState === 'done'
+                      ? t('chef.recipe_detail.marked_as_cooked')
+                      : t('chef.recipe_detail.mark_as_cooked')}
+                  </button>
+                )}
+              </div>
+
+              {showRateForm && (
                 <RatePanel
                   myRating={myRating}
                   ratingScore={ratingScore}
-                  ratingError={ratingError}
-                  ratingSuccess={ratingSuccess}
                   submitting={rating}
                   onScoreChange={setRatingScore}
                   onSubmit={handleRate}
@@ -578,62 +577,13 @@ const RecipeDetailContent = () => {
                 />
               )}
 
-              <div className="flex items-center justify-around border-t border-cookie-400 px-4 py-3">
-                {(
-                  [
-                    {
-                      tab: 'reviews' as DetailTab,
-                      icon: 'M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z',
-                    },
-                    {
-                      tab: 'rate' as DetailTab,
-                      icon: 'M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z',
-                    },
-                  ] as const
-                ).map(({ tab, icon }) => (
-                  <button
-                    key={tab}
-                    onClick={() => setActiveTab(tab)}
-                    className={`flex h-10 w-10 items-center justify-center rounded-full transition ${
-                      activeTab === tab ? 'bg-cookie-300 text-white' : ''
-                    }`}
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={1.5}
-                      stroke="currentColor"
-                      className="h-5 w-5"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d={icon}
-                      />
-                    </svg>
-                  </button>
-                ))}
-
-                <button
-                  onClick={handleToggleFavorite}
-                  className={`flex h-10 w-10 items-center justify-center rounded-full transition ${
-                    isFavorited ? 'text-cookie-300' : ''
-                  }`}
-                  title={t('recipes.favourites')}
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill={isFavorited ? 'currentColor' : 'none'}
-                    stroke="currentColor"
-                    strokeWidth={isFavorited ? 0 : 1.5}
-                    className="h-5 w-5"
-                  >
-                    <path d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z" />
-                  </svg>
-                </button>
-              </div>
+              <ReviewsPanel
+                reviews={reviews}
+                loading={ratingsLoading && !fetchingMoreRatings}
+                hasMore={hasMoreReviews}
+                loadingMore={fetchingMoreRatings}
+                onLoadMore={handleLoadMoreRatings}
+              />
             </div>
           </div>
         </div>

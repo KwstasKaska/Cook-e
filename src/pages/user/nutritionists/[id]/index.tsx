@@ -130,14 +130,10 @@ const ProfileContent = () => {
   const handleRate = useCallback(async () => {
     setRatingError('');
     setRatingSuccess('');
-    if (ratingScore < 1 || ratingScore > 5) {
-      setRatingError(t('recipes.ratingScoreError'));
-      return;
-    }
+
     await rateNutritionist({
       variables: { nutritionistId: nutrId, score: ratingScore },
     });
-    setRatingSuccess(t('recipes.ratingSuccess'));
     setRatingScore(0);
     setShowRateForm(false);
     client.cache.evict({ fieldName: 'nutritionistRatings' });
@@ -162,7 +158,6 @@ const ProfileContent = () => {
     setRatingSuccess('');
     await deleteNutritionistRating({ variables: { nutritionistId: nutrId } });
     setRatingScore(0);
-    setRatingSuccess(t('recipes.ratingDeleted'));
     client.cache.evict({ fieldName: 'nutritionistRatings' });
     client.cache.evict({ fieldName: 'nutritionistAverageRating' });
     client.cache.gc();
