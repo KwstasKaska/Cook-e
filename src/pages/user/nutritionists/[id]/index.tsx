@@ -275,7 +275,7 @@ const ProfileContent = () => {
               className="rounded-xl border-2 border-cookie-400 px-4 py-1.5  transition hover:bg-cookie-400 hover:text-white"
             >
               {showRateForm
-                ? t('common.cancel')
+                ? t('common.close')
                 : t('nutritionists.rateNutrTitle')}
             </button>
             <button
@@ -285,7 +285,9 @@ const ProfileContent = () => {
               }}
               className="rounded-xl border-2 border-cookie-400 px-4 py-1.5 transition hover:bg-cookie-400 hover:text-white"
             >
-              {showArticles ? t('common.cancel') : t('chef.profile.articles')}
+              {showArticles
+                ? t('common.close')
+                : t('chef.overview.allArticles')}
             </button>
           </div>
         </div>
@@ -325,7 +327,7 @@ const ProfileContent = () => {
 
         {showArticles && (
           <div className="mb-6 rounded-2xl bg-surface p-6 shadow-lg">
-            <h3 className="mb-4">{t('chef.profile.articles')}</h3>
+            <h3 className="mb-4">{t('chef.overview.allArtciles')}</h3>
 
             {articlesLoading ? (
               <div className="flex justify-center py-12">

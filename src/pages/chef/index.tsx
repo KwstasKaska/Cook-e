@@ -9,11 +9,15 @@ import {
   useChefRatingsQuery,
   useArticlesByChefQuery,
   useMyRecipesQuery,
+  useRecipesQuery,
+  useChefArticlesQuery,
+  useArticlesQuery,
 } from '../../generated/graphql';
 import useIsChef from '../../utils/useIsChef';
 import { pick } from '../../utils/pick';
 import Stars from '../../components/Helper/Stars';
 import ChefNavbar from '../../components/Chef/ChefNavbar';
+import SnapshotBox from '../../components/Helper/SnapshotBox';
 
 const SNAPSHOT = 2;
 
@@ -55,18 +59,33 @@ const ChefOverviewContent = () => {
       skip: !userId,
     });
 
+  const { data: allRecipesData, loading: allRecipesLoading } = useRecipesQuery({
+    variables: { limit: SNAPSHOT, offset: 0 },
+  });
+
+  const { data: chefArticlesData, loading: chefArticlesLoading } =
+    useChefArticlesQuery({ variables: { limit: SNAPSHOT, offset: 0 } });
+
+  const { data: nutrArticlesData, loading: nutrArticlesLoading } =
+    useArticlesQuery({ variables: { limit: SNAPSHOT, offset: 0 } });
+
   const averageRating = avgData?.chefAverageRating ?? 0;
   const ratings = ratingsData?.chefRatings ?? [];
   const totalRatings = ratings.length;
   const recipes = recipesData?.myRecipes ?? [];
   const articles = articlesData?.articlesByChef ?? [];
+  const allRecipes = allRecipesData?.recipes ?? [];
+  const allArticles = [
+    ...(chefArticlesData?.chefArticles ?? []),
+    ...(nutrArticlesData?.articles ?? []),
+  ].slice(0, SNAPSHOT);
 
   if (profileLoading) {
     return (
       <div className="flex min-h-screen flex-col">
         <ChefNavbar />
         <div className="flex flex-1 items-center justify-center">
-          <p className="">{t('common.loading')}</p>
+          <p>{t('common.loading')}</p>
         </div>
       </div>
     );
@@ -75,12 +94,12 @@ const ChefOverviewContent = () => {
   const bio = pick(chefProfile?.bio_el ?? '', chefProfile?.bio_en ?? '', lang);
 
   return (
-    <div className="min-h-screen ">
+    <div className="min-h-screen">
       <ChefNavbar />
 
-      <div className="mx-auto max-w-3xl lg:max-w-4xl px-6 pb-16 pt-10 ">
+      <div className="mx-auto max-w-3xl lg:max-w-4xl px-6 pb-16 pt-10">
         <div className="mb-8 flex flex-col items-center gap-4 rounded-2xl bg-surface p-6 shadow-lg">
-          <div className="h-24 w-24 overflow-hidden rounded-full border-2 border-cookie-400  shadow-lg">
+          <div className="h-24 w-24 overflow-hidden rounded-full border-2 border-cookie-400 shadow-lg">
             {chefProfile?.user?.image ? (
               <img
                 src={chefProfile.user.image}
@@ -89,7 +108,7 @@ const ChefOverviewContent = () => {
               />
             ) : (
               <div className="flex h-full w-full items-center justify-center">
-                <span className=" ">
+                <span>
                   {chefProfile?.user?.username?.[0]?.toUpperCase() ?? '?'}
                 </span>
               </div>
@@ -101,88 +120,75 @@ const ChefOverviewContent = () => {
             {averageRating > 0 ? (
               <div className="mt-1 flex items-center justify-center gap-2">
                 <Stars rating={averageRating} size="sm" />
-                <span className="">
+                <span>
                   {averageRating.toFixed(1)} ({totalRatings})
                 </span>
               </div>
             ) : (
-              <p className="mt-1 ">{t('chef.profile.no_ratings')}</p>
+              <p className="mt-1">{t('chef.profile.no_ratings')}</p>
             )}
           </div>
 
           <div className="w-full rounded-xl bg-cookie-100 px-5 py-4">
-            <p className={`text-center leading-relaxed${!bio ? ' ' : ''}`}>
+            <p className="text-center leading-relaxed">
               {bio || t('chef.profile.bio_placeholder')}
             </p>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-          <div className="flex flex-col rounded-2xl bg-surface p-5 shadow-lg">
-            <h3 className="mb-4">{t('chef.profile.recipes')}</h3>
-
-            {recipesLoading ? (
-              <div className="flex flex-1 items-center justify-center py-6">
-                <div className="h-6 w-6 animate-spin rounded-full border-2 border-cookie-400 border-t-transparent" />
-              </div>
-            ) : recipes.length === 0 ? (
-              <p className="flex-1 ">{t('chef.profile.no_recipes')}</p>
-            ) : (
-              <div className="flex flex-1 flex-col gap-3">
-                {recipes.map((r) => {
-                  const title = pick(r.title_el, r.title_en, lang);
-                  return (
-                    <div
-                      key={r.id}
-                      onClick={() => router.push(`/chef/recipes/${r.id}`)}
-                      className="flex cursor-pointer flex-col overflow-hidden rounded-2xl bg-surface shadow-xl transition duration-300 hover:scale-105"
-                    >
-                      {r.recipeImage && (
-                        <div className="h-20 w-full flex-shrink-0 overflow-hidden">
-                          <img
-                            src={r.recipeImage}
-                            alt={title}
-                            className="h-full w-full object-cover"
-                          />
-                        </div>
-                      )}
-                      <div className="px-4 py-3">
-                        <h6 className="text-center">{title}</h6>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-
-            <button
-              onClick={() => router.push('/chef/recipes')}
-              className="mt-4 self-end text-cookie-400 hover:underline"
+        <div className="flex flex-col gap-6">
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+            <SnapshotBox
+              title={t('chef.overview.myRecipes')}
+              loading={recipesLoading}
+              emptyLabel={t('chef.profile.no_recipes')}
+              onSeeAll={() => router.push('/chef/recipes')}
+              seeAllLabel={t('common.seeAll2')}
             >
-              {t('common.seeAll2')}
-            </button>
-          </div>
+              {recipes.map((r) => {
+                const title = pick(r.title_el, r.title_en, lang);
+                return (
+                  <div
+                    key={r.id}
+                    onClick={() => router.push(`/chef/recipes/${r.id}`)}
+                    className="cursor-pointer overflow-hidden rounded-2xl bg-surface shadow-xl transition duration-200 hover:scale-105 flex flex-col"
+                  >
+                    <div className="w-full bg-cookie-100 flex justify-center overflow-hidden">
+                      {r.recipeImage ? (
+                        <img
+                          src={r.recipeImage}
+                          alt={title}
+                          className="h-28 w-full object-cover"
+                        />
+                      ) : (
+                        <div className="h-28 w-full" />
+                      )}
+                    </div>
+                    <div className="px-3 pt-3 pb-1 h-14 flex items-center justify-center text-center">
+                      <p className="line-clamp-2 break-words">{title}</p>
+                    </div>
+                  </div>
+                );
+              })}
+            </SnapshotBox>
 
-          <div className="flex flex-col rounded-2xl bg-surface p-5 shadow-lg">
-            <h3 className="mb-4">{t('chef.profile.articles')}</h3>
-
-            {articlesLoading ? (
-              <div className="flex flex-1 items-center justify-center py-6">
-                <div className="h-6 w-6 animate-spin rounded-full border-2 border-cookie-400 border-t-transparent" />
-              </div>
-            ) : articles.length === 0 ? (
-              <p className="flex-1 ">{t('chef.profile.no_articles')}</p>
-            ) : (
-              <div className="flex flex-1 flex-col gap-3">
-                {articles.map((a) => {
-                  const title = pick(a.title_el, a.title_en, lang);
-                  return (
-                    <Link
-                      key={a.id}
-                      href={`/chef/articles/${a.id}`}
-                      className="flex flex-col overflow-hidden rounded-2xl bg-surface shadow-xl transition duration-300 hover:scale-105"
-                    >
-                      <div className="relative h-20 w-full flex-shrink-0 overflow-hidden">
+            <SnapshotBox
+              title={t('chef.overview.myArticles')}
+              loading={articlesLoading}
+              emptyLabel={t('chef.profile.no_articles')}
+              onSeeAll={() => router.push('/chef/articles')}
+              seeAllLabel={t('common.seeAll')}
+            >
+              {articles.map((a) => {
+                const title = pick(a.title_el, a.title_en, lang);
+                return (
+                  <Link
+                    key={a.id}
+                    href={`/chef/articles/${a.id}`}
+                    className="overflow-hidden rounded-2xl bg-surface shadow-xl transition duration-200 hover:scale-105 flex flex-col"
+                  >
+                    <div className="w-full bg-cookie-100 overflow-hidden">
+                      <div className="relative h-28 w-full">
                         <Image
                           src={a.image}
                           alt={title}
@@ -190,21 +196,83 @@ const ChefOverviewContent = () => {
                           className="object-cover"
                         />
                       </div>
-                      <div className="px-4 py-3">
-                        <h6 className="text-center">{title}</h6>
-                      </div>
-                    </Link>
-                  );
-                })}
-              </div>
-            )}
+                    </div>
+                    <div className="px-3 pt-3 pb-1 h-14 flex items-center justify-center text-center">
+                      <p className="line-clamp-2 break-words">{title}</p>
+                    </div>
+                  </Link>
+                );
+              })}
+            </SnapshotBox>
+          </div>
 
-            <button
-              onClick={() => router.push('/chef/articles')}
-              className="mt-4 self-end text-cookie-400 hover:underline"
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+            <SnapshotBox
+              title={t('chef.overview.allRecipes')}
+              loading={allRecipesLoading}
+              emptyLabel={t('chef.profile.no_recipes')}
+              onSeeAll={() => router.push('/chef/recipes/browse')}
+              seeAllLabel={t('common.seeAll2')}
             >
-              {t('common.seeAll')}
-            </button>
+              {allRecipes.map((r) => {
+                const title = pick(r.title_el, r.title_en, lang);
+                return (
+                  <div
+                    key={r.id}
+                    onClick={() => router.push(`/chef/recipes/${r.id}`)}
+                    className="cursor-pointer overflow-hidden rounded-2xl bg-surface shadow-xl transition duration-200 hover:scale-105 flex flex-col"
+                  >
+                    <div className="w-full bg-cookie-100 overflow-hidden">
+                      {r.recipeImage ? (
+                        <img
+                          src={r.recipeImage}
+                          alt={title}
+                          className="h-28 w-full object-cover"
+                        />
+                      ) : (
+                        <div className="h-28 w-full" />
+                      )}
+                    </div>
+                    <div className="px-3 pt-3 pb-1 h-14 flex items-center justify-center text-center">
+                      <p className="line-clamp-2 break-words">{title}</p>
+                    </div>
+                  </div>
+                );
+              })}
+            </SnapshotBox>
+
+            <SnapshotBox
+              title={t('chef.overview.allArticles')}
+              loading={chefArticlesLoading || nutrArticlesLoading}
+              emptyLabel={t('chef.profile.no_articles')}
+              onSeeAll={() => router.push('/chef/articles/browse')}
+              seeAllLabel={t('common.seeAll')}
+            >
+              {allArticles.map((a) => {
+                const title = pick(a.title_el, a.title_en, lang);
+                return (
+                  <Link
+                    key={a.id}
+                    href={`/chef/articles/${a.id}`}
+                    className="overflow-hidden rounded-2xl bg-surface shadow-xl transition duration-200 hover:scale-105 flex flex-col"
+                  >
+                    <div className="w-full bg-cookie-100 overflow-hidden">
+                      <div className="relative h-28 w-full">
+                        <Image
+                          src={a.image}
+                          alt={title}
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
+                    </div>
+                    <div className="px-3 pt-3 pb-1 h-14 flex items-center justify-center text-center">
+                      <p className="line-clamp-2 break-words">{title}</p>
+                    </div>
+                  </Link>
+                );
+              })}
+            </SnapshotBox>
           </div>
         </div>
       </div>

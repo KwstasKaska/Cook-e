@@ -36,7 +36,6 @@ export default function IngredientsPanel({
 
   return (
     <div className="p-5">
-      {/* Meta row */}
       <div className="mb-5 flex flex-col gap-2 border-b border-gray-100 pb-5">
         {totalTime > 0 && (
           <div className="flex items-center gap-2 text-sm">
@@ -83,7 +82,6 @@ export default function IngredientsPanel({
 
             return (
               <li key={ingId} className="flex items-center gap-3">
-                {/* Checkbox */}
                 <button
                   onClick={() => onToggleIngredient(ingId)}
                   className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full border-2 transition"
@@ -105,7 +103,6 @@ export default function IngredientsPanel({
                   )}
                 </button>
 
-                {/* Name */}
                 <span
                   className="flex-1 text-sm"
                   style={{
@@ -117,7 +114,6 @@ export default function IngredientsPanel({
                   {label || String(ingId)}
                 </span>
 
-                {/* Add to cart button */}
                 <button
                   onClick={() =>
                     onAddToCart(

@@ -1351,6 +1351,22 @@ export type MyMealPlanQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type MyMealPlanQuery = { __typename?: 'Query', myMealPlan: Array<{ __typename?: 'MealScheduler', id: number, day: DayOfWeek, mealType: MealType, comment_el: string, comment_en: string, nutritionist: { __typename?: 'NutritionistProfile', user?: { __typename?: 'User', username: string } | null } }> };
 
+export type ChefArticlesQueryVariables = Exact<{
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+}>;
+
+
+export type ChefArticlesQuery = { __typename?: 'Query', chefArticles: Array<{ __typename?: 'Article', id: number, title_el: string, title_en: string, text_el: string, text_en: string, image: string, creatorId: number, createdAt: string, updatedAt: string, creator?: { __typename?: 'User', id: number, username: string, image?: string | null } | null }> };
+
+export type ArticlesQueryVariables = Exact<{
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+}>;
+
+
+export type ArticlesQuery = { __typename?: 'Query', articles: Array<{ __typename?: 'Article', id: number, title_el: string, title_en: string, text_el: string, text_en: string, image: string, creatorId: number, createdAt: string, updatedAt: string, creator?: { __typename?: 'User', id: number, username: string, image?: string | null } | null }> };
+
 export type GetMyAppointmentsQueryVariables = Exact<{
   date?: InputMaybe<Scalars['String']['input']>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -3410,6 +3426,88 @@ export type MyMealPlanQueryHookResult = ReturnType<typeof useMyMealPlanQuery>;
 export type MyMealPlanLazyQueryHookResult = ReturnType<typeof useMyMealPlanLazyQuery>;
 export type MyMealPlanSuspenseQueryHookResult = ReturnType<typeof useMyMealPlanSuspenseQuery>;
 export type MyMealPlanQueryResult = Apollo.QueryResult<MyMealPlanQuery, MyMealPlanQueryVariables>;
+export const ChefArticlesDocument = gql`
+    query ChefArticles($limit: Int = 10, $offset: Int = 0) {
+  chefArticles(limit: $limit, offset: $offset) {
+    ...RegularArticle
+  }
+}
+    ${RegularArticleFragmentDoc}`;
+
+/**
+ * __useChefArticlesQuery__
+ *
+ * To run a query within a React component, call `useChefArticlesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useChefArticlesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useChefArticlesQuery({
+ *   variables: {
+ *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
+ *   },
+ * });
+ */
+export function useChefArticlesQuery(baseOptions?: Apollo.QueryHookOptions<ChefArticlesQuery, ChefArticlesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ChefArticlesQuery, ChefArticlesQueryVariables>(ChefArticlesDocument, options);
+      }
+export function useChefArticlesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ChefArticlesQuery, ChefArticlesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ChefArticlesQuery, ChefArticlesQueryVariables>(ChefArticlesDocument, options);
+        }
+export function useChefArticlesSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<ChefArticlesQuery, ChefArticlesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<ChefArticlesQuery, ChefArticlesQueryVariables>(ChefArticlesDocument, options);
+        }
+export type ChefArticlesQueryHookResult = ReturnType<typeof useChefArticlesQuery>;
+export type ChefArticlesLazyQueryHookResult = ReturnType<typeof useChefArticlesLazyQuery>;
+export type ChefArticlesSuspenseQueryHookResult = ReturnType<typeof useChefArticlesSuspenseQuery>;
+export type ChefArticlesQueryResult = Apollo.QueryResult<ChefArticlesQuery, ChefArticlesQueryVariables>;
+export const ArticlesDocument = gql`
+    query Articles($limit: Int = 10, $offset: Int = 0) {
+  articles(limit: $limit, offset: $offset) {
+    ...RegularArticle
+  }
+}
+    ${RegularArticleFragmentDoc}`;
+
+/**
+ * __useArticlesQuery__
+ *
+ * To run a query within a React component, call `useArticlesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useArticlesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useArticlesQuery({
+ *   variables: {
+ *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
+ *   },
+ * });
+ */
+export function useArticlesQuery(baseOptions?: Apollo.QueryHookOptions<ArticlesQuery, ArticlesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ArticlesQuery, ArticlesQueryVariables>(ArticlesDocument, options);
+      }
+export function useArticlesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ArticlesQuery, ArticlesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ArticlesQuery, ArticlesQueryVariables>(ArticlesDocument, options);
+        }
+export function useArticlesSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<ArticlesQuery, ArticlesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<ArticlesQuery, ArticlesQueryVariables>(ArticlesDocument, options);
+        }
+export type ArticlesQueryHookResult = ReturnType<typeof useArticlesQuery>;
+export type ArticlesLazyQueryHookResult = ReturnType<typeof useArticlesLazyQuery>;
+export type ArticlesSuspenseQueryHookResult = ReturnType<typeof useArticlesSuspenseQuery>;
+export type ArticlesQueryResult = Apollo.QueryResult<ArticlesQuery, ArticlesQueryVariables>;
 export const GetMyAppointmentsDocument = gql`
     query GetMyAppointments($date: String, $limit: Int = 20, $offset: Int = 0) {
   getMyAppointments(date: $date, limit: $limit, offset: $offset) {

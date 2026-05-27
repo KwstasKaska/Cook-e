@@ -223,7 +223,7 @@ const NutritionistOverviewContent = () => {
           </div>
 
           <div className="flex flex-col rounded-2xl bg-surface p-5 shadow-lg">
-            <h3 className="mb-4">{t('chef.profile.articles')}</h3>
+            <h3 className="mb-4">{t('chef.overview.allArticles')}</h3>
 
             {articlesLoading ? (
               <div className="flex flex-1 items-center justify-center py-6">

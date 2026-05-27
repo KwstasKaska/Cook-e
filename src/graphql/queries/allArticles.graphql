@@ -1,0 +1,11 @@
+query ChefArticles($limit: Int = 10, $offset: Int = 0) {
+  chefArticles(limit: $limit, offset: $offset) {
+    ...RegularArticle
+  }
+}
+
+query Articles($limit: Int = 10, $offset: Int = 0) {
+  articles(limit: $limit, offset: $offset) {
+    ...RegularArticle
+  }
+}

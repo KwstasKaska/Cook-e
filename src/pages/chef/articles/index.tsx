@@ -52,7 +52,7 @@ const ChefArticlesContent = () => {
         </button>
 
         <div className="mb-8 flex items-center justify-between">
-          <h1>{t('chef.profile.articles')}</h1>
+          <h1>{t('chef.overview.myArticles')}</h1>
           {!showCreateForm && (
             <button
               onClick={() => setShowCreateForm(true)}
@@ -115,9 +115,7 @@ const ChefArticlesContent = () => {
                     />
                   </div>
                   <div className="p-3">
-                    <p className="line-clamp-2  font-semibold leading-snug">
-                      {title}
-                    </p>
+                    <p className="line-clamp-2  ">{title}</p>
                   </div>
                 </Link>
               );

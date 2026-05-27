@@ -47,7 +47,7 @@ export default function ChefProfileTab() {
 
   return (
     <div>
-      <FieldGroup title={t('settings.chefPublicProfile')}>
+      <FieldGroup title={t('settings.chefBio')}>
         <TextArea
           label=""
           value={bio}

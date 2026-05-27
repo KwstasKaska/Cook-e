@@ -142,7 +142,6 @@
     "title": "Ρυθμίσεις",
     "personalInfo": "Προσωπικά στοιχεία",
     "security": "Κωδικός πρόσβασης",
-    "chefProfile": "Βιογραφικό μάγειρα",
     "deleteAccount": "Διαγραφή λογαριασμού",
     "save": "Αποθήκευση",
     "email": "Email",
@@ -157,8 +156,7 @@
     "currentPassword": "Τρέχων κωδικός",
     "newPassword": "Νέος κωδικός",
     "confirmPassword": "Επιβεβαίωση νέου κωδικού",
-    "chefPublicProfile": "Βιογραφικό μάγειρα",
-    "chefBio": "Βιογραφικό μάγειρα",
+    "chefBio": "Βιογραφικό",
     "chefBioPlaceholder": "Περίγραψε την εμπειρία και την εξειδίκευσή σου...",
     "nutritionistProfile": "Επαγγελματικό προφίλ",
     "saveSuccess": "Οι αλλαγές αποθηκεύτηκαν επιτυχώς.",
@@ -247,6 +245,14 @@
   },
   "chef": {
     "more": "Περισσότερες",
+    "overview": {
+      "allRecipes": "Συνταγές",
+      "allArticles": "Άρθρα",
+      "myRecipes": "Οι συνταγές μου",
+      "myArticles": "Τα άρθρα μου",
+      "chefArticles": "Άρθρα μαγείρων",
+      "nutrArticles": "Άρθρα διατροφολόγων"
+    },
     "recipes": {
       "page_title": "Συνταγές",
       "categories_label": "Είδη",
@@ -299,9 +305,7 @@
       "user_reviews": "αξιολογήσεις μελών",
       "no_ratings": "Δεν υπάρχουν αξιολογήσεις ακόμα.",
       "bio_placeholder": "Δεν έχει οριστεί βιογραφικό ακόμα. Μπορείς να το προσθέσεις από τις ρυθμίσεις.",
-      "recipes": "Συνταγές",
       "followers": "Ακόλουθοι",
-      "articles": "Άρθρα",
       "rating": "Βαθμολογία",
       "no_articles": "Δεν υπάρχουν άρθρα ακόμα.",
       "create_article": "Νέο άρθρο",
@@ -397,15 +401,12 @@
       }
     }
   },
-  "change_password": {
-    "token_error": "Αυτός ο σύνδεσμος έχει λήξει.",
-    "token_error_link": "Ζήτησε νέο"
-  },
 
   "common": {
     "loading": "Φόρτωση...",
     "no_results": "Δεν βρέθηκαν αποτελέσματα.",
     "back": "Πίσω",
+    "close": "Κλείσιμο",
     "cancel": "Ακύρωση",
     "delete": "Διαγραφή",
     "edit": "Επεξεργασία",
@@ -436,15 +437,11 @@
     "email_placeholder": "Διεύθυνση email",
     "password_placeholder": "Κωδικός πρόσβασης",
     "submit": "Σύνδεση",
-    "forgot_password": "Ξέχασες τον κωδικό;",
     "no_account": "Δεν έχεις ακόμα λογαριασμό;",
     "account": "Έχεις λογαριασμό;",
     "create_account": "Εγγραφή"
   },
-  "forgot_password": {
-    "success": "Αν υπάρχει λογαριασμός με αυτό το email, θα ειδοποιηθείς μέσω μηνύματος στο email σου.",
-    "submit": "Ξέχασα τον κωδικό μου"
-  },
+
   "error": {
     "username_length": "Το όνομα χρήστη πρέπει να είναι παραπάνω από δύο χαρακτήρες",
     "username_at": "Δεν μπορείς να χρησιμοποιήσεις το @ για το όνομα χρήστη",

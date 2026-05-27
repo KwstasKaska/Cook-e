@@ -36,18 +36,16 @@ const ListView = () => {
     <div className="min-h-screen">
       <Navbar />
       <div className="mx-auto max-w-3xl px-6 pb-24 pt-10 lg:max-w-4xl">
-        <div className="mb-2">
-          <button
-            onClick={() => router.back()}
-            className="mb-6  hover:text-cookie-400"
-          >
-            {t('common.back')}
-          </button>
-          <h1 className="mb-2 text-center">
-            {t('nutritionists.popularTitle')}
-          </h1>
-        </div>
-        <div className="mx-auto mb-8 max-w-3xl flex flex-col gap-1.5 text-left md:px-8">
+        <button
+          onClick={() => router.back()}
+          className="mb-6 hover:text-cookie-400"
+        >
+          {t('common.back')}
+        </button>
+
+        <h1 className="mb-2 text-center">{t('nutritionists.popularTitle')}</h1>
+
+        <div className="mb-8 flex flex-col gap-1.5 text-left">
           <p>{t('nutritionists.listHint1')}</p>
         </div>
 
@@ -56,28 +54,26 @@ const ListView = () => {
             <div className="h-8 w-8 animate-spin rounded-full border-4 border-cookie-400 border-t-transparent" />
           </div>
         ) : (
-          <div className="relative mx-auto md:px-8">
-            <div className="rounded-2xl bg-surface px-4 pb-8 pt-2 shadow-lg">
-              {nutritionists.length === 0 ? (
-                <div className="py-12 text-center ">
-                  {t('nutritionists.noResults')}
-                </div>
-              ) : (
-                <div className="grid grid-cols-2  gap-4 pt-2 md:grid-cols-3 lg:grid-cols-4">
-                  {nutritionists.map((nutr) => (
-                    <NutrCard
-                      key={nutr.id}
-                      username={nutr.user?.username ?? '—'}
-                      city={pick(nutr.city_el ?? '', nutr.city_en ?? '', lang)}
-                      image={nutr.user?.image ?? null}
-                      onClick={() =>
-                        router.push(`/user/nutritionists/${nutr.user?.id}`)
-                      }
-                    />
-                  ))}
-                </div>
-              )}
-            </div>
+          <div className="rounded-2xl bg-surface px-4 pb-8 pt-2 shadow-lg">
+            {nutritionists.length === 0 ? (
+              <div className="py-12 text-center">
+                {t('nutritionists.noResults')}
+              </div>
+            ) : (
+              <div className="grid grid-cols-2 gap-4 pt-2 md:grid-cols-3 lg:grid-cols-4">
+                {nutritionists.map((nutr) => (
+                  <NutrCard
+                    key={nutr.id}
+                    username={nutr.user?.username ?? '—'}
+                    city={pick(nutr.city_el ?? '', nutr.city_en ?? '', lang)}
+                    image={nutr.user?.image ?? null}
+                    onClick={() =>
+                      router.push(`/user/nutritionists/${nutr.user?.id}`)
+                    }
+                  />
+                ))}
+              </div>
+            )}
           </div>
         )}
       </div>
@@ -118,7 +114,7 @@ const NutrCard = ({
       </div>
       <div className="text-center px-4">
         <p className="mb-1 w-full break-words text-center">{username}</p>
-        {city && <p className="">{city}</p>}
+        {city && <p>{city}</p>}
       </div>
     </div>
   );

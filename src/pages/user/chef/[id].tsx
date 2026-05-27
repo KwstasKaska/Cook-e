@@ -254,7 +254,9 @@ const ChefProfileContent = () => {
                 }}
                 className="flex-1  rounded-xl bg-cookie-300 py-2 transition text-white hover:bg-cookie-400"
               >
-                {showRecipes ? t('common.cancel') : t('chef.profile.recipes')}
+                {showRecipes
+                  ? t('common.close')
+                  : t('chef.overview.allRecipes')}
               </button>
               <button
                 onClick={() => {
@@ -263,7 +265,9 @@ const ChefProfileContent = () => {
                 }}
                 className="flex-1  rounded-xl bg-cookie-300 py-2 transition text-white hover:bg-cookie-400"
               >
-                {showArticles ? t('common.cancel') : t('chef.profile.articles')}
+                {showArticles
+                  ? t('common.close')
+                  : t('chef.overview.allArticles')}
               </button>
             </div>
 
@@ -382,7 +386,7 @@ const ChefProfileContent = () => {
                 onClick={() => setShowRateForm((v) => !v)}
                 className="w-full rounded-xl bg-cookie-300 py-2 transition text-white hover:bg-cookie-400"
               >
-                {showRateForm ? t('common.cancel') : t('recipes.rateChefTitle')}
+                {showRateForm ? t('common.close') : t('recipes.rateChefTitle')}
               </button>
 
               {showRateForm && (

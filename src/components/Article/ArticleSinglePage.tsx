@@ -162,7 +162,7 @@ const ArticleSinglePage = ({
         <DeleteConfirm
           title={t('chef.article.delete_confirm')}
           confirmLabel={t('common.delete')}
-          cancelLabel={t('common.cancel')}
+          cancelLabel={t('common.close')}
           loading={deleteLoading}
           onConfirm={handleDelete}
           onCancel={() => setShowDeleteModal(false)}
@@ -295,7 +295,7 @@ const ArticleSinglePage = ({
                       }}
                       className="w-full rounded-xl border-2 border-myRed px-4 py-0.5 text-myRed transition hover:bg-myRed hover:text-white sm:w-auto"
                     >
-                      {t('common.cancel')}
+                      {t('common.close')}
                     </button>
                   </div>
                 </>
