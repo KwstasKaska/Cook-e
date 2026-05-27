@@ -44,40 +44,6 @@ export default function RecipeDetailPage() {
   return <RecipeDetailContent />;
 }
 
-const CartIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke-width="1.5"
-    stroke="currentColor"
-    className="h-5 w-5"
-  >
-    <path
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0ZM3.75 12h.007v.008H3.75V12Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm-.375 5.25h.007v.008H3.75v-.008Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"
-    />
-  </svg>
-);
-
-const CheckIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth={2.5}
-    className="h-4 w-4"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M4.5 12.75l6 6 9-13.5"
-    />
-  </svg>
-);
-
 const RecipeDetailContent = () => {
   const { t, i18n } = useTranslation('common');
   const lang = i18n.language as 'el' | 'en';
@@ -352,13 +318,15 @@ const RecipeDetailContent = () => {
                                 ? t('recipes.cart.addedToCart')
                                 : t('recipes.cart.addToList')
                             }
-                            className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border-2 transition ${
+                            className={`flex-shrink-0 rounded-xl border-2 px-3 py-0.5 text-sm transition ${
                               inCart
                                 ? 'border-herb-200 bg-herb-200 text-white'
-                                : 'border-cookie-400 text-cookie-400 hover:bg-cookie-400 hover:text-white'
+                                : 'border-cookie-400  hover:bg-cookie-400 hover:text-white'
                             }`}
                           >
-                            {inCart ? <CheckIcon /> : <CartIcon />}
+                            {inCart
+                              ? t('recipes.cart.addedToCart')
+                              : t('recipes.cart.addToList')}
                           </button>
                         </div>
                       );
@@ -518,13 +486,6 @@ const RecipeDetailContent = () => {
 
               <div className="flex flex-col gap-2 border-b border-cookie-400 px-6 py-3">
                 <button
-                  onClick={() => setShowRateForm((prev) => !prev)}
-                  className="w-full rounded-xl border-2 border-cookie-400 px-4 py-1.5 transition hover:bg-cookie-400 hover:text-white"
-                >
-                  {showRateForm ? t('common.close') : t('recipes.rateTitle')}
-                </button>
-
-                <button
                   onClick={handleToggleFavorite}
                   className={`w-full rounded-xl border-2 px-4 py-1.5 transition ${
                     isFavorited
@@ -564,6 +525,13 @@ const RecipeDetailContent = () => {
                       : t('chef.recipe_detail.mark_as_cooked')}
                   </button>
                 )}
+
+                <button
+                  onClick={() => setShowRateForm((prev) => !prev)}
+                  className="w-full rounded-xl border-2 border-cookie-400 px-4 py-1.5 transition hover:bg-cookie-400 hover:text-white"
+                >
+                  {showRateForm ? t('common.close') : t('recipes.rateTitle')}
+                </button>
               </div>
 
               {showRateForm && (
