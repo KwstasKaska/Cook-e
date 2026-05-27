@@ -135,7 +135,8 @@ const NutrRecipeDetailContent = () => {
                           ri.ingredient?.name_en ?? '',
                           lang,
                         )}{' '}
-                        — {ri.quantity} {ri.unit}
+                        — {ri.quantity}{' '}
+                        {t(`chef.create_recipe.units.${ri.unit}`)}
                       </div>
                     ))}
                   </div>
