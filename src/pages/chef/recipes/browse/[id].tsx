@@ -11,6 +11,7 @@ import {
   useRecipeAverageRatingQuery,
   useRecipeRatingsQuery,
 } from '../../../../generated/graphql';
+import { getDifficultyLabel } from '../../../../utils/recipeHelpers';
 
 export async function getServerSideProps({ locale }: { locale: string }) {
   return {
@@ -179,7 +180,7 @@ const ChefBrowseRecipeDetailContent = () => {
               {recipe.difficulty && (
                 <div className="flex justify-between">
                   <span>{t('chef.recipe_detail.difficulty')}</span>
-                  <span>{recipe.difficulty}</span>
+                  <span>{getDifficultyLabel(recipe.difficulty, t)}</span>
                 </div>
               )}
             </div>

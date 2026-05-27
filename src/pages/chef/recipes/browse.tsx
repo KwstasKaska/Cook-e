@@ -8,7 +8,6 @@ import {
   useRecipesQuery,
   useMyChefProfileQuery,
 } from '../../../generated/graphql';
-import PaginationControls from '../../../components/Helper/PaginationControls';
 import { pick } from '../../../utils/pick';
 
 const LIMIT = 28;
@@ -32,7 +31,7 @@ const ChefBrowseRecipesContent = () => {
   const router = useRouter();
   const lang = i18n.language;
 
-  const [offset, setOffset] = useState(0);
+  const [offset] = useState(0);
 
   const { data: profileData } = useMyChefProfileQuery();
   const myUserId = profileData?.myChefProfile?.user?.id;
@@ -44,8 +43,6 @@ const ChefBrowseRecipesContent = () => {
 
   const allRecipes = data?.recipes ?? [];
   const recipes = allRecipes.filter((r) => r.author?.user?.id !== myUserId);
-  const hasMore = allRecipes.length === LIMIT;
-  const hasPrev = offset > 0;
 
   return (
     <div className="min-h-screen">
@@ -100,25 +97,6 @@ const ChefBrowseRecipesContent = () => {
                 );
               })}
             </div>
-          </div>
-        )}
-
-        {!loading && (hasMore || hasPrev) && (
-          <div className="mt-6">
-            <PaginationControls
-              hasPrev={hasPrev}
-              hasMore={hasMore}
-              onPrev={() => {
-                setOffset((o) => o - LIMIT);
-                window.scrollTo({ top: 0 });
-              }}
-              onNext={() => {
-                setOffset((o) => o + LIMIT);
-                window.scrollTo({ top: 0 });
-              }}
-              prevLabel={t('pagination.prevRecipes')}
-              nextLabel={t('pagination.nextRecipes')}
-            />
           </div>
         )}
       </div>
