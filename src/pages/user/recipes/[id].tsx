@@ -315,8 +315,8 @@ const RecipeDetailContent = () => {
                             onClick={() => !inCart && handleAddToCart(ingId)}
                             title={
                               inCart
-                                ? t('recipes.cart.addedToCart')
-                                : t('recipes.cart.addToList')
+                                ? t('cart.addedToCart')
+                                : t('cart.addToList')
                             }
                             className={`flex-shrink-0 rounded-xl border-2 px-3 py-0.5 text-sm transition ${
                               inCart
@@ -325,8 +325,8 @@ const RecipeDetailContent = () => {
                             }`}
                           >
                             {inCart
-                              ? t('recipes.cart.addedToCart')
-                              : t('recipes.cart.addToList')}
+                              ? t('cart.addedToCart')
+                              : t('cart.addToList')}
                           </button>
                         </div>
                       );
