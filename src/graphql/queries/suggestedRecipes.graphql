@@ -1,13 +1,5 @@
-query SuggestedRecipes(
-  $ingredientIds: [Int!]!
-  $utensilIds: [Int!]
-  $maxMissing: Int
-) {
-  suggestedRecipes(
-    ingredientIds: $ingredientIds
-    utensilIds: $utensilIds
-    maxMissing: $maxMissing
-  ) {
+query SuggestedRecipes($ingredientIds: [Int!]!, $utensilIds: [Int!]) {
+  suggestedRecipes(ingredientIds: $ingredientIds, utensilIds: $utensilIds) {
     recipe {
       ...RegularRecipe
     }

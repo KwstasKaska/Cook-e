@@ -795,7 +795,6 @@ export type QueryRecipesByChefArgs = {
 
 export type QuerySuggestedRecipesArgs = {
   ingredientIds: Array<Scalars['Int']['input']>;
-  maxMissing?: Scalars['Int']['input'];
   utensilIds?: Array<Scalars['Int']['input']>;
 };
 
@@ -1679,7 +1678,6 @@ export type RecipesByChefQuery = { __typename?: 'Query', recipesByChef: Array<{ 
 export type SuggestedRecipesQueryVariables = Exact<{
   ingredientIds: Array<Scalars['Int']['input']> | Scalars['Int']['input'];
   utensilIds?: InputMaybe<Array<Scalars['Int']['input']> | Scalars['Int']['input']>;
-  maxMissing?: InputMaybe<Scalars['Int']['input']>;
 }>;
 
 
@@ -5268,12 +5266,8 @@ export type RecipesByChefLazyQueryHookResult = ReturnType<typeof useRecipesByChe
 export type RecipesByChefSuspenseQueryHookResult = ReturnType<typeof useRecipesByChefSuspenseQuery>;
 export type RecipesByChefQueryResult = Apollo.QueryResult<RecipesByChefQuery, RecipesByChefQueryVariables>;
 export const SuggestedRecipesDocument = gql`
-    query SuggestedRecipes($ingredientIds: [Int!]!, $utensilIds: [Int!], $maxMissing: Int) {
-  suggestedRecipes(
-    ingredientIds: $ingredientIds
-    utensilIds: $utensilIds
-    maxMissing: $maxMissing
-  ) {
+    query SuggestedRecipes($ingredientIds: [Int!]!, $utensilIds: [Int!]) {
+  suggestedRecipes(ingredientIds: $ingredientIds, utensilIds: $utensilIds) {
     recipe {
       ...RegularRecipe
     }
@@ -5306,7 +5300,6 @@ export const SuggestedRecipesDocument = gql`
  *   variables: {
  *      ingredientIds: // value for 'ingredientIds'
  *      utensilIds: // value for 'utensilIds'
- *      maxMissing: // value for 'maxMissing'
  *   },
  * });
  */

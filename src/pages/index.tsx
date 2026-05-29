@@ -21,38 +21,18 @@ interface RecipeCardProps {
   onClick?: () => void;
 }
 
-const RecipeCard = ({
-  title,
-  image,
-  authorName,
-  authorImage,
-  onClick,
-}: RecipeCardProps) => (
+const RecipeCard = ({ title, image, onClick }: RecipeCardProps) => (
   <div
     onClick={onClick}
-    className="w-full overflow-hidden rounded-[.9em] bg-surface shadow-2xl drop-shadow-2xl cursor-pointer flex flex-col h-full"
+    className="w-full overflow-hidden rounded-2xl bg-surface shadow-2xl drop-shadow-2xl cursor-pointer flex flex-col h-full"
   >
     <img
       src={image}
       alt={title}
-      className="h-[160px] w-full object-cover flex-shrink-0"
+      className="h-28 w-full object-cover flex-shrink-0"
     />
-    <div className="h-[160px] flex flex-col items-center justify-center gap-2 px-3 py-3">
+    <div className="h-24 flex flex-col items-center justify-center gap-1.5 px-3 py-2">
       <h4 className="text-center">{title}</h4>
-      <div className="flex items-center gap-2">
-        {authorImage ? (
-          <img
-            src={authorImage}
-            alt={authorName}
-            className="h-[2em] w-[2em] rounded-[.5em] object-cover md:h-[3em] md:w-[3em]"
-          />
-        ) : (
-          <div className="flex h-[2em] w-[2em] items-center justify-center rounded-[.5em] bg-cookie-200 text-white md:h-[3em] md:w-[3em]">
-            {authorName.charAt(0).toUpperCase()}
-          </div>
-        )}
-        <p className="leading-[.8rem]">{authorName}</p>
-      </div>
     </div>
   </div>
 );
@@ -76,7 +56,7 @@ const Index: NextPage = () => {
 
   const getRecipeRedirect = (recipeId: number) => {
     if (!meData?.me) return '/login';
-    if (role === 'chef') return '/chef/recipes';
+    if (role === 'chef') return `/chef/recipes/browse/${recipeId}`;
     if (role === 'nutritionist') return `/nutritionist/recipes/${recipeId}`;
     return `/user/recipes/${recipeId}`;
   };
@@ -94,7 +74,7 @@ const Index: NextPage = () => {
 
   return (
     <div className="min-h-screen w-full md:grid md:grid-cols-2">
-      <section className="container mt-[3em] grid grid-flow-row gap-4 rounded-[3em] bg-cookie-200 md:mt-0 md:rounded-none md:rounded-br-[6em]">
+      <section className="container mt-12 grid grid-flow-row gap-4 rounded-[3rem] bg-cookie-200 md:mt-0 md:rounded-none md:rounded-br-[6rem]">
         <div className="flex flex-col items-center gap-3 px-4 pt-4">
           <div className="flex w-full items-center mb-8 mt-2 justify-between">
             <Logo />
@@ -143,7 +123,7 @@ const Index: NextPage = () => {
           )}
         </div>
 
-        <div className="my-[3.5em] px-6 md:px-3 md:py-[2em]">
+        <div className="my-14 px-6 md:px-3 md:py-8">
           <div className="mb-6 text-center">
             <h3>{t('index.top_recipes_title')}</h3>
           </div>
@@ -155,9 +135,7 @@ const Index: NextPage = () => {
             >
               ‹
             </div>
-            <div className="mt-[3em] w-[70%] h-[320px]">
-              {cards[slideIndex]}
-            </div>
+            <div className="mt-12 w-[70%] h-52">{cards[slideIndex]}</div>
             <div
               onClick={() =>
                 setSlideIndex((i) => Math.min(i + 1, cards.length - 1))
@@ -168,14 +146,14 @@ const Index: NextPage = () => {
             </div>
           </div>
 
-          <div className="mt-[3em] hidden lg:grid lg:grid-cols-2 lg:gap-7">
+          <div className="mt-12 hidden lg:grid lg:grid-cols-2 lg:gap-7">
             {cards}
           </div>
         </div>
       </section>
 
-      <div className="container h-full pt-[1em]">
-        <div className="flex h-full flex-col items-center justify-center gap-5 px-6 py-10 md:px-[3.5em]">
+      <div className="container h-full pt-4">
+        <div className="flex h-full flex-col items-center justify-center gap-5 px-6 py-10 md:px-14">
           <h1 className="text-center leading-tight">{t('index.hero_title')}</h1>
 
           <div className="flex flex-col gap-3 text-center">

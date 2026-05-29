@@ -51,7 +51,6 @@ const RecipesContent = () => {
       variables: {
         ingredientIds: selectedIngredientIds,
         utensilIds: selectedUtensilIds,
-        maxMissing: 3,
       },
       skip: !searched || selectedIngredientIds.length === 0,
       fetchPolicy: 'network-only',
@@ -106,18 +105,15 @@ const RecipesContent = () => {
       <div className="mx-auto max-w-7xl px-6 pb-24 pt-10">
         <button
           onClick={() => router.back()}
-          className="mb-6  hover:text-cookie-400"
+          className="mb-6 hover:text-cookie-400"
         >
           {t('common.back')}
         </button>
 
-        <h1 className="mb-2 text-center">{t('recipes.title')}</h1>
-        <div className="mb-8 ">
-          <p className="">{t('recipes.recipeHint1')}</p>
-        </div>
+        <h1 className="my-6 text-center">{t('recipes.title')}</h1>
 
         <div className="flex flex-col gap-10 lg:grid lg:grid-cols-[2fr_1fr] lg:items-start lg:gap-10">
-          <div className="w-full  lg:flex-1">
+          <div className="w-full lg:flex-1">
             <h2 className="mb-3 text-center">
               {t('ingredientCategories.title')}
             </h2>

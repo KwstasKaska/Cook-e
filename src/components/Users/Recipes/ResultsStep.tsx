@@ -1,4 +1,6 @@
+import { useState } from 'react';
 import { useTranslation } from 'next-i18next';
+import PaginationControls from '../../Helper/PaginationControls';
 
 type Suggestion = {
   missingCount: number;
@@ -11,6 +13,8 @@ type Suggestion = {
     author?: { user?: { username?: string | null } | null } | null;
   };
 };
+
+const PAGE_SIZE = 3;
 
 const SuggestionCard = ({
   suggestion,
@@ -28,7 +32,7 @@ const SuggestionCard = ({
   return (
     <div
       onClick={onClick}
-      className="flex cursor-pointer flex-col overflow-hidden rounded-2xl bg-surface shadow-md transition duration-300 hover:scale-[1.02] hover:shadow-xl"
+      className="flex cursor-pointer flex-col overflow-hidden rounded-2xl bg-cookie-100 shadow-md transition duration-300 hover:scale-[1.02] hover:shadow-xl"
     >
       {recipe.recipeImage && (
         <div className="h-28 w-full flex-shrink-0 overflow-hidden">
@@ -40,9 +44,9 @@ const SuggestionCard = ({
         </div>
       )}
       <div className="flex flex-col gap-2 px-4 py-3">
-        <p className="">{title}</p>
+        <p>{title}</p>
         {recipe.author?.user?.username && (
-          <p className="text-xs ">
+          <p className="text-xs">
             {t('recipes.by')} {recipe.author.user.username}
           </p>
         )}
@@ -67,6 +71,7 @@ const SuggestionCard = ({
 export default function ResultsStep({
   suggestions,
   loading,
+  searched,
   onSelectRecipe,
   isEl,
 }: {
@@ -76,26 +81,54 @@ export default function ResultsStep({
   onSelectRecipe: (id: number) => void;
   isEl: boolean;
 }) {
-  if (loading) {
-    return (
-      <div className="flex justify-center py-24">
-        <div className="h-10 w-10 animate-spin rounded-full border-4 border-cookie-300 border-t-transparent" />
-      </div>
-    );
-  }
+  const { t } = useTranslation('common');
+  const [page, setPage] = useState(0);
+
+  const totalPages = Math.ceil(suggestions.length / PAGE_SIZE);
+  const paginated = suggestions.slice(
+    page * PAGE_SIZE,
+    page * PAGE_SIZE + PAGE_SIZE,
+  );
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="grid grid-cols-1 gap-3 ">
-        {suggestions.map((s) => (
-          <SuggestionCard
-            key={s.recipe.id}
-            suggestion={s}
-            onClick={() => onSelectRecipe(s.recipe.id)}
-            isEl={isEl}
+    <div className="rounded-2xl bg-surface p-5 shadow-lg">
+      <h2 className="mb-4 text-center">{t('chef.recipes.page_title')}</h2>
+
+      {loading ? (
+        <div className="flex justify-center py-24">
+          <div className="h-10 w-10 animate-spin rounded-full border-4 border-cookie-300 border-t-transparent" />
+        </div>
+      ) : !searched ? (
+        <p className="text-center text-myText-muted">
+          {t('recipes.recipeHint1')}
+        </p>
+      ) : suggestions.length === 0 ? (
+        <p className="text-center text-myText-muted">
+          {t('recipes.noResults')}
+        </p>
+      ) : (
+        <>
+          <div className="grid grid-cols-1 gap-3">
+            {paginated.map((s) => (
+              <SuggestionCard
+                key={s.recipe.id}
+                suggestion={s}
+                onClick={() => onSelectRecipe(s.recipe.id)}
+                isEl={isEl}
+              />
+            ))}
+          </div>
+
+          <PaginationControls
+            hasPrev={page > 0}
+            hasMore={page < totalPages - 1}
+            onPrev={() => setPage((p) => p - 1)}
+            onNext={() => setPage((p) => p + 1)}
+            prevLabel={t('pagination.prevRecipes')}
+            nextLabel={t('pagination.nextRecipes')}
           />
-        ))}
-      </div>
+        </>
+      )}
     </div>
   );
 }
