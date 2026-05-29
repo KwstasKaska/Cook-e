@@ -159,39 +159,6 @@ const NutritionistOverviewContent = () => {
 
         <div className="flex flex-col gap-6">
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-            <SnapshotBox
-              title={t('chef.overview.myArticles')}
-              loading={myArticlesLoading}
-              emptyLabel={t('chef.profile.no_articles')}
-              onSeeAll={() => router.push('/nutritionist/articles')}
-              seeAllLabel={t('common.seeAll')}
-            >
-              {myArticles.map((a) => {
-                const title = pick(a.title_el, a.title_en, lang);
-                return (
-                  <Link
-                    key={a.id}
-                    href={`/nutritionist/articles/${a.id}`}
-                    className="overflow-hidden rounded-2xl bg-surface shadow-xl transition duration-200 hover:scale-105 flex flex-col"
-                  >
-                    <div className="w-full bg-cookie-100 overflow-hidden">
-                      <div className="relative h-28 w-full">
-                        <Image
-                          src={a.image}
-                          alt={title}
-                          fill
-                          className="object-cover"
-                        />
-                      </div>
-                    </div>
-                    <div className="px-3 pt-3 pb-1 h-14 flex items-center justify-center text-center">
-                      <p className="line-clamp-2 break-words">{title}</p>
-                    </div>
-                  </Link>
-                );
-              })}
-            </SnapshotBox>
-
             <div className="flex flex-col rounded-2xl bg-surface p-5 shadow-lg">
               <h3 className="mb-4 text-center">{t('nutr.acceptedAppt')}</h3>
               {apptLoading ? (
@@ -265,22 +232,20 @@ const NutritionistOverviewContent = () => {
                 {t('common.seeAll')}
               </button>
             </div>
-          </div>
 
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
             <SnapshotBox
-              title={t('chef.overview.allArticles')}
-              loading={chefArticlesLoading || nutrArticlesLoading}
+              title={t('chef.overview.myArticles')}
+              loading={myArticlesLoading}
               emptyLabel={t('chef.profile.no_articles')}
-              onSeeAll={() => router.push('/nutritionist/articles/browse')}
+              onSeeAll={() => router.push('/nutritionist/articles')}
               seeAllLabel={t('common.seeAll')}
             >
-              {allArticles.map((a) => {
+              {myArticles.map((a) => {
                 const title = pick(a.title_el, a.title_en, lang);
                 return (
                   <Link
                     key={a.id}
-                    href={`/nutritionist/articles/browse/${a.id}`}
+                    href={`/nutritionist/articles/${a.id}`}
                     className="overflow-hidden rounded-2xl bg-surface shadow-xl transition duration-200 hover:scale-105 flex flex-col"
                   >
                     <div className="w-full bg-cookie-100 overflow-hidden">
@@ -300,7 +265,9 @@ const NutritionistOverviewContent = () => {
                 );
               })}
             </SnapshotBox>
+          </div>
 
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
             <SnapshotBox
               title={t('nutr.nutr_recipes')}
               loading={recipesLoading}
@@ -331,6 +298,39 @@ const NutritionistOverviewContent = () => {
                       <p className="line-clamp-2 break-words">{title}</p>
                     </div>
                   </div>
+                );
+              })}
+            </SnapshotBox>
+
+            <SnapshotBox
+              title={t('chef.overview.allArticles')}
+              loading={chefArticlesLoading || nutrArticlesLoading}
+              emptyLabel={t('chef.profile.no_articles')}
+              onSeeAll={() => router.push('/nutritionist/articles/browse')}
+              seeAllLabel={t('common.seeAll')}
+            >
+              {allArticles.map((a) => {
+                const title = pick(a.title_el, a.title_en, lang);
+                return (
+                  <Link
+                    key={a.id}
+                    href={`/nutritionist/articles/browse/${a.id}`}
+                    className="overflow-hidden rounded-2xl bg-surface shadow-xl transition duration-200 hover:scale-105 flex flex-col"
+                  >
+                    <div className="w-full bg-cookie-100 overflow-hidden">
+                      <div className="relative h-28 w-full">
+                        <Image
+                          src={a.image}
+                          alt={title}
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
+                    </div>
+                    <div className="px-3 pt-3 pb-1 h-14 flex items-center justify-center text-center">
+                      <p className="line-clamp-2 break-words">{title}</p>
+                    </div>
+                  </Link>
                 );
               })}
             </SnapshotBox>
