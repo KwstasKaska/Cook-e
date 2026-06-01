@@ -113,7 +113,7 @@ const Register: NextPage = () => {
                   </p>
                   <p className="flex cursor-pointer items-center gap-2">
                     <Field type="radio" name="role" value="chef" />
-                    Chef
+                    {t('register.role_chef')}
                   </p>
                   <p className="flex cursor-pointer items-center gap-2">
                     <Field type="radio" name="role" value="nutritionist" />

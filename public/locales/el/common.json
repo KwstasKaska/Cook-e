@@ -429,6 +429,7 @@
     "password_placeholder": "Κωδικός πρόσβασης",
     "role_label": "Ιδιότητα:",
     "role_user": "Μέλος",
+    "role_chef": "Μάγειρας",
     "role_nutritionist": "Διατροφολόγος",
     "submit": "Εγγραφή"
   },

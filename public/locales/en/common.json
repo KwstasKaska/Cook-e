@@ -454,6 +454,7 @@
     "password_placeholder": "Password",
     "role_label": "Role:",
     "role_user": "Member",
+    "role_chef": "Chef",
     "role_nutritionist": "Nutritionist",
     "submit": "Register"
   },
