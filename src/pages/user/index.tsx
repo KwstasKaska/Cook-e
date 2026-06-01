@@ -220,7 +220,7 @@ const HomeContent = () => {
         </div>
 
         <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2">
-          <div className="flex cursor-pointer flex-col rounded-2xl bg-surface p-6 shadow-lg transition hover:scale-[1.02] hover:shadow-xl">
+          <div className="flex cursor-pointer flex-col rounded-2xl bg-surface p-6 shadow-lg ">
             <div className="mb-3">
               <h3>{t('nav.chat')}</h3>
             </div>
@@ -228,12 +228,12 @@ const HomeContent = () => {
 
             <button
               onClick={() => router.push('/user/chat')}
-              className="mt-4 self-end text-cookie-400"
+              className="mt-4 self-end text-cookie-400 hover:underline"
             >
               {t('common.open')}{' '}
             </button>
           </div>
-          <div className="flex cursor-pointer flex-col rounded-2xl bg-surface p-6 shadow-lg transition hover:scale-[1.02] hover:shadow-xl">
+          <div className="flex cursor-pointer flex-col rounded-2xl bg-surface p-6 shadow-lg ">
             <div className="mb-3 flex items-center justify-between">
               <h3>{t('nav.cart')}</h3>
             </div>
@@ -241,7 +241,7 @@ const HomeContent = () => {
 
             <button
               onClick={() => router.push('/user/cart')}
-              className="mt-4 self-end text-cookie-400"
+              className="mt-4 self-end text-cookie-400 hover:underline"
             >
               {t('common.open')}
             </button>

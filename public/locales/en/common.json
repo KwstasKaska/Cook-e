@@ -40,8 +40,8 @@
     "cookCount": "Cooked recipes",
     "minutes": "minutes",
     "nutritionTitle": "Nutritional info of the week",
-    "nutritionDesc": "The summary of the nutritional info from every recipe you've logged as cooked in the last week.",
-    "cartDesc": "My ingredients list for supermarket.",
+    "nutritionDesc": "The summary of the nutritional info from every recipe you've logged as cooked in the last week",
+    "cartDesc": "My ingredients list for supermarket",
     "chatDesc": "Chat with other members."
   },
   "day": {
