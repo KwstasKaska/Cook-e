@@ -226,23 +226,23 @@
       "placeholder_text": "Write the content...",
       "upload_image": "Upload image",
       "submit": "Publish",
-      "error_image": "Please add an image."
+      "error_image": "Please add an image"
     },
     "nutr_recipes": "Recipes",
     "selectUserFirst": "Please select a member first.",
-    "setContentFirst": "Please write the meal content first.",
-    "selectDateFirst": "Please select a date first.",
-    "selectTimeFirst": "Please select a time.",
+    "setContentFirst": "Please write the meal content first",
+    "selectDateFirst": "Please select a date first",
+    "selectTimeFirst": "Please select a time",
     "messagePatients": "Message your patients",
     "clear": "Clear",
     "acceptedAppt": "My confirmed appointments",
     "noAcceptedAppt": "There are no confirmed appointments yet",
     "plansPerClient": "Plans per client",
-    "pendingRequests": "No meal plans created yet.",
-    "noPlansYet": "No meal plans created yet.",
+    "pendingRequests": "No meal plans created yet",
+    "noPlansYet": "No meal plans created yet",
     "createSlot": "Create slot for appointment",
     "pendingRequests2": "Pending requests",
-    "noPendingRequests2": "No pending requests."
+    "noPendingRequests2": "No pending requests"
   },
   "chef": {
     "more": "More",

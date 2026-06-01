@@ -220,25 +220,31 @@ const HomeContent = () => {
         </div>
 
         <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2">
-          <div
-            onClick={() => router.push('/user/chat')}
-            className="flex cursor-pointer flex-col rounded-2xl bg-surface p-6 shadow-lg transition hover:scale-[1.02] hover:shadow-xl"
-          >
+          <div className="flex cursor-pointer flex-col rounded-2xl bg-surface p-6 shadow-lg transition hover:scale-[1.02] hover:shadow-xl">
             <div className="mb-3">
               <h3>{t('nav.chat')}</h3>
             </div>
             <p className="flex-1 ">{t('landing.chatDesc')}</p>
-            <button className="mt-4 self-end ">{t('common.open')} </button>
+
+            <button
+              onClick={() => router.push('/user/chat')}
+              className="mt-4 self-end text-cookie-400"
+            >
+              {t('common.open')}{' '}
+            </button>
           </div>
-          <div
-            onClick={() => router.push('/user/cart')}
-            className="flex cursor-pointer flex-col rounded-2xl bg-surface p-6 shadow-lg transition hover:scale-[1.02] hover:shadow-xl"
-          >
+          <div className="flex cursor-pointer flex-col rounded-2xl bg-surface p-6 shadow-lg transition hover:scale-[1.02] hover:shadow-xl">
             <div className="mb-3 flex items-center justify-between">
               <h3>{t('nav.cart')}</h3>
             </div>
             <p className="flex-1 ">{t('landing.cartDesc')}</p>
-            <button className="mt-4 self-end">{t('common.open')}</button>
+
+            <button
+              onClick={() => router.push('/user/cart')}
+              className="mt-4 self-end text-cookie-400"
+            >
+              {t('common.open')}
+            </button>
           </div>
         </div>
 
