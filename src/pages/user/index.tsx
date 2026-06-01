@@ -228,7 +228,7 @@ const HomeContent = () => {
               <h3>{t('nav.chat')}</h3>
             </div>
             <p className="flex-1 ">{t('landing.chatDesc')}</p>
-            <span className="mt-4 self-center ">{t('common.open')} </span>
+            <span className="mt-4 self-end ">{t('common.open')} </span>
           </div>
           <div
             onClick={() => router.push('/user/cart')}
@@ -238,7 +238,7 @@ const HomeContent = () => {
               <h3>{t('nav.cart')}</h3>
             </div>
             <p className="flex-1 ">{t('landing.cartDesc')}</p>
-            <span className="mt-4 self-center">{t('common.open')}</span>
+            <span className="mt-4 self-end">{t('common.open')}</span>
           </div>
         </div>
 
