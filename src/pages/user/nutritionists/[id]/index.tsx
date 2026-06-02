@@ -135,7 +135,6 @@ const ProfileContent = () => {
   const handleRate = useCallback(async () => {
     setRatingError('');
     setRatingSuccess('');
-
     await rateNutritionist({
       variables: { nutritionistId: nutrId, score: ratingScore },
     });
@@ -155,7 +154,6 @@ const ProfileContent = () => {
     refetchMyRating,
     refetchAvg,
     client,
-    t,
   ]);
 
   const handleDeleteRating = useCallback(async () => {
@@ -176,7 +174,6 @@ const ProfileContent = () => {
     refetchMyRating,
     refetchAvg,
     client,
-    t,
   ]);
 
   if (loading) {
@@ -194,7 +191,7 @@ const ProfileContent = () => {
     return (
       <div className="min-h-screen">
         <Navbar />
-        <p className="pt-32 text-center ">{t('nutritionists.noResults')}</p>
+        <p className="pt-32 text-center">{t('nutritionists.noResults')}</p>
       </div>
     );
   }
@@ -210,7 +207,7 @@ const ProfileContent = () => {
       <div className="mx-auto max-w-3xl lg:max-w-4xl px-6 pb-20 pt-10">
         <button
           onClick={() => router.back()}
-          className="mb-8 flex items-center gap-2  transition hover:"
+          className="mb-8 flex items-center gap-2 transition hover:"
         >
           {t('common.back')}
         </button>
@@ -226,7 +223,7 @@ const ProfileContent = () => {
                 />
               ) : (
                 <div className="flex h-full w-full items-center justify-center bg-cookie-200">
-                  <span className="">{username[0]?.toUpperCase() ?? '?'}</span>
+                  <span>{username[0]?.toUpperCase() ?? '?'}</span>
                 </div>
               )}
             </div>
@@ -262,7 +259,7 @@ const ProfileContent = () => {
 
           {avgRating > 0 && <StarRow rating={avgRating} />}
 
-          {bioText && <p className="">{bioText}</p>}
+          {bioText && <p>{bioText}</p>}
 
           <ShareButton
             url={typeof window !== 'undefined' ? window.location.href : ''}
@@ -272,11 +269,13 @@ const ProfileContent = () => {
           <div className="flex flex-wrap gap-3 justify-between border-t border-cookie-400 pt-4">
             <button
               onClick={() => setShowRateForm((prev) => !prev)}
-              className="rounded-xl border-2 border-cookie-400 px-4 py-1.5  transition hover:bg-cookie-400 hover:text-white"
+              className={`rounded-xl border-2 px-4 py-1.5 transition ${
+                showRateForm
+                  ? 'border-herb-200 bg-herb-200 text-white'
+                  : 'border-cookie-400 text-cookie-400 hover:bg-cookie-400 hover:text-white'
+              }`}
             >
-              {showRateForm
-                ? t('common.close')
-                : t('nutritionists.rateNutrTitle')}
+              {t('nutritionists.rateNutrTitle')}
             </button>
             <button
               onClick={() => {
@@ -286,7 +285,7 @@ const ProfileContent = () => {
               className={`rounded-xl border-2 px-4 py-1.5 transition ${
                 showArticles
                   ? 'border-herb-200 bg-herb-200 text-white'
-                  : 'border-cookie-400 hover:bg-cookie-400 hover:text-white'
+                  : 'border-cookie-400 text-cookie-400 hover:bg-cookie-400 hover:text-white'
               }`}
             >
               {t('chef.overview.allArticles')}
@@ -337,7 +336,7 @@ const ProfileContent = () => {
               </div>
             ) : articles.length === 0 ? (
               <div className="py-12 text-center">
-                <p className="">{t('chef.profile.no_articles')}</p>
+                <p>{t('chef.profile.no_articles')}</p>
               </div>
             ) : (
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -359,7 +358,7 @@ const ProfileContent = () => {
                         />
                       </div>
                       <div className="px-4 py-3">
-                        <p className="">{title}</p>
+                        <p>{title}</p>
                       </div>
                     </div>
                   );

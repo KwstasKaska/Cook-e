@@ -45,10 +45,12 @@ const ChefProfileContent = () => {
   const { t, i18n } = useTranslation('common');
   const lang = i18n.language;
   const router = useRouter();
-  const { id } = router.query;
-  const chefId = parseInt(id as string, 10);
   const { openConversation } = useChatContext();
   const client = useApolloClient();
+
+  const chefId = router.isReady
+    ? parseInt(router.query.id as string, 10)
+    : null;
 
   const [showRateForm, setShowRateForm] = useState(false);
   const [ratingScore, setRatingScore] = useState(0);
@@ -60,14 +62,14 @@ const ChefProfileContent = () => {
   const [recipesOffset, setRecipesOffset] = useState(0);
 
   const { data: chefData, loading: chefLoading } = useChefQuery({
-    variables: { id: chefId },
-    skip: isNaN(chefId),
+    variables: { id: chefId! },
+    skip: !chefId,
     fetchPolicy: 'network-only',
   });
 
   const { data: avgData, refetch: refetchAvg } = useChefAverageRatingQuery({
-    variables: { chefId },
-    skip: isNaN(chefId),
+    variables: { chefId: chefId! },
+    skip: !chefId,
     fetchPolicy: 'network-only',
   });
 
@@ -78,16 +80,16 @@ const ChefProfileContent = () => {
     fetchMore: fetchMoreRatings,
     networkStatus: ratingsNetworkStatus,
   } = useChefRatingsQuery({
-    variables: { chefId, limit: RATINGS_LIMIT, offset: 0 },
-    skip: isNaN(chefId),
+    variables: { chefId: chefId!, limit: RATINGS_LIMIT, offset: 0 },
+    skip: !chefId,
     fetchPolicy: 'network-only',
     notifyOnNetworkStatusChange: true,
   });
 
   const { data: myRatingData, refetch: refetchMyRating } = useMyChefRatingQuery(
     {
-      variables: { chefId },
-      skip: isNaN(chefId),
+      variables: { chefId: chefId! },
+      skip: !chefId,
       fetchPolicy: 'network-only',
     },
   );
@@ -97,14 +99,18 @@ const ChefProfileContent = () => {
 
   const { data: articlesData, loading: articlesLoading } =
     useArticlesByChefQuery({
-      variables: { chefId, limit: ARTICLES_LIMIT, offset: articlesOffset },
-      skip: !showArticles || isNaN(chefId),
+      variables: {
+        chefId: chefData?.chef?.user?.id ?? 0,
+        limit: ARTICLES_LIMIT,
+        offset: articlesOffset,
+      },
+      skip: !showArticles || !chefData?.chef?.user?.id,
       fetchPolicy: 'network-only',
     });
 
   const { data: recipesData, loading: recipesLoading } = useRecipesByChefQuery({
-    variables: { chefId, limit: RECIPES_LIMIT, offset: recipesOffset },
-    skip: !showRecipes || isNaN(chefId),
+    variables: { chefId: chefId!, limit: RECIPES_LIMIT, offset: recipesOffset },
+    skip: !showRecipes || !chefId,
     fetchPolicy: 'network-only',
   });
 
@@ -128,7 +134,7 @@ const ChefProfileContent = () => {
     setRatingError('');
     setRatingSuccess('');
 
-    await rateChef({ variables: { chefId, score: ratingScore } });
+    await rateChef({ variables: { chefId: chefId!, score: ratingScore } });
     setRatingScore(0);
     setShowRateForm(false);
     client.cache.evict({ fieldName: 'chefRatings' });
@@ -145,13 +151,12 @@ const ChefProfileContent = () => {
     refetchMyRating,
     refetchAvg,
     client,
-    t,
   ]);
 
   const handleDeleteRating = useCallback(async () => {
     setRatingError('');
     setRatingSuccess('');
-    await deleteChefRating({ variables: { chefId } });
+    await deleteChefRating({ variables: { chefId: chefId! } });
     setRatingScore(0);
     client.cache.evict({ fieldName: 'chefRatings' });
     client.cache.evict({ fieldName: 'chefAverageRating' });
@@ -166,7 +171,6 @@ const ChefProfileContent = () => {
     refetchMyRating,
     refetchAvg,
     client,
-    t,
   ]);
 
   if (chefLoading) {
@@ -192,7 +196,7 @@ const ChefProfileContent = () => {
       <Navbar />
       <main className="flex-1">
         <div className="mx-auto max-w-3xl lg:max-w-4xl px-6 pb-20 pt-10">
-          <button onClick={() => router.back()} className="mb-8  ">
+          <button onClick={() => router.back()} className="mb-8">
             {t('common.back')}
           </button>
 
@@ -205,7 +209,7 @@ const ChefProfileContent = () => {
                   className="h-16 w-16 flex-shrink-0 rounded-full border-2 border-cookie-400 object-cover"
                 />
               ) : (
-                <div className="flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-full border-2 border-cookie-400 bg-cookie-200 text-myText-heading">
+                <div className="flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-full border-2 border-cookie-400 bg-cookie-200">
                   {chef.user?.username?.[0]?.toUpperCase() ?? '?'}
                 </div>
               )}
@@ -235,7 +239,7 @@ const ChefProfileContent = () => {
               )}
             </div>
 
-            {bio && <p className=" leading-relaxed ">{bio}</p>}
+            {bio && <p className="leading-relaxed">{bio}</p>}
 
             {avgRating > 0 && (
               <StarRow rating={avgRating} ratingCount={reviews.length} />
@@ -247,22 +251,26 @@ const ChefProfileContent = () => {
                   setShowRecipes((prev) => !prev);
                   setRecipesOffset(0);
                 }}
-                className="flex-1  rounded-xl border-2 border-cookie-400 py-2 transition hover:text-white hover:bg-cookie-400"
+                className={`flex-1 rounded-xl border-2 py-2 transition ${
+                  showRecipes
+                    ? 'border-herb-200 bg-herb-200 text-white'
+                    : 'border-cookie-400 text-cookie-400 hover:bg-cookie-400 hover:text-white'
+                }`}
               >
-                {showRecipes
-                  ? t('common.close')
-                  : t('chef.overview.allRecipes')}
+                {t('chef.overview.allRecipes')}
               </button>
               <button
                 onClick={() => {
                   setShowArticles((prev) => !prev);
                   setArticlesOffset(0);
                 }}
-                className="flex-1  rounded-xl border-2 border-cookie-400 py-2 transition hover:text-white hover:bg-cookie-400"
+                className={`flex-1 rounded-xl border-2 py-2 transition ${
+                  showArticles
+                    ? 'border-herb-200 bg-herb-200 text-white'
+                    : 'border-cookie-400 text-cookie-400 hover:bg-cookie-400 hover:text-white'
+                }`}
               >
-                {showArticles
-                  ? t('common.close')
-                  : t('chef.overview.allArticles')}
+                {t('chef.overview.allArticles')}
               </button>
             </div>
 
@@ -274,7 +282,7 @@ const ChefProfileContent = () => {
                   </div>
                 ) : recipes.length === 0 ? (
                   <div className="py-12 text-center">
-                    <p className="">{t('chef.landing.no_recipes')}</p>
+                    <p>{t('chef.landing.no_recipes')}</p>
                   </div>
                 ) : (
                   <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -329,7 +337,7 @@ const ChefProfileContent = () => {
                   </div>
                 ) : articles.length === 0 ? (
                   <div className="py-12 text-center">
-                    <p className="">{t('chef.profile.no_articles')}</p>
+                    <p>{t('chef.profile.no_articles')}</p>
                   </div>
                 ) : (
                   <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -379,9 +387,13 @@ const ChefProfileContent = () => {
             <div className="border-t border-cookie-200 pt-4">
               <button
                 onClick={() => setShowRateForm((v) => !v)}
-                className="w-full rounded-xl border-2 border-cookie-400 py-2 transition hover:text-white hover:bg-cookie-400"
+                className={`w-full rounded-xl border-2 py-2 transition ${
+                  showRateForm
+                    ? 'border-herb-200 bg-herb-200 text-white'
+                    : 'border-cookie-400 text-cookie-400 hover:bg-cookie-400 hover:text-white'
+                }`}
               >
-                {showRateForm ? t('common.close') : t('recipes.rateChefTitle')}
+                {t('recipes.rateChefTitle')}
               </button>
 
               {showRateForm && (
@@ -409,7 +421,7 @@ const ChefProfileContent = () => {
                 onLoadMore={() =>
                   fetchMoreRatings({
                     variables: {
-                      chefId,
+                      chefId: chefId!,
                       limit: RATINGS_LIMIT,
                       offset: reviews.length,
                     },

@@ -232,14 +232,14 @@ const RecipeDetailContent = () => {
             <div className="flex min-w-0 flex-col gap-8">
               <button
                 onClick={() => router.back()}
-                className="flex w-fit items-center gap-2  transition hover:text-cookie-400"
+                className="flex w-fit items-center gap-2 transition hover:text-cookie-400"
               >
                 {t('common.back')}
               </button>
 
               <div className="flex min-w-0 flex-col gap-3">
                 {recipe.category && (
-                  <p className="text-sm ">
+                  <p className="text-sm">
                     {getCategoryLabel(recipe.category, lang)}
                   </p>
                 )}
@@ -271,7 +271,7 @@ const RecipeDetailContent = () => {
                       return (
                         <div
                           key={ingId}
-                          className="flex items-center gap-3 py-2.5"
+                          className="flex items.center gap-3 py-2.5"
                         >
                           <span className="h-1.5 w-1.5 flex-shrink-0 rounded-full bg-cookie-400" />
 
@@ -359,7 +359,7 @@ const RecipeDetailContent = () => {
                       className="h-20 w-20 rounded-full border-4 border-surface object-cover shadow"
                     />
                   ) : (
-                    <div className="flex h-20 w-20 items-center justify-center rounded-full border-4 border-surface bg-cookie-200 text-myText-heading shadow">
+                    <div className="flex h-20 w-20 items-center justify-center rounded-full border-4 border-surface bg-cookie-200 shadow">
                       {recipe.author.user.username[0].toUpperCase()}
                     </div>
                   )}
@@ -462,7 +462,7 @@ const RecipeDetailContent = () => {
                   className={`w-full rounded-xl border-2 px-4 py-1.5 transition ${
                     isFavorited
                       ? 'border-herb-200 bg-herb-200 text-white'
-                      : 'border-cookie-400 hover:bg-cookie-400 hover:text-white'
+                      : 'border-cookie-400 text-cookie-400 hover:bg-cookie-400 hover:text-white'
                   }`}
                 >
                   {isFavorited
@@ -489,7 +489,7 @@ const RecipeDetailContent = () => {
                     className={`w-full rounded-xl border-2 px-4 py-1.5 transition disabled:cursor-not-allowed disabled:opacity-50 ${
                       cookState === 'done'
                         ? 'border-herb-200 bg-herb-200 text-white'
-                        : 'border-cookie-400 hover:bg-cookie-400 hover:text-white'
+                        : 'border-cookie-400 text-cookie-400 hover:bg-cookie-400 hover:text-white'
                     }`}
                   >
                     {cookState === 'done'
@@ -500,9 +500,13 @@ const RecipeDetailContent = () => {
 
                 <button
                   onClick={() => setShowRateForm((prev) => !prev)}
-                  className="w-full rounded-xl border-2 border-cookie-400 px-4 py-1.5 transition hover:bg-cookie-400 hover:text-white"
+                  className={`w-full rounded-xl border-2 px-4 py-1.5 transition ${
+                    showRateForm
+                      ? 'border-herb-200 bg-herb-200 text-white'
+                      : 'border-cookie-400 text-cookie-400 hover:bg-cookie-400 hover:text-white'
+                  }`}
                 >
-                  {showRateForm ? t('common.close') : t('recipes.rateTitle')}
+                  {t('recipes.rateTitle')}
                 </button>
               </div>
 
