@@ -1,3 +1,5 @@
+import Image from 'next/image';
+import Link from 'next/link';
 import { useMemo } from 'react';
 import Navbar from '../../components/Users/Navbar';
 import { useTranslation } from 'next-i18next';
@@ -6,16 +8,20 @@ import { useRouter } from 'next/router';
 import { el, enUS } from 'date-fns/locale';
 import {
   useMyAppointmentRequestsQuery,
-  useMyFavoritesQuery,
   useMyMealPlanQuery,
   useMyNutritionalSummaryQuery,
+  useRecipesQuery,
+  useChefArticlesQuery,
+  useArticlesQuery,
   AppointmentStatus,
 } from '../../generated/graphql';
 import useIsUser from '../../utils/useIsUser';
 import { toDisplay, statusStyle } from '../../utils/appointmentUtils';
 import { JS_DAY_TO_ENUM, DAY_ORDER, MEAL_ORDER } from '../../utils/mealUtils';
+import SnapshotBox from '../../components/Helper/SnapshotBox';
+import { pick } from '../../utils/pick';
 
-const FAV_SNAPSHOT = 2;
+const SNAPSHOT = 2;
 const APPT_SNAPSHOT = 3;
 
 export async function getServerSideProps({ locale }: { locale: string }) {
@@ -33,18 +39,14 @@ export default function UserHomePage() {
 }
 
 const HomeContent = () => {
-  const { t } = useTranslation('common');
+  const { t, i18n } = useTranslation('common');
   const router = useRouter();
   const isEl = router.locale === 'el';
+  const lang = i18n.language;
   const dateFnsLocale = router.locale === 'el' ? el : enUS;
 
   const { data: summaryData, loading: summaryLoading } =
     useMyNutritionalSummaryQuery({ fetchPolicy: 'network-only' });
-
-  const { data: favData, loading: favLoading } = useMyFavoritesQuery({
-    variables: { limit: FAV_SNAPSHOT, offset: 0 },
-    fetchPolicy: 'network-only',
-  });
 
   const { data: apptData, loading: apptLoading } =
     useMyAppointmentRequestsQuery({ fetchPolicy: 'network-only' });
@@ -53,8 +55,17 @@ const HomeContent = () => {
     fetchPolicy: 'network-only',
   });
 
+  const { data: recipesData, loading: recipesLoading } = useRecipesQuery({
+    variables: { limit: SNAPSHOT, offset: 0 },
+  });
+
+  const { data: chefArticlesData, loading: chefArticlesLoading } =
+    useChefArticlesQuery({ variables: { limit: SNAPSHOT, offset: 0 } });
+
+  const { data: nutrArticlesData, loading: nutrArticlesLoading } =
+    useArticlesQuery({ variables: { limit: SNAPSHOT, offset: 0 } });
+
   const summary = summaryData?.myNutritionalSummary;
-  const favorites = favData?.myFavorites ?? [];
 
   const stats = [
     {
@@ -113,6 +124,12 @@ const HomeContent = () => {
     return { snapshotMeals: [], snapshotNutrName: nutrName };
   }, [planData]);
 
+  const recipes = recipesData?.recipes ?? [];
+  const allArticles = [
+    ...(chefArticlesData?.chefArticles ?? []),
+    ...(nutrArticlesData?.articles ?? []),
+  ].slice(0, SNAPSHOT);
+
   return (
     <div className="min-h-screen">
       <Navbar />
@@ -127,7 +144,7 @@ const HomeContent = () => {
                 <div className="h-6 w-6 rounded-full border-2 border-cookie-400 border-t-transparent" />
               </div>
             ) : recentAppts.length === 0 ? (
-              <p className="flex-1 ">{t('settings.noAppointments')}</p>
+              <p className="flex-1">{t('settings.noAppointments')}</p>
             ) : (
               <div className="flex flex-1 flex-col gap-2">
                 {recentAppts.map((req) => {
@@ -148,7 +165,7 @@ const HomeContent = () => {
                       )}
                       <div className="min-w-0 flex-1">
                         <p className="truncate">{nutr?.username ?? '—'}</p>
-                        <p className="truncate ">
+                        <p className="truncate">
                           {req.slot?.date
                             ? toDisplay(req.slot.date, dateFnsLocale)
                             : '—'}
@@ -185,7 +202,7 @@ const HomeContent = () => {
                 <div className="h-6 w-6 rounded-full border-2 border-cookie-400 border-t-transparent" />
               </div>
             ) : snapshotMeals.length === 0 ? (
-              <p className="flex-1 ">{t('settings.noMealPlan')}</p>
+              <p className="flex-1">{t('settings.noMealPlan')}</p>
             ) : (
               <div className="flex flex-1 flex-col gap-1">
                 {snapshotNutrName && (
@@ -203,7 +220,7 @@ const HomeContent = () => {
                       <span className="flex-shrink-0 text-cookie-400">
                         {t(`meal.${entry.mealType}`)}
                       </span>
-                      <p className="line-clamp-1 text-myText-base">{comment}</p>
+                      <p className="line-clamp-1">{comment}</p>
                     </div>
                   );
                 })}
@@ -220,82 +237,17 @@ const HomeContent = () => {
         </div>
 
         <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2">
-          <div className="flex cursor-pointer flex-col rounded-2xl bg-surface p-6 shadow-lg ">
+          <div className="flex flex-col rounded-2xl bg-surface p-6 shadow-lg">
             <div className="mb-3">
               <h3>{t('nav.chat')}</h3>
             </div>
-            <p className="flex-1 ">{t('landing.chatDesc')}</p>
+            <p className="flex-1">{t('landing.chatDesc')}</p>
 
             <button
               onClick={() => router.push('/user/chat')}
               className="mt-4 self-end text-cookie-400 hover:underline"
             >
-              {t('common.open')}{' '}
-            </button>
-          </div>
-          <div className="flex cursor-pointer flex-col rounded-2xl bg-surface p-6 shadow-lg ">
-            <div className="mb-3 flex items-center justify-between">
-              <h3>{t('nav.cart')}</h3>
-            </div>
-            <p className="flex-1 ">{t('landing.cartDesc')}</p>
-
-            <button
-              onClick={() => router.push('/user/cart')}
-              className="mt-4 self-end text-cookie-400 hover:underline"
-            >
               {t('common.open')}
-            </button>
-          </div>
-        </div>
-
-        <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2">
-          <div className="flex flex-col rounded-2xl bg-surface p-5 shadow-lg">
-            <h3 className="mb-4">{t('recipes.favourites')}</h3>
-
-            {favLoading ? (
-              <div className="flex flex-1 items-center justify-center py-8">
-                <div className="h-6 w-6 rounded-full border-2 border-cookie-400 border-t-transparent" />
-              </div>
-            ) : favorites.length === 0 ? (
-              <p className="flex-1">{t('recipes.noFavourites')}</p>
-            ) : (
-              <div className="grid flex-1 grid-cols-2 gap-3">
-                {favorites.map((fav) => {
-                  const recipe = fav.recipe;
-                  if (!recipe) return null;
-                  const title = isEl ? recipe.title_el : recipe.title_en;
-
-                  return (
-                    <div
-                      key={fav.id}
-                      onClick={() => router.push(`/user/recipes/${recipe.id}`)}
-                      className="cursor-pointer overflow-hidden rounded-2xl bg-surface shadow-xl transition duration-200 hover:scale-105 flex flex-col"
-                    >
-                      <div className="w-full bg-cookie-100 overflow-hidden">
-                        {recipe.recipeImage ? (
-                          <img
-                            src={recipe.recipeImage}
-                            alt={title}
-                            className="h-28 w-full object-cover"
-                          />
-                        ) : (
-                          <div className="h-28 w-full" />
-                        )}
-                      </div>
-                      <div className="px-3 pt-3 pb-1 h-14 flex items-center justify-center text-center">
-                        <p className="line-clamp-2 break-words">{title}</p>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-
-            <button
-              onClick={() => router.push('/user/favorites')}
-              className="mt-4 self-end text-cookie-400 hover:underline"
-            >
-              {t('common.seeAll2')}
             </button>
           </div>
 
@@ -312,14 +264,81 @@ const HomeContent = () => {
                 {stats.map((s) => (
                   <div key={s.labelKey} className="flex flex-col gap-0">
                     <span className="text-sm">{t(s.labelKey)}</span>
-                    <span className="text-sm text-myText-heading">
-                      {s.value}
-                    </span>
+                    <span className="text-sm">{s.value}</span>
                   </div>
                 ))}
               </div>
             )}
           </div>
+        </div>
+
+        <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2">
+          <SnapshotBox
+            title={t('nav.recipes2')}
+            loading={recipesLoading}
+            emptyLabel={t('chef.profile.no_recipes')}
+            onSeeAll={() => router.push('/user/recipes')}
+            seeAllLabel={t('common.seeAll2')}
+          >
+            {recipes.map((r) => {
+              const title = pick(r.title_el, r.title_en, lang);
+              return (
+                <div
+                  key={r.id}
+                  onClick={() => router.push(`/user/recipes/${r.id}`)}
+                  className="cursor-pointer overflow-hidden rounded-2xl bg-surface shadow-xl transition duration-200 hover:scale-105 flex flex-col"
+                >
+                  <div className="w-full bg-cookie-100 overflow-hidden">
+                    {r.recipeImage ? (
+                      <img
+                        src={r.recipeImage}
+                        alt={title}
+                        className="h-28 w-full object-cover"
+                      />
+                    ) : (
+                      <div className="h-28 w-full" />
+                    )}
+                  </div>
+                  <div className="px-3 pt-3 pb-1 h-14 flex items-center justify-center text-center">
+                    <p className="line-clamp-2 break-words">{title}</p>
+                  </div>
+                </div>
+              );
+            })}
+          </SnapshotBox>
+
+          <SnapshotBox
+            title={t('chef.overview.allArticles')}
+            loading={chefArticlesLoading || nutrArticlesLoading}
+            emptyLabel={t('chef.profile.no_articles')}
+            onSeeAll={() => router.push('/user/articles')}
+            seeAllLabel={t('common.seeAll')}
+          >
+            {allArticles.map((a) => {
+              const title = pick(a.title_el, a.title_en, lang);
+              return (
+                <Link
+                  key={a.id}
+                  href={`/user/articles/${a.id}`}
+                  className="overflow-hidden rounded-2xl bg-surface shadow-xl transition duration-200 hover:scale-105 flex flex-col"
+                >
+                  <div className="w-full bg-cookie-100 overflow-hidden">
+                    <div className="relative h-28 w-full">
+                      <Image
+                        src={a.image}
+                        alt={title}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                  </div>
+                  <div className="px-3 pt-3 pb-1 h-14 flex items-center justify-center text-center">
+                    <p className="line-clamp-2 break-words">{title}</p>
+                  </div>
+                </Link>
+              );
+            })}
+          </SnapshotBox>
         </div>
       </div>
     </div>

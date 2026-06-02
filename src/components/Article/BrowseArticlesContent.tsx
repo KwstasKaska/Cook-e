@@ -1,36 +1,25 @@
 import Image from 'next/image';
-import { useState } from 'react';
+import Link from 'next/link';
+import { ReactNode, useState } from 'react';
 import { useRouter } from 'next/router';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
-import Navbar from '../../../components/Users/Navbar';
-import useIsUser from '../../../utils/useIsUser';
 import {
   useChefArticlesQuery,
   useArticlesQuery,
-} from '../../../generated/graphql';
-import PaginationControls from '../../../components/Helper/PaginationControls';
-import { pick } from '../../../utils/pick';
+} from '../../generated/graphql';
+import PaginationControls from '../Helper/PaginationControls';
+import { pick } from '../../utils/pick';
 
 const LIMIT = 28;
 
 type Tab = 'chefs' | 'nutritionists';
 
-export async function getServerSideProps({ locale }: { locale: string }) {
-  return {
-    props: {
-      ...(await serverSideTranslations(locale, ['common'])),
-    },
-  };
-}
+type Props = {
+  navbar: ReactNode;
+  detailPath: string;
+};
 
-export default function UserArticlesPage() {
-  const { loading: authLoading, isAuthorized } = useIsUser();
-  if (authLoading || !isAuthorized) return null;
-  return <UserArticlesContent />;
-}
-
-const UserArticlesContent = () => {
+const BrowseArticlesContent = ({ navbar, detailPath }: Props) => {
   const { t, i18n } = useTranslation('common');
   const router = useRouter();
   const lang = i18n.language;
@@ -50,15 +39,17 @@ const UserArticlesContent = () => {
   });
 
   const chefArticles = chefData?.chefArticles ?? [];
+  const chefHasMore = chefArticles.length === LIMIT;
+  const chefHasPrev = chefOffset > 0;
+
   const nutrArticles = nutrData?.articles ?? [];
+  const nutrHasMore = nutrArticles.length === LIMIT;
+  const nutrHasPrev = nutrOffset > 0;
 
   const loading = tab === 'chefs' ? chefLoading : nutrLoading;
   const articles = tab === 'chefs' ? chefArticles : nutrArticles;
-  const hasMore =
-    tab === 'chefs'
-      ? chefArticles.length === LIMIT
-      : nutrArticles.length === LIMIT;
-  const hasPrev = tab === 'chefs' ? chefOffset > 0 : nutrOffset > 0;
+  const hasMore = tab === 'chefs' ? chefHasMore : nutrHasMore;
+  const hasPrev = tab === 'chefs' ? chefHasPrev : nutrHasPrev;
 
   const onPrev = () => {
     if (tab === 'chefs') setChefOffset((o) => o - LIMIT);
@@ -74,7 +65,7 @@ const UserArticlesContent = () => {
 
   return (
     <div className="min-h-screen">
-      <Navbar />
+      {navbar}
 
       <div className="mx-auto max-w-3xl lg:max-w-4xl px-6 pb-16 pt-10">
         <button
@@ -123,10 +114,10 @@ const UserArticlesContent = () => {
               {articles.map((a) => {
                 const title = pick(a.title_el, a.title_en, lang);
                 return (
-                  <div
+                  <Link
                     key={a.id}
-                    onClick={() => router.push(`/user/articles/${a.id}`)}
-                    className="cursor-pointer overflow-hidden rounded-2xl bg-surface shadow-xl transition duration-200 hover:scale-105 flex flex-col"
+                    href={`${detailPath}/${a.id}`}
+                    className="overflow-hidden rounded-2xl bg-surface shadow-xl transition duration-200 hover:scale-105 flex flex-col"
                   >
                     <div className="w-full bg-cookie-100 overflow-hidden">
                       <div className="relative h-28 w-full">
@@ -138,20 +129,20 @@ const UserArticlesContent = () => {
                         />
                       </div>
                     </div>
-                    <div className="px-3 pt-2 pb-3 flex flex-col justify-center text-center gap-1">
+                    <div className="px-3 pt-2 pb-3 flex flex-col justify-center text-center">
                       <p className="line-clamp-2 break-words">{title}</p>
                       {a.creator?.username && (
-                        <p className="text-xs">{a.creator.username}</p>
+                        <p className="mt-1 text-xs">{a.creator.username}</p>
                       )}
                     </div>
-                  </div>
+                  </Link>
                 );
               })}
             </div>
           </div>
         )}
 
-        {!loading && (hasPrev || hasMore) && (
+        {!loading && (hasMore || hasPrev) && (
           <div className="mt-6">
             <PaginationControls
               hasPrev={hasPrev}
@@ -167,3 +158,5 @@ const UserArticlesContent = () => {
     </div>
   );
 };
+
+export default BrowseArticlesContent;

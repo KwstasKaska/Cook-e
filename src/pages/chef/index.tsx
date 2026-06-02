@@ -158,10 +158,10 @@ const ChefOverviewContent = () => {
                         <img
                           src={r.recipeImage}
                           alt={title}
-                          className="h-28 w-full object-cover"
+                          className="h-24 w-full object-cover"
                         />
                       ) : (
-                        <div className="h-28 w-full" />
+                        <div className="h-24 w-full" />
                       )}
                     </div>
                     <div className="px-3 pt-3 pb-1 h-14 flex items-center justify-center text-center">
@@ -188,7 +188,7 @@ const ChefOverviewContent = () => {
                     className="overflow-hidden rounded-2xl bg-surface shadow-xl transition duration-200 hover:scale-105 flex flex-col"
                   >
                     <div className="w-full bg-cookie-100 overflow-hidden">
-                      <div className="relative h-28 w-full">
+                      <div className="relative h-24 w-full">
                         <Image
                           src={a.image}
                           alt={title}
@@ -227,14 +227,19 @@ const ChefOverviewContent = () => {
                         <img
                           src={r.recipeImage}
                           alt={title}
-                          className="h-28 w-full object-cover"
+                          className="h-24 w-full object-cover"
                         />
                       ) : (
-                        <div className="h-28 w-full" />
+                        <div className="h-24 w-full" />
                       )}
                     </div>
-                    <div className="px-3 pt-3 pb-1 h-14 flex items-center justify-center text-center">
+                    <div className="px-3 pt-3 pb-1 h-20 flex flex-col items-center justify-center text-center">
                       <p className="line-clamp-2 break-words">{title}</p>
+                      {r.author?.user?.username && (
+                        <p className="mt-0.5 text-xs">
+                          {r.author.user.username}
+                        </p>
+                      )}
                     </div>
                   </div>
                 );
@@ -257,7 +262,7 @@ const ChefOverviewContent = () => {
                     className="overflow-hidden rounded-2xl bg-surface shadow-xl transition duration-200 hover:scale-105 flex flex-col"
                   >
                     <div className="w-full bg-cookie-100 overflow-hidden">
-                      <div className="relative h-28 w-full">
+                      <div className="relative h-24 w-full">
                         <Image
                           src={a.image}
                           alt={title}
@@ -266,8 +271,11 @@ const ChefOverviewContent = () => {
                         />
                       </div>
                     </div>
-                    <div className="px-3 pt-3 pb-1 h-14 flex items-center justify-center text-center">
+                    <div className="px-3 pt-3 pb-1 h-20 flex flex-col items-center justify-center text-center">
                       <p className="line-clamp-2 break-words">{title}</p>
+                      {a.creator?.username && (
+                        <p className="mt-0.5 text-xs">{a.creator.username}</p>
+                      )}
                     </div>
                   </Link>
                 );

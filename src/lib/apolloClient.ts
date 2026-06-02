@@ -110,6 +110,7 @@ const createApolloClient = (headers: IncomingHttpHeaders | null = null) => {
             myRecipesByCategory: replaceField(['category', 'limit', 'offset']),
             recipesByCategory: replaceField(['category', 'limit', 'offset']),
             myFavorites: replaceField(['limit', 'offset']),
+            myArticleFavorites: replaceField(['limit', 'offset']),
             myArticles: replaceField(['limit', 'offset']),
             articlesByNutritionist: replaceField([
               'nutritionistId',

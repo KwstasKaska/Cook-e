@@ -254,8 +254,8 @@
       "allArticles": "Articles",
       "myRecipes": "My recipes",
       "myArticles": "My articles",
-      "chefArticles": "Chefs articles",
-      "nutrArticles": "Nutritionists articles"
+      "chefArticles": "Chefs",
+      "nutrArticles": "Nutritionists"
     },
     "recipes": {
       "page_title": "Recipes",

@@ -54,11 +54,14 @@ const NutrSchedulerContent = () => {
   const [openDay, setOpenDay] = useState<string | null>(null);
 
   const { data: reqData } = useGetAppointmentRequestsForNutritionistQuery();
-  const { data: plansData, loading: plansLoading } =
-    useGetNutritionistMealPlansQuery({
-      variables: { limit: 100, offset: 0 },
-      fetchPolicy: 'network-only',
-    });
+  const {
+    data: plansData,
+    loading: plansLoading,
+    refetch: refetchPlans,
+  } = useGetNutritionistMealPlansQuery({
+    variables: { limit: 100, offset: 0 },
+    fetchPolicy: 'network-only',
+  });
   const [createMealScheduler] = useCreateMealSchedulerMutation();
 
   const acceptedClients = useMemo(() => {
@@ -121,6 +124,7 @@ const NutrSchedulerContent = () => {
     }
 
     setCellInfo({});
+    await refetchPlans();
   };
 
   const stickyCell = (bg: string) => ({
