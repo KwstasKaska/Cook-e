@@ -150,12 +150,20 @@ export default function NutrBookingSection({
 
       <div className="mb-6 flex items-center gap-4 self-start">
         <span className="flex items-center gap-1.5">
+          <span className="h-2.5 w-2.5 rounded-full bg-white border border-cookie-400" />
+          <span className="text-sm">{t('nutritionists.slotAvailable')}</span>
+        </span>
+        <span className="flex items-center gap-1.5">
           <span className="h-2.5 w-2.5 rounded-full bg-cookie-300" />
-          <span className="">{t('settings.appointmentStatus.pending')}</span>
+          <span className="text-sm">
+            {t('settings.appointmentStatus.pending')}
+          </span>
         </span>
         <span className="flex items-center gap-1.5">
           <span className="h-2.5 w-2.5 rounded-full bg-myRed" />
-          <span className="">{t('settings.appointmentStatus.rejected')}</span>
+          <span className="text-sm">
+            {t('settings.appointmentStatus.rejected')}
+          </span>
         </span>
       </div>
 
@@ -184,7 +192,7 @@ export default function NutrBookingSection({
                   disabled={isBlocked}
                   className={`rounded-full text-myText-base border-2 px-5 py-2.5 transition-all duration-150 ${
                     isPending
-                      ? 'cursor-not-allowed border-cookie-300 bg-cookie-300 text-white'
+                      ? 'cursor-not-allowed border-cookie-300 bg-cookie-300 text-white '
                       : isRejected
                         ? 'cursor-not-allowed border-myRed bg-myRed text-white '
                         : isSelected

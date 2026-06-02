@@ -126,6 +126,7 @@
     "loadMore": "Περισσότεροι"
   },
   "nutritionists": {
+    "slotAvailable": "Διαθέσιμο",
     "searchTitle": "Αναζήτησε τον διατροφολόγο σου:",
     "searchPlaceholder": "Εύρεση διατροφολόγου",
     "popularTitle": "Διατροφολόγοι",

@@ -126,6 +126,7 @@
     "loadMore": "Load more"
   },
   "nutritionists": {
+    "slotAvailable": "Available",
     "searchTitle": "Find your nutritionist:",
     "searchPlaceholder": "Search nutritionist",
     "popularTitle": "Nutritionists",
