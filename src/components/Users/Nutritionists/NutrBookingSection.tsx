@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
 import { format } from 'date-fns';
@@ -7,12 +7,20 @@ import { toast } from 'sonner';
 import {
   useAvailableSlotsQuery,
   useRequestAppointmentMutation,
+  AppointmentStatus,
 } from '../../../generated/graphql';
+
+interface SlotRequest {
+  slotId: number;
+  status: AppointmentStatus;
+}
 
 interface Props {
   nutritionistProfileId: number;
   nutritionistUserId: number;
   hasAcceptedAppointment: boolean;
+  myRequests: SlotRequest[];
+  onRequestSuccess: () => void;
 }
 
 const toDisplay = (isoDate: string, locale: Locale): string => {
@@ -20,7 +28,11 @@ const toDisplay = (isoDate: string, locale: Locale): string => {
   return format(new Date(year, month - 1, day), 'dd MMMM yyyy', { locale });
 };
 
-export default function NutrBookingSection({ nutritionistProfileId }: Props) {
+export default function NutrBookingSection({
+  nutritionistProfileId,
+  myRequests,
+  onRequestSuccess,
+}: Props) {
   const { t, i18n } = useTranslation('common');
   const { locale } = useRouter();
   const isEl = locale === 'el';
@@ -41,6 +53,12 @@ export default function NutrBookingSection({ nutritionistProfileId }: Props) {
   const today = new Date().toISOString().split('T')[0];
 
   const availableSlots = slotsData?.availableSlots ?? [];
+
+  const requestMap = useMemo(() => {
+    const map = new Map<number, AppointmentStatus>();
+    myRequests.forEach((r) => map.set(r.slotId, r.status));
+    return map;
+  }, [myRequests]);
 
   const visibleSlots = availableSlots.filter((slot) => {
     if (!slot.date) return false;
@@ -78,19 +96,19 @@ export default function NutrBookingSection({ nutritionistProfileId }: Props) {
       toast.error(gqlErrors[0].message);
       return;
     }
-    toast.success(t('nutritionists.bookSuccess'));
     setSelectedSlotId(null);
+    onRequestSuccess();
   };
 
   return (
     <div className="flex flex-col items-center">
       <h1 className="mb-6">{t('nutritionists.availableTimes')}</h1>
 
-      <div className="mb-6 flex items-center gap-4 self-start">
+      <div className="mb-4 flex flex-wrap items-center gap-4 self-start">
         <button
           onClick={() => handleMonthChange(-1)}
           disabled={monthIndex === 0}
-          className="transition-colors hover:text-cookie-400 disabled:opacity-30"
+          className="transition-colors hover:text-cookie-400 "
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -111,7 +129,7 @@ export default function NutrBookingSection({ nutritionistProfileId }: Props) {
         <button
           onClick={() => handleMonthChange(1)}
           disabled={monthIndex === 11}
-          className="transition-colors hover:text-cookie-400 disabled:opacity-30"
+          className="transition-colors hover:text-cookie-400 "
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -130,6 +148,17 @@ export default function NutrBookingSection({ nutritionistProfileId }: Props) {
         </button>
       </div>
 
+      <div className="mb-6 flex items-center gap-4 self-start">
+        <span className="flex items-center gap-1.5">
+          <span className="h-2.5 w-2.5 rounded-full bg-cookie-300" />
+          <span className="">{t('settings.appointmentStatus.pending')}</span>
+        </span>
+        <span className="flex items-center gap-1.5">
+          <span className="h-2.5 w-2.5 rounded-full bg-myRed" />
+          <span className="">{t('settings.appointmentStatus.rejected')}</span>
+        </span>
+      </div>
+
       {slotsLoading ? (
         <div className="flex justify-center py-8">
           <div className="h-6 w-6  rounded-full border-4 border-cookie-300 border-t-transparent" />
@@ -140,15 +169,27 @@ export default function NutrBookingSection({ nutritionistProfileId }: Props) {
         <>
           <div className="mb-8 flex flex-wrap justify-center gap-3">
             {visibleSlots.map((slot) => {
+              const reqStatus = requestMap.get(slot.id);
+              const isPending = reqStatus === AppointmentStatus.Pending;
+              const isRejected = reqStatus === AppointmentStatus.Rejected;
+              const isBlocked = isPending || isRejected;
               const isSelected = selectedSlotId === slot.id;
+
               return (
                 <button
                   key={slot.id}
-                  onClick={() => setSelectedSlotId(isSelected ? null : slot.id)}
-                  className={`rounded-full text-myText-base border-2 px-5 py-2.5   transition-all duration-150 ${
-                    isSelected
-                      ? 'border-cookie-400 bg-cookie-200 '
-                      : 'border-cookie-400 bg-surface '
+                  onClick={() =>
+                    !isBlocked && setSelectedSlotId(isSelected ? null : slot.id)
+                  }
+                  disabled={isBlocked}
+                  className={`rounded-full text-myText-base border-2 px-5 py-2.5 transition-all duration-150 ${
+                    isPending
+                      ? 'cursor-not-allowed border-cookie-300 bg-cookie-300 text-white'
+                      : isRejected
+                        ? 'cursor-not-allowed border-myRed bg-myRed text-white '
+                        : isSelected
+                          ? 'border-cookie-400 bg-cookie-200'
+                          : 'border-cookie-400 bg-surface'
                   }`}
                 >
                   {toDisplay(slot.date, dateFnsLocale)} {slot.time}

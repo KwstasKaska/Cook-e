@@ -64,9 +64,10 @@ const ProfileContent = () => {
     fetchPolicy: 'network-only',
   });
 
-  const { data: requestsData } = useMyAppointmentRequestsQuery({
-    fetchPolicy: 'network-only',
-  });
+  const { data: requestsData, refetch: refetchMyRequests } =
+    useMyAppointmentRequestsQuery({
+      fetchPolicy: 'network-only',
+    });
 
   const nutr = data?.nutritionist;
   const nutrId = nutr?.id ?? 0;
@@ -77,6 +78,10 @@ const ProfileContent = () => {
   );
 
   const userId = nutr?.user?.id ?? 0;
+
+  const myRequestsForThisNutr = myRequests
+    .filter((req) => req.slot?.nutritionistId === nutrId && req.slot?.id)
+    .map((req) => ({ slotId: req.slot!.id, status: req.status }));
 
   const { data: articlesData, loading: articlesLoading } =
     useArticlesByNutritionistQuery({
@@ -278,11 +283,13 @@ const ProfileContent = () => {
                 setShowArticles((prev) => !prev);
                 setOffset(0);
               }}
-              className="rounded-xl border-2 border-cookie-400 px-4 py-1.5 transition hover:bg-cookie-400 hover:text-white"
+              className={`rounded-xl border-2 px-4 py-1.5 transition ${
+                showArticles
+                  ? 'border-herb-200 bg-herb-200 text-white'
+                  : 'border-cookie-400 hover:bg-cookie-400 hover:text-white'
+              }`}
             >
-              {showArticles
-                ? t('common.close')
-                : t('chef.overview.allArticles')}
+              {t('chef.overview.allArticles')}
             </button>
           </div>
         </div>
@@ -377,6 +384,8 @@ const ProfileContent = () => {
           nutritionistProfileId={nutr.id}
           nutritionistUserId={userId}
           hasAcceptedAppointment={hasAcceptedAppointment}
+          myRequests={myRequestsForThisNutr}
+          onRequestSuccess={refetchMyRequests}
         />
       </div>
     </div>
