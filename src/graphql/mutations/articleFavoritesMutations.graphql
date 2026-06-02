@@ -1,0 +1,19 @@
+mutation SaveArticle($articleId: Int!) {
+  saveArticle(articleId: $articleId) {
+    ...RegularUserArticleFavorite
+  }
+}
+
+mutation UnsaveArticle($articleId: Int!) {
+  unsaveArticle(articleId: $articleId)
+}
+
+query IsArticleFavorited($articleId: Int!) {
+  isArticleFavorited(articleId: $articleId)
+}
+
+query MyArticleFavorites($limit: Int!, $offset: Int!) {
+  myArticleFavorites(limit: $limit, offset: $offset) {
+    ...RegularUserArticleFavorite
+  }
+}

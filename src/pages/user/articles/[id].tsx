@@ -3,7 +3,12 @@ import { useRouter } from 'next/router';
 import Navbar from '../../../components/Users/Navbar';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
-import { useArticleQuery } from '../../../generated/graphql';
+import {
+  useArticleQuery,
+  useIsArticleFavoritedQuery,
+  useSaveArticleMutation,
+  useUnsaveArticleMutation,
+} from '../../../generated/graphql';
 import useIsUser from '../../../utils/useIsUser';
 import { pick } from '../../../utils/pick';
 
@@ -24,6 +29,25 @@ const ArticleDetailContent = () => {
     skip: !id,
   });
 
+  const { data: favData, refetch: refetchFav } = useIsArticleFavoritedQuery({
+    variables: { articleId: id! },
+    skip: !id,
+  });
+
+  const [saveArticle] = useSaveArticleMutation();
+  const [unsaveArticle] = useUnsaveArticleMutation();
+
+  const isFavorited = favData?.isArticleFavorited ?? false;
+
+  const handleToggleFavorite = async () => {
+    if (isFavorited) {
+      await unsaveArticle({ variables: { articleId: id! } });
+    } else {
+      await saveArticle({ variables: { articleId: id! } });
+    }
+    await refetchFav();
+  };
+
   const article = data?.article;
 
   if (loading || !id) {
@@ -42,7 +66,7 @@ const ArticleDetailContent = () => {
       <div className="flex min-h-screen flex-col">
         <Navbar />
         <div className="flex flex-1 items-center justify-center">
-          <p className="">{t('chef.article.not_found')}</p>
+          <p>{t('chef.article.not_found')}</p>
         </div>
       </div>
     );
@@ -60,22 +84,8 @@ const ArticleDetailContent = () => {
         <div className="w-full max-w-2xl">
           <button
             onClick={() => router.back()}
-            className="mb-6 flex items-center gap-2    transition"
+            className="mb-6 flex items-center gap-2 transition"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={2}
-              stroke="currentColor"
-              className="h-4 w-4"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
-              />
-            </svg>
             {t('common.back')}
           </button>
 
@@ -98,8 +108,8 @@ const ArticleDetailContent = () => {
                   </div>
                 )}
                 <div>
-                  <p className=" ">{article.creator?.username ?? '—'}</p>
-                  <p className="">
+                  <p>{article.creator?.username ?? '—'}</p>
+                  <p>
                     {new Date(parseInt(article.createdAt)).toLocaleDateString(
                       lang === 'en' ? 'en-GB' : 'el-GR',
                       { day: 'numeric', month: 'long', year: 'numeric' },
@@ -108,9 +118,22 @@ const ArticleDetailContent = () => {
                 </div>
               </div>
 
-              <h1 className="mb-5 ">{title}</h1>
+              <button
+                onClick={handleToggleFavorite}
+                className={`mb-5 inline-flex rounded-xl border-2 px-4 py-1.5 transition ${
+                  isFavorited
+                    ? 'border-herb-200 bg-herb-200 text-white'
+                    : 'border-cookie-400 hover:bg-cookie-400 hover:text-white'
+                }`}
+              >
+                {isFavorited
+                  ? t('recipes.savedToFavorites')
+                  : t('recipes.save')}
+              </button>
 
-              <p className="whitespace-pre-line ">{text}</p>
+              <h1 className="mb-5">{title}</h1>
+
+              <p className="whitespace-pre-line">{text}</p>
             </div>
           </div>
         </div>

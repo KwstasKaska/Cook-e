@@ -279,9 +279,11 @@ export type Mutation = {
   removeFromCart: Scalars['Boolean']['output'];
   requestAppointment: AppointmentRequestResponse;
   respondToAppointmentRequest: Scalars['Boolean']['output'];
+  saveArticle: UserArticleFavorite;
   saveRecipe: UserFavorite;
   sendMessage: MessageResponse;
   startConversation: ConversationResponse;
+  unsaveArticle: Scalars['Boolean']['output'];
   unsaveRecipe: Scalars['Boolean']['output'];
   updateAppointment?: Maybe<AppointmentResponse>;
   updateAppointmentRequest?: Maybe<AppointmentRequestResponse>;
@@ -438,6 +440,11 @@ export type MutationRespondToAppointmentRequestArgs = {
 };
 
 
+export type MutationSaveArticleArgs = {
+  articleId: Scalars['Int']['input'];
+};
+
+
 export type MutationSaveRecipeArgs = {
   recipeId: Scalars['Int']['input'];
 };
@@ -451,6 +458,11 @@ export type MutationSendMessageArgs = {
 
 export type MutationStartConversationArgs = {
   participantId: Scalars['Int']['input'];
+};
+
+
+export type MutationUnsaveArticleArgs = {
+  articleId: Scalars['Int']['input'];
 };
 
 
@@ -552,9 +564,11 @@ export type Query = {
   getMyAppointments: Array<Appointment>;
   getNutritionistMealPlans: Array<MealScheduler>;
   ingredients: Array<Ingredient>;
+  isArticleFavorited: Scalars['Boolean']['output'];
   isFavorited: Scalars['Boolean']['output'];
   me?: Maybe<User>;
   myAppointmentRequests: Array<AppointmentRequest>;
+  myArticleFavorites: Array<UserArticleFavorite>;
   myArticles: Array<Article>;
   myCart: Array<ShoppingCart>;
   myChefProfile?: Maybe<ChefProfile>;
@@ -670,8 +684,19 @@ export type QueryGetNutritionistMealPlansArgs = {
 };
 
 
+export type QueryIsArticleFavoritedArgs = {
+  articleId: Scalars['Int']['input'];
+};
+
+
 export type QueryIsFavoritedArgs = {
   recipeId: Scalars['Int']['input'];
+};
+
+
+export type QueryMyArticleFavoritesArgs = {
+  limit?: Scalars['Int']['input'];
+  offset?: Scalars['Int']['input'];
 };
 
 
@@ -993,6 +1018,15 @@ export type User = {
   username: Scalars['String']['output'];
 };
 
+export type UserArticleFavorite = {
+  __typename?: 'UserArticleFavorite';
+  article?: Maybe<Article>;
+  articleId: Scalars['Int']['output'];
+  id: Scalars['Int']['output'];
+  savedAt: Scalars['String']['output'];
+  userId: Scalars['Int']['output'];
+};
+
 export type UserFavorite = {
   __typename?: 'UserFavorite';
   id: Scalars['Int']['output'];
@@ -1051,7 +1085,9 @@ export type RegularCartItemFragment = { __typename?: 'ShoppingCart', id: number,
 
 export type RegularCookedRecipeFragment = { __typename?: 'CookedRecipe', id: number, userId: number, recipeId: number, cookedAt: string, recipe?: { __typename?: 'Recipe', id: number, title_el: string, title_en: string, recipeImage?: string | null, category?: RecipeCategory | null, prepTime: number, cookTime: number, caloriesTotal?: number | null, difficulty: Difficulty } | null };
 
-export type RegularUserFavoriteFragment = { __typename?: 'UserFavorite', id: number, userId: number, recipeId: number, savedAt: string, recipe?: { __typename?: 'Recipe', id: number, title_el: string, title_en: string, recipeImage?: string | null, category?: RecipeCategory | null, prepTime: number, cookTime: number, difficulty: Difficulty } | null };
+export type RegularUserArticleFavoriteFragment = { __typename?: 'UserArticleFavorite', id: number, userId: number, articleId: number, savedAt: string, article?: { __typename?: 'Article', id: number, title_el: string, title_en: string, image: string, creatorId: number, creator?: { __typename?: 'User', id: number, username: string } | null } | null };
+
+export type RegularUserFavoriteFragment = { __typename?: 'UserFavorite', id: number, userId: number, recipeId: number, savedAt: string, recipe?: { __typename?: 'Recipe', id: number, title_el: string, title_en: string, recipeImage?: string | null, category?: RecipeCategory | null, prepTime: number, cookTime: number, difficulty: Difficulty, author?: { __typename?: 'ChefProfile', user: { __typename?: 'User', username: string } } | null } | null };
 
 export type MealSchedulerWithNutritionistFragment = { __typename?: 'MealScheduler', id: number, day: DayOfWeek, mealType: MealType, comment_el: string, comment_en: string, nutritionist: { __typename?: 'NutritionistProfile', user?: { __typename?: 'User', username: string } | null } };
 
@@ -1135,6 +1171,35 @@ export type CancelAcceptedRequestAsNutrMutationVariables = Exact<{
 
 
 export type CancelAcceptedRequestAsNutrMutation = { __typename?: 'Mutation', cancelAcceptedRequestAsNutr: boolean };
+
+export type SaveArticleMutationVariables = Exact<{
+  articleId: Scalars['Int']['input'];
+}>;
+
+
+export type SaveArticleMutation = { __typename?: 'Mutation', saveArticle: { __typename?: 'UserArticleFavorite', id: number, userId: number, articleId: number, savedAt: string, article?: { __typename?: 'Article', id: number, title_el: string, title_en: string, image: string, creatorId: number, creator?: { __typename?: 'User', id: number, username: string } | null } | null } };
+
+export type UnsaveArticleMutationVariables = Exact<{
+  articleId: Scalars['Int']['input'];
+}>;
+
+
+export type UnsaveArticleMutation = { __typename?: 'Mutation', unsaveArticle: boolean };
+
+export type IsArticleFavoritedQueryVariables = Exact<{
+  articleId: Scalars['Int']['input'];
+}>;
+
+
+export type IsArticleFavoritedQuery = { __typename?: 'Query', isArticleFavorited: boolean };
+
+export type MyArticleFavoritesQueryVariables = Exact<{
+  limit: Scalars['Int']['input'];
+  offset: Scalars['Int']['input'];
+}>;
+
+
+export type MyArticleFavoritesQuery = { __typename?: 'Query', myArticleFavorites: Array<{ __typename?: 'UserArticleFavorite', id: number, userId: number, articleId: number, savedAt: string, article?: { __typename?: 'Article', id: number, title_el: string, title_en: string, image: string, creatorId: number, creator?: { __typename?: 'User', id: number, username: string } | null } | null }> };
 
 export type UpdateArticleMutationVariables = Exact<{
   data: UpdateArticleInput;
@@ -1251,7 +1316,7 @@ export type SaveRecipeMutationVariables = Exact<{
 }>;
 
 
-export type SaveRecipeMutation = { __typename?: 'Mutation', saveRecipe: { __typename?: 'UserFavorite', id: number, userId: number, recipeId: number, savedAt: string, recipe?: { __typename?: 'Recipe', id: number, title_el: string, title_en: string, recipeImage?: string | null, category?: RecipeCategory | null, prepTime: number, cookTime: number, difficulty: Difficulty } | null } };
+export type SaveRecipeMutation = { __typename?: 'Mutation', saveRecipe: { __typename?: 'UserFavorite', id: number, userId: number, recipeId: number, savedAt: string, recipe?: { __typename?: 'Recipe', id: number, title_el: string, title_en: string, recipeImage?: string | null, category?: RecipeCategory | null, prepTime: number, cookTime: number, difficulty: Difficulty, author?: { __typename?: 'ChefProfile', user: { __typename?: 'User', username: string } } | null } | null } };
 
 export type UnsaveRecipeMutationVariables = Exact<{
   recipeId: Scalars['Int']['input'];
@@ -1545,7 +1610,7 @@ export type MyFavoritesQueryVariables = Exact<{
 }>;
 
 
-export type MyFavoritesQuery = { __typename?: 'Query', myFavorites: Array<{ __typename?: 'UserFavorite', id: number, userId: number, recipeId: number, savedAt: string, recipe?: { __typename?: 'Recipe', id: number, title_el: string, title_en: string, recipeImage?: string | null, category?: RecipeCategory | null, prepTime: number, cookTime: number, difficulty: Difficulty } | null }> };
+export type MyFavoritesQuery = { __typename?: 'Query', myFavorites: Array<{ __typename?: 'UserFavorite', id: number, userId: number, recipeId: number, savedAt: string, recipe?: { __typename?: 'Recipe', id: number, title_el: string, title_en: string, recipeImage?: string | null, category?: RecipeCategory | null, prepTime: number, cookTime: number, difficulty: Difficulty, author?: { __typename?: 'ChefProfile', user: { __typename?: 'User', username: string } } | null } | null }> };
 
 export type MyNutritionalSummaryQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1883,6 +1948,25 @@ export const RegularCookedRecipeFragmentDoc = gql`
   }
 }
     `;
+export const RegularUserArticleFavoriteFragmentDoc = gql`
+    fragment RegularUserArticleFavorite on UserArticleFavorite {
+  id
+  userId
+  articleId
+  savedAt
+  article {
+    id
+    title_el
+    title_en
+    image
+    creatorId
+    creator {
+      id
+      username
+    }
+  }
+}
+    `;
 export const RegularUserFavoriteFragmentDoc = gql`
     fragment RegularUserFavorite on UserFavorite {
   id
@@ -1898,6 +1982,11 @@ export const RegularUserFavoriteFragmentDoc = gql`
     prepTime
     cookTime
     difficulty
+    author {
+      user {
+        username
+      }
+    }
   }
 }
     `;
@@ -2367,6 +2456,149 @@ export function useCancelAcceptedRequestAsNutrMutation(baseOptions?: Apollo.Muta
 export type CancelAcceptedRequestAsNutrMutationHookResult = ReturnType<typeof useCancelAcceptedRequestAsNutrMutation>;
 export type CancelAcceptedRequestAsNutrMutationResult = Apollo.MutationResult<CancelAcceptedRequestAsNutrMutation>;
 export type CancelAcceptedRequestAsNutrMutationOptions = Apollo.BaseMutationOptions<CancelAcceptedRequestAsNutrMutation, CancelAcceptedRequestAsNutrMutationVariables>;
+export const SaveArticleDocument = gql`
+    mutation SaveArticle($articleId: Int!) {
+  saveArticle(articleId: $articleId) {
+    ...RegularUserArticleFavorite
+  }
+}
+    ${RegularUserArticleFavoriteFragmentDoc}`;
+export type SaveArticleMutationFn = Apollo.MutationFunction<SaveArticleMutation, SaveArticleMutationVariables>;
+
+/**
+ * __useSaveArticleMutation__
+ *
+ * To run a mutation, you first call `useSaveArticleMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSaveArticleMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [saveArticleMutation, { data, loading, error }] = useSaveArticleMutation({
+ *   variables: {
+ *      articleId: // value for 'articleId'
+ *   },
+ * });
+ */
+export function useSaveArticleMutation(baseOptions?: Apollo.MutationHookOptions<SaveArticleMutation, SaveArticleMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<SaveArticleMutation, SaveArticleMutationVariables>(SaveArticleDocument, options);
+      }
+export type SaveArticleMutationHookResult = ReturnType<typeof useSaveArticleMutation>;
+export type SaveArticleMutationResult = Apollo.MutationResult<SaveArticleMutation>;
+export type SaveArticleMutationOptions = Apollo.BaseMutationOptions<SaveArticleMutation, SaveArticleMutationVariables>;
+export const UnsaveArticleDocument = gql`
+    mutation UnsaveArticle($articleId: Int!) {
+  unsaveArticle(articleId: $articleId)
+}
+    `;
+export type UnsaveArticleMutationFn = Apollo.MutationFunction<UnsaveArticleMutation, UnsaveArticleMutationVariables>;
+
+/**
+ * __useUnsaveArticleMutation__
+ *
+ * To run a mutation, you first call `useUnsaveArticleMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUnsaveArticleMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [unsaveArticleMutation, { data, loading, error }] = useUnsaveArticleMutation({
+ *   variables: {
+ *      articleId: // value for 'articleId'
+ *   },
+ * });
+ */
+export function useUnsaveArticleMutation(baseOptions?: Apollo.MutationHookOptions<UnsaveArticleMutation, UnsaveArticleMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UnsaveArticleMutation, UnsaveArticleMutationVariables>(UnsaveArticleDocument, options);
+      }
+export type UnsaveArticleMutationHookResult = ReturnType<typeof useUnsaveArticleMutation>;
+export type UnsaveArticleMutationResult = Apollo.MutationResult<UnsaveArticleMutation>;
+export type UnsaveArticleMutationOptions = Apollo.BaseMutationOptions<UnsaveArticleMutation, UnsaveArticleMutationVariables>;
+export const IsArticleFavoritedDocument = gql`
+    query IsArticleFavorited($articleId: Int!) {
+  isArticleFavorited(articleId: $articleId)
+}
+    `;
+
+/**
+ * __useIsArticleFavoritedQuery__
+ *
+ * To run a query within a React component, call `useIsArticleFavoritedQuery` and pass it any options that fit your needs.
+ * When your component renders, `useIsArticleFavoritedQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useIsArticleFavoritedQuery({
+ *   variables: {
+ *      articleId: // value for 'articleId'
+ *   },
+ * });
+ */
+export function useIsArticleFavoritedQuery(baseOptions: Apollo.QueryHookOptions<IsArticleFavoritedQuery, IsArticleFavoritedQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<IsArticleFavoritedQuery, IsArticleFavoritedQueryVariables>(IsArticleFavoritedDocument, options);
+      }
+export function useIsArticleFavoritedLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<IsArticleFavoritedQuery, IsArticleFavoritedQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<IsArticleFavoritedQuery, IsArticleFavoritedQueryVariables>(IsArticleFavoritedDocument, options);
+        }
+export function useIsArticleFavoritedSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<IsArticleFavoritedQuery, IsArticleFavoritedQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<IsArticleFavoritedQuery, IsArticleFavoritedQueryVariables>(IsArticleFavoritedDocument, options);
+        }
+export type IsArticleFavoritedQueryHookResult = ReturnType<typeof useIsArticleFavoritedQuery>;
+export type IsArticleFavoritedLazyQueryHookResult = ReturnType<typeof useIsArticleFavoritedLazyQuery>;
+export type IsArticleFavoritedSuspenseQueryHookResult = ReturnType<typeof useIsArticleFavoritedSuspenseQuery>;
+export type IsArticleFavoritedQueryResult = Apollo.QueryResult<IsArticleFavoritedQuery, IsArticleFavoritedQueryVariables>;
+export const MyArticleFavoritesDocument = gql`
+    query MyArticleFavorites($limit: Int!, $offset: Int!) {
+  myArticleFavorites(limit: $limit, offset: $offset) {
+    ...RegularUserArticleFavorite
+  }
+}
+    ${RegularUserArticleFavoriteFragmentDoc}`;
+
+/**
+ * __useMyArticleFavoritesQuery__
+ *
+ * To run a query within a React component, call `useMyArticleFavoritesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMyArticleFavoritesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMyArticleFavoritesQuery({
+ *   variables: {
+ *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
+ *   },
+ * });
+ */
+export function useMyArticleFavoritesQuery(baseOptions: Apollo.QueryHookOptions<MyArticleFavoritesQuery, MyArticleFavoritesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<MyArticleFavoritesQuery, MyArticleFavoritesQueryVariables>(MyArticleFavoritesDocument, options);
+      }
+export function useMyArticleFavoritesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MyArticleFavoritesQuery, MyArticleFavoritesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<MyArticleFavoritesQuery, MyArticleFavoritesQueryVariables>(MyArticleFavoritesDocument, options);
+        }
+export function useMyArticleFavoritesSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<MyArticleFavoritesQuery, MyArticleFavoritesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<MyArticleFavoritesQuery, MyArticleFavoritesQueryVariables>(MyArticleFavoritesDocument, options);
+        }
+export type MyArticleFavoritesQueryHookResult = ReturnType<typeof useMyArticleFavoritesQuery>;
+export type MyArticleFavoritesLazyQueryHookResult = ReturnType<typeof useMyArticleFavoritesLazyQuery>;
+export type MyArticleFavoritesSuspenseQueryHookResult = ReturnType<typeof useMyArticleFavoritesSuspenseQuery>;
+export type MyArticleFavoritesQueryResult = Apollo.QueryResult<MyArticleFavoritesQuery, MyArticleFavoritesQueryVariables>;
 export const UpdateArticleDocument = gql`
     mutation UpdateArticle($data: UpdateArticleInput!) {
   updateArticle(data: $data) {

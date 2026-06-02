@@ -8,6 +8,8 @@ const Navbar = () => {
     { href: '/user', label: t('nav.home') },
     { href: '/user/recipes', label: t('nav.recipes') },
     { href: '/user/nutritionists', label: t('nav.nutritionists') },
+    { href: '/user/cart', label: t('nav.cart') },
+    { href: '/user/favorites', label: t('nav.favorites') },
   ];
 
   return <BaseNavbar links={links} />;

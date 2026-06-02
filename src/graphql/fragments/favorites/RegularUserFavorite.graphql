@@ -12,5 +12,10 @@ fragment RegularUserFavorite on UserFavorite {
     prepTime
     cookTime
     difficulty
+    author {
+      user {
+        username
+      }
+    }
   }
 }

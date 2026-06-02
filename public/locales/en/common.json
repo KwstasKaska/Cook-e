@@ -9,7 +9,9 @@
     "tagline": "A food journey",
     "messages": "Messages",
     "articles": "Articles",
-    "chat": "Chat with other members"
+    "chat": "Chat with other members",
+    "favorites": "Favorites",
+    "recipes2": "Recipes"
   },
   "chefnav": {
     "chef_index": "Overview",
@@ -72,6 +74,7 @@
   "recipes": {
     "title": "Search recipes",
     "favourites": "Favourite recipes",
+    "noArticleFavourites": "You haven't saved any articles yet in favorites.",
     "backToSearch": "Back",
     "resultsTitle": "Choose from the suggested recipes",
     "newSearch": "New search",
@@ -109,17 +112,17 @@
     "title": "Supermarket list",
     "items": "ingredients",
     "clearSelected": "Clear selected",
-    "emptyCart": "Your list is empty.",
+    "emptyCart": "Your list is empty",
     "browseIngredients": "Add ingredients",
     "addToList": "Add to list",
     "addedToCart": "Added to list",
-    "subtitle": "Add missing or wanted ingredients directly from each recipe's pages.",
+    "subtitle": "Add missing or wanted ingredients directly from each recipe's pages",
     "browseRecipes": "Browse on search recipes page"
   },
   "chat": {
     "title": "Chat with other members",
     "usersCount": "members",
-    "noResults": "No members found.",
+    "noResults": "No members found",
     "loadMore": "Load more"
   },
   "nutritionists": {
