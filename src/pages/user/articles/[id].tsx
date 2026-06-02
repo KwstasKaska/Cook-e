@@ -122,7 +122,7 @@ const ArticleDetailContent = () => {
                 onClick={handleToggleFavorite}
                 className={`mb-5 inline-flex rounded-xl border-2 px-4 py-1.5 transition ${
                   isFavorited
-                    ? 'border-herb-200 bg-herb-200 text-white'
+                    ? 'border-herb-200 bg-herb-200 hover:border-myRed hover:bg-myRed text-white'
                     : 'border-cookie-400 hover:bg-cookie-400 hover:text-white'
                 }`}
               >

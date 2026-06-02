@@ -1,0 +1,3 @@
+mutation RemoveFromCartByIngredientId($ingredientId: Int!) {
+  removeFromCartByIngredientId(ingredientId: $ingredientId)
+}

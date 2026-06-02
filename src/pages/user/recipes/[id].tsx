@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from 'react';
+import { useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import Navbar from '../../../components/Users/Navbar';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
@@ -15,11 +15,12 @@ import {
   useSaveRecipeMutation,
   useUnsaveRecipeMutation,
   useAddToCartMutation,
-  useRemoveFromCartMutation,
+  useRemoveFromCartByIngredientIdMutation,
   useRateRecipeMutation,
   useDeleteRecipeRatingMutation,
   useLogCookedRecipeMutation,
   useDeleteCookLogMutation,
+  useMyCartIngredientIdsQuery,
 } from '../../../generated/graphql';
 import useIsUser from '../../../utils/useIsUser';
 import { getDifficultyLabel } from '../../../utils/recipeHelpers';
@@ -55,7 +56,6 @@ const RecipeDetailContent = () => {
   const client = useApolloClient();
 
   const [showRateForm, setShowRateForm] = useState(false);
-  const [cartMap, setCartMap] = useState<Map<number, number>>(() => new Map());
   const [ratingScore, setRatingScore] = useState(0);
   const [cookState, setCookState] = useState<CookState>('idle');
   const [lastCookId, setLastCookId] = useState<number | null>(null);
@@ -98,10 +98,16 @@ const RecipeDetailContent = () => {
     skip: isNaN(recipeId),
   });
 
+  const { data: cartIdsData, refetch: refetchCartIds } =
+    useMyCartIngredientIdsQuery({ fetchPolicy: 'network-only' });
+
+  const cartIngredientIds = new Set(cartIdsData?.myCartIngredientIds ?? []);
+
   const [saveRecipe] = useSaveRecipeMutation();
   const [unsaveRecipe] = useUnsaveRecipeMutation();
   const [addToCart] = useAddToCartMutation();
-  const [removeFromCart] = useRemoveFromCartMutation();
+  const [removeFromCartByIngredientId] =
+    useRemoveFromCartByIngredientIdMutation();
   const [rateRecipe, { loading: rating }] = useRateRecipeMutation();
   const [deleteRecipeRating] = useDeleteRecipeRatingMutation();
   const [logCookedRecipe, { loading: logging }] = useLogCookedRecipeMutation();
@@ -124,30 +130,14 @@ const RecipeDetailContent = () => {
   const hasMoreReviews =
     reviews.length > 0 && reviews.length % RATINGS_LIMIT === 0;
 
-  const handleAddToCart = useCallback(
-    async (ingredientId: number) => {
-      const res = await addToCart({ variables: { ingredientId } });
-      const cartItemId = res.data?.addToCart?.id;
-      if (cartItemId) {
-        setCartMap((prev) => new Map(prev).set(ingredientId, cartItemId));
-      }
-    },
-    [addToCart],
-  );
-
-  const handleUndoCart = useCallback(
-    async (ingredientId: number) => {
-      const cartItemId = cartMap.get(ingredientId);
-      if (!cartItemId) return;
-      await removeFromCart({ variables: { id: cartItemId } });
-      setCartMap((prev) => {
-        const next = new Map(prev);
-        next.delete(ingredientId);
-        return next;
-      });
-    },
-    [removeFromCart, cartMap],
-  );
+  const handleToggleCart = async (ingredientId: number) => {
+    if (cartIngredientIds.has(ingredientId)) {
+      await removeFromCartByIngredientId({ variables: { ingredientId } });
+    } else {
+      await addToCart({ variables: { ingredientId } });
+    }
+    await refetchCartIds();
+  };
 
   const handleToggleFavorite = async () => {
     if (isFavorited) {
@@ -267,39 +257,29 @@ const RecipeDetailContent = () => {
                       const name = isEl
                         ? ri.ingredient.name_el
                         : ri.ingredient.name_en;
-                      const inCart = cartMap.has(ingId);
+                      const inCart = cartIngredientIds.has(ingId);
                       return (
                         <div
                           key={ingId}
-                          className="flex items.center gap-3 py-2.5"
+                          className="flex items-center gap-3 py-2.5"
                         >
                           <span className="h-1.5 w-1.5 flex-shrink-0 rounded-full bg-cookie-400" />
-
                           <span className="flex-1">
                             {ri.quantity}{' '}
                             {t(`chef.create_recipe.units.${ri.unit}`)} {name}
                           </span>
-
-                          {inCart ? (
-                            <div className="flex flex-shrink-0 flex-col gap-1">
-                              <span className="rounded-xl border-2 border-herb-200 bg-herb-200 px-3 py-0.5 text-center text-sm text-white">
-                                {t('cart.addedToCart')}
-                              </span>
-                              <button
-                                onClick={() => handleUndoCart(ingId)}
-                                className="rounded-xl border-2 border-myRed px-3 py-0.5 text-sm text-myRed transition hover:bg-myRed hover:text-white"
-                              >
-                                {t('common.undo')}
-                              </button>
-                            </div>
-                          ) : (
-                            <button
-                              onClick={() => handleAddToCart(ingId)}
-                              className="flex-shrink-0 rounded-xl border-2 border-cookie-400 px-3 py-0.5 text-sm transition hover:bg-cookie-400 hover:text-white"
-                            >
-                              {t('cart.addToList')}
-                            </button>
-                          )}
+                          <button
+                            onClick={() => handleToggleCart(ingId)}
+                            className={`flex-shrink-0 rounded-xl border-2 px-3 py-0.5 text-sm transition ${
+                              inCart
+                                ? 'border-herb-200 bg-herb-200 text-white hover:border-myRed hover:bg-myRed'
+                                : 'border-cookie-400 text-cookie-400 hover:bg-cookie-400 hover:text-white'
+                            }`}
+                          >
+                            {inCart
+                              ? t('cart.addedToCart')
+                              : t('cart.addToList')}
+                          </button>
                         </div>
                       );
                     })}
@@ -461,7 +441,7 @@ const RecipeDetailContent = () => {
                   onClick={handleToggleFavorite}
                   className={`w-full rounded-xl border-2 px-4 py-1.5 transition ${
                     isFavorited
-                      ? 'border-herb-200 bg-herb-200 text-white'
+                      ? 'border-herb-200 bg-herb-200 text-white hover:border-myRed hover:bg-myRed'
                       : 'border-cookie-400 text-cookie-400 hover:bg-cookie-400 hover:text-white'
                   }`}
                 >
@@ -472,7 +452,7 @@ const RecipeDetailContent = () => {
 
                 {cookState === 'undo' ? (
                   <div className="flex gap-2">
-                    <span className="flex-1 rounded-xl border-2 border-herb-200 bg-herb-200 px-4 py-1.5 text-center text-white">
+                    <span className="flex-1 rounded-xl border-2 border-herb-200 bg-herb-200  px-4 py-1.5 text-center text-white">
                       {t('chef.recipe_detail.marked_as_cooked')}
                     </span>
                     <button
@@ -502,7 +482,7 @@ const RecipeDetailContent = () => {
                   onClick={() => setShowRateForm((prev) => !prev)}
                   className={`w-full rounded-xl border-2 px-4 py-1.5 transition ${
                     showRateForm
-                      ? 'border-herb-200 bg-herb-200 text-white'
+                      ? 'border-herb-200 bg-herb-200 hover:border-myRed hover:bg-myRed text-white'
                       : 'border-cookie-400 text-cookie-400 hover:bg-cookie-400 hover:text-white'
                   }`}
                 >

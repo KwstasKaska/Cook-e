@@ -271,7 +271,7 @@ const ProfileContent = () => {
               onClick={() => setShowRateForm((prev) => !prev)}
               className={`rounded-xl border-2 px-4 py-1.5 transition ${
                 showRateForm
-                  ? 'border-herb-200 bg-herb-200 text-white'
+                  ? 'border-herb-200 bg-herb-200 hover:border-myRed hover:bg-myRed text-white'
                   : 'border-cookie-400 text-cookie-400 hover:bg-cookie-400 hover:text-white'
               }`}
             >
@@ -284,7 +284,7 @@ const ProfileContent = () => {
               }}
               className={`rounded-xl border-2 px-4 py-1.5 transition ${
                 showArticles
-                  ? 'border-herb-200 bg-herb-200 text-white'
+                  ? 'border-herb-200 bg-herb-200 hover:border-myRed hover:bg-myRed text-white'
                   : 'border-cookie-400 text-cookie-400 hover:bg-cookie-400 hover:text-white'
               }`}
             >

@@ -253,7 +253,7 @@ const ChefProfileContent = () => {
                 }}
                 className={`flex-1 rounded-xl border-2 py-2 transition ${
                   showRecipes
-                    ? 'border-herb-200 bg-herb-200 text-white'
+                    ? 'border-herb-200 bg-herb-200 hover:border-myRed hover:bg-myRed text-white'
                     : 'border-cookie-400 text-cookie-400 hover:bg-cookie-400 hover:text-white'
                 }`}
               >
@@ -266,7 +266,7 @@ const ChefProfileContent = () => {
                 }}
                 className={`flex-1 rounded-xl border-2 py-2 transition ${
                   showArticles
-                    ? 'border-herb-200 bg-herb-200 text-white'
+                    ? 'border-herb-200 bg-herb-200 hover:border-myRed hover:bg-myRed text-white'
                     : 'border-cookie-400 text-cookie-400 hover:bg-cookie-400 hover:text-white'
                 }`}
               >
@@ -389,7 +389,7 @@ const ChefProfileContent = () => {
                 onClick={() => setShowRateForm((v) => !v)}
                 className={`w-full rounded-xl border-2 py-2 transition ${
                   showRateForm
-                    ? 'border-herb-200 bg-herb-200 text-white'
+                    ? 'border-herb-200 bg-herb-200 hover:border-myRed hover:bg-myRed text-white'
                     : 'border-cookie-400 text-cookie-400 hover:bg-cookie-400 hover:text-white'
                 }`}
               >

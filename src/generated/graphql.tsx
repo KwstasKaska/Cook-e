@@ -277,6 +277,7 @@ export type Mutation = {
   rateRecipe: RecipeRating;
   register: UserResponse;
   removeFromCart: Scalars['Boolean']['output'];
+  removeFromCartByIngredientId: Scalars['Boolean']['output'];
   requestAppointment: AppointmentRequestResponse;
   respondToAppointmentRequest: Scalars['Boolean']['output'];
   saveArticle: UserArticleFavorite;
@@ -429,6 +430,11 @@ export type MutationRemoveFromCartArgs = {
 };
 
 
+export type MutationRemoveFromCartByIngredientIdArgs = {
+  ingredientId: Scalars['Int']['input'];
+};
+
+
 export type MutationRequestAppointmentArgs = {
   data: AppointmentRequestInput;
 };
@@ -571,6 +577,7 @@ export type Query = {
   myArticleFavorites: Array<UserArticleFavorite>;
   myArticles: Array<Article>;
   myCart: Array<ShoppingCart>;
+  myCartIngredientIds: Array<Scalars['Int']['output']>;
   myChefProfile?: Maybe<ChefProfile>;
   myChefRating?: Maybe<ChefRating>;
   myConversations: Array<Conversation>;
@@ -1399,6 +1406,13 @@ export type RegisterMutationVariables = Exact<{
 
 export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'UserResponse', errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, user?: { __typename?: 'User', id: number, username: string, email: string, role: UserRole, image?: string | null } | null } };
 
+export type RemoveFromCartByIngredientIdMutationVariables = Exact<{
+  ingredientId: Scalars['Int']['input'];
+}>;
+
+
+export type RemoveFromCartByIngredientIdMutation = { __typename?: 'Mutation', removeFromCartByIngredientId: boolean };
+
 export type SendMessageMutationVariables = Exact<{
   conversationId: Scalars['Int']['input'];
   body: Scalars['String']['input'];
@@ -1582,6 +1596,11 @@ export type MyCartQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type MyCartQuery = { __typename?: 'Query', myCart: Array<{ __typename?: 'ShoppingCart', id: number, userId: number, ingredientId: number, addedAt: string, ingredient?: { __typename?: 'Ingredient', id: number, name_el: string, name_en: string, category?: { __typename?: 'IngredientsCategory', id: number, name_el: string, name_en: string } | null } | null }> };
+
+export type MyCartIngredientIdsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MyCartIngredientIdsQuery = { __typename?: 'Query', myCartIngredientIds: Array<number> };
 
 export type MyChefProfileQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -3516,6 +3535,37 @@ export function useRegisterMutation(baseOptions?: Apollo.MutationHookOptions<Reg
 export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
 export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
+export const RemoveFromCartByIngredientIdDocument = gql`
+    mutation RemoveFromCartByIngredientId($ingredientId: Int!) {
+  removeFromCartByIngredientId(ingredientId: $ingredientId)
+}
+    `;
+export type RemoveFromCartByIngredientIdMutationFn = Apollo.MutationFunction<RemoveFromCartByIngredientIdMutation, RemoveFromCartByIngredientIdMutationVariables>;
+
+/**
+ * __useRemoveFromCartByIngredientIdMutation__
+ *
+ * To run a mutation, you first call `useRemoveFromCartByIngredientIdMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRemoveFromCartByIngredientIdMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [removeFromCartByIngredientIdMutation, { data, loading, error }] = useRemoveFromCartByIngredientIdMutation({
+ *   variables: {
+ *      ingredientId: // value for 'ingredientId'
+ *   },
+ * });
+ */
+export function useRemoveFromCartByIngredientIdMutation(baseOptions?: Apollo.MutationHookOptions<RemoveFromCartByIngredientIdMutation, RemoveFromCartByIngredientIdMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<RemoveFromCartByIngredientIdMutation, RemoveFromCartByIngredientIdMutationVariables>(RemoveFromCartByIngredientIdDocument, options);
+      }
+export type RemoveFromCartByIngredientIdMutationHookResult = ReturnType<typeof useRemoveFromCartByIngredientIdMutation>;
+export type RemoveFromCartByIngredientIdMutationResult = Apollo.MutationResult<RemoveFromCartByIngredientIdMutation>;
+export type RemoveFromCartByIngredientIdMutationOptions = Apollo.BaseMutationOptions<RemoveFromCartByIngredientIdMutation, RemoveFromCartByIngredientIdMutationVariables>;
 export const SendMessageDocument = gql`
     mutation SendMessage($conversationId: Int!, $body: String!) {
   sendMessage(conversationId: $conversationId, body: $body) {
@@ -4602,6 +4652,43 @@ export type MyCartQueryHookResult = ReturnType<typeof useMyCartQuery>;
 export type MyCartLazyQueryHookResult = ReturnType<typeof useMyCartLazyQuery>;
 export type MyCartSuspenseQueryHookResult = ReturnType<typeof useMyCartSuspenseQuery>;
 export type MyCartQueryResult = Apollo.QueryResult<MyCartQuery, MyCartQueryVariables>;
+export const MyCartIngredientIdsDocument = gql`
+    query MyCartIngredientIds {
+  myCartIngredientIds
+}
+    `;
+
+/**
+ * __useMyCartIngredientIdsQuery__
+ *
+ * To run a query within a React component, call `useMyCartIngredientIdsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMyCartIngredientIdsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMyCartIngredientIdsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useMyCartIngredientIdsQuery(baseOptions?: Apollo.QueryHookOptions<MyCartIngredientIdsQuery, MyCartIngredientIdsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<MyCartIngredientIdsQuery, MyCartIngredientIdsQueryVariables>(MyCartIngredientIdsDocument, options);
+      }
+export function useMyCartIngredientIdsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MyCartIngredientIdsQuery, MyCartIngredientIdsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<MyCartIngredientIdsQuery, MyCartIngredientIdsQueryVariables>(MyCartIngredientIdsDocument, options);
+        }
+export function useMyCartIngredientIdsSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<MyCartIngredientIdsQuery, MyCartIngredientIdsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<MyCartIngredientIdsQuery, MyCartIngredientIdsQueryVariables>(MyCartIngredientIdsDocument, options);
+        }
+export type MyCartIngredientIdsQueryHookResult = ReturnType<typeof useMyCartIngredientIdsQuery>;
+export type MyCartIngredientIdsLazyQueryHookResult = ReturnType<typeof useMyCartIngredientIdsLazyQuery>;
+export type MyCartIngredientIdsSuspenseQueryHookResult = ReturnType<typeof useMyCartIngredientIdsSuspenseQuery>;
+export type MyCartIngredientIdsQueryResult = Apollo.QueryResult<MyCartIngredientIdsQuery, MyCartIngredientIdsQueryVariables>;
 export const MyChefProfileDocument = gql`
     query MyChefProfile {
   myChefProfile {
