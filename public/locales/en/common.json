@@ -77,7 +77,7 @@
     "search": "Search",
     "noFavourites": "You haven't saved any recipes yet",
     "noResults": "No recipes found with your ingredients",
-    "missingIngredients": "ingredients missing",
+    "matchedIngredients": "Matched ingredients",
     "missingUtensils": "Utensils that miss",
     "rateTitle": "Rate this recipe",
     "existingRating": "Your rating",

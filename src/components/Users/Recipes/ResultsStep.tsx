@@ -2,9 +2,12 @@ import { useState } from 'react';
 import { useTranslation } from 'next-i18next';
 import PaginationControls from '../../Helper/PaginationControls';
 
+type Ingredient = { id: number; name_el: string; name_en: string };
+
 type Suggestion = {
-  missingCount: number;
-  missingUtensils: { id: number; name_el: string; name_en: string }[];
+  matchCount: number;
+  matchedIngredients: Ingredient[];
+  missingUtensils: Ingredient[];
   recipe: {
     id: number;
     title_el: string;
@@ -50,9 +53,12 @@ const SuggestionCard = ({
             {t('recipes.by')} {recipe.author.user.username}
           </p>
         )}
-        {suggestion.missingCount > 0 && (
-          <p className="text-xs text-myYellow">
-            -{suggestion.missingCount} {t('recipes.missingIngredients')}
+        {suggestion.matchedIngredients.length > 0 && (
+          <p className="text-xs text-herb-200">
+            {t('recipes.matchedIngredients')}:{' '}
+            {suggestion.matchedIngredients
+              .map((i) => (isEl ? i.name_el : i.name_en))
+              .join(', ')}
           </p>
         )}
         {suggestion.missingUtensils.length > 0 && (

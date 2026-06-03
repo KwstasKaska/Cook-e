@@ -919,8 +919,8 @@ export type RecipeStepInput = {
 
 export type RecipeSuggestion = {
   __typename?: 'RecipeSuggestion';
-  missingCount: Scalars['Int']['output'];
-  missingIngredients: Array<Ingredient>;
+  matchCount: Scalars['Int']['output'];
+  matchedIngredients: Array<Ingredient>;
   missingUtensils: Array<Utensil>;
   recipe: Recipe;
 };
@@ -1765,7 +1765,7 @@ export type SuggestedRecipesQueryVariables = Exact<{
 }>;
 
 
-export type SuggestedRecipesQuery = { __typename?: 'Query', suggestedRecipes: Array<{ __typename?: 'RecipeSuggestion', missingCount: number, recipe: { __typename?: 'Recipe', id: number, title_el: string, title_en: string, description_el?: string | null, description_en?: string | null, chefComment_el?: string | null, chefComment_en?: string | null, category?: RecipeCategory | null, recipeImage?: string | null, prepTime: number, cookTime: number, restTime?: number | null, difficulty: Difficulty, caloriesTotal?: number | null, protein?: number | null, carbs?: number | null, fat?: number | null, foodEthnicity?: string | null, authorId: number, createdAt: string, updatedAt: string, steps?: Array<{ __typename?: 'Step', id: number, body_el: string, body_en: string, recipeID: number }> | null, recipeIngredients?: Array<{ __typename?: 'RecipeIngredient', recipeId: number, ingredientId: number, quantity: string, unit: string, ingredient?: { __typename?: 'Ingredient', id: number, name_el: string, name_en: string, caloriesPer100g?: number | null } | null }> | null, author?: { __typename?: 'ChefProfile', user: { __typename?: 'User', id: number, username: string, image?: string | null } } | null, utensils?: Array<{ __typename?: 'Utensil', id: number, name_el: string, name_en: string }> | null }, missingIngredients: Array<{ __typename?: 'Ingredient', id: number, name_el: string, name_en: string }>, missingUtensils: Array<{ __typename?: 'Utensil', id: number, name_el: string, name_en: string }> }> };
+export type SuggestedRecipesQuery = { __typename?: 'Query', suggestedRecipes: Array<{ __typename?: 'RecipeSuggestion', matchCount: number, recipe: { __typename?: 'Recipe', id: number, title_el: string, title_en: string, description_el?: string | null, description_en?: string | null, chefComment_el?: string | null, chefComment_en?: string | null, category?: RecipeCategory | null, recipeImage?: string | null, prepTime: number, cookTime: number, restTime?: number | null, difficulty: Difficulty, caloriesTotal?: number | null, protein?: number | null, carbs?: number | null, fat?: number | null, foodEthnicity?: string | null, authorId: number, createdAt: string, updatedAt: string, steps?: Array<{ __typename?: 'Step', id: number, body_el: string, body_en: string, recipeID: number }> | null, recipeIngredients?: Array<{ __typename?: 'RecipeIngredient', recipeId: number, ingredientId: number, quantity: string, unit: string, ingredient?: { __typename?: 'Ingredient', id: number, name_el: string, name_en: string, caloriesPer100g?: number | null } | null }> | null, author?: { __typename?: 'ChefProfile', user: { __typename?: 'User', id: number, username: string, image?: string | null } } | null, utensils?: Array<{ __typename?: 'Utensil', id: number, name_el: string, name_en: string }> | null }, matchedIngredients: Array<{ __typename?: 'Ingredient', id: number, name_el: string, name_en: string }>, missingUtensils: Array<{ __typename?: 'Utensil', id: number, name_el: string, name_en: string }> }> };
 
 export type TopRatedRecipesQueryVariables = Exact<{
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -5590,8 +5590,8 @@ export const SuggestedRecipesDocument = gql`
     recipe {
       ...RegularRecipe
     }
-    missingCount
-    missingIngredients {
+    matchCount
+    matchedIngredients {
       id
       name_el
       name_en

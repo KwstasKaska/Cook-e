@@ -11,6 +11,7 @@ import {
 } from '../../../generated/graphql';
 import useIsUser from '../../../utils/useIsUser';
 import { pick } from '../../../utils/pick';
+import ShareButton from '../../../components/Helper/ShareButton';
 
 export default function ArticleDetailPage() {
   const { loading: authLoading, isAuthorized } = useIsUser();
@@ -118,9 +119,14 @@ const ArticleDetailContent = () => {
                 </div>
               </div>
 
+              <ShareButton
+                url={typeof window !== 'undefined' ? window.location.href : ''}
+                dark
+              />
+
               <button
                 onClick={handleToggleFavorite}
-                className={`mb-5 inline-flex rounded-xl border-2 px-4 py-1.5 transition ${
+                className={`mb-5 mt-3 inline-flex rounded-xl border-2 px-4 py-1.5 transition ${
                   isFavorited
                     ? 'border-herb-200 bg-herb-200 hover:border-myRed hover:bg-myRed text-white'
                     : 'border-cookie-400 hover:bg-cookie-400 hover:text-white'

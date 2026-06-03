@@ -11,6 +11,7 @@ import {
 import { pick } from '../../utils/pick';
 import { uploadToCloudinary } from '../../utils/uploadToCloudinary';
 import DeleteConfirm from '../Helper/DeleteConfirm';
+import ShareButton from '../Helper/ShareButton';
 
 type Props = {
   Navbar: React.ComponentType;
@@ -290,6 +291,16 @@ const ArticleSinglePage = ({
                   <h2 className="mb-4">
                     {pick(article.title_el, article.title_en, lang)}
                   </h2>
+                  <div className="mb-5">
+                    <ShareButton
+                      dark
+                      url={
+                        typeof window !== 'undefined'
+                          ? `${window.location.origin}/user/articles/${id}`
+                          : ''
+                      }
+                    />
+                  </div>
                   <p className="whitespace-pre-line">
                     {pick(article.text_el, article.text_en, lang)}
                   </p>
