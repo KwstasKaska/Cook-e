@@ -7,6 +7,7 @@ const ChefNavbar = () => {
   const links: NavLink[] = [
     { href: '/chef', label: t('chefnav.chef_index') },
     { href: '/chef/create-recipe', label: t('chefnav.chef_create') },
+    { href: '/chef/favorites', label: t('nav.favorites') },
   ];
 
   return <BaseNavbar links={links} />;

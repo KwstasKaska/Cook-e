@@ -2,7 +2,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
 import NutrNavbar from '../../../components/Nutritionist/NutrNavbar';
 import useIsNutr from '../../../utils/useIsNutr';
-import BrowseRecipesContent from '../../../components/Article/BrowseRecipesContent';
+import BrowseRecipesContent from '../../../components/Recipes/BrowseRecipesContent';
 
 export async function getServerSideProps({ locale }: { locale: string }) {
   return {

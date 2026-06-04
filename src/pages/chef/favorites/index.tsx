@@ -1,6 +1,6 @@
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import Navbar from '../../../components/Users/Navbar';
-import useIsUser from '../../../utils/useIsUser';
+import ChefNavbar from '../../../components/Chef/ChefNavbar';
+import useIsChef from '../../../utils/useIsChef';
 import BrowseFavoritesContent from '../../../components/Favorites/BrowseFavoritesContent';
 
 export async function getServerSideProps({ locale }: { locale: string }) {
@@ -11,15 +11,15 @@ export async function getServerSideProps({ locale }: { locale: string }) {
   };
 }
 
-export default function FavoritesPage() {
-  const { loading: authLoading, isAuthorized } = useIsUser();
+export default function ChefFavoritesPage() {
+  const { loading: authLoading, isAuthorized } = useIsChef();
   if (authLoading || !isAuthorized) return null;
   return (
     <BrowseFavoritesContent
-      navbar={<Navbar />}
-      recipeDetailPath="/user/recipes"
-      articleDetailPath="/user/articles"
-      homeRoute="/user"
+      navbar={<ChefNavbar />}
+      recipeDetailPath="/chef/recipes/browse"
+      articleDetailPath="/chef/articles/browse"
+      homeRoute="/chef"
     />
   );
 }

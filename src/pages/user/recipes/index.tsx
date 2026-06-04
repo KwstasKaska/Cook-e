@@ -1,7 +1,8 @@
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useTranslation } from 'next-i18next';
 import Navbar from '../../../components/Users/Navbar';
 import useIsUser from '../../../utils/useIsUser';
-import BrowseFavoritesContent from '../../../components/Favorites/BrowseFavoritesContent';
+import BrowseRecipesContent from '../../../components/Recipes/BrowseRecipesContent';
 
 export async function getServerSideProps({ locale }: { locale: string }) {
   return {
@@ -11,15 +12,15 @@ export async function getServerSideProps({ locale }: { locale: string }) {
   };
 }
 
-export default function FavoritesPage() {
+export default function UserBrowseRecipesPage() {
   const { loading: authLoading, isAuthorized } = useIsUser();
   if (authLoading || !isAuthorized) return null;
+  const { t } = useTranslation('common');
   return (
-    <BrowseFavoritesContent
+    <BrowseRecipesContent
       navbar={<Navbar />}
-      recipeDetailPath="/user/recipes"
-      articleDetailPath="/user/articles"
-      homeRoute="/user"
+      detailPath="/user/recipes"
+      title={t('chef.overview.allRecipes')}
     />
   );
 }

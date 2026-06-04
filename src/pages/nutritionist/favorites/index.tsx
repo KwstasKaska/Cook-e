@@ -1,6 +1,6 @@
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import Navbar from '../../../components/Users/Navbar';
-import useIsUser from '../../../utils/useIsUser';
+import NutrNavbar from '../../../components/Nutritionist/NutrNavbar';
+import useIsNutr from '../../../utils/useIsNutr';
 import BrowseFavoritesContent from '../../../components/Favorites/BrowseFavoritesContent';
 
 export async function getServerSideProps({ locale }: { locale: string }) {
@@ -11,15 +11,15 @@ export async function getServerSideProps({ locale }: { locale: string }) {
   };
 }
 
-export default function FavoritesPage() {
-  const { loading: authLoading, isAuthorized } = useIsUser();
+export default function NutrFavoritesPage() {
+  const { loading: authLoading, isAuthorized } = useIsNutr();
   if (authLoading || !isAuthorized) return null;
   return (
     <BrowseFavoritesContent
-      navbar={<Navbar />}
-      recipeDetailPath="/user/recipes"
-      articleDetailPath="/user/articles"
-      homeRoute="/user"
+      navbar={<NutrNavbar />}
+      recipeDetailPath="/nutritionist/recipes"
+      articleDetailPath="/nutritionist/articles/browse"
+      homeRoute="/nutritionist"
     />
   );
 }

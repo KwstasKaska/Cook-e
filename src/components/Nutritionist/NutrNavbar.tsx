@@ -8,6 +8,7 @@ const NutrNavbar = () => {
     { href: '/nutritionist', label: t('nutrnav.overview') },
     { href: '/nutritionist/appointments', label: t('nutrnav.appointments') },
     { href: '/nutritionist/mealplans', label: t('nutrnav.mealplans') },
+    { href: '/nutritionist/favorites', label: t('nav.favorites') },
   ];
 
   return <BaseNavbar links={links} />;

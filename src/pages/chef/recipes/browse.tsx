@@ -1,6 +1,6 @@
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
-import BrowseRecipesContent from '../../../components/Article/BrowseRecipesContent';
+import BrowseRecipesContent from '../../../components/Recipes/BrowseRecipesContent';
 import ChefNavbar from '../../../components/Chef/ChefNavbar';
 import useIsChef from '../../../utils/useIsChef';
 
