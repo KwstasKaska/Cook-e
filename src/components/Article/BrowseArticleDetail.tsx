@@ -120,7 +120,11 @@ const BrowseArticleDetail = ({ navbar }: Props) => {
               </div>
 
               <ShareButton
-                url={typeof window !== 'undefined' ? window.location.href : ''}
+                url={
+                  typeof window !== 'undefined'
+                    ? `${window.location.origin}/user/articles/${articleId}`
+                    : ''
+                }
                 dark
               />
 
