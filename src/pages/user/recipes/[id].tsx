@@ -1,5 +1,6 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 import Navbar from '../../../components/Users/Navbar';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
@@ -30,7 +31,7 @@ import { useApolloClient } from '@apollo/client';
 
 const RATINGS_LIMIT = 10;
 
-type CookState = 'idle' | 'confirm' | 'undo' | 'done';
+type CookState = 'idle' | 'confirmed';
 
 export async function getServerSideProps({ locale }: { locale: string }) {
   return {
@@ -59,7 +60,6 @@ const RecipeDetailContent = () => {
   const [ratingScore, setRatingScore] = useState(0);
   const [cookState, setCookState] = useState<CookState>('idle');
   const [lastCookId, setLastCookId] = useState<number | null>(null);
-  const undoTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const { data: recipeData, loading: recipeLoading } = useRecipeQuery({
     variables: { id: recipeId },
@@ -175,16 +175,10 @@ const RecipeDetailContent = () => {
     const res = await logCookedRecipe({ variables: { recipeId } });
     const logId = res.data?.logCookedRecipe?.id ?? null;
     setLastCookId(logId);
-    setCookState('undo');
-    undoTimerRef.current = setTimeout(() => {
-      setLastCookId(null);
-      setCookState('done');
-      setTimeout(() => setCookState('idle'), 2000);
-    }, 4000);
+    setCookState('confirmed');
   };
 
   const handleUndoCooked = async () => {
-    if (undoTimerRef.current) clearTimeout(undoTimerRef.current);
     if (lastCookId !== null)
       await deleteCookLog({ variables: { id: lastCookId } });
     setLastCookId(null);
@@ -450,31 +444,33 @@ const RecipeDetailContent = () => {
                     : t('recipes.save')}
                 </button>
 
-                {cookState === 'undo' ? (
-                  <div className="flex gap-2">
-                    <span className="flex-1 rounded-xl border-2 border-herb-200 bg-herb-200  px-4 py-1.5 text-center text-white">
-                      {t('chef.recipe_detail.marked_as_cooked')}
-                    </span>
-                    <button
-                      onClick={handleUndoCooked}
-                      className="rounded-xl border-2 border-myRed px-4 py-1.5 text-myRed transition hover:bg-myRed hover:text-white"
+                {cookState === 'confirmed' ? (
+                  <div className="flex flex-col gap-2 rounded-xl border-2 border-herb-200 px-4 py-2.5">
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="text-sm text-herb-200">
+                        {t('chef.recipe_detail.logged_to_summary')}
+                      </span>
+                      <button
+                        onClick={handleUndoCooked}
+                        className="flex-shrink-0 rounded-xl border-2 border-myRed px-3 py-0.5 text-sm text-myRed transition hover:bg-myRed hover:text-white"
+                      >
+                        {t('common.undo')}
+                      </button>
+                    </div>
+                    <Link
+                      href="/user"
+                      className="text-center text-sm text-cookie-400 underline transition hover:text-cookie-300"
                     >
-                      {t('common.undo')}
-                    </button>
+                      {t('chef.recipe_detail.view_nutritional_info')}
+                    </Link>
                   </div>
                 ) : (
                   <button
-                    onClick={cookState === 'idle' ? handleLogCooked : undefined}
-                    disabled={logging || cookState === 'done'}
-                    className={`w-full rounded-xl border-2 px-4 py-1.5 transition disabled:cursor-not-allowed disabled:opacity-50 ${
-                      cookState === 'done'
-                        ? 'border-herb-200 bg-herb-200 text-white'
-                        : 'border-cookie-400 text-cookie-400 hover:bg-cookie-400 hover:text-white'
-                    }`}
+                    onClick={handleLogCooked}
+                    disabled={logging}
+                    className="w-full rounded-xl border-2 border-cookie-400 px-4 py-1.5 text-cookie-400 transition hover:bg-cookie-400 hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
                   >
-                    {cookState === 'done'
-                      ? t('chef.recipe_detail.marked_as_cooked')
-                      : t('chef.recipe_detail.mark_as_cooked')}
+                    {t('chef.recipe_detail.mark_as_cooked')}
                   </button>
                 )}
 

@@ -22,7 +22,7 @@ import SnapshotBox from '../../components/Helper/SnapshotBox';
 import { pick } from '../../utils/pick';
 
 const SNAPSHOT = 2;
-const APPT_SNAPSHOT = 3;
+const APPT_SNAPSHOT = 2;
 
 export async function getServerSideProps({ locale }: { locale: string }) {
   return {
@@ -100,9 +100,9 @@ const HomeContent = () => {
       .slice(0, APPT_SNAPSHOT);
   }, [apptData, today]);
 
-  const { snapshotMeals, snapshotNutrName } = useMemo(() => {
+  const snapshotMeals = useMemo(() => {
     const plan = planData?.myMealPlan ?? [];
-    if (plan.length === 0) return { snapshotMeals: [], snapshotNutrName: null };
+    if (plan.length === 0) return [];
 
     const nutrName = plan[0].nutritionist?.user?.username ?? null;
     const nutrEntries = plan.filter(
@@ -117,11 +117,10 @@ const HomeContent = () => {
       const meals = MEAL_ORDER.map((mt) =>
         nutrEntries.find((e) => e.day === day && e.mealType === mt),
       ).filter(Boolean) as typeof nutrEntries;
-      if (meals.length > 0)
-        return { snapshotMeals: meals, snapshotNutrName: nutrName };
+      if (meals.length > 0) return meals;
     }
 
-    return { snapshotMeals: [], snapshotNutrName: nutrName };
+    return [];
   }, [planData]);
 
   const recipes = recipesData?.recipes ?? [];
@@ -205,11 +204,6 @@ const HomeContent = () => {
               <p className="flex-1">{t('settings.noMealPlan')}</p>
             ) : (
               <div className="flex flex-1 flex-col gap-1">
-                {snapshotNutrName && (
-                  <p className="mb-2 text-cookie-400">
-                    {t('settings.mealPlanBy')} {snapshotNutrName}
-                  </p>
-                )}
                 {snapshotMeals.map((entry) => {
                   const comment = isEl ? entry.comment_el : entry.comment_en;
                   return (
@@ -238,11 +232,8 @@ const HomeContent = () => {
 
         <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2">
           <div className="flex flex-col rounded-2xl bg-surface p-6 shadow-lg">
-            <div className="mb-3">
-              <h3>{t('nav.chat')}</h3>
-            </div>
+            <h3 className="mb-3">{t('nav.chat')}</h3>
             <p className="flex-1">{t('landing.chatDesc')}</p>
-
             <button
               onClick={() => router.push('/user/chat')}
               className="mt-4 self-end text-cookie-400 hover:underline"
@@ -253,18 +244,17 @@ const HomeContent = () => {
 
           <div className="flex flex-col rounded-2xl bg-surface p-5 shadow-lg">
             <h3 className="mb-3">{t('landing.nutritionTitle')}</h3>
-            <p className="mb-3 text-sm">{t('landing.nutritionDesc')}</p>
 
             {summaryLoading ? (
               <div className="flex flex-1 items-center justify-center py-8">
-                <div className="h-8 w-8 rounded-full border-4 border-cookie-400 border-t-transparent" />
+                <div className="h-8 w-8 animate-spin rounded-full border-4 border-cookie-400 border-t-transparent" />
               </div>
             ) : (
               <div className="grid grid-cols-2 gap-x-4 gap-y-2">
                 {stats.map((s) => (
-                  <div key={s.labelKey} className="flex flex-col gap-0">
-                    <span className="text-sm">{t(s.labelKey)}</span>
-                    <span className="text-sm">{s.value}</span>
+                  <div key={s.labelKey} className="flex  flex-col gap-0">
+                    <span className="text-cookie-400">{t(s.labelKey)}</span>
+                    <span className="">{s.value}</span>
                   </div>
                 ))}
               </div>
@@ -293,14 +283,17 @@ const HomeContent = () => {
                       <img
                         src={r.recipeImage}
                         alt={title}
-                        className="h-28 w-full object-cover"
+                        className="h-24 w-full object-cover"
                       />
                     ) : (
-                      <div className="h-28 w-full" />
+                      <div className="h-24 w-full" />
                     )}
                   </div>
-                  <div className="px-3 pt-3 pb-1 h-14 flex items-center justify-center text-center">
+                  <div className="px-3 pt-3 pb-1 h-14 flex flex-col items-center justify-center text-center">
                     <p className="line-clamp-2 break-words">{title}</p>
+                    {r.author?.user?.username && (
+                      <p className="text-xs">{r.author.user.username}</p>
+                    )}
                   </div>
                 </div>
               );
@@ -323,7 +316,7 @@ const HomeContent = () => {
                   className="overflow-hidden rounded-2xl bg-surface shadow-xl transition duration-200 hover:scale-105 flex flex-col"
                 >
                   <div className="w-full bg-cookie-100 overflow-hidden">
-                    <div className="relative h-28 w-full">
+                    <div className="relative h-24 w-full">
                       <Image
                         src={a.image}
                         alt={title}
@@ -332,8 +325,11 @@ const HomeContent = () => {
                       />
                     </div>
                   </div>
-                  <div className="px-3 pt-3 pb-1 h-14 flex items-center justify-center text-center">
+                  <div className="px-3 pt-3 pb-1 h-14 flex flex-col items-center justify-center text-center">
                     <p className="line-clamp-2 break-words">{title}</p>
+                    {a.creator?.username && (
+                      <p className="text-xs">{a.creator.username}</p>
+                    )}
                   </div>
                 </Link>
               );

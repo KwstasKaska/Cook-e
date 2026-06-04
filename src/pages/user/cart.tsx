@@ -89,7 +89,7 @@ const CartContent = () => {
           <div className="rounded-2xl bg-surface px-6 py-12 text-center shadow-lg">
             <p className="mb-4">{t('cart.emptyCart')}</p>
             <button
-              onClick={() => router.push('/user/recipes')}
+              onClick={() => router.push('/user/search-recipes')}
               className="rounded-full border-2 border-cookie-400 px-5 py-1.5 text-cookie-400 transition hover:bg-cookie-400 hover:text-white"
             >
               {t('cart.browseRecipes')}
