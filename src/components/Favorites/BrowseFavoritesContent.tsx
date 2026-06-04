@@ -13,19 +13,17 @@ type Props = {
   navbar: ReactNode;
   recipeDetailPath: string;
   articleDetailPath: string;
-  homeRoute: string;
 };
 
 const BrowseFavoritesContent = ({
   navbar,
   recipeDetailPath,
   articleDetailPath,
-  homeRoute,
 }: Props) => {
   const { t } = useTranslation('common');
   const router = useRouter();
   const isEl = router.locale === 'el';
-  const [tab, setTab] = useState<'recipes' | 'articles'>('articles');
+  const [tab, setTab] = useState<'recipes' | 'articles'>('recipes');
   const [recipeOffset, setRecipeOffset] = useState(0);
   const [articleOffset, setArticleOffset] = useState(0);
 
@@ -57,7 +55,7 @@ const BrowseFavoritesContent = ({
       {navbar}
       <div className="mx-auto max-w-3xl lg:max-w-4xl px-6 pb-16 pt-10">
         <button
-          onClick={() => router.push(homeRoute)}
+          onClick={() => router.back()}
           className="mb-6 hover:text-cookie-400"
         >
           {t('common.back')}
@@ -67,16 +65,6 @@ const BrowseFavoritesContent = ({
 
         <div className="mb-8 flex justify-center gap-3">
           <button
-            onClick={() => setTab('articles')}
-            className={`rounded-full px-5 py-2 text-sm font-medium border-2 transition-colors ${
-              tab === 'articles'
-                ? 'bg-cookie-400 border-cookie-400 text-white'
-                : 'border-cookie-400 text-cookie-400 hover:bg-cookie-400 hover:text-white'
-            }`}
-          >
-            {t('nav.articles')}
-          </button>
-          <button
             onClick={() => setTab('recipes')}
             className={`rounded-full px-5 py-2 text-sm font-medium border-2 transition-colors ${
               tab === 'recipes'
@@ -85,6 +73,16 @@ const BrowseFavoritesContent = ({
             }`}
           >
             {t('nav.recipes2')}
+          </button>
+          <button
+            onClick={() => setTab('articles')}
+            className={`rounded-full px-5 py-2 text-sm font-medium border-2 transition-colors ${
+              tab === 'articles'
+                ? 'bg-cookie-400 border-cookie-400 text-white'
+                : 'border-cookie-400 text-cookie-400 hover:bg-cookie-400 hover:text-white'
+            }`}
+          >
+            {t('nav.articles')}
           </button>
         </div>
 

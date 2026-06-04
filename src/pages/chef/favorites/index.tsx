@@ -19,7 +19,6 @@ export default function ChefFavoritesPage() {
       navbar={<ChefNavbar />}
       recipeDetailPath="/chef/recipes/browse"
       articleDetailPath="/chef/articles/browse"
-      homeRoute="/chef"
     />
   );
 }

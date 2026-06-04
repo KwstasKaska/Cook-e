@@ -19,7 +19,6 @@ export default function FavoritesPage() {
       navbar={<Navbar />}
       recipeDetailPath="/user/recipes"
       articleDetailPath="/user/articles"
-      homeRoute="/user"
     />
   );
 }

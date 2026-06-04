@@ -19,7 +19,6 @@ export default function NutrFavoritesPage() {
       navbar={<NutrNavbar />}
       recipeDetailPath="/nutritionist/recipes"
       articleDetailPath="/nutritionist/articles/browse"
-      homeRoute="/nutritionist"
     />
   );
 }
