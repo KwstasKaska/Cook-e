@@ -119,11 +119,9 @@ const BrowseRecipesContent = ({ navbar, detailPath, title }: Props) => {
                           <p className="line-clamp-2 break-words">
                             {recipeTitle}
                           </p>
-                          {recipe.author?.user?.username && (
-                            <p className="mt-1 text-xs">
-                              {recipe.author.user.username}
-                            </p>
-                          )}
+                          <p className="mt-1 text-xs">
+                            {recipe.author?.user.username}
+                          </p>
                         </div>
                       </div>
                     );

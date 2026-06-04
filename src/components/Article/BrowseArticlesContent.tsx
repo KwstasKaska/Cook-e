@@ -131,9 +131,7 @@ const BrowseArticlesContent = ({ navbar, detailPath }: Props) => {
                     </div>
                     <div className="px-3 pt-2 pb-3 flex flex-col justify-center text-center">
                       <p className="line-clamp-2 break-words">{title}</p>
-                      {a.creator?.username && (
-                        <p className="mt-1 text-xs">{a.creator.username}</p>
-                      )}
+                      <p className="mt-1 text-xs">{a.creator?.username}</p>
                     </div>
                   </Link>
                 );

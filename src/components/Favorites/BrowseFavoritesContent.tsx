@@ -119,11 +119,9 @@ const BrowseFavoritesContent = ({
                       </div>
                       <div className="px-3 pt-2 pb-3 flex flex-col justify-center text-center gap-1">
                         <p className="line-clamp-2 break-words">{title}</p>
-                        {recipe.author?.user?.username && (
-                          <p className="text-xs">
-                            {recipe.author.user.username}
-                          </p>
-                        )}
+                        <p className="text-xs">
+                          {recipe.author?.user.username}
+                        </p>
                       </div>
                     </div>
                   );
@@ -163,9 +161,7 @@ const BrowseFavoritesContent = ({
                     </div>
                     <div className="px-3 pt-2 pb-3 flex flex-col justify-center text-center gap-1">
                       <p className="line-clamp-2 break-words">{title}</p>
-                      {article.creator?.username && (
-                        <p className="text-xs">{article.creator.username}</p>
-                      )}
+                      <p className="text-xs">{article.creator?.username}</p>
                     </div>
                   </div>
                 );
