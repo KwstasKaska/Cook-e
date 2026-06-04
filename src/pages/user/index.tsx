@@ -291,9 +291,7 @@ const HomeContent = () => {
                   </div>
                   <div className="px-3 pt-3 pb-1 h-14 flex flex-col items-center justify-center text-center">
                     <p className="line-clamp-2 break-words">{title}</p>
-                    {r.author?.user?.username && (
-                      <p className="text-xs">{r.author.user.username}</p>
-                    )}
+                    <p className="text-xs">{r.author?.user.username}</p>
                   </div>
                 </div>
               );
@@ -327,9 +325,7 @@ const HomeContent = () => {
                   </div>
                   <div className="px-3 pt-3 pb-1 h-14 flex flex-col items-center justify-center text-center">
                     <p className="line-clamp-2 break-words">{title}</p>
-                    {a.creator?.username && (
-                      <p className="text-xs">{a.creator.username}</p>
-                    )}
+                    <p className="text-xs">{a.creator?.username}</p>
                   </div>
                 </Link>
               );

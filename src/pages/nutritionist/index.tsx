@@ -296,11 +296,9 @@ const NutritionistOverviewContent = () => {
                     </div>
                     <div className="px-3 pt-3 pb-1 h-20 flex flex-col items-center justify-center text-center">
                       <p className="line-clamp-2 break-words">{title}</p>
-                      {r.author?.user?.username && (
-                        <p className="mt-0.5 text-xs">
-                          {r.author.user.username}
-                        </p>
-                      )}
+                      <p className="mt-0.5 text-xs">
+                        {r.author?.user.username}
+                      </p>
                     </div>
                   </div>
                 );
@@ -334,9 +332,7 @@ const NutritionistOverviewContent = () => {
                     </div>
                     <div className="px-3 pt-3 pb-1 h-20 flex flex-col items-center justify-center text-center">
                       <p className="line-clamp-2 break-words">{title}</p>
-                      {a.creator?.username && (
-                        <p className="mt-0.5 text-xs">{a.creator.username}</p>
-                      )}
+                      <p className="mt-0.5 text-xs">{a.creator?.username}</p>
                     </div>
                   </Link>
                 );
