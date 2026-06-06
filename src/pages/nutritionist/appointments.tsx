@@ -38,7 +38,10 @@ const AppointmentsContent = () => {
   const [time, setTime] = useState('');
   const [slotError, setSlotError] = useState('');
 
+  const today = new Date().toISOString().slice(0, 10);
+
   const { data: slotsData, refetch: refetchSlots } = useGetMyAppointmentsQuery({
+    variables: { limit: 200 },
     fetchPolicy: 'network-only',
   });
 
@@ -53,17 +56,13 @@ const AppointmentsContent = () => {
   const [respondToAppointmentRequest] =
     useRespondToAppointmentRequestMutation();
 
-  const today = new Date().toISOString().slice(0, 10);
-
-  const futureSlots = useMemo(() => {
-    return (slotsData?.getMyAppointments ?? [])
-      .filter((s) => s.date >= today)
-      .sort((a, b) => {
-        const d = a.date.localeCompare(b.date);
-        if (d !== 0) return d;
-        return (a.time ?? '').localeCompare(b.time ?? '');
-      });
-  }, [slotsData, today]);
+  const slots = useMemo(() => {
+    return (slotsData?.getMyAppointments ?? []).slice().sort((a, b) => {
+      const d = a.date.localeCompare(b.date);
+      if (d !== 0) return d;
+      return (a.time ?? '').localeCompare(b.time ?? '');
+    });
+  }, [slotsData]);
 
   const pendingRequests = useMemo(() => {
     return (requestsData?.getAppointmentRequestsForNutritionist ?? []).filter(
@@ -222,9 +221,9 @@ const AppointmentsContent = () => {
             {slotError && <p className="text-myRed">{slotError}</p>}
           </div>
 
-          {futureSlots.length > 0 && (
+          {slots.length > 0 && (
             <div className="mt-4 flex flex-col gap-2">
-              {futureSlots.map((slot) => (
+              {slots.map((slot) => (
                 <div
                   key={slot.id}
                   className="flex flex-col gap-2 rounded-2xl border border-cookie-200 bg-surface px-4 py-3 md:flex-row md:items-center md:justify-between"
