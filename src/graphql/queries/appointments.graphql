@@ -1,4 +1,4 @@
-query GetMyAppointments($date: String, $limit: Int = 20, $offset: Int = 0) {
+query GetMyAppointments($date: String, $limit: Int = 100, $offset: Int = 0) {
   getMyAppointments(date: $date, limit: $limit, offset: $offset) {
     ...RegularAppointment
   }
