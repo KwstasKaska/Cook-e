@@ -3915,7 +3915,7 @@ export type ArticlesLazyQueryHookResult = ReturnType<typeof useArticlesLazyQuery
 export type ArticlesSuspenseQueryHookResult = ReturnType<typeof useArticlesSuspenseQuery>;
 export type ArticlesQueryResult = Apollo.QueryResult<ArticlesQuery, ArticlesQueryVariables>;
 export const GetMyAppointmentsDocument = gql`
-    query GetMyAppointments($date: String, $limit: Int = 20, $offset: Int = 0) {
+    query GetMyAppointments($date: String, $limit: Int = 100, $offset: Int = 0) {
   getMyAppointments(date: $date, limit: $limit, offset: $offset) {
     ...RegularAppointment
   }
