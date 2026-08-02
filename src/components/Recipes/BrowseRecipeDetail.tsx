@@ -327,7 +327,15 @@ const BrowseRecipeDetail = ({ navbar, role }: Props) => {
 
             <div className="min-w-0 overflow-hidden rounded-2xl bg-surface shadow-xl md:sticky md:top-6">
               {recipe.author?.user && (
-                <div className="flex flex-col items-center gap-2 border-b border-cookie-400 px-6 pb-4 pt-6">
+                <div
+                  onClick={() =>
+                    role === 'user' &&
+                    router.push(`/user/chef/${recipe.authorId}`)
+                  }
+                  className={`flex flex-col items-center gap-2 border-b border-cookie-400 px-6 pb-4 pt-6 ${
+                    role === 'user' ? 'cursor-pointer' : ''
+                  }`}
+                >
                   {recipe.author.user.image ? (
                     <img
                       src={recipe.author.user.image}
