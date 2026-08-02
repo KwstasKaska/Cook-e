@@ -23,7 +23,7 @@ export default function NutrReviewsList({
 
   return (
     <div className="rounded-2xl bg-surface p-5 shadow-xl">
-      <h3 className="mb-4">{t('chef.rating.title')}</h3>
+      <h3 className="mb-4">{t('chef.rating.title2')}</h3>
 
       {loading && !fetchingMore ? (
         <div className="flex justify-center py-6">
