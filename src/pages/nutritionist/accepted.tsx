@@ -130,7 +130,7 @@ const AcceptedAppointmentsContent = () => {
                       )}
                       <div className="min-w-0">
                         <p className="truncate">{client?.username ?? '—'}</p>
-                        <p className="truncate">
+                        <p className="">
                           {date} · {time}
                         </p>
                       </div>
